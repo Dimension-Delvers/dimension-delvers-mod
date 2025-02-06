@@ -1,14 +1,22 @@
 package com.dimensiondelvers.dimensiondelvers;
 
+import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
+import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
 import com.dimensiondelvers.dimensiondelvers.init.ModCreativeTabs;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
+import com.dimensiondelvers.dimensiondelvers.networking.ModPayloads;
+import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
+import cpw.mods.util.Lazy;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,14 +35,24 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
+
+import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.ATTACHMENT_TYPES;
+import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(DimensionDelvers.MODID)
@@ -42,7 +60,7 @@ public class DimensionDelvers {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "dimensiondelvers";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger(); //TODO change back to private when done testing because lazy
 
 
 
@@ -72,6 +90,11 @@ public class DimensionDelvers {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        ModAbilities.setupCooldowns();
+        ATTACHMENT_TYPES.register(modEventBus);
+        AbilityAttributes.REGISTRY.register(modEventBus);
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -96,16 +119,7 @@ public class DimensionDelvers {
         LOGGER.info("HELLO from server starting"); // Do something when the server starts
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
-    }
+
 
     /**
      * Helper method to get a {@code ResourceLocation} with our Mod Id and a passed in name
