@@ -2,12 +2,14 @@ package com.dimensiondelvers.dimensiondelvers.common;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.types.DurationAbility;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
+import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.DURATION_ATTACHMENTS;
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class GameEvents {
@@ -23,6 +25,16 @@ public class GameEvents {
             if(p.hasData(COOL_DOWN_ATTACHMENTS.get(ability.GetName())))
             {
                 p.setData(COOL_DOWN_ATTACHMENTS.get(ability.GetName()), Math.max(p.getData(COOL_DOWN_ATTACHMENTS.get(ability.GetName())) - 1, 0)); //Decrease to the lowest value 0;
+            }
+
+        }
+
+        for(AbstractAbility ability: ModAbilities.DURATION_ABILITIES)
+        {
+            if(p.hasData(DURATION_ATTACHMENTS.get(ability.GetName())))
+            {
+                p.setData(DURATION_ATTACHMENTS.get(ability.GetName()), Math.max(p.getData(DURATION_ATTACHMENTS.get(ability.GetName())) - 1, 0)); //Decrease to the lowest value 0;
+                if(((DurationAbility)ability).isActive(p)) ((DurationAbility)ability).Tick(p);
             }
 
         }

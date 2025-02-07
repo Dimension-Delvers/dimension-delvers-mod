@@ -31,8 +31,12 @@ public class AbilityAttributes {
     public static final DeferredHolder<Attribute, RangedAttribute> BOOST_STRENGTH = REGISTRY.register("boost_strength", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".boost_strength", 10, 0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, RangedAttribute> BOOST_COOLDOWN = REGISTRY.register("boost_cooldown", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".boost_cooldown", 20, 0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, RangedAttribute> ARROW_COOLDOWN = REGISTRY.register("arrow_cooldown", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".arrow_cooldown", 3, 0, Integer.MAX_VALUE));
+    public static final DeferredHolder<Attribute, RangedAttribute> PARTICLE_TIME = REGISTRY.register("particle_time", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".particle_time", 20, 0, Integer.MAX_VALUE));
 
 
     //TODO these can be stages from the level up system to apply different rates or multipliers to the different skills
     public static final AttributeModifier HEAL_MODIFIER = new AttributeModifier(DimensionDelvers.id("increase_max_heal"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final AttributeModifier BOOST_COOLDOWN_MODIFIER = new AttributeModifier(DimensionDelvers.id("reduce_boost_cooldown"), -0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+
+
 }

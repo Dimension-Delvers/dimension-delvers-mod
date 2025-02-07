@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.networking.abilities;
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.types.ToggleAbility;
 import com.dimensiondelvers.dimensiondelvers.client.gui.TestMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ClaimUpgrade;
 import com.dimensiondelvers.dimensiondelvers.networking.data.OpenUpgradeMenu;
@@ -25,9 +26,9 @@ public class ServerPayloadHandler {
         }
         else
         {
-            if(abilility.IsToggleAbility())
+            if(abilility instanceof ToggleAbility)
             {
-                if(!abilility.IsToggled(context.player()))
+                if(!((ToggleAbility)abilility).IsToggled(context.player()))
                 {
                     abilility.OnActivate(context.player());
                 }
@@ -36,7 +37,7 @@ public class ServerPayloadHandler {
                     abilility.OnDeactivate(context.player());
                 }
 
-                if(abilility.CanPlayerUse(context.player())) abilility.Toggle(context.player());
+                if(abilility.CanPlayerUse(context.player())) ((ToggleAbility)abilility).Toggle(context.player());
             }
             else
             {

@@ -1,8 +1,10 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.*;
+import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.types.DurationAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.types.ToggleAbility;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -30,6 +32,8 @@ public class ModAbilities {
     public static List<AbstractAbility> COOLDOWN_ABILITIES = new ArrayList<>();
     public static final HashMap<ResourceLocation, AttachmentType<Boolean>> TOGGLE_ATTACHMENTS = new HashMap<>();
     public static List<AbstractAbility> TOGGLE_ABILITIES = new ArrayList<>();
+    public static final HashMap<ResourceLocation, AttachmentType<Integer>> DURATION_ATTACHMENTS = new HashMap<>();
+    public static List<AbstractAbility> DURATION_ABILITIES = new ArrayList<>();
     public static final HashMap<ResourceLocation, AttachmentType<Boolean>> ABILITY_UNLOCKED_ATTACHMENTS = new HashMap<>();
     public static final DeferredHolder<AbstractAbility, AbstractAbility> SUMMON_ARROW_ABILITY = ABILITY_REGISTRY_DEF.register(
             "ability/summon_arrow",
@@ -49,6 +53,11 @@ public class ModAbilities {
             SummonArmorStand::new
     );
 
+    public static final DeferredHolder<AbstractAbility, AbstractAbility> BE_PRETTY = ABILITY_REGISTRY_DEF.register(
+            "ability/be_pretty",
+            Particles::new
+    );
+
     //TODO constants or rarely updated values should be attributes. Such as: Max Mana, CDR, Crit Chance ETC, modifiers can be applied when learning new abilities to scale these factors.
     @SubscribeEvent
     public static void registerAttachments(RegisterEvent event) {
@@ -58,6 +67,7 @@ public class ModAbilities {
             DimensionDelvers.LOGGER.info("Registering Ability Stuff");
             registerCooldowns(registry);
             registerToggles(registry);
+            registerDurationAbilities(registry);
             registerAbilityUnlocks(registry);
 
         });
@@ -66,7 +76,7 @@ public class ModAbilities {
     }
 
     private static void registerCooldowns(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
-        COOLDOWN_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::HasCooldown).collect(Collectors.toList());
+        COOLDOWN_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter((abstractAbility -> abstractAbility instanceof CooldownAbility)).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: COOLDOWN_ABILITIES)
         {
             DimensionDelvers.LOGGER.info("Adding Cool down for: " + abstractAbility.GetName());
@@ -80,7 +90,7 @@ public class ModAbilities {
     }
 
     private static void registerToggles(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
-        TOGGLE_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::IsToggleAbility).collect(Collectors.toList());
+        TOGGLE_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(abstractAbility -> abstractAbility instanceof ToggleAbility).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: TOGGLE_ABILITIES)
         {
             DimensionDelvers.LOGGER.info("Adding Toggle for: " + abstractAbility.GetName());
@@ -89,6 +99,19 @@ public class ModAbilities {
             ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "toggles/" + abstractAbility.GetName().getPath());
             registry.register(abilityToggleLoc, attachmentType);
             TOGGLE_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+        }
+    }
+
+    private static void registerDurationAbilities(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
+        DURATION_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(abstractAbility -> abstractAbility instanceof DurationAbility).collect(Collectors.toList());
+        for(AbstractAbility abstractAbility: DURATION_ABILITIES)
+        {
+            DimensionDelvers.LOGGER.info("Adding Duration for: " + abstractAbility.GetName());
+            AttachmentType<Integer> attachmentType = AttachmentType.builder(() -> 0).serialize(Codec.INT).build();
+
+            ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "durations/" + abstractAbility.GetName().getPath());
+            registry.register(abilityToggleLoc, attachmentType);
+            DURATION_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
         }
     }
 

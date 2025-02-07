@@ -46,6 +46,11 @@ public class ModUpgrades {
             UnlockAbilityUpgrade.UnlockArmorStandAbilityUpgrade::new
     );
 
+    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_PRETTY = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+            "upgrade/unlock_be_pretty",
+            UnlockAbilityUpgrade.UnlockPrettyAbilityUpgrade::new
+    );
+
 
 
 

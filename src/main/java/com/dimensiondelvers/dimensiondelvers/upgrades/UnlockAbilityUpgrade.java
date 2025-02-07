@@ -58,6 +58,13 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
         }
 
     }
+
+    public static class UnlockPrettyAbilityUpgrade extends UnlockAbilityUpgrade{
+        public UnlockPrettyAbilityUpgrade(ResourceLocation upgradeName) {
+            super(upgradeName, ModAbilities.BE_PRETTY.get().GetName());
+        }
+
+    }
 }
 
 

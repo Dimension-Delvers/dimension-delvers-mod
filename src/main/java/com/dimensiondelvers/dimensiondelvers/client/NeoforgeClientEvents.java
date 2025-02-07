@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.client;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
+import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.OpenUpgradeMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
 import net.minecraft.client.Minecraft;
@@ -45,6 +46,10 @@ public class NeoforgeClientEvents {
 
         while (OPEN_UPGRADE_MENU_KEY.consumeClick()) {
             PacketDistributor.sendToServer(new OpenUpgradeMenu("")); //TODO maybe make this open any type of menu??? idk yet
+        }
+
+        while (PRETTY_KEY.consumeClick()) {
+            PacketDistributor.sendToServer(new UseAbility(BE_PRETTY.get().GetName().toString())); //TODO maybe make this open any type of menu??? idk yet
         }
     }
 

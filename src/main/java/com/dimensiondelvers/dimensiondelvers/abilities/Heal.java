@@ -23,7 +23,7 @@ public class Heal extends AbstractAbility {
         p.heal(healAmount);
 
         //NOTE permanent modifiers are probably better for "locking" into stages of skills.
-        p.getAttribute(AbilityAttributes.HEAL_EFFECTIVENESS).addOrReplacePermanentModifier(AbilityAttributes.HEAL_MODIFIER);
+        //p.getAttribute(AbilityAttributes.HEAL_EFFECTIVENESS).addOrReplacePermanentModifier(AbilityAttributes.HEAL_MODIFIER);
 
 
     }

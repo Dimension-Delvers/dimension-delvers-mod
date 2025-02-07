@@ -8,9 +8,9 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
-public class SummonArmorStand extends AbstractAbility{
+public class SummonArmorStand extends AbstractToggleAbility {
     public SummonArmorStand(ResourceLocation abilityName) {
-        super(abilityName, false, true);
+        super(abilityName);
     }
 
     @Override
@@ -24,8 +24,6 @@ public class SummonArmorStand extends AbstractAbility{
         ArmorStand stand = new ArmorStand(p.level(), p.position().x, p.position().y, p.position().z);
         stand.setCustomName(Component.literal("TEST-" + p.getName().getString()));
         p.level().addFreshEntity(stand);
-
-
 
     }
 
