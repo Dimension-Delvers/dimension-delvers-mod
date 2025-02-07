@@ -1,71 +1,107 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ABILITY_REGISTRY_KEY;
+import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.*;
 
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModAbilities {
 
-    //Just turn this into a list of locations for the player data tracking part. Don't need this fancy any more.
-    public static HashMap<ResourceLocation, Boolean> COOLDOWN_MAP = new HashMap<>(); //TODO look into a better way of storing and handling cooldowns, since this only works in static reference of the abilities
-    public static final AbstractAbility SUMMON_ARROW = new SummonArrow(DimensionDelvers.id("summon_arrow"));
-    public static final AbstractAbility HEAL = new Heal(DimensionDelvers.id("heal"));
-    public static final AbstractAbility BOOST = new Boost(DimensionDelvers.id("boost"));
+    //This is a map of location to a specific attachment type for cooldowns
+
+    //TODO look into optimizing this to not need the list or map, might be worth keeping the Location in the list, and then lookup from the Attachments registry.
+    public static final HashMap<ResourceLocation, AttachmentType<Integer>> COOL_DOWN_ATTACHMENTS = new HashMap<>();
+    public static List<AbstractAbility> COOLDOWN_ABILITIES = new ArrayList<>();
+    public static final HashMap<ResourceLocation, AttachmentType<Boolean>> TOGGLE_ATTACHMENTS = new HashMap<>();
+    public static List<AbstractAbility> TOGGLE_ABILITIES = new ArrayList<>();
+    public static final HashMap<ResourceLocation, AttachmentType<Boolean>> ABILITY_UNLOCKED_ATTACHMENTS = new HashMap<>();
+    public static final DeferredHolder<AbstractAbility, AbstractAbility> SUMMON_ARROW_ABILITY = ABILITY_REGISTRY_DEF.register(
+            "ability/summon_arrow",
+            SummonArrow::new
+    );
+    public static final DeferredHolder<AbstractAbility, AbstractAbility> HEAL_ABILITY = ABILITY_REGISTRY_DEF.register(
+            "ability/heal",
+            Heal::new
+    );
+    public static final DeferredHolder<AbstractAbility, AbstractAbility> BOOST_ABILITY = ABILITY_REGISTRY_DEF.register(
+            "ability/boost",
+            Boost::new
+    );
+
+    public static final DeferredHolder<AbstractAbility, AbstractAbility> ARMOR_STAND_ABILITY = ABILITY_REGISTRY_DEF.register(
+            "ability/summon_armor_stand",
+            SummonArmorStand::new
+    );
 
     //TODO constants or rarely updated values should be attributes. Such as: Max Mana, CDR, Crit Chance ETC, modifiers can be applied when learning new abilities to scale these factors.
-    //TODO maybe move this for order of registering the data to go with them
     @SubscribeEvent
-    public static void registerAbilities(RegisterEvent event) {
-        DimensionDelvers.LOGGER.info("Registering Abilities!");
-        event.register(ABILITY_REGISTRY_KEY, registry -> {
-            registry.register(SUMMON_ARROW.GetName(), SUMMON_ARROW);
-            registry.register(HEAL.GetName(), HEAL);
-            registry.register(BOOST.GetName(), BOOST);
+    public static void registerAttachments(RegisterEvent event) {
+
+        event.register(NeoForgeRegistries.ATTACHMENT_TYPES.key(), registry -> {
+
+            DimensionDelvers.LOGGER.info("Registering Ability Stuff");
+            registerCooldowns(registry);
+            registerToggles(registry);
+            registerAbilityUnlocks(registry);
+
         });
 
+
     }
 
-    public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, DimensionDelvers.MODID);
-
-    //***Using Attributes to manage and scale this***
-    //    private static final Supplier<AttachmentType<Integer>> MANA = ATTACHMENT_TYPES.register(
-    //            DimensionDelvers.MODID + ".mana", () -> AttachmentType.builder(() -> 100).serialize(Codec.INT).build()
-    //    );
-
-    public static final HashMap<ResourceLocation, Supplier<AttachmentType<Integer>>> COOL_DOWN_ATTACHMENTS = new HashMap<>();
-
-    public static void setupCooldowns()
-    {
-        //TODO This is bad lmao
-        for(ResourceLocation loc: ModAbilities.COOLDOWN_MAP.keySet())
+    private static void registerCooldowns(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
+        COOLDOWN_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::HasCooldown).collect(Collectors.toList());
+        for(AbstractAbility abstractAbility: COOLDOWN_ABILITIES)
         {
-            DimensionDelvers.LOGGER.info("ADDING LOC " + loc);
-            COOL_DOWN_ATTACHMENTS.put(loc, ATTACHMENT_TYPES.register(
-                   GetAbilityCoolDownDataName(loc), () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build()
-            ));
+            DimensionDelvers.LOGGER.info("Adding Cool down for: " + abstractAbility.GetName());
+            AttachmentType<Integer> attachmentType = AttachmentType.builder(() -> 0).serialize(Codec.INT).build();
+
+            //This is done in case we have multiple things we need to track on the player per ability, such as "if unlocked, is active, cooldown, etc."
+            ResourceLocation abilityCoolDownLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "cooldowns/" + abstractAbility.GetName().getPath());
+            registry.register(abilityCoolDownLoc, attachmentType);
+            COOL_DOWN_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
         }
-
     }
 
+    private static void registerToggles(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
+        TOGGLE_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::IsToggleAbility).collect(Collectors.toList());
+        for(AbstractAbility abstractAbility: TOGGLE_ABILITIES)
+        {
+            DimensionDelvers.LOGGER.info("Adding Toggle for: " + abstractAbility.GetName());
+            AttachmentType<Boolean> attachmentType = AttachmentType.builder(() -> false).serialize(Codec.BOOL).build();
 
-    //You cannot use a : in a name within a registry, so to register other mod abilities we convert it to a weird string - also add -cooldown, so we can debug it
-    public static String GetAbilityCoolDownDataName(ResourceLocation location)
+            ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "toggles/" + abstractAbility.GetName().getPath());
+            registry.register(abilityToggleLoc, attachmentType);
+            TOGGLE_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+        }
+    }
+
+    private static void registerAbilityUnlocks(RegisterEvent.RegisterHelper<AttachmentType<?>> registry)
     {
-        return location.getNamespace() + "-" + location.getPath() + "-cooldown";
-    }
+        for(AbstractAbility abstractAbility: ABILITY_REGISTRY.stream().toList())
+        {
+            DimensionDelvers.LOGGER.info("Adding Unlock for: " + abstractAbility.GetName());
+            AttachmentType<Boolean> attachmentType = AttachmentType.builder(() -> false).serialize(Codec.BOOL).build();
 
+            ResourceLocation abilityUnlockLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "unlocks/" + abstractAbility.GetName().getPath());
+            registry.register(abilityUnlockLoc, attachmentType);
+            ABILITY_UNLOCKED_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+        }
+    }
 }

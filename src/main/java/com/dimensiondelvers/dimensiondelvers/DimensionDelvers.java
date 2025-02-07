@@ -1,58 +1,30 @@
 package com.dimensiondelvers.dimensiondelvers;
 
+import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
+import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
-import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
 import com.dimensiondelvers.dimensiondelvers.init.ModCreativeTabs;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
-import com.dimensiondelvers.dimensiondelvers.networking.ModPayloads;
-import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
-import com.mojang.blaze3d.platform.InputConstants;
+import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
 import com.mojang.logging.LogUtils;
-import cpw.mods.util.Lazy;
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.ATTACHMENT_TYPES;
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
+import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ABILITY_REGISTRY_DEF;
+import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ATTACHMENT_TYPES;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(DimensionDelvers.MODID)
@@ -75,6 +47,7 @@ public class DimensionDelvers {
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        ModMenuTypes.MENUS.register(modEventBus);
 
 
 
@@ -91,8 +64,12 @@ public class DimensionDelvers {
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        ModAbilities.setupCooldowns();
+        //TODO look into moving these, idk how this would handle if other mods want to add their own abilities, probably fine but not POC worth
+        AbilityRegistry.ABILITY_REGISTRY_DEF.register(modEventBus);
+        UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(modEventBus);
+
         ATTACHMENT_TYPES.register(modEventBus);
+
         AbilityAttributes.REGISTRY.register(modEventBus);
 
     }

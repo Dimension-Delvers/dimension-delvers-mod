@@ -1,14 +1,29 @@
 package com.dimensiondelvers.dimensiondelvers.client.gui;
 
+import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
+import com.dimensiondelvers.dimensiondelvers.init.ModUpgrades;
+import com.dimensiondelvers.dimensiondelvers.networking.data.ClaimUpgrade;
+import com.dimensiondelvers.dimensiondelvers.upgrades.AbstractUpgrade;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 
-public class AbilityScreen extends Screen {
-
-    protected AbilityScreen(Component title) {
-        super(title);
+public class AbilityScreen extends AbstractContainerScreen<TestMenu>{
+    private Inventory inventory;
+    public AbilityScreen(TestMenu menu, Inventory playerInv, Component title)
+    {
+        super(menu, playerInv, title);
+        this.inventory = playerInv;
+        this.titleLabelX = 2;
+        this.titleLabelY = 2;
+//        this.inventoryLabelX = 10;
     }
 
     @Override
@@ -17,15 +32,66 @@ public class AbilityScreen extends Screen {
 
         // Add widgets and precomputed values
         //TODO make sure of translation string here
-        Button.OnPress AbilityPressed = new AbilityPressed();
-        this.addRenderableWidget(Button.builder(Component.literal("Test"), AbilityPressed).build());
-    }
 
-    public class AbilityPressed implements Button.OnPress {
+        int width = 72;
+        int height = 24;
+        int x = 0;
+        int y = height;
+        for(AbstractUpgrade upgrade: UpgradeRegistry.UPGRADE_REGISTRY.stream().toList())
+        {
+            x += width + 1;
+            if(x + width > Minecraft.getInstance().screen.width) {
+                x = width + 1;
+                y += height + 1;
+            }
+            //TODO make this translateable string from the location
+            //TODO or use icon
+            this.addRenderableWidget(Button.builder(Component.translatable(upgrade.GetTranslationString()), new Button.OnPress(){
+                @Override
+                public void onPress(Button button) {
+                    PacketDistributor.sendToServer(new ClaimUpgrade(upgrade.GetName().toString()));
+                }
 
-        @Override
-        public void onPress(Button button) {
-
+            }).size(width,height).pos(x,y).bounds(x,y,width,height).build());
         }
+
     }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        // Background is typically rendered first
+        this.renderBackground(graphics, mouseX, mouseY, partialTick);
+
+        // Render things here before widgets (background textures)
+
+        // Then the widgets if this is a direct child of the Screen
+        super.render(graphics, mouseX, mouseY, partialTick);
+
+        // Render things after widgets (tooltips)
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
+
+    }
+
+    @Override
+    public void onClose() {
+        // Stop any handlers here
+
+        // Call last in case it interferes with the override
+        super.onClose();
+    }
+
+    @Override
+    public void removed() {
+        // Reset initial states here
+
+        // Call last in case it interferes with the override
+        super.removed()
+        ;}
+
 }

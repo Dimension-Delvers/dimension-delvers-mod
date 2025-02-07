@@ -3,24 +3,20 @@ package com.dimensiondelvers.dimensiondelvers.common;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
+import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
-import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
+import com.dimensiondelvers.dimensiondelvers.client.gui.AbilityScreen;
 import com.dimensiondelvers.dimensiondelvers.networking.ModPayloads;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
-import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ABILITY_REGISTRY;
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
+import static com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes.TEST_MENU;
+
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CommonModEvents {
@@ -33,7 +29,8 @@ public class CommonModEvents {
 
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
-        event.register(ABILITY_REGISTRY);
+        event.register(AbilityRegistry.ABILITY_REGISTRY);
+        event.register(UpgradeRegistry.UPGRADE_REGISTRY);
     }
 
     @SubscribeEvent
@@ -64,4 +61,6 @@ public class CommonModEvents {
         }
 
     }
+
+
 }

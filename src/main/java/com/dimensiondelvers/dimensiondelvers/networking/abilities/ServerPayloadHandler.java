@@ -1,9 +1,16 @@
 package com.dimensiondelvers.dimensiondelvers.networking.abilities;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
+import com.dimensiondelvers.dimensiondelvers.client.gui.TestMenu;
+import com.dimensiondelvers.dimensiondelvers.networking.data.ClaimUpgrade;
+import com.dimensiondelvers.dimensiondelvers.networking.data.OpenUpgradeMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
+import com.dimensiondelvers.dimensiondelvers.upgrades.AbstractUpgrade;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.SimpleMenuProvider;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ABILITY_REGISTRY;
@@ -11,16 +18,56 @@ import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.A
 public class ServerPayloadHandler {
     public static void handleAbilityOnServer(final UseAbility ability, final IPayloadContext context)
     {
-        AbstractAbility abil = ABILITY_REGISTRY.get(ResourceLocation.parse(ability.ability_location()));
-        if(abil == null)
+        AbstractAbility abilility = ABILITY_REGISTRY.get(ResourceLocation.parse(ability.ability_location()));
+        if(abilility == null)
         {
-            DimensionDelvers.LOGGER.info("NULL! " + ResourceLocation.parse(ability.ability_location()));
+            DimensionDelvers.LOGGER.error("Invalid Ability Activated: " + ResourceLocation.parse(ability.ability_location()));
         }
         else
         {
-            abil.OnActivate(context.player());
+            if(abilility.IsToggleAbility())
+            {
+                if(!abilility.IsToggled(context.player()))
+                {
+                    abilility.OnActivate(context.player());
+                }
+                else
+                {
+                    abilility.OnDeactivate(context.player());
+                }
+
+                if(abilility.CanPlayerUse(context.player())) abilility.Toggle(context.player());
+            }
+            else
+            {
+                abilility.OnActivate(context.player());
+            }
         }
         DimensionDelvers.LOGGER.info(ability.ability_location());
         //TODO summon arrow here
+    }
+
+    public static void handleUpgradeMenuOnServer(final OpenUpgradeMenu menu, final IPayloadContext context)
+    {
+        context.player().openMenu(new SimpleMenuProvider(
+                (containerId, playerInventory, player) -> new TestMenu(containerId, playerInventory),
+                Component.translatable("menu.title.examplemod.mymenu")
+        ));
+
+    }
+
+    public static void handleUpgradeOnServer(final ClaimUpgrade upgrade, final IPayloadContext context)
+    {
+
+        AbstractUpgrade abstractUpgrade = UpgradeRegistry.UPGRADE_REGISTRY.get(ResourceLocation.parse(upgrade.upgrade_location()));
+        if(!abstractUpgrade.IsUnlocked(context.player()))
+        {
+            abstractUpgrade.Unlock(context.player());
+        }
+        else
+        {
+            abstractUpgrade.Remove(context.player());
+        }
+
     }
 }

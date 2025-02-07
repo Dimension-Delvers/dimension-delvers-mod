@@ -1,5 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,11 @@ public class SummonArrow extends AbstractAbility {
 
     @Override
     public void OnActivate(Player p) {
+        if(!this.CanPlayerUse(p))
+        {
+            p.sendSystemMessage(Component.literal("Not machine gun for you!"));
+            return;
+        }
 
         //TODO implement cooldown
         if(!p.level().isClientSide)
@@ -31,4 +37,6 @@ public class SummonArrow extends AbstractAbility {
     public void OnDeactivate(Player p) {
 
     }
+
+
 }

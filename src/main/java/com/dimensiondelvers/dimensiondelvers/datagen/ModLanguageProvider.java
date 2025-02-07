@@ -1,8 +1,10 @@
 package com.dimensiondelvers.dimensiondelvers.datagen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
+import com.dimensiondelvers.dimensiondelvers.init.ModUpgrades;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
@@ -30,5 +32,7 @@ public class ModLanguageProvider extends LanguageProvider {
         // Adds a generic translation
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
 
+        add(ModAbilities.BOOST_ABILITY.get().GetTranslationString(), "Boost Ability");
+        add(ModUpgrades.UNLOCK_BOOST.get().GetTranslationString(), "Unlock Boost");
     }
 }
