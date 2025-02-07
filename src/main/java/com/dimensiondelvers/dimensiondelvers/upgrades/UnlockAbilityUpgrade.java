@@ -19,7 +19,7 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
         p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetName()), true);
 
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
-        p.sendSystemMessage(Component.literal("You unlocked " + AbilityRegistry.ABILITY_REGISTRY.get(ability).GetName()));
+        p.sendSystemMessage(Component.literal("You learned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
         super.Unlock(p);
     }
 
@@ -27,7 +27,7 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
     public void Remove(Player p) {
 
         p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetName()), false);
-        p.sendSystemMessage(Component.literal("You unlearned " + AbilityRegistry.ABILITY_REGISTRY.get(ability).GetName()));
+        p.sendSystemMessage(Component.literal("You unlearned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
         super.Remove(p);
     }
 

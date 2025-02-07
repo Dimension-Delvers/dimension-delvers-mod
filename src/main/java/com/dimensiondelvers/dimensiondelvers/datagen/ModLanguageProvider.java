@@ -33,6 +33,14 @@ public class ModLanguageProvider extends LanguageProvider {
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
 
         add(ModAbilities.BOOST_ABILITY.get().GetTranslationString(), "Boost Ability");
+        add(ModAbilities.SUMMON_ARROW_ABILITY.get().GetTranslationString(), "Arrow Ability");
+        add(ModAbilities.HEAL_ABILITY.get().GetTranslationString(), "Heal Ability");
+        add(ModAbilities.ARMOR_STAND_ABILITY.get().GetTranslationString(), "Armorstand Ability");
+
+
         add(ModUpgrades.UNLOCK_BOOST.get().GetTranslationString(), "Unlock Boost");
+        add(ModUpgrades.UNLOCK_ARROW.get().GetTranslationString(), "Unlock Arrow");
+        add(ModUpgrades.UNLOCK_HEAL.get().GetTranslationString(), "Unlock Heal");
+        add(ModUpgrades.UNLOCK_ARMOR_STAND.get().GetTranslationString(), "Unlock Armorstand");
     }
 }
