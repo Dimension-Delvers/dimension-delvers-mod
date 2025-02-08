@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.gui.menu;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,16 +28,13 @@ public class AbilityBagMenu extends AbstractContainerMenu {
         this.playerInventory = playerInventory;
         this.bagInventory = bagInventory;
         this.createInventorySlots(this.playerInventory);
+        //this.createBagSlots(this.bagInventory);
     }
+    //Client
     public AbilityBagMenu(int containerId, Inventory playerInventory) {
         super(ModMenuTypes.ABILITY_BAG_MENU.get(),containerId);
         this.playerInventory = playerInventory;
         this.createInventorySlots(this.playerInventory);
-        if (bagInventory == null) {
-            DimensionDelvers.LOGGER.info("null inventory");
-            return;
-        }
-        this.createBagSlots(bagInventory);
 
 
     }

@@ -1,5 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.gui.screen;
 
+import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.gui.menu.AbilityBagMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,7 +22,7 @@ import java.awt.*;
 
 public class AbilityBagScreen extends AbstractContainerScreen<AbilityBagMenu> implements ContainerListener {
     //private static final ResourceLocation BACKGROUND = ResourceLocation.tryParse("minecraft:textures/gui/container/inventory.png");
-    private static final ResourceLocation SLOT = ResourceLocation.withDefaultNamespace("textures/gui/container/slot.png");
+    private static final ResourceLocation SLOT = DimensionDelvers.id("textures/gui/container/slot.png");
     public AbilityBagScreen(AbilityBagMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageHeight = 248;
@@ -41,7 +42,7 @@ public class AbilityBagScreen extends AbstractContainerScreen<AbilityBagMenu> im
         if (!slot.isFake()) {
             int x = slot.x - 1;
             int y = slot.y - 1;
-            guiGraphics.blit(SLOT, x, y, 0, 0, 18, 18);
+            guiGraphics.blit(SLOT, x, y, 0, 0, 18, 18,18,18);
         }
         super.renderSlot(guiGraphics, slot);
     }
