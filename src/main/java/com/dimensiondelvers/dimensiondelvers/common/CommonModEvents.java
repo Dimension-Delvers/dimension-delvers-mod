@@ -5,17 +5,13 @@ import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
-import com.dimensiondelvers.dimensiondelvers.client.gui.AbilityScreen;
 import com.dimensiondelvers.dimensiondelvers.networking.ModPayloads;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
-
-import static com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes.TEST_MENU;
 
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.MOD)

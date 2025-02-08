@@ -23,7 +23,6 @@ public class AbstractCooldownAbility extends AbstractAbility implements Cooldown
 
     @Override
     public void onDeactivate(Player p) {
-
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.types.ToggleAbility;
-import com.dimensiondelvers.dimensiondelvers.client.gui.TestMenu;
+import com.dimensiondelvers.dimensiondelvers.client.gui.menu.TestMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ClaimUpgrade;
 import com.dimensiondelvers.dimensiondelvers.networking.data.OpenUpgradeMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
@@ -52,7 +52,7 @@ public class ServerPayloadHandler {
     {
         context.player().openMenu(new SimpleMenuProvider(
                 (containerId, playerInventory, player) -> new TestMenu(containerId, playerInventory),
-                Component.translatable("menu.title.examplemod.mymenu")
+                Component.translatable("menu.title.examplemod.mymenu") //TODO uh change this lmao
         ));
 
     }

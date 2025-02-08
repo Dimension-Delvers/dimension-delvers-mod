@@ -1,7 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.client;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.client.gui.AbilityScreen;
+import com.dimensiondelvers.dimensiondelvers.client.gui.screen.AbilityScreen;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

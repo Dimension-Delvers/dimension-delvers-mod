@@ -1,7 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.client.gui.TestMenu;
+import com.dimensiondelvers.dimensiondelvers.client.gui.menu.TestMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
