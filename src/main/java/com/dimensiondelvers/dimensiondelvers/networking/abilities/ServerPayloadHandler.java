@@ -44,7 +44,7 @@ public class ServerPayloadHandler {
                 abilility.OnActivate(context.player());
             }
         }
-        DimensionDelvers.LOGGER.info(ability.ability_location());
+//        DimensionDelvers.LOGGER.info(ability.ability_location());
         //TODO summon arrow here
     }
 

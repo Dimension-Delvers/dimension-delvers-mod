@@ -57,7 +57,7 @@ public class NeoforgeClientEvents {
     public static void hudRender(RenderGuiEvent.Post event)
     {
 //        event.getGuiGraphics().drawString(Minecraft.getInstance().font, "TEST", 0, 0, 10);
-        double percent = Minecraft.getInstance().player.getData(COOL_DOWN_ATTACHMENTS.get(BOOST_ABILITY.get().getName())) / (Minecraft.getInstance().player.getAttributeValue(AbilityAttributes.BOOST_COOLDOWN) * 20);
+        double percent = Minecraft.getInstance().player.getData(COOL_DOWN_ATTACHMENTS.get(BOOST_ABILITY.get().getName())) / (Minecraft.getInstance().player.getAttributeValue(AbilityAttributes.BOOST_COOLDOWN) * 20); //TODO look into syncing attributes with modifier to client
 
         event.getGuiGraphics().blit(ResourceLocation.withDefaultNamespace("textures/mob_effect/wind_charged.png"), 0,0,0,0,18, 18 - (int)Math.floor(18 * percent), 18, 18);
 

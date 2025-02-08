@@ -49,5 +49,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip." + ModUpgrades.UNLOCK_ARMOR_STAND.get().GetTranslationString(), "Press Y to toggle Armorstand!");
         add(ModUpgrades.UNLOCK_PRETTY.get().GetTranslationString(), "Unlock Beauty");
         add("tooltip." + ModUpgrades.UNLOCK_PRETTY.get().GetTranslationString(), "Press H to be temporarily pretty (Check F5)");
+
+        add(ModUpgrades.UPGRADE_BOOST.get().GetTranslationString(), "Boost Faster");
+        add("tooltip." + ModUpgrades.UPGRADE_BOOST.get().GetTranslationString(), "Makes your boost cooldown faster");
     }
 }

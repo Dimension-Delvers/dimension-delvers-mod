@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.init;
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.upgrades.AbstractUpgrade;
+import com.dimensiondelvers.dimensiondelvers.upgrades.ReduceBoostCoolDownUpgrade;
 import com.dimensiondelvers.dimensiondelvers.upgrades.UnlockAbilityUpgrade;
 import com.dimensiondelvers.dimensiondelvers.upgrades.UnlockAllAbilitiesUpgrade;
 import com.mojang.serialization.Codec;
@@ -49,6 +50,11 @@ public class ModUpgrades {
     public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_PRETTY = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
             "upgrade/unlock_be_pretty",
             UnlockAbilityUpgrade.UnlockPrettyAbilityUpgrade::new
+    );
+
+    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UPGRADE_BOOST = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+            "upgrade/upgrade_boost",
+            ReduceBoostCoolDownUpgrade::new
     );
 
 
