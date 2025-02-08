@@ -16,7 +16,7 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
     @Override
     public void Unlock(Player p) {
 
-        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetName()), true);
+        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).getName()), true);
 
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
         p.sendSystemMessage(Component.literal("You learned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
@@ -26,42 +26,42 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
     @Override
     public void Remove(Player p) {
 
-        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetName()), false);
+        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).getName()), false);
         p.sendSystemMessage(Component.literal("You unlearned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
         super.Remove(p);
     }
 
     public static class UnlockBoostAbilityUpgrade extends UnlockAbilityUpgrade{
         public UnlockBoostAbilityUpgrade(ResourceLocation upgradeName) {
-            super(upgradeName, ModAbilities.BOOST_ABILITY.get().GetName());
+            super(upgradeName, ModAbilities.BOOST_ABILITY.get().getName());
         }
 
     }
 
     public static class UnlockArrowAbilityUpgrade extends UnlockAbilityUpgrade{
         public UnlockArrowAbilityUpgrade(ResourceLocation upgradeName) {
-            super(upgradeName, ModAbilities.SUMMON_ARROW_ABILITY.get().GetName());
+            super(upgradeName, ModAbilities.SUMMON_ARROW_ABILITY.get().getName());
         }
 
     }
 
     public static class UnlockArmorStandAbilityUpgrade extends UnlockAbilityUpgrade{
         public UnlockArmorStandAbilityUpgrade(ResourceLocation upgradeName) {
-            super(upgradeName, ModAbilities.ARMOR_STAND_ABILITY.get().GetName());
+            super(upgradeName, ModAbilities.ARMOR_STAND_ABILITY.get().getName());
         }
 
     }
 
     public static class UnlockHealAbilityUpgrade extends UnlockAbilityUpgrade{
         public UnlockHealAbilityUpgrade(ResourceLocation upgradeName) {
-            super(upgradeName, ModAbilities.HEAL_ABILITY.get().GetName());
+            super(upgradeName, ModAbilities.HEAL_ABILITY.get().getName());
         }
 
     }
 
     public static class UnlockPrettyAbilityUpgrade extends UnlockAbilityUpgrade{
         public UnlockPrettyAbilityUpgrade(ResourceLocation upgradeName) {
-            super(upgradeName, ModAbilities.BE_PRETTY.get().GetName());
+            super(upgradeName, ModAbilities.BE_PRETTY.get().getName());
         }
 
     }

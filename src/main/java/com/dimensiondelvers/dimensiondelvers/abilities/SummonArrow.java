@@ -34,7 +34,7 @@ public class SummonArrow extends AbstractAbility {
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
 
     }
 

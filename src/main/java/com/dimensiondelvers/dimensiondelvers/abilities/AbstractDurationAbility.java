@@ -8,8 +8,6 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
-
 public class AbstractDurationAbility extends AbstractAbility implements DurationAbility {
     public AbstractDurationAbility(ResourceLocation abilityName) {
         super(abilityName);
@@ -21,22 +19,22 @@ public class AbstractDurationAbility extends AbstractAbility implements Duration
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
 
     }
 
     @Override
     public boolean isActive(Player p) {
-        return ModAbilities.DURATION_ATTACHMENTS.containsKey(this.GetName()) && p.getData(ModAbilities.DURATION_ATTACHMENTS.get(this.GetName())) > 0;
+        return ModAbilities.DURATION_ATTACHMENTS.containsKey(this.getName()) && p.getData(ModAbilities.DURATION_ATTACHMENTS.get(this.getName())) > 0;
     }
 
     @Override
     public void setDuration(Player p, DeferredHolder<Attribute, RangedAttribute> attribute) {
-        p.setData(ModAbilities.DURATION_ATTACHMENTS.get(this.GetName()), (int)p.getAttributeValue(attribute) * 20); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
+        p.setData(ModAbilities.DURATION_ATTACHMENTS.get(this.getName()), (int)p.getAttributeValue(attribute) * 20); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
     }
 
     @Override
-    public void Tick(Player p) {
+    public void tick(Player p) {
 
     }
 }

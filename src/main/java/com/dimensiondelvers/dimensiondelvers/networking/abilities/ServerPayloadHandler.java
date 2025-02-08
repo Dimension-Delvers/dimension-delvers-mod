@@ -34,7 +34,7 @@ public class ServerPayloadHandler {
                 }
                 else
                 {
-                    abilility.OnDeactivate(context.player());
+                    abilility.onDeactivate(context.player());
                 }
 
                 if(abilility.CanPlayerUse(context.player())) ((ToggleAbility)abilility).Toggle(context.player());

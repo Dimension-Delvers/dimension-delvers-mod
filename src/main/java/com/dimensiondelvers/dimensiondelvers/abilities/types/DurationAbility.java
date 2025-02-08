@@ -9,5 +9,5 @@ public interface DurationAbility {
     boolean isActive(Player p);
     void setDuration(Player p, DeferredHolder<Attribute, RangedAttribute> attribute);
 
-    void Tick(Player p);
+    void tick(Player p);
 }

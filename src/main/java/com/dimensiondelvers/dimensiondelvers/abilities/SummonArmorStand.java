@@ -28,7 +28,7 @@ public class SummonArmorStand extends AbstractToggleAbility {
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
         if(!this.CanPlayerUse(p))
         {
             p.sendSystemMessage(Component.literal("You cannot use summon!"));

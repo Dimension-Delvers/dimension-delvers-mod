@@ -16,7 +16,7 @@ public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
     public void Unlock(Player p) {
         for(AbstractAbility abstractAbility: AbilityRegistry.ABILITY_REGISTRY.stream().toList())
         {
-            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.GetName()), true);
+            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), true);
         }
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
         p.sendSystemMessage(Component.literal("You unlocked all abilities!"));
@@ -28,7 +28,7 @@ public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
 
         for(AbstractAbility abstractAbility: AbilityRegistry.ABILITY_REGISTRY.stream().toList())
         {
-            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.GetName()), false);
+            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), false);
         }
         p.sendSystemMessage(Component.literal("You removed all abilities!"));
         super.Remove(p);

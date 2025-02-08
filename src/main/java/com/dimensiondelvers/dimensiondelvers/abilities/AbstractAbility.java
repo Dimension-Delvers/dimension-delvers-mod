@@ -1,14 +1,8 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
-import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.TOGGLE_ATTACHMENTS;
 
 public abstract class AbstractAbility {
 
@@ -21,21 +15,21 @@ public abstract class AbstractAbility {
     }
 
     public abstract void OnActivate(Player p);
-    public abstract void OnDeactivate(Player p);
+    public abstract void onDeactivate(Player p);
 
     public boolean CanPlayerUse(Player p)
     {
-        return p.getData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(this.GetName()));
+        return p.getData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(this.getName()));
     }
 
-    public ResourceLocation GetName()
+    public ResourceLocation getName()
     {
         return name;
     }
 
     public String GetTranslationString()
     {
-        return "ability." + GetName().getNamespace() + "." + GetName().getPath();
+        return "ability." + getName().getNamespace() + "." + getName().getPath();
     }
 
 }

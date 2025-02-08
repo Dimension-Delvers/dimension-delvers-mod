@@ -23,7 +23,7 @@ public class Boost extends AbstractCooldownAbility {
 
             p.setDeltaMovement(p.getLookAngle().scale((int)p.getAttributeValue(AbilityAttributes.BOOST_STRENGTH)));
             ((ServerPlayer)p).connection.send(new ClientboundSetEntityMotionPacket(((ServerPlayer)p))); //This is the secret sauce to making the movement work
-            PacketDistributor.sendToPlayer((ServerPlayer) p, new CooldownActivated(this.GetName().toString(),(int)p.getAttributeValue(AbilityAttributes.BOOST_COOLDOWN) * 20 ));
+            PacketDistributor.sendToPlayer((ServerPlayer) p, new CooldownActivated(this.getName().toString(),(int)p.getAttributeValue(AbilityAttributes.BOOST_COOLDOWN) * 20 ));
 
             return;
         }
@@ -36,7 +36,7 @@ public class Boost extends AbstractCooldownAbility {
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
 
     }
 

@@ -14,6 +14,8 @@ import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.DURATION_A
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class GameEvents {
 
+    //TODO This is purely placeholder, find a better way to handle this, because currently each player is looking against every ability.
+    //TODO find a way to track each individual players ability (saving this into the player shouldn't be too hard)
     @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Post event)
     {
@@ -22,19 +24,23 @@ public class GameEvents {
         //TODO look into adding a method to the ability to handle reducing its own cool down.
         for(AbstractAbility ability: ModAbilities.COOLDOWN_ABILITIES)
         {
-            if(p.hasData(COOL_DOWN_ATTACHMENTS.get(ability.GetName())))
+            if(p.hasData(COOL_DOWN_ATTACHMENTS.get(ability.getName())))
             {
-                p.setData(COOL_DOWN_ATTACHMENTS.get(ability.GetName()), Math.max(p.getData(COOL_DOWN_ATTACHMENTS.get(ability.GetName())) - 1, 0)); //Decrease to the lowest value 0;
+                p.setData(COOL_DOWN_ATTACHMENTS.get(ability.getName()), Math.max(p.getData(COOL_DOWN_ATTACHMENTS.get(ability.getName())) - 1, 0)); //Decrease to the lowest value 0;
             }
 
         }
 
         for(AbstractAbility ability: ModAbilities.DURATION_ABILITIES)
         {
-            if(p.hasData(DURATION_ATTACHMENTS.get(ability.GetName())))
+            if(p.hasData(DURATION_ATTACHMENTS.get(ability.getName())))
             {
-                p.setData(DURATION_ATTACHMENTS.get(ability.GetName()), Math.max(p.getData(DURATION_ATTACHMENTS.get(ability.GetName())) - 1, 0)); //Decrease to the lowest value 0;
-                if(((DurationAbility)ability).isActive(p)) ((DurationAbility)ability).Tick(p);
+                if(p.getData(DURATION_ATTACHMENTS.get(ability.getName())) == 1)
+                {
+                    ability.onDeactivate(p);
+                }
+                p.setData(DURATION_ATTACHMENTS.get(ability.getName()), Math.max(p.getData(DURATION_ATTACHMENTS.get(ability.getName())) - 1, 0)); //Decrease to the lowest value 0;
+                if(((DurationAbility)ability).isActive(p)) ((DurationAbility)ability).tick(p);
             }
 
         }

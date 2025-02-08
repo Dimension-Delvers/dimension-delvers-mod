@@ -1,6 +1,5 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
-import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.types.ToggleAbility;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;
@@ -22,21 +21,21 @@ public class AbstractToggleAbility extends AbstractAbility implements ToggleAbil
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
 
     }
 
     @Override
     public boolean IsToggled(Player p) {
-        return ModAbilities.TOGGLE_ATTACHMENTS.containsKey(this.GetName()) && p.getData(ModAbilities.TOGGLE_ATTACHMENTS.get(this.GetName()));
+        return ModAbilities.TOGGLE_ATTACHMENTS.containsKey(this.getName()) && p.getData(ModAbilities.TOGGLE_ATTACHMENTS.get(this.getName()));
     }
 
     @Override
     public void Toggle(Player p)
     {
         //Change the toggle to opposite and then tell the player
-        if(TOGGLE_ATTACHMENTS.containsKey(this.GetName())) p.setData(TOGGLE_ATTACHMENTS.get(this.GetName()), !IsToggled(p));
-        PacketDistributor.sendToPlayer((ServerPlayer) p, new ToggleState(this.GetName().toString(), IsToggled(p)));
+        if(TOGGLE_ATTACHMENTS.containsKey(this.getName())) p.setData(TOGGLE_ATTACHMENTS.get(this.getName()), !IsToggled(p));
+        PacketDistributor.sendToPlayer((ServerPlayer) p, new ToggleState(this.getName().toString(), IsToggled(p)));
     }
 
 }

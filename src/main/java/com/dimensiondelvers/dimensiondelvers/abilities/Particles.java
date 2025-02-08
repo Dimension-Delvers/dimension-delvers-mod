@@ -8,7 +8,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.animal.Panda;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -38,12 +41,14 @@ public class Particles extends AbstractDurationAbility{
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
         p.sendSystemMessage(Component.literal("You're no longer beautiful!"));
     }
 
     @Override
-    public void Tick(Player p) {
-        p.level().addParticle(ParticleTypes.CHERRY_LEAVES, p.position().x, p.position().y + 2, p.position().z, 1, 1, 1);
+    public void tick(Player p) {
+        p.heal(0.05F);
+        ServerLevel level = (ServerLevel) p.level();
+        level.sendParticles(ParticleTypes.CHERRY_LEAVES, p.position().x, p.position().y + 1.5, p.position().z, 1, Math.random(), Math.random(), Math.random(), 2);
     }
 }

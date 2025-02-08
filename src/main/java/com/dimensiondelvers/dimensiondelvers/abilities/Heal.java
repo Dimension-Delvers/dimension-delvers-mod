@@ -29,7 +29,7 @@ public class Heal extends AbstractAbility {
     }
 
     @Override
-    public void OnDeactivate(Player p) {
+    public void onDeactivate(Player p) {
 
     }
 

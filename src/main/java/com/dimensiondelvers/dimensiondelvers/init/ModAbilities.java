@@ -79,13 +79,13 @@ public class ModAbilities {
         COOLDOWN_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter((abstractAbility -> abstractAbility instanceof CooldownAbility)).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: COOLDOWN_ABILITIES)
         {
-            DimensionDelvers.LOGGER.info("Adding Cool down for: " + abstractAbility.GetName());
+            DimensionDelvers.LOGGER.info("Adding Cool down for: " + abstractAbility.getName());
             AttachmentType<Integer> attachmentType = AttachmentType.builder(() -> 0).serialize(Codec.INT).build();
 
             //This is done in case we have multiple things we need to track on the player per ability, such as "if unlocked, is active, cooldown, etc."
-            ResourceLocation abilityCoolDownLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "cooldowns/" + abstractAbility.GetName().getPath());
+            ResourceLocation abilityCoolDownLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.getName().getNamespace(), "cooldowns/" + abstractAbility.getName().getPath());
             registry.register(abilityCoolDownLoc, attachmentType);
-            COOL_DOWN_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+            COOL_DOWN_ATTACHMENTS.put(abstractAbility.getName(), attachmentType);
         }
     }
 
@@ -93,12 +93,12 @@ public class ModAbilities {
         TOGGLE_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(abstractAbility -> abstractAbility instanceof ToggleAbility).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: TOGGLE_ABILITIES)
         {
-            DimensionDelvers.LOGGER.info("Adding Toggle for: " + abstractAbility.GetName());
+            DimensionDelvers.LOGGER.info("Adding Toggle for: " + abstractAbility.getName());
             AttachmentType<Boolean> attachmentType = AttachmentType.builder(() -> false).serialize(Codec.BOOL).build();
 
-            ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "toggles/" + abstractAbility.GetName().getPath());
+            ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.getName().getNamespace(), "toggles/" + abstractAbility.getName().getPath());
             registry.register(abilityToggleLoc, attachmentType);
-            TOGGLE_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+            TOGGLE_ATTACHMENTS.put(abstractAbility.getName(), attachmentType);
         }
     }
 
@@ -106,12 +106,12 @@ public class ModAbilities {
         DURATION_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(abstractAbility -> abstractAbility instanceof DurationAbility).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: DURATION_ABILITIES)
         {
-            DimensionDelvers.LOGGER.info("Adding Duration for: " + abstractAbility.GetName());
+            DimensionDelvers.LOGGER.info("Adding Duration for: " + abstractAbility.getName());
             AttachmentType<Integer> attachmentType = AttachmentType.builder(() -> 0).serialize(Codec.INT).build();
 
-            ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "durations/" + abstractAbility.GetName().getPath());
+            ResourceLocation abilityToggleLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.getName().getNamespace(), "durations/" + abstractAbility.getName().getPath());
             registry.register(abilityToggleLoc, attachmentType);
-            DURATION_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+            DURATION_ATTACHMENTS.put(abstractAbility.getName(), attachmentType);
         }
     }
 
@@ -119,12 +119,12 @@ public class ModAbilities {
     {
         for(AbstractAbility abstractAbility: ABILITY_REGISTRY.stream().toList())
         {
-            DimensionDelvers.LOGGER.info("Adding Unlock for: " + abstractAbility.GetName());
+            DimensionDelvers.LOGGER.info("Adding Unlock for: " + abstractAbility.getName());
             AttachmentType<Boolean> attachmentType = AttachmentType.builder(() -> false).serialize(Codec.BOOL).build();
 
-            ResourceLocation abilityUnlockLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.GetName().getNamespace(), "unlocks/" + abstractAbility.GetName().getPath());
+            ResourceLocation abilityUnlockLoc = ResourceLocation.fromNamespaceAndPath(abstractAbility.getName().getNamespace(), "unlocks/" + abstractAbility.getName().getPath());
             registry.register(abilityUnlockLoc, attachmentType);
-            ABILITY_UNLOCKED_ATTACHMENTS.put(abstractAbility.GetName(), attachmentType);
+            ABILITY_UNLOCKED_ATTACHMENTS.put(abstractAbility.getName(), attachmentType);
         }
     }
 }
