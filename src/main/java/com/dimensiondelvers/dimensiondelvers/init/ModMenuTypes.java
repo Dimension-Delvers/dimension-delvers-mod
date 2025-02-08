@@ -16,6 +16,5 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, DimensionDelvers.MODID);
 
     public static final Supplier<MenuType<RuneAnvilMenu>> RUNE_ANVIL_MENU = MENUS.register("rune_anvil_menu", () -> new MenuType<>(RuneAnvilMenu::new, FeatureFlags.DEFAULT_FLAGS));
-}
     public static final Supplier<MenuType<AbilityBagMenu>> ABILITY_BAG_MENU = MENUS.register("ability_bag_menu", () -> new MenuType<>(AbilityBagMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }
