@@ -1,16 +1,13 @@
-package com.dimensiondelvers.dimensiondelvers.client.gui;
+package com.dimensiondelvers.dimensiondelvers.client.gui.screen;
 
-import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
-import com.dimensiondelvers.dimensiondelvers.init.ModUpgrades;
+import com.dimensiondelvers.dimensiondelvers.client.gui.menu.TestMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ClaimUpgrade;
 import com.dimensiondelvers.dimensiondelvers.upgrades.AbstractUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;

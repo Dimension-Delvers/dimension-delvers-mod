@@ -1,4 +1,4 @@
-package com.dimensiondelvers.dimensiondelvers.client.gui;
+package com.dimensiondelvers.dimensiondelvers.client.gui.menu;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
