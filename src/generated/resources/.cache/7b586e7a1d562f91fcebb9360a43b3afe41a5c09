@@ -1,3 +1,4 @@
-// 1.21.1	2025-02-02T22:10:07.4813574	Tags for minecraft:block mod id dimensiondelvers
+// 1.21.1	2025-02-08T16:24:47.5755045	Tags for minecraft:block mod id dimensiondelvers
+4c81e63cdbcdad646b77199a0915ec263e5baf20 data/minecraft/tags/block/mineable/axe.json
 0736b3790b92dbaac8c139762be3df740875c4b4 data/minecraft/tags/block/mineable/pickaxe.json
 0736b3790b92dbaac8c139762be3df740875c4b4 data/minecraft/tags/block/needs_iron_tool.json

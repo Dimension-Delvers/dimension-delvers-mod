@@ -1,10 +1,13 @@
-// 1.21.1	2025-02-07T15:53:36.1319515	Block States: dimensiondelvers
+// 1.21.1	2025-02-08T16:30:01.9099646	Block States: dimensiondelvers
 55412ff02d784f7e4aaf7a3db62c7d56c4663d6f assets/dimensiondelvers/blockstates/dev_block.json
 6842883171e2c596006224dfe4fdd0d627fe008c assets/dimensiondelvers/blockstates/example_block.json
 85f355219ee8568c70af247d6b7388de92db9c76 assets/dimensiondelvers/blockstates/rune_anvil.json
+f4a8835d8660a1f977296ef0b50c7847c28fd2ed assets/dimensiondelvers/blockstates/spring_block.json
 de428e74b50db9c782f4f5ecf6e5d2053cff44a1 assets/dimensiondelvers/models/block/dev_block.json
 5fcb5d1c941ac45773668b09e4f6d57cc2e54c80 assets/dimensiondelvers/models/block/example_block.json
 12d85ba356d2a0c4601317eaa172466c04568662 assets/dimensiondelvers/models/block/rune_anvil.json
+552791e7767818e1a53a0d3439a0f1d8d0fedc34 assets/dimensiondelvers/models/block/spring_block.json
 849b22a8397c5b30eaf8c746516bbea4984bcf28 assets/dimensiondelvers/models/item/dev_block.json
 8fb53545666ec363ea014b0351c6740e352d2f41 assets/dimensiondelvers/models/item/example_block.json
 5a1ca0e3f884e6d371d7d0a06404e15254238359 assets/dimensiondelvers/models/item/rune_anvil.json
+4f1a4d8c052109d6d2df3ee23c19168539f1d2c6 assets/dimensiondelvers/models/item/spring_block.json

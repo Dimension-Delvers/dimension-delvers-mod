@@ -33,6 +33,11 @@ public class ModItems {
             ModBlocks.RUNE_ANVIL_BLOCK
     );
 
+    public static final DeferredItem<BlockItem> SPRING_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+            "spring_block",
+            ModBlocks.SPRING_BLOCK
+    );
+
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem(
             "example_item",
             new Item.Properties().food(new FoodProperties.Builder()
