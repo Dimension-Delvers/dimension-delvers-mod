@@ -61,13 +61,14 @@ public class ServerPayloadHandler {
     {
 
         AbstractUpgrade abstractUpgrade = UpgradeRegistry.UPGRADE_REGISTRY.get(ResourceLocation.parse(upgrade.upgrade_location()));
-        if(!abstractUpgrade.IsUnlocked(context.player()))
+        if(!abstractUpgrade.isUnlocked(context.player()))
         {
-            abstractUpgrade.Unlock(context.player());
+            abstractUpgrade.unlock(context.player());
+
         }
         else
         {
-            abstractUpgrade.Remove(context.player());
+            abstractUpgrade.remove(context.player());
         }
 
     }

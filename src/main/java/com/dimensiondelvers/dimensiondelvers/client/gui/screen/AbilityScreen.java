@@ -44,13 +44,13 @@ public class AbilityScreen extends AbstractContainerScreen<TestMenu>{
             }
             //TODO make this translateable string from the location
             //TODO or use icon
-            this.addRenderableWidget(Button.builder(Component.translatable(upgrade.GetTranslationString()), new Button.OnPress(){
+            this.addRenderableWidget(Button.builder(Component.translatable(upgrade.getTranslationString()), new Button.OnPress(){
                 @Override
                 public void onPress(Button button) {
                     PacketDistributor.sendToServer(new ClaimUpgrade(upgrade.GetName().toString()));
                 }
 
-            }).size(width,height).pos(x,y).bounds(x,y,width,height).tooltip(Tooltip.create(Component.translatable("tooltip."+upgrade.GetTranslationString()))).build());
+            }).size(width,height).pos(x,y).bounds(x,y,width,height).tooltip(Tooltip.create(Component.translatable("tooltip."+upgrade.getTranslationString()))).build());
         }
 
     }

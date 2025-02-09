@@ -14,21 +14,21 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
     }
 
     @Override
-    public void Unlock(Player p) {
+    public void unlock(Player p) {
 
         p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).getName()), true);
 
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
         p.sendSystemMessage(Component.literal("You learned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
-        super.Unlock(p);
+        super.unlock(p);
     }
 
     @Override
-    public void Remove(Player p) {
+    public void remove(Player p) {
 
         p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).getName()), false);
         p.sendSystemMessage(Component.literal("You unlearned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
-        super.Remove(p);
+        super.remove(p);
     }
 
     public static class UnlockBoostAbilityUpgrade extends UnlockAbilityUpgrade{

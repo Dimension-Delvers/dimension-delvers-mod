@@ -39,18 +39,20 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModAbilities.BE_PRETTY.get().GetTranslationString(), "Pretty Ability");
 
 
-        add(ModUpgrades.UNLOCK_BOOST.get().GetTranslationString(), "Unlock Boost");
-        add("tooltip." + ModUpgrades.UNLOCK_BOOST.get().GetTranslationString(), "Press I to boost!");
-        add(ModUpgrades.UNLOCK_ARROW.get().GetTranslationString(), "Unlock Arrow");
-        add("tooltip." + ModUpgrades.UNLOCK_ARROW.get().GetTranslationString(), "Press O to shoot!");
-        add(ModUpgrades.UNLOCK_HEAL.get().GetTranslationString(), "Unlock Heal");
-        add("tooltip." + ModUpgrades.UNLOCK_HEAL.get().GetTranslationString(), "Press U to heal!");
-        add(ModUpgrades.UNLOCK_ARMOR_STAND.get().GetTranslationString(), "Unlock Armorstand");
-        add("tooltip." + ModUpgrades.UNLOCK_ARMOR_STAND.get().GetTranslationString(), "Press Y to toggle Armorstand!");
-        add(ModUpgrades.UNLOCK_PRETTY.get().GetTranslationString(), "Unlock Beauty");
-        add("tooltip." + ModUpgrades.UNLOCK_PRETTY.get().GetTranslationString(), "Press H to be temporarily pretty (Check F5)");
+        add(ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Unlock Boost");
+        add("tooltip." + ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Press I to boost!");
+        add(ModUpgrades.UNLOCK_ARROW.get().getTranslationString(), "Unlock Arrow");
+        add("tooltip." + ModUpgrades.UNLOCK_ARROW.get().getTranslationString(), "Press O to shoot!");
+        add(ModUpgrades.UNLOCK_HEAL.get().getTranslationString(), "Unlock Heal");
+        add("tooltip." + ModUpgrades.UNLOCK_HEAL.get().getTranslationString(), "Press U to heal!");
+        add(ModUpgrades.UNLOCK_ARMOR_STAND.get().getTranslationString(), "Unlock Armorstand");
+        add("tooltip." + ModUpgrades.UNLOCK_ARMOR_STAND.get().getTranslationString(), "Press Y to toggle Armorstand!");
+        add(ModUpgrades.UNLOCK_PRETTY.get().getTranslationString(), "Unlock Beauty");
+        add("tooltip." + ModUpgrades.UNLOCK_PRETTY.get().getTranslationString(), "Press H to be temporarily pretty (Check F5)");
 
-        add(ModUpgrades.UPGRADE_BOOST.get().GetTranslationString(), "Boost Faster");
-        add("tooltip." + ModUpgrades.UPGRADE_BOOST.get().GetTranslationString(), "Makes your boost cooldown faster");
+        add(ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Boost Faster");
+        add("tooltip." + ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Makes your boost cooldown faster");
+
+        add("ability.dimensiondelvers.cannot_unlock", "You must unlock the following to get this boost: ");
     }
 }
