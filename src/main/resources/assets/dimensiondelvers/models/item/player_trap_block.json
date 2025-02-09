@@ -1,6 +1,3 @@
 {
-	"parent": "minecraft:block/cube_all",
-	"textures": {
-		"all": "dimensiondelvers:block/player_trap_block/0"
-	}
+  "parent": "dimensiondelvers:block/player_trap_block/0"
 }

@@ -19,6 +19,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         basicItem(ModItems.EXAMPLE_ITEM.get());
+        basicItem(ModItems.DD_TWEAKER.get());
 
 
         ItemModelBuilder modelNormal = basicItem(ModItems.RUNEGEM.get());

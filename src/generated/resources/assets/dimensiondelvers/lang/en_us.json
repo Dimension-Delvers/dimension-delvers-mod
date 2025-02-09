@@ -1,9 +1,13 @@
 {
   "block.dimensiondelvers.dev_block": "Dev Block",
   "block.dimensiondelvers.example_block": "Example Block",
+  "block.dimensiondelvers.mob_trap_block": "Mob Trap Block",
+  "block.dimensiondelvers.player_trap_block": "Player Trap Block",
   "block.dimensiondelvers.rune_anvil": "Rune Anvil",
   "block.dimensiondelvers.spring_block": "Spring Block",
+  "block.dimensiondelvers.trap_block": "Trap Block",
   "container.dimensiondelvers.rune_anvil": "Rune Anvil",
+  "item.dimensiondelvers.dd_tweaker": "DD Tweaker",
   "item.dimensiondelvers.example_item": "Example Item",
   "item.dimensiondelvers.runegem": "Runegem",
   "itemGroup.dimensiondelvers": "Dimension Delvers"
