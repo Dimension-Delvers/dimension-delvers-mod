@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.item.abilities;
 import com.dimensiondelvers.dimensiondelvers.gui.menu.AbilityBagMenu;
 import com.dimensiondelvers.dimensiondelvers.gui.menu.ComponentContainer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,12 +28,19 @@ public class AbilityBagItem extends Item {
 
 
         if (!level.isClientSide) {
-            player.openMenu(new SimpleMenuProvider(
-                    (containerId, playerInventory, _player) ->
-                            new AbilityBagMenu(containerId, playerInventory, new ComponentContainer(stack)),
-                    Component.translatable("item.dimensiondelvers.ability_bag")
-            ));
+            int slot = hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : 0;
+            if (stack.get(DataComponents.CONTAINER) == null) {
+                stack.set(DataComponents.CONTAINER,ItemContainerContents.EMPTY);
+            }
+           player.openMenu(new SimpleMenuProvider(
+                   (containerId, playerInventory, _player) ->
+                           new AbilityBagMenu(containerId,playerInventory,new ComponentContainer(stack)),
+                   Component.translatable("item.dimensiondelvers.ability_bag")
+           ), registryFriendlyByteBuf -> {
+                    registryFriendlyByteBuf.writeInt(slot);
+                   });
         }
+
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
 

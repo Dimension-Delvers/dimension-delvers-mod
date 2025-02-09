@@ -2,7 +2,9 @@ package com.dimensiondelvers.dimensiondelvers.gui.menu;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public class AbilityBagMenu extends AbstractContainerMenu {
-    //client
 
     private Inventory playerInventory;
     private Container bagInventory;
@@ -28,15 +29,12 @@ public class AbilityBagMenu extends AbstractContainerMenu {
         this.playerInventory = playerInventory;
         this.bagInventory = bagInventory;
         this.createInventorySlots(this.playerInventory);
-        //this.createBagSlots(this.bagInventory);
+        this.createBagSlots(this.bagInventory);
     }
     //Client
-    public AbilityBagMenu(int containerId, Inventory playerInventory) {
-        super(ModMenuTypes.ABILITY_BAG_MENU.get(),containerId);
-        this.playerInventory = playerInventory;
-        this.createInventorySlots(this.playerInventory);
-
-
+    public AbilityBagMenu(int containerId, Inventory playerInventory, RegistryFriendlyByteBuf buffer) {
+        this(containerId,playerInventory,
+                new ComponentContainer(playerInventory.getItem(buffer.readInt())));
     }
 
     private void createInventorySlots(Inventory inventory) {
