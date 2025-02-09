@@ -22,7 +22,11 @@ public class ModCreativeTabs {
                                 output.accept(ModItems.EXAMPLE_ITEM);
                                 output.accept(ModItems.DEV_BLOCK_ITEM);
                                 output.accept(ModItems.RUNE_ANVIL_BLOCK_ITEM);
+                                output.accept(ModItems.DD_TWEAKER);
                                 output.accept(ModItems.SPRING_BLOCK_ITEM);
+                                output.accept(ModItems.TRAP_BLOCK_ITEM);
+                                output.accept(ModItems.PLAYER_TRAP_BLOCK_ITEM);
+                                output.accept(ModItems.MOB_TRAP_BLOCK_ITEM);
 
                                 output.accept(ModItems.RUNEGEM);
                             }).build());

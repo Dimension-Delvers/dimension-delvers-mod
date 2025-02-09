@@ -5,6 +5,7 @@ import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemShape;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemTier;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.Runegem;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RunegemData;
+import com.dimensiondelvers.dimensiondelvers.item.tools.DDTweaker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
@@ -38,6 +39,23 @@ public class ModItems {
             ModBlocks.SPRING_BLOCK
     );
 
+    // Trap blocks
+    public static final DeferredItem<BlockItem> TRAP_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+            "trap_block",
+            ModBlocks.TRAP_BLOCK
+    );
+
+    public static final DeferredItem<BlockItem> PLAYER_TRAP_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+            "player_trap_block",
+            ModBlocks.PLAYER_TRAP_BLOCK
+    );
+
+    public static final DeferredItem<BlockItem> MOB_TRAP_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+            "mob_trap_block",
+            ModBlocks.MOB_TRAP_BLOCK
+    );
+
+
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem(
             "example_item",
             new Item.Properties().food(new FoodProperties.Builder()
@@ -46,6 +64,12 @@ public class ModItems {
                     .saturationModifier(2f)
                     .build()
             )
+    );
+
+    //Tools
+    public static final DeferredItem<Item> DD_TWEAKER = ITEMS.register(
+            "dd_tweaker",
+            registryName -> new DDTweaker(new Item.Properties())
     );
 
     //Runegems
