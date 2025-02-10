@@ -1,5 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers;
 
+import com.dimensiondelvers.dimensiondelvers.abilities.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.AbilityBagScreen;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
@@ -45,6 +46,7 @@ public class DimensionDelvers {
         ModItems.ITEMS.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        AbilityRegistry.register();
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (DimensionDelvers) to respond directly to events.
