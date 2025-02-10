@@ -1,0 +1,6 @@
+{
+  "type": "dimensiondelvers:jump",
+  "cooldown": 5,
+  "manaCost": 5,
+  "height" : 5
+}
