@@ -2,10 +2,13 @@ package com.dimensiondelvers.dimensiondelvers.abilities;
 
 import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
+import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
@@ -34,5 +37,11 @@ public class AbstractCooldownAbility extends AbstractAbility implements Cooldown
     @Override
     public void SetCooldown(Player p, DeferredHolder<Attribute, RangedAttribute> attribute) {
         p.setData(COOL_DOWN_ATTACHMENTS.get(this.getName()), (int)p.getAttributeValue(attribute) * 20); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
+        PacketDistributor.sendToPlayer((ServerPlayer) p, new CooldownActivated(this.getName().toString(),(int)p.getAttributeValue(GetCooldownLength()) * 20 ));
+    }
+
+    @Override
+    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+        return null;
     }
 }

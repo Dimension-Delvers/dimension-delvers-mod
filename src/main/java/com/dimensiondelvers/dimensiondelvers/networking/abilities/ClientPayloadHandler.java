@@ -1,5 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.networking.abilities;
 
+import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;

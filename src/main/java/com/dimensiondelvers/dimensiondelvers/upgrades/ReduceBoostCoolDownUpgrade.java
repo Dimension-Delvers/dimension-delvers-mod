@@ -16,7 +16,6 @@ public class ReduceBoostCoolDownUpgrade extends AbstractUpgrade{
     @Override
     public void unlock(Player p) {
         super.unlock(p); //TODO cleanup the check for the requirements
-
         if(isUnlocked(p)) {
             p.getAttribute(AbilityAttributes.BOOST_COOLDOWN).addOrReplacePermanentModifier(AbilityAttributes.BOOST_COOLDOWN_MODIFIER);
             //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff

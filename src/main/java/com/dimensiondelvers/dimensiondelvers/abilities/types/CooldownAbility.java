@@ -13,4 +13,6 @@ public interface CooldownAbility {
 
     void SetCooldown(Player p, DeferredHolder<Attribute, RangedAttribute> attribute);
     default boolean HasCooldown() {return true;}
+    DeferredHolder<Attribute, RangedAttribute> GetCooldownLength();
+
 }
