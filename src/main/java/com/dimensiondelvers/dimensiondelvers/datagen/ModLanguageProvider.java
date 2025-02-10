@@ -37,6 +37,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModAbilities.HEAL_ABILITY.get().GetTranslationString(), "Heal Ability");
         add(ModAbilities.ARMOR_STAND_ABILITY.get().GetTranslationString(), "Armorstand Ability");
         add(ModAbilities.BE_PRETTY.get().GetTranslationString(), "Pretty Ability");
+        add(ModAbilities.BE_SMOL.get().GetTranslationString(), "Smol Ability");
 
 
         add(ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Unlock Boost");
@@ -52,6 +53,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add(ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Boost Faster");
         add("tooltip." + ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Makes your boost cooldown faster");
+
+        add(ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Unlock Smol");
+        add("tooltip." + ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Press L to shrink!");
 
         add("ability.dimensiondelvers.cannot_unlock", "You must unlock the following to get this boost: ");
     }

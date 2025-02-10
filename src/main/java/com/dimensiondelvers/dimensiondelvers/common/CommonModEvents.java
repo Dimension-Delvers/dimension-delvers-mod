@@ -60,6 +60,14 @@ public class CommonModEvents {
             event.add(EntityType.PLAYER, AbilityAttributes.PARTICLE_TIME);
         }
 
+        if(!event.has(EntityType.PLAYER, AbilityAttributes.SMOL_TIME)) {
+            event.add(EntityType.PLAYER, AbilityAttributes.SMOL_TIME);
+        }
+
+        if(!event.has(EntityType.PLAYER, AbilityAttributes.SMOL_COOLDOWN)) {
+            event.add(EntityType.PLAYER, AbilityAttributes.SMOL_COOLDOWN);
+        }
+
     }
 
 

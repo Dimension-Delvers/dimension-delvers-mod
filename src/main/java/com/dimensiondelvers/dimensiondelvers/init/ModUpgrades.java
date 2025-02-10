@@ -57,6 +57,11 @@ public class ModUpgrades {
             ReduceBoostCoolDownUpgrade::new
     );
 
+    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_SMOL = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+            "upgrade/unlock_be_smol",
+            UnlockAbilityUpgrade.UnlockSmolAbilityUpgrade::new
+    );
+
 
 
 

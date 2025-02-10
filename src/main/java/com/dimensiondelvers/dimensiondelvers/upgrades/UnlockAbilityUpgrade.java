@@ -65,6 +65,13 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
         }
 
     }
+
+    public static class UnlockSmolAbilityUpgrade extends UnlockAbilityUpgrade{
+        public UnlockSmolAbilityUpgrade(ResourceLocation upgradeName) {
+            super(upgradeName, ModAbilities.BE_SMOL.get().getName());
+        }
+
+    }
 }
 
 

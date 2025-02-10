@@ -58,6 +58,11 @@ public class ModAbilities {
             Particles::new
     );
 
+    public static final DeferredHolder<AbstractAbility, AbstractAbility> BE_SMOL = ABILITY_REGISTRY_DEF.register(
+            "ability/be_smol",
+            Smol::new
+    );
+
     //TODO constants or rarely updated values should be attributes. Such as: Max Mana, CDR, Crit Chance ETC, modifiers can be applied when learning new abilities to scale these factors.
     @SubscribeEvent
     public static void registerAttachments(RegisterEvent event) {

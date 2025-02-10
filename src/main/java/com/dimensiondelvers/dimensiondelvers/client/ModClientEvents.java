@@ -60,6 +60,13 @@ public class ModClientEvents {
             "key.categories.misc" // Mapping will be in the misc category
     );
 
+    public static final KeyMapping SMOL_KEY = new KeyMapping(
+            "key." + DimensionDelvers.id("be_smol"), // Will be localized using this translation key
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_L, // Default key is P
+            "key.categories.misc" // Mapping will be in the misc category
+    );
+
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         // Some client setup code
@@ -77,6 +84,7 @@ public class ModClientEvents {
         event.register(ARMOR_STAND_KEY);
         event.register(OPEN_UPGRADE_MENU_KEY);
         event.register(PRETTY_KEY);
+        event.register(SMOL_KEY);
     }
 
     @SubscribeEvent
