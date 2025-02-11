@@ -1,11 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers;
 
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
-import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
-import com.dimensiondelvers.dimensiondelvers.init.ModCreativeTabs;
-import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
-import com.dimensiondelvers.dimensiondelvers.init.ModItems;
-import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
+import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -34,6 +30,7 @@ import org.slf4j.Logger;
 public class DimensionDelvers {
     public static final String MODID = "dimensiondelvers";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static ResourceLocation id;
 
     public DimensionDelvers(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -44,6 +41,7 @@ public class DimensionDelvers {
         ModItems.ITEMS.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        ModAbstractModifiers.MODIFIER_TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (DimensionDelvers) to respond directly to events.
