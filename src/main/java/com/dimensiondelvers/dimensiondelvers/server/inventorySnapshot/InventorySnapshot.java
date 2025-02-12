@@ -1,17 +1,18 @@
 package com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot;
 
+import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.p3pp3rf1y.sophisticatedcore.api.IStashStorageItem;
 
 import java.util.*;
 
@@ -19,21 +20,15 @@ import java.util.*;
  * InventorySnapshot is used to record the contents of a player's inventory at a point in time.
  */
 public class InventorySnapshot {
+
     private final Set<UUID> itemIds;
-    private final List<ItemStack> items;
+    private final Map<Holder<Item>, Integer> items;
 
     public static final Codec<InventorySnapshot> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                         UUIDUtil.CODEC.listOf().fieldOf("itemIds").forGetter(x -> new ArrayList<>(x.itemIds)),
-                        ItemStack.CODEC.listOf().fieldOf("items").forGetter(x -> x.items)
+                        Codec.unboundedMap(ItemStack.ITEM_NON_AIR_CODEC, Codec.INT).fieldOf("items").forGetter(x -> x.items)
                     ).apply(instance, InventorySnapshot::new)
-    );
-    public static final StreamCodec<RegistryFriendlyByteBuf, InventorySnapshot> STREAM_CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC.apply(ByteBufCodecs.list()),
-            x -> new ArrayList<>(x.itemIds),
-            ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()),
-            InventorySnapshot::items,
-            InventorySnapshot::new
     );
 
     /**
@@ -41,26 +36,29 @@ public class InventorySnapshot {
      * @param player
      * @return A new InventorySnapshot
      */
+    // TODO: move into system
     public static InventorySnapshot capture(ServerPlayer player) {
         Set<UUID> itemIds = new LinkedHashSet<>();
-        List<ItemStack> itemStacks = new ArrayList<>();
+        Map<Holder<Item>, Integer> items = new HashMap<>();
 
         for (ItemStack item : player.getInventory().items) {
-            captureItem(item, itemIds, itemStacks);
+            captureItem(item, itemIds, items);
         }
         for (ItemStack item : player.getInventory().armor) {
-            captureItem(item, itemIds, itemStacks);
+            captureItem(item, itemIds, items);
         }
-        captureItem(player.getOffhandItem(), itemIds, itemStacks);
-        return new InventorySnapshot(itemIds, itemStacks);
+        captureItem(player.getOffhandItem(), itemIds, items);
+        return new InventorySnapshot(itemIds, items);
     }
 
-    private static void captureItem(ItemStack item, Set<UUID> itemIds, List<ItemStack> itemStacks) {
+    // TODO: move into system
+    private static void captureItem(ItemStack item, Set<UUID> itemIds, Map<Holder<Item>, Integer> items) {
         if (item.isEmpty()) {
             return;
         }
         if (item.isStackable()) {
-            itemStacks.add(item.copy());
+            Holder<Item> holder = item.getItemHolder();
+            items.put(holder, items.getOrDefault(holder, 0) + item.getCount());
         } else {
             UUID id = UUID.randomUUID();
             item.applyComponents(DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), id).build());
@@ -69,27 +67,29 @@ public class InventorySnapshot {
             if (item.has(DataComponents.CONTAINER)) {
                 ItemContainerContents contents = item.get(DataComponents.CONTAINER);
                 for (ItemStack nonEmptyItem : contents.nonEmptyItems()) {
-                    captureItem(nonEmptyItem, itemIds, itemStacks);
+                    captureItem(nonEmptyItem, itemIds, items);
                 }
+            } else if (item.getItem() instanceof IStashStorageItem storageitem) {
+                DimensionDelvers.LOGGER.info("Found storage item");
             }
         }
     }
 
     public InventorySnapshot() {
-        this(Collections.emptyList(), Collections.emptyList());
+        this(Collections.emptyList(), Collections.emptyMap());
     }
 
-    public InventorySnapshot(Collection<UUID> itemIds, Collection<ItemStack> items) {
-        this.itemIds = new LinkedHashSet<>(itemIds);
-        this.items = new ArrayList<>(items);
+    public InventorySnapshot(Collection<UUID> itemIds, Map<Holder<Item>, Integer> items) {
+        this.itemIds = new HashSet<>(itemIds);
+        this.items = new HashMap<>(items);
     }
 
     public Set<UUID> itemIds() {
         return Collections.unmodifiableSet(itemIds);
     }
 
-    public List<ItemStack> items() {
-        return Collections.unmodifiableList(items);
+    public Map<Holder<Item>, Integer> items() {
+        return Collections.unmodifiableMap(items);
     }
 
     @Override

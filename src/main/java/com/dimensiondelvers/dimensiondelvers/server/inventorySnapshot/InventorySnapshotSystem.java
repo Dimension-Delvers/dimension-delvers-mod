@@ -2,10 +2,12 @@ package com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot;
 
 import com.dimensiondelvers.dimensiondelvers.init.ModAttachments;
 import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
@@ -67,7 +69,7 @@ public class InventorySnapshotSystem {
         event.getDrops().clear();
         event.getDrops().addAll(refiner.dropItems);
 
-        player.setData(ModAttachments.INVENTORY_SNAPSHOT, new InventorySnapshot(Collections.emptyList(), refiner.retainItems));
+        player.setData(ModAttachments.RESPAWN_ITEMS, refiner.retainItems);
     }
 
     /**
@@ -76,15 +78,13 @@ public class InventorySnapshotSystem {
      * @param player
      */
     public static void restoreFromSnapshot(ServerPlayer player) {
-        InventorySnapshot snapshot = player.getData(ModAttachments.INVENTORY_SNAPSHOT);
-
-        for (ItemStack item : snapshot.items()) {
+        for (ItemStack item : player.getData(ModAttachments.RESPAWN_ITEMS)) {
             if (!player.getInventory().add(item)) {
                 item.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
                 player.level().addFreshEntity(new ItemEntity(player.level(), player.position().x, player.position().y, player.position().z, item));
             }
         }
-        player.setData(ModAttachments.INVENTORY_SNAPSHOT, new InventorySnapshot());
+        player.setData(ModAttachments.RESPAWN_ITEMS, new ArrayList<>());
         clearItemIds(player);
     }
 
@@ -93,12 +93,12 @@ public class InventorySnapshotSystem {
         private final List<ItemEntity> dropItems = new ArrayList<>();
 
         private ServerPlayer player;
-        private List<ItemStack> snapshotItems;
+        private Map<Holder<Item>, Integer> snapshotItems;
         private Set<UUID> snapshotItemIds;
 
         public DeathDropCalculator(ServerPlayer player, InventorySnapshot snapshot, Collection<ItemEntity> heldItems) {
             this.player = player;
-            this.snapshotItems = new ArrayList<>(snapshot.items());
+            this.snapshotItems = new HashMap<>(snapshot.items());
             this.snapshotItemIds = snapshot.itemIds();
             processInventoryItems(heldItems);
         }
@@ -164,25 +164,15 @@ public class InventorySnapshotSystem {
         }
 
         private int calculateDropCount(ItemStack item) {
-            int dropCount = item.getCount();
-
-            // Walk through the list of snapshotted items, reducing stack counts of matching stacks until all items are accounted for
-            int index = 0;
-            while (dropCount > 0 && index < snapshotItems.size()) {
-                ItemStack snapshotItem = snapshotItems.get(index);
-                if (ItemStack.isSameItemSameComponents(item, snapshotItem)) {
-                    if (dropCount <= snapshotItem.getCount()) {
-                        snapshotItem.shrink(dropCount);
-                        dropCount = 0;
-                    } else {
-                        snapshotItems.remove(index);
-                        dropCount -= snapshotItem.getCount();
-                    }
-                } else {
-                    index++;
-                }
+            int retainCount = snapshotItems.getOrDefault(item.getItemHolder(), 0);
+            if (item.getCount() > retainCount) {
+                int dropCount = item.getCount() - retainCount;
+                snapshotItems.remove(item.getItemHolder());
+                return dropCount;
+            } else {
+                snapshotItems.put(item.getItemHolder(), retainCount - item.getCount());
+                return 0;
             }
-            return dropCount;
         }
 
         private ItemEntity createItemEntity(ItemStack stack) {

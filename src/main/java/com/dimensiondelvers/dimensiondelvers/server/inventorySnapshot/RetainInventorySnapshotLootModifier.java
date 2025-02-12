@@ -30,7 +30,7 @@ public class RetainInventorySnapshotLootModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        BlockEntity blockEntity = context.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        BlockEntity blockEntity = context.getParamOrNull(LootContextParams.BLOCK_ENTITY);
         if (generatedLoot.size() == 1 && blockEntity != null && blockEntity.components().has(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get())) {
             UUID blockId = blockEntity.components().get(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get());
             generatedLoot.getFirst().applyComponents(DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), blockId).build());
