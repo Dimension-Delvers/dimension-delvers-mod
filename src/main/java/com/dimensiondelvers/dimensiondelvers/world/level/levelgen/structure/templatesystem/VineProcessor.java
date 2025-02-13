@@ -30,6 +30,7 @@ import static com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structu
 import static com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.StructureRandomType.RANDOM_TYPE_CODEC;
 import static net.minecraft.core.Direction.*;
 import static net.minecraft.world.level.block.Blocks.VINE;
+import static net.minecraft.world.level.block.Rotation.CLOCKWISE_180;
 import static net.minecraft.world.level.block.VineBlock.PROPERTY_BY_DIRECTION;
 
 public class VineProcessor extends StructureProcessor {
@@ -83,7 +84,7 @@ public class VineProcessor extends StructureProcessor {
             return blockInfo;
         } else {
             Direction direction = possibleDirections.get(random.nextInt(possibleDirections.size()));
-            BooleanProperty property = PROPERTY_BY_DIRECTION.get(direction);
+            BooleanProperty property = PROPERTY_BY_DIRECTION.get(settings.getRotation().getRotated(CLOCKWISE_180).rotate(direction));
             return new StructureTemplate.StructureBlockInfo(blockpos, VINE.defaultBlockState().setValue(property, true), null);
         }
     }
