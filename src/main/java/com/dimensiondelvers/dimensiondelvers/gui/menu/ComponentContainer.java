@@ -9,28 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentContainer extends SimpleContainer {
+    // The item stack this container is for. Passed into and set in the constructor.
     private final ItemStack stack;
 
     public ComponentContainer(ItemStack stack) {
-        super(9); // 9 slots for your bag
+        super(9);
         this.stack = stack;
-
-        ItemContainerContents contents = stack.get(DataComponents.CONTAINER);
-        if (contents != null) {
-            List<ItemStack> items = contents.stream().toList();
-            for (int i = 0; i < Math.min(items.size(), getContainerSize()); i++) {
-                setItem(i, items.get(i));
-            }
-        }
+        ItemContainerContents contents = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        contents.copyInto(this.getItems());
     }
 
+    // When the contents are changed, we save the data component on the stack.
     @Override
     public void setChanged() {
         super.setChanged();
-        List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < getContainerSize(); i++) {
-            items.add(getItem(i));
-        }
-        stack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(items));
+        this.stack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.getItems()));
     }
 }

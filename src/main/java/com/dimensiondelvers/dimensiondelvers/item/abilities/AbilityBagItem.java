@@ -27,21 +27,14 @@ public class AbilityBagItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-
         level.registryAccess().lookupOrThrow(ModAbilityTypes.ABILITY_KEY);
         if (!level.isClientSide) {
-
-//            int slot = hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : 0;
-//            if (stack.get(DataComponents.CONTAINER) == null) {
-//                stack.set(DataComponents.CONTAINER,ItemContainerContents.EMPTY);
-//            }
-//           player.openMenu(new SimpleMenuProvider(
-//                   (containerId, playerInventory, _player) ->
-//                           new AbilityBagMenu(containerId,playerInventory,new ComponentContainer(stack)),
-//                   Component.translatable("item.dimensiondelvers.ability_bag")
-//           ), registryFriendlyByteBuf -> {
-//                    registryFriendlyByteBuf.writeInt(slot);
-//                   });
+            player.openMenu(new SimpleMenuProvider(
+                    (containerId, playerInventory, _player) -> new AbilityBagMenu(containerId, playerInventory, stack),
+                    Component.translatable("item.dimensiondelvers.ability_bag")
+            ), (buf) -> {
+                        buf.writeJsonWithCodec(ItemStack.OPTIONAL_CODEC, stack);
+                    });
         }
 
 
