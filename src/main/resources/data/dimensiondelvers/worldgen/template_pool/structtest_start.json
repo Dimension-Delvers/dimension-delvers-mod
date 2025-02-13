@@ -9,7 +9,7 @@
 
         "location": "dimensiondelvers:structtest",
 
-        "processors": "dimensiondelvers:structtest",
+        "processors": "dimensiondelvers:forest",
 
         "projection": "rigid",
 

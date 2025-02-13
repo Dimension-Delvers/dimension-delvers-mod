@@ -20,12 +20,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static net.minecraft.tags.BlockTags.AIR;
 import static net.minecraft.world.level.block.Blocks.JIGSAW;
@@ -94,6 +94,10 @@ public class ProcessorUtil {
 
     public static BlockState copyStairsState(BlockState blockState, Block newBlock) {
         BlockState newBlockState = newBlock.defaultBlockState();
+        return copyStairsState(blockState, newBlockState);
+    }
+
+    public static @NotNull BlockState copyStairsState(BlockState blockState, BlockState newBlockState) {
         newBlockState = updateProperty(blockState, newBlockState, StairBlock.FACING);
         newBlockState = updateProperty(blockState, newBlockState, StairBlock.SHAPE);
         newBlockState = updateProperty(blockState, newBlockState, StairBlock.HALF);
@@ -103,6 +107,10 @@ public class ProcessorUtil {
 
     public static BlockState copySlabState(BlockState blockState, Block newBlock) {
         BlockState newBlockState = newBlock.defaultBlockState();
+        return copySlabState(blockState, newBlockState);
+    }
+
+    public static @NotNull BlockState copySlabState(BlockState blockState, BlockState newBlockState) {
         newBlockState = updateProperty(blockState, newBlockState, SlabBlock.TYPE);
         newBlockState = updateProperty(blockState, newBlockState, SlabBlock.WATERLOGGED);
         return newBlockState;
@@ -110,6 +118,10 @@ public class ProcessorUtil {
 
     public static BlockState copyWallState(BlockState blockState, Block newBlock) {
         BlockState newBlockState = newBlock.defaultBlockState();
+        return copyWallState(blockState, newBlockState);
+    }
+
+    public static @NotNull BlockState copyWallState(BlockState blockState, BlockState newBlockState) {
         newBlockState = updateProperty(blockState, newBlockState, WallBlock.UP);
         newBlockState = updateProperty(blockState, newBlockState, WallBlock.EAST_WALL);
         newBlockState = updateProperty(blockState, newBlockState, WallBlock.NORTH_WALL);

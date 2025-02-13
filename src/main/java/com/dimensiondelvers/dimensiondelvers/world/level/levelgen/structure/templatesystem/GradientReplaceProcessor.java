@@ -24,22 +24,23 @@ import java.util.List;
 import java.util.Map;
 
 import static com.dimensiondelvers.dimensiondelvers.init.ModProcessors.GRADIENT_SPOT_REPLACE;
+import static com.dimensiondelvers.dimensiondelvers.util.ModCodecs.BLOCK_STATE_CODEC;
 
 public class GradientReplaceProcessor extends StructureProcessor {
     public static final MapCodec<GradientReplaceProcessor> CODEC = RecordCodecBuilder.mapCodec(builder ->
             builder.group(
-                    Codec.mapPair(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("target"),Codec.floatRange(0, 1).fieldOf("step_size")).codec().listOf().fieldOf("gradient_list").forGetter(GradientReplaceProcessor::getGradientList),
+                    Codec.mapPair(BLOCK_STATE_CODEC.fieldOf("output_state"),Codec.floatRange(0, 1).fieldOf("step_size")).codec().listOf().fieldOf("gradient_list").forGetter(GradientReplaceProcessor::getGradientList),
                     Codec.INT.optionalFieldOf("seed_adjustment", 0).forGetter(GradientReplaceProcessor::getSeedAdjustment),
                     BuiltInRegistries.BLOCK.byNameCodec().fieldOf("to_replace").forGetter(GradientReplaceProcessor::getToReplace)
             ).apply(builder, GradientReplaceProcessor::new));
 
-    private final List<Pair<Block, Float>> gradientList;
+    private final List<Pair<BlockState, Float>> gradientList;
     private final int seedAdjustment;
     private final Block toReplace;
 
     protected static Map<Long, OpenSimplex2F> noiseGenSeeds = new HashMap<>();
 
-    public GradientReplaceProcessor(List<Pair<Block, Float>> gradientList, int seedAdjustment, Block toReplace) {
+    public GradientReplaceProcessor(List<Pair<BlockState, Float>> gradientList, int seedAdjustment, Block toReplace) {
         this.gradientList = gradientList;
         this.seedAdjustment = seedAdjustment;
         this.toReplace = toReplace;
@@ -64,39 +65,39 @@ public class GradientReplaceProcessor extends StructureProcessor {
             return blockInfo;
         }
 
-        Block newBlock = getReplacementBlock(blockPos, noiseGen);
-        if(newBlock == null){
+        BlockState newBlockState = getReplacementBlock(blockPos, noiseGen);
+        if(newBlockState == null){
             return blockInfo;
         }
 
         if (blockstate.is(BlockTags.STAIRS)) {
-            return new StructureTemplate.StructureBlockInfo(blockPos, ProcessorUtil.copyStairsState(blockstate, newBlock), blockInfo.nbt());
+            return new StructureTemplate.StructureBlockInfo(blockPos, ProcessorUtil.copyStairsState(blockstate, newBlockState), blockInfo.nbt());
         } else if (blockstate.is(BlockTags.SLABS)) {
-            return new StructureTemplate.StructureBlockInfo(blockPos, ProcessorUtil.copySlabState(blockstate, newBlock), blockInfo.nbt());
+            return new StructureTemplate.StructureBlockInfo(blockPos, ProcessorUtil.copySlabState(blockstate, newBlockState), blockInfo.nbt());
         } else if (blockstate.is(BlockTags.WALLS)) {
-            return new StructureTemplate.StructureBlockInfo(blockPos, ProcessorUtil.copyWallState(blockstate, newBlock), blockInfo.nbt());
+            return new StructureTemplate.StructureBlockInfo(blockPos, ProcessorUtil.copyWallState(blockstate, newBlockState), blockInfo.nbt());
         }else{
-            return new StructureTemplate.StructureBlockInfo(blockPos, newBlock.defaultBlockState(), blockInfo.nbt());
+            return new StructureTemplate.StructureBlockInfo(blockPos, newBlockState, blockInfo.nbt());
         }
     }
 
-    private Block getReplacementBlock(BlockPos blockPos, OpenSimplex2F noiseGen) {
+    private BlockState getReplacementBlock(BlockPos blockPos, OpenSimplex2F noiseGen) {
         double noiseValue = (noiseGen.noise3_Classic(blockPos.getX() * 0.075D, blockPos.getY() * 0.075D, blockPos.getZ() * 0.075D));
         float stepSize = 0;
-        for(Pair<Block, Float> pair: gradientList){
+        for(Pair<BlockState, Float> pair: gradientList){
             stepSize = stepSize+pair.getSecond();
             if (noiseValue < stepSize && noiseValue > (stepSize * -1)) {
                 return pair.getFirst();
             }
         }
-        return toReplace;
+        return null;
     }
 
     protected StructureProcessorType<?> getType() {
         return GRADIENT_SPOT_REPLACE.get();
     }
 
-    public List<Pair<Block, Float>> getGradientList() {
+    public List<Pair<BlockState, Float>> getGradientList() {
         return gradientList;
     }
 

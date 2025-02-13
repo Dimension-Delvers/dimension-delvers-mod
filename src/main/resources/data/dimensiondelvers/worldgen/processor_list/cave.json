@@ -4,19 +4,19 @@
       "processor_type": "dimensiondelvers:spot_gradient",
       "gradient_list": [
         {
-          "target": "minecraft:stone",
+          "output_state": "minecraft:stone",
           "step_size": 0.35
         },
         {
-          "target": "minecraft:andesite",
+          "output_state": "minecraft:andesite",
           "step_size": 0.30
         },
         {
-          "target": "minecraft:cobblestone",
+          "output_state": "minecraft:cobblestone",
           "step_size": 0.20
         },
         {
-          "target": "minecraft:mossy_cobblestone",
+          "output_state": "minecraft:mossy_cobblestone",
           "step_size": 0.15
         }
       ],
@@ -26,15 +26,15 @@
       "processor_type": "dimensiondelvers:spot_gradient",
       "gradient_list": [
         {
-          "target": "minecraft:cobblestone",
+          "output_state": "minecraft:cobblestone",
           "step_size": 0.03
         },
         {
-          "target": "minecraft:andesite",
+          "output_state": "minecraft:andesite",
           "step_size": 0.02
         },
         {
-          "target": "minecraft:stone",
+          "output_state": "minecraft:stone",
           "step_size": 0.95
         }
       ],
@@ -44,11 +44,11 @@
       "processor_type": "dimensiondelvers:spot_gradient",
       "gradient_list": [
         {
-          "target": "minecraft:cobblestone",
+          "output_state": "minecraft:cobblestone",
           "step_size": 0.9
         },
         {
-          "target": "minecraft:andesite",
+          "output_state": "minecraft:andesite",
           "step_size": 0.1
         }
       ],
