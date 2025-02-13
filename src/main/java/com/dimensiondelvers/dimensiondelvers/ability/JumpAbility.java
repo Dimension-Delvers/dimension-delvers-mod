@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.ability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.entity.player.Player;
 
 public class JumpAbility extends AbstractAbility{
 
@@ -29,7 +30,7 @@ public class JumpAbility extends AbstractAbility{
                  ).apply(instance, JumpAbility::new)
                );
     @Override
-    public void activateAbility() {
+    public void activateAbility(Player player) {
 
     }
 
