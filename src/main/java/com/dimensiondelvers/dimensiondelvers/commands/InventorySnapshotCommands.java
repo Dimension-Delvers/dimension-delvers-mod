@@ -26,7 +26,7 @@ public class InventorySnapshotCommands {
     private static int createInventorySnapshot(CommandSourceStack source) {
         try {
             ServerPlayer player = source.getPlayerOrException();
-            InventorySnapshotSystem.captureSnapshot(player);
+            InventorySnapshotSystem.getInstance().captureSnapshot(player);
             source.sendSuccess(() -> Component.literal("Created inventory snapshot"), true);
             return 1;
         } catch (CommandSyntaxException e) {

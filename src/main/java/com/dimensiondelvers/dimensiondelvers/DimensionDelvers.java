@@ -79,14 +79,14 @@ public class DimensionDelvers {
     @SubscribeEvent
     private void onDropsFromDeath(LivingDropsEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            InventorySnapshotSystem.updateSnapshotForDeath(player, event);
+            InventorySnapshotSystem.getInstance().retainSnapshotItemsOnDeath(player, event);
         }
     }
 
     @SubscribeEvent
     private void onPlayerDeath(PlayerEvent.PlayerRespawnEvent event) {
         if (!event.isEndConquered() && event.getEntity() instanceof ServerPlayer player) {
-            InventorySnapshotSystem.restoreFromSnapshot(player);
+            InventorySnapshotSystem.getInstance().restoreItemsOnRespawn(player);
         }
     }
 
