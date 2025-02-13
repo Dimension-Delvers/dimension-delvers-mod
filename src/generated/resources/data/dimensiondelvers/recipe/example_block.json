@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "dimensiondelvers:example_item"
-    }
+    "B": "dimensiondelvers:example_item"
   },
   "pattern": [
     "BBB",
@@ -12,7 +10,7 @@
     "BBB"
   ],
   "result": {
-    "count": 1,
+    "count": 4,
     "id": "dimensiondelvers:example_block"
   }
 }

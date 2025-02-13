@@ -58,5 +58,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip." + ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Press L to shrink!");
 
         add("ability.dimensiondelvers.cannot_unlock", "You must unlock the following to get this boost: ");
+        add("container.dimensiondelvers.rune_anvil", "Rune Anvil");
     }
 }

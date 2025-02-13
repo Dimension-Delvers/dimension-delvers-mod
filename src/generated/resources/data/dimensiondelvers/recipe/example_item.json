@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "dimensiondelvers:example_block"
-    }
+    "dimensiondelvers:example_block"
   ],
   "result": {
     "count": 9,

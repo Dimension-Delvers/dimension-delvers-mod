@@ -3,28 +3,40 @@ package com.dimensiondelvers.dimensiondelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
-import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
-import com.dimensiondelvers.dimensiondelvers.init.ModCreativeTabs;
-import com.dimensiondelvers.dimensiondelvers.init.ModItems;
-import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
+import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
+import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
+import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
+import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.mojang.logging.LogUtils;
+import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
+import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
-
-import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ABILITY_REGISTRY_DEF;
-import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.ATTACHMENT_TYPES;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(DimensionDelvers.MODID)
@@ -39,15 +51,14 @@ public class DimensionDelvers {
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public DimensionDelvers(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::commonSetup); // Register the commonSetup method for modloading
-
-
+        modEventBus.addListener(this::commonSetup);
 
         // Register things
+        //ModDataComponentType.DATA_COMPONENTS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
+        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 
 
 
@@ -82,7 +93,7 @@ public class DimensionDelvers {
 
         LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+       // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
     // Add the example block item to the building blocks tab
@@ -96,7 +107,21 @@ public class DimensionDelvers {
         LOGGER.info("HELLO from server starting"); // Do something when the server starts
     }
 
+    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            // Some client setup code
+            LOGGER.info("HELLO FROM CLIENT SETUP");
+            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
 
+        @SubscribeEvent
+        private static void registerScreens(RegisterMenuScreensEvent event) {
+            //event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+        }
+    }
 
     /**
      * Helper method to get a {@code ResourceLocation} with our Mod Id and a passed in name
@@ -106,5 +131,16 @@ public class DimensionDelvers {
      */
     public static ResourceLocation id(String name) {
         return ResourceLocation.fromNamespaceAndPath(MODID, name);
+    }
+
+
+    /**
+     * Helper method to get a {@code TagKey} with our Mod Id and a passed in name
+     *
+     * @param name the name to create the {@code TagKey} with
+     * @return A {@code TagKey} with the given name
+     */
+    public static <T> TagKey<T> tagId(ResourceKey<? extends Registry<T>> registry, String name) {
+        return TagKey.create(registry, id(name));
     }
 }
