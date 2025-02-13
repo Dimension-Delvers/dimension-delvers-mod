@@ -54,7 +54,7 @@ public class ModItems {
             );
 
     public static final DeferredItem<Item> ABILITY_BAG = ITEMS.register("ability_bag", registryName ->
-            new AbilityBagItem(new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
+            new AbilityBagItem(new Item.Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY).stacksTo(1)));
 
 
 }
