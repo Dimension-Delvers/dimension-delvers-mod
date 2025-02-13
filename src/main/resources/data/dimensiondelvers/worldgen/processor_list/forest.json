@@ -96,6 +96,45 @@
       "rarity": 0.05
     },
     {
+      "processor_type": "dimensiondelvers:attachment",
+      "requires_sides": 1,
+      "rarity": 0.4,
+      "blockstate": {
+        "Name": "minecraft:oak_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "true",
+          "waterlogged": "false"
+        }
+      }
+    },
+    {
+      "processor_type": "dimensiondelvers:attachment",
+      "requires_sides": 1,
+      "rarity": 0.2,
+      "blockstate": {
+        "Name": "minecraft:oak_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "true",
+          "waterlogged": "false"
+        }
+      }
+    },
+    {
+      "processor_type": "dimensiondelvers:attachment",
+      "requires_up": true,
+      "rarity": 0.6,
+      "blockstate": {
+        "Name": "minecraft:oak_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "true",
+          "waterlogged": "false"
+        }
+      }
+    },
+    {
       "processor_type": "dimensiondelvers:vines",
       "rarity": 0.2
     }

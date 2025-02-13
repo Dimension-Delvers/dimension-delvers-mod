@@ -155,14 +155,14 @@ public class ProcessorUtil {
         }
     }*/
 
-    /*public static boolean isSolid(StructureTemplate.StructureBlockInfo blockinfo){
-        if(blockinfo != null && blockinfo.state.is(JIGSAW)){
-            Block block = BuiltInRegistries.BLOCKS.getValue(new ResourceLocation(blockinfo.nbt.getString(NBT_FINAL_STATE)));
-            return block != null && !block.defaultBlockState().isAir() && !(block instanceof LiquidBlock);
+    public static boolean isSolid(StructureTemplate.StructureBlockInfo blockinfo){
+        if(blockinfo != null && blockinfo.state().is(JIGSAW)){
+            Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(blockinfo.nbt().getString(NBT_FINAL_STATE)));
+            return block != null && !block.defaultBlockState().is(AIR) && !(block instanceof LiquidBlock);
         }else {
-            return blockinfo != null && !blockinfo.state.is(AIR) && !blockinfo.state.is(CAVE_AIR) && !(blockinfo.state.getBlock() instanceof LiquidBlock);
+            return blockinfo != null && !blockinfo.state().is(AIR) && !(blockinfo.state().getBlock() instanceof LiquidBlock);
         }
-    }*/
+    }
 
     public static boolean isFaceFull(StructureTemplate.StructureBlockInfo blockinfo, Direction direction) {
         if (blockinfo != null && blockinfo.state().is(JIGSAW)) {

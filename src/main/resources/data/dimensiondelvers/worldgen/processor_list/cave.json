@@ -61,6 +61,13 @@
     {
       "processor_type": "dimensiondelvers:vines",
       "rarity": 0.2
+    },
+    {
+      "processor_type": "dimensiondelvers:attachment",
+      "requires_sides": 1,
+      "requires_up": true,
+      "rarity": 0.05,
+      "blockstate": "minecraft:cobweb"
     }
   ]
 }
