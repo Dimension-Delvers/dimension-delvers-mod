@@ -4,10 +4,15 @@ import com.dimensiondelvers.dimensiondelvers.mixin.InvokerBlockBehaviour;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -18,7 +23,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static net.minecraft.tags.BlockTags.AIR;
 import static net.minecraft.world.level.block.Blocks.JIGSAW;
@@ -50,12 +57,37 @@ public class ProcessorUtil {
         return pos == null ? Util.getMillis() + processorSeed : Mth.getSeed(pos) + processorSeed;
     }
 
-    /*public static Block getRandomBlockFromTag(TagKey<Block> tagKey, RandomSource random, List<ResourceLocation> exclusionList){
-        List<Block> resultList = BuiltInRegistries.BLOCK.tags().getTag(tagKey).stream().filter(block -> !exclusionList.contains(BuiltInRegistries.BLOCKS.getKey(block))).collect(Collectors.toList());
-        return resultList.get(random.nextInt(resultList.size()));
+    public static Block getRandomBlockFromBlockTag(TagKey<Block> tagKey, RandomSource random, List<ResourceLocation> exclusionList) {
+        Optional<HolderSet.Named<Block>> tagHolders = BuiltInRegistries.BLOCK.get(tagKey);
+        if (tagHolders.isPresent()) {
+            List<Block> collect = tagHolders.get().stream()
+                    .map(Holder::value)
+                    .filter(block -> !exclusionList.contains(BuiltInRegistries.BLOCK.getKey(block)))
+                    .toList();
+            if (!collect.isEmpty()) {
+                return collect.get(random.nextInt(collect.size()));
+            }
+        }
+        return Blocks.AIR;
     }
 
-    public static Item getRandomItemFromTag(TagKey<Item> tag, RandomSource random, List<ResourceLocation> exclusionList){
+    public static Block getRandomBlockFromItemTag(TagKey<Item> tagKey, RandomSource random, List<Block> exclusionList) {
+        Optional<HolderSet.Named<Item>> tagHolders = BuiltInRegistries.ITEM.get(tagKey);
+        if (tagHolders.isPresent()) {
+            List<Block> collect = tagHolders.get().stream()
+                    .map(Holder::value)
+                    .filter(item -> item instanceof BlockItem)
+                    .map(item -> ((BlockItem) item).getBlock())
+                    .filter(block -> !exclusionList.contains(block))
+                    .toList();
+            if (!collect.isEmpty()) {
+                return collect.get(random.nextInt(collect.size()));
+            }
+        }
+        return Blocks.AIR;
+    }
+
+    /*public static Item getRandomItemFromTag(TagKey<Item> tag, RandomSource random, List<ResourceLocation> exclusionList){
         List<Item> resultList = ITEMS.tags().getTag(tag).stream().filter(item -> !exclusionList.contains(ITEMS.getKey(item))).collect(Collectors.toList());
         return resultList.get(random.nextInt(resultList.size()));
     }*/
@@ -94,7 +126,7 @@ public class ProcessorUtil {
         return newState;
     }
 
-    public static Map<BlockPos, StructureTemplate.StructureBlockInfo> mapByPos(List<StructureTemplate.StructureBlockInfo> pieceBlocks){
+    public static Map<BlockPos, StructureTemplate.StructureBlockInfo> mapByPos(List<StructureTemplate.StructureBlockInfo> pieceBlocks) {
         return pieceBlocks.stream().collect(Collectors.toMap(StructureTemplate.StructureBlockInfo::pos, blockInfo -> blockInfo));
     }
 
@@ -127,7 +159,7 @@ public class ProcessorUtil {
                     Block.isFaceFull(((InvokerBlockBehaviour) block).invokeGetShape(block.defaultBlockState(), null, blockinfo.pos(), CollisionContext.empty()), direction);
         } else {
             return blockinfo != null && !blockinfo.state().is(AIR) && !(blockinfo.state().getBlock() instanceof LiquidBlock) &&
-                    Block.isFaceFull(((InvokerBlockBehaviour)blockinfo.state().getBlock()).invokeGetShape(blockinfo.state(), null, blockinfo.pos(), CollisionContext.empty()), direction);
+                    Block.isFaceFull(((InvokerBlockBehaviour) blockinfo.state().getBlock()).invokeGetShape(blockinfo.state(), null, blockinfo.pos(), CollisionContext.empty()), direction);
         }
     }
 
@@ -136,7 +168,7 @@ public class ProcessorUtil {
         if (i == 0) {
             throw new IllegalStateException("No palettes");
         } else {
-            return palettes.get(i-1);
+            return palettes.get(i - 1);
         }
     }
 }

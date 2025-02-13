@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.GradientReplaceProcessor;
+import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.MushroomProcessor;
 import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.VineProcessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
@@ -14,5 +15,6 @@ public class ModProcessors {
 
     // Add VINES
     public static final Supplier<StructureProcessorType<VineProcessor>> VINES = PROCESSORS.register("vines", () -> () -> VineProcessor.CODEC);
+    public static final Supplier<StructureProcessorType<MushroomProcessor>> MUSHROOMS = PROCESSORS.register("mushrooms", () -> () -> MushroomProcessor.CODEC);
     public static final Supplier<StructureProcessorType<GradientReplaceProcessor>> GRADIENT_SPOT_REPLACE = PROCESSORS.register("spot_gradient", () -> () -> GradientReplaceProcessor.CODEC);
 }

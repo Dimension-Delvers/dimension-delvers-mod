@@ -6,10 +6,12 @@ import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.temp
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
@@ -18,40 +20,39 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.util.RandomSource;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.ProcessorUtil.mapByPos;
+import static com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.ProcessorUtil.*;
 import static com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.StructureRandomType.RANDOM_TYPE_CODEC;
-import static net.minecraft.core.Direction.*;
-import static net.minecraft.world.level.block.Blocks.VINE;
-import static net.minecraft.world.level.block.VineBlock.PROPERTY_BY_DIRECTION;
+import static net.minecraft.core.Direction.DOWN;
+import static net.minecraft.core.Direction.UP;
+import static net.neoforged.neoforge.common.Tags.Items.MUSHROOMS;
 
-public class VineProcessor extends StructureProcessor {
-    public static final MapCodec<VineProcessor> CODEC = RecordCodecBuilder.mapCodec(builder ->
+public class MushroomProcessor extends StructureProcessor {
+    public static final MapCodec<MushroomProcessor> CODEC = RecordCodecBuilder.mapCodec(builder ->
             builder.group(
-                    Codec.BOOL.optionalFieldOf("attach_to_wall", true).forGetter(VineProcessor::isAttachToWall),
-                    Codec.BOOL.optionalFieldOf("attach_to_ceiling", true).forGetter(VineProcessor::isAttachToCeiling),
-                    Codec.FLOAT.fieldOf("rarity").forGetter(VineProcessor::getRarity),
-                    RANDOM_TYPE_CODEC.optionalFieldOf("random_type", StructureRandomType.BLOCK).forGetter(VineProcessor::getStructureRandomType)
-            ).apply(builder, VineProcessor::new));
-    private static final long SEED = 8514174L;
+                    BuiltInRegistries.BLOCK.byNameCodec().listOf().optionalFieldOf("exclusion_list", Collections.emptyList()).forGetter(MushroomProcessor::getExclusionList),
+                    Codec.FLOAT.fieldOf("rarity").forGetter(MushroomProcessor::getRarity),
+                    RANDOM_TYPE_CODEC.optionalFieldOf("random_type", StructureRandomType.BLOCK).forGetter(MushroomProcessor::getStructureRandomType),
+                    RANDOM_TYPE_CODEC.optionalFieldOf("tag_random_type", StructureRandomType.PIECE).forGetter(MushroomProcessor::getTagStructureRandomType)
+            ).apply(builder, MushroomProcessor::new));
+    private static final long SEED = 3478985L;
 
-    private final boolean attachToWall;
-    private final boolean attachToCeiling;
+    private final TagKey<Item> itemTag = MUSHROOMS;
+    private final List<Block> exclusionList;
     private final float rarity;
     private final StructureRandomType structureRandomType;
+    private final StructureRandomType tagStructureRandomType;
 
-    public VineProcessor(boolean attachToWall, boolean attachToCeiling, float rarity, StructureRandomType structureRandomType) {
-        this.attachToWall = attachToWall;
-        this.attachToCeiling = attachToCeiling;
+    public MushroomProcessor(List<Block> exclusionList, float rarity, StructureRandomType structureRandomType, StructureRandomType tagStructureRandomType) {
+        this.exclusionList = exclusionList;
         this.rarity = rarity;
         this.structureRandomType = structureRandomType;
+        this.tagStructureRandomType = tagStructureRandomType;
     }
 
     @Override
@@ -69,40 +70,22 @@ public class VineProcessor extends StructureProcessor {
         RandomSource random = ProcessorUtil.getRandom(structureRandomType, blockInfo.pos(), piecePos, structurePos, world, SEED);
         BlockState blockstate = blockInfo.state();
         BlockPos blockpos = blockInfo.pos();
-        List<Direction> possibleDirections = new ArrayList<>();
-        if (blockstate.isAir() && random.nextFloat() <= rarity) {
-            if (attachToWall) {
-                possibleDirections.addAll(Arrays.asList(NORTH, EAST, SOUTH, WEST));
+        if(blockstate.isAir() && random.nextFloat() <= rarity){
+            if(isFaceFull(mapByPos.get(rawBlockInfo.pos().relative(DOWN)), UP)) {
+                RandomSource tagRandom = ProcessorUtil.getRandom(structureRandomType, blockInfo.pos(), piecePos, structurePos, world, SEED);
+                Block block = getRandomBlockFromItemTag(itemTag, tagRandom, exclusionList);
+                return new StructureTemplate.StructureBlockInfo(blockpos, block.defaultBlockState(), blockInfo.nbt());
             }
-            if (attachToCeiling) {
-                possibleDirections.add(UP);
-            }
-            possibleDirections = possibleDirections.stream().filter(direction -> isDirectionPossible(mapByPos, rawBlockInfo.pos(), direction)).collect(Collectors.toList());
         }
-        if (possibleDirections.isEmpty()) {
-            return blockInfo;
-        } else {
-            Direction direction = possibleDirections.get(random.nextInt(possibleDirections.size()));
-            BooleanProperty property = PROPERTY_BY_DIRECTION.get(direction);
-            return new StructureTemplate.StructureBlockInfo(blockpos, VINE.defaultBlockState().setValue(property, true), null);
-        }
-    }
-
-    private boolean isDirectionPossible(Map<BlockPos, StructureTemplate.StructureBlockInfo> pieceBlocks, BlockPos pos, Direction direction) {
-        StructureTemplate.StructureBlockInfo tempBlock = pieceBlocks.get(pos.relative(direction));
-        return ProcessorUtil.isFaceFull(tempBlock, direction.getOpposite());
+        return blockInfo;
     }
 
     protected StructureProcessorType<?> getType() {
-        return ModProcessors.VINES.get();
+        return ModProcessors.MUSHROOMS.get();
     }
 
-    public boolean isAttachToWall() {
-        return attachToWall;
-    }
-
-    public boolean isAttachToCeiling() {
-        return attachToCeiling;
+    public List<Block> getExclusionList() {
+        return exclusionList;
     }
 
     public float getRarity() {
@@ -111,5 +94,9 @@ public class VineProcessor extends StructureProcessor {
 
     public StructureRandomType getStructureRandomType() {
         return structureRandomType;
+    }
+
+    public StructureRandomType getTagStructureRandomType() {
+        return tagStructureRandomType;
     }
 }

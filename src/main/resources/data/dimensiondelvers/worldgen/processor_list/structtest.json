@@ -5,15 +5,15 @@
       "gradient_list": [
         {
           "target": "minecraft:stone",
-          "step_size": 0.45
+          "step_size": 0.35
         },
         {
           "target": "minecraft:andesite",
-          "step_size": 0.25
+          "step_size": 0.30
         },
         {
           "target": "minecraft:cobblestone",
-          "step_size": 0.15
+          "step_size": 0.20
         },
         {
           "target": "minecraft:mossy_cobblestone",
@@ -53,6 +53,10 @@
         }
       ],
       "to_replace": "minecraft:black_wool"
+    },
+    {
+      "processor_type": "dimensiondelvers:mushrooms",
+      "rarity": 0.05
     },
     {
       "processor_type": "dimensiondelvers:vines",
