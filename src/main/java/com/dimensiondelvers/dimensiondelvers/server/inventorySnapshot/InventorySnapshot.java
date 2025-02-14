@@ -12,10 +12,14 @@ import java.util.*;
 
 /**
  * InventorySnapshot is used to record the contents of a player's inventory at a point in time.
+ * <p>
+ * This is composed of a list of ids corresponding to nonstackable items and a list of
+ * ItemStacks corresponding to all stackable items
+ * </p>
  */
 public class InventorySnapshot {
 
-    private final Set<UUID> itemIds;
+    private final UUID id;
     private final List<ItemStack> items;
 
     public static final Codec<ItemStack> NONSTRICT_ITEMSTACK_CODEC = Codec.lazyInitialized(
@@ -38,22 +42,26 @@ public class InventorySnapshot {
 
     public static final Codec<InventorySnapshot> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    UUIDUtil.CODEC.listOf().fieldOf("itemIds").forGetter(x -> new ArrayList<>(x.itemIds)),
+                    UUIDUtil.CODEC.fieldOf("snapshotId").forGetter(x -> x.id),
                     NONSTRICT_ITEMSTACK_CODEC.listOf().fieldOf("items").forGetter(x -> x.items)
             ).apply(instance, InventorySnapshot::new)
     );
 
     public InventorySnapshot() {
-        this(Collections.emptyList(), Collections.emptyList());
+        this(new UUID(0,0), Collections.emptyList());
     }
 
-    public InventorySnapshot(Collection<UUID> itemIds, Collection<ItemStack> items) {
-        this.itemIds = new HashSet<>(itemIds);
+    public InventorySnapshot(UUID id, Collection<ItemStack> items) {
+        this.id = id;
         this.items = new ArrayList<>(items);
     }
 
-    public Set<UUID> itemIds() {
-        return Collections.unmodifiableSet(itemIds);
+    public boolean isEmpty() {
+        return id.getMostSignificantBits() == 0 && id.getLeastSignificantBits() == 0;
+    }
+
+    public UUID id() {
+        return id;
     }
 
     public List<ItemStack> items() {
@@ -66,13 +74,13 @@ public class InventorySnapshot {
             return true;
         }
         if (obj instanceof InventorySnapshot other) {
-            return Objects.equals(itemIds, other.itemIds) && Objects.equals(items, other.items);
+            return Objects.equals(id, other.id);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(itemIds, items);
+        return id.hashCode();
     }
 }

@@ -21,17 +21,21 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * Implementation for capture, update and restoration of Inventory Snapshots
- * <p></p>
+ * System for capturing Inventory Snapshots and applying them on death and respawn of a player
+ * <p>
  * The envisioned behavior is:
+ * </p>
  * <ul>
  *     <li>When a snapshot is initially captured, all items in the players inventory and sub-inventories are enumerated</li>
- *     <li>When a player dies, the player's inventory is compared to the snapshot. The snapshot is reduced to the remaining items and any excess is dropped (mechanism TBD)</li>
- *     <li>When a player respawns the items in the snapshot are returned and the snapshot is removed</li>
+ *     <li>When a player dies, the player's inventory is compared to the snapshot. Their inventory is split into a set of items that they have from the snapshot,
+ *     and a set of items that are new</li>
+ *     <li>When a player respawns the items they still had from the snapshot are returned and the snapshot is removed</li>
+ *     <li>All other items are dropped where they died</li>
  * </ul>
- * <p></p>
- * The implementation is to tag any non-stackable items, and directly record any stackable, with the assumption that stackable items will
+ * <p>
+ * Snapshots are created by adding a unique snapshot id to any non-stackable items, and directly record any stackable, with the assumption that stackable items will
  * not vary in a non-comparable manner.
+ * </p>
  */
 public class InventorySnapshotSystem {
 
@@ -75,7 +79,7 @@ public class InventorySnapshotSystem {
      */
     public void retainSnapshotItemsOnDeath(ServerPlayer player, LivingDropsEvent event) {
         InventorySnapshot snapshot = player.getData(ModAttachments.INVENTORY_SNAPSHOT);
-        if (snapshot.itemIds().isEmpty() && snapshot.items().isEmpty()) {
+        if (snapshot.isEmpty()) {
             return;
         }
 
@@ -105,8 +109,10 @@ public class InventorySnapshotSystem {
 
     public static final class InventorySnapshotBuilder {
 
-        private Set<UUID> itemIds = new LinkedHashSet<>();
+        private UUID snapshotId = UUID.randomUUID();
         private List<ItemStack> items = new ArrayList<>();
+
+        private DataComponentPatch addSnapshotIdPatch = DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), snapshotId).build();
 
         /**
          * Generates an InventorySnapshot for a player's inventory
@@ -125,7 +131,7 @@ public class InventorySnapshotSystem {
         }
 
         public InventorySnapshot build() {
-            return new InventorySnapshot(itemIds, items);
+            return new InventorySnapshot(snapshotId, items);
         }
 
         private void captureItem(ItemStack item, Consumer<DataComponentPatch> dataComponentPatchStrategy) {
@@ -135,9 +141,7 @@ public class InventorySnapshotSystem {
             if (item.isStackable()) {
                 items.add(item.copy());
             } else {
-                UUID id = UUID.randomUUID();
-                item.applyComponents(DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), id).build());
-                itemIds.add(id);
+                dataComponentPatchStrategy.accept(addSnapshotIdPatch);
 
                 if (item.has(DataComponents.CONTAINER)) {
                     ItemContainerContents contents = item.get(DataComponents.CONTAINER);
@@ -166,12 +170,12 @@ public class InventorySnapshotSystem {
 
         private ServerPlayer player;
         private List<ItemStack> snapshotItems;
-        private Set<UUID> snapshotItemIds;
+        private UUID snapshotId;
 
         public RespawnItemsCalculator(ServerPlayer player, InventorySnapshot snapshot, Collection<ItemEntity> heldItems) {
             this.player = player;
             this.snapshotItems = new ArrayList<>(snapshot.items());
-            this.snapshotItemIds = snapshot.itemIds();
+            this.snapshotId = snapshot.id();
             processInventoryItems(heldItems);
         }
 
@@ -206,7 +210,7 @@ public class InventorySnapshotSystem {
         }
 
         private boolean shouldRetainNonStackable(ItemStack item) {
-            return item.getComponents().has(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()) && snapshotItemIds.contains(item.getComponents().get(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()));
+            return item.getComponents().has(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()) && snapshotId.equals(item.getComponents().get(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()));
         }
 
         private void processBackpack(ItemStack backpack, boolean retainingContainer) {
