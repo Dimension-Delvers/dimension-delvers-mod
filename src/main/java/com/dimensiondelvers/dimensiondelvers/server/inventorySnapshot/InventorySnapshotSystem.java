@@ -3,22 +3,12 @@ package com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot;
 import com.dimensiondelvers.dimensiondelvers.init.ModAttachments;
 import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
 import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackItem;
-import net.p3pp3rf1y.sophisticatedbackpacks.backpack.wrapper.BackpackWrapper;
-import net.p3pp3rf1y.sophisticatedbackpacks.backpack.wrapper.IBackpackWrapper;
-import net.p3pp3rf1y.sophisticatedcore.inventory.InventoryHandler;
-import net.p3pp3rf1y.sophisticatedcore.upgrades.UpgradeHandler;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * System for capturing Inventory Snapshots and applying them on death and respawn of a player
@@ -43,11 +33,18 @@ public class InventorySnapshotSystem {
 
     private static final InventorySnapshotSystem instance = new InventorySnapshotSystem();
 
+    private final List<ContainerType> containerStrategies = new ArrayList<>();
+
     public static InventorySnapshotSystem getInstance() {
         return instance;
     }
 
     private InventorySnapshotSystem() {
+        containerStrategies.add(new ComponentContainerType());
+    }
+
+    public void registerContainerStrategy(ContainerType strategy) {
+        containerStrategies.add(strategy);
     }
 
     /**
@@ -107,7 +104,7 @@ public class InventorySnapshotSystem {
         clearItemIds(player);
     }
 
-    public static final class InventorySnapshotBuilder {
+    public final class InventorySnapshotBuilder {
 
         private UUID snapshotId = UUID.randomUUID();
         private List<ItemStack> items = new ArrayList<>();
@@ -122,55 +119,43 @@ public class InventorySnapshotSystem {
          */
         public InventorySnapshotBuilder(ServerPlayer player) {
             for (ItemStack item : player.getInventory().items) {
-                captureItem(item, item::applyComponents);
+                captureItem(new DirectContainerItemWrapper(item));
             }
             for (ItemStack item : player.getInventory().armor) {
-                captureItem(item, item::applyComponents);
+                captureItem(new DirectContainerItemWrapper(item));
             }
-            captureItem(player.getOffhandItem(), player.getOffhandItem()::applyComponents);
+            captureItem(new DirectContainerItemWrapper(player.getOffhandItem()));
         }
 
         public InventorySnapshot build() {
             return new InventorySnapshot(snapshotId, items);
         }
 
-        private void captureItem(ItemStack item, Consumer<DataComponentPatch> dataComponentPatchStrategy) {
+        private void captureItem(ContainerItemWrapper containerItem) {
+            ItemStack item = containerItem.getReadOnlyItemStack();
             if (item.isEmpty()) {
                 return;
             }
             if (item.isStackable()) {
                 items.add(item.copy());
             } else {
-                dataComponentPatchStrategy.accept(addSnapshotIdPatch);
+                containerItem.applyComponents(addSnapshotIdPatch);
 
-                if (item.has(DataComponents.CONTAINER)) {
-                    ItemContainerContents contents = item.get(DataComponents.CONTAINER);
-                    for (ItemStack nonEmptyItem : contents.nonEmptyItems()) {
-                        captureItem(nonEmptyItem, item::applyComponents);
-                    }
-                } else if (item.getItem() instanceof BackpackItem) {
-                    IBackpackWrapper backpackWrapper = BackpackWrapper.fromStack(item);
-                    InventoryHandler inventory = backpackWrapper.getInventoryHandler();
-                    for (int slot = 0; slot < inventory.getSlots(); slot++) {
-                        captureItem(inventory.getStackInSlot(slot), new ItemHandlerPatcher(inventory, slot));
-                    }
-                    UpgradeHandler upgrades = backpackWrapper.getUpgradeHandler();
-                    for (int slot = 0; slot < upgrades.getSlots(); slot++) {
-                        captureItem(upgrades.getStackInSlot(slot), new ItemHandlerPatcher(inventory, slot));
-                    }
+                for (ContainerItemWrapper content : getContents(item)) {
+                    captureItem(content);
                 }
             }
         }
 
     }
 
-    private static final class RespawnItemsCalculator {
+    private final class RespawnItemsCalculator {
         private final List<ItemStack> retainItems = new ArrayList<>();
         private final List<ItemEntity> dropItems = new ArrayList<>();
 
-        private ServerPlayer player;
-        private List<ItemStack> snapshotItems;
-        private UUID snapshotId;
+        private final ServerPlayer player;
+        private final List<ItemStack> snapshotItems;
+        private final UUID snapshotId;
 
         public RespawnItemsCalculator(ServerPlayer player, InventorySnapshot snapshot, Collection<ItemEntity> heldItems) {
             this.player = player;
@@ -193,10 +178,9 @@ public class InventorySnapshotSystem {
                     }
                 } else {
                     boolean retainItem = shouldRetainNonStackable(item);
-                    if (item.has(DataComponents.CONTAINER)) {
-                        processContainerContents(item, retainItem);
-                    } else if (item.getItem() instanceof BackpackItem) {
-                        processBackpack(item, retainItem);
+
+                    for (ContainerItemWrapper content : getContents(item)) {
+                        processContainerItem(content, retainItem);
                     }
 
                     if (retainItem) {
@@ -213,63 +197,36 @@ public class InventorySnapshotSystem {
             return item.getComponents().has(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()) && snapshotId.equals(item.getComponents().get(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()));
         }
 
-        private void processBackpack(ItemStack backpack, boolean retainingContainer) {
-            IBackpackWrapper backpackWrapper = BackpackWrapper.fromStack(backpack);
-            InventoryHandler inventoryHandler = backpackWrapper.getInventoryHandler();
-            for (int slot = 0; slot < inventoryHandler.getSlots(); slot++) {
-                ItemStack item = inventoryHandler.getStackInSlot(slot);
-                if (item.isEmpty()) {
-                    continue;
-                }
-                processContainerItem(item, retainingContainer, new ItemHandlerSplitter(inventoryHandler, slot), new ItemHandlerRemover(inventoryHandler, slot));
-            }
-            UpgradeHandler upgradeHandler = backpackWrapper.getUpgradeHandler();
-            for (int slot = 0; slot < upgradeHandler.getSlots(); slot++) {
-                ItemStack item = upgradeHandler.getStackInSlot(slot);
-                if (item.isEmpty()) {
-                    continue;
-                }
-                processContainerItem(item, retainingContainer, new ItemHandlerSplitter(upgradeHandler, slot), new ItemHandlerRemover(upgradeHandler, slot));
-            }
-        }
-
         // If we're retaining the container
         // - Any item that should be retained keep in container
         // - Any item that we don't want, copy and clear and drop the copy
         // If we're not retaining the container
         // - Any item that should be retained copy and clear and put the copy in retain
         // - Any item that we don't want, keep in container
-        private void processContainerItem(ItemStack item, boolean retainingContainer, ItemStackSplitter splitFunction, Supplier<ItemStack> removeFunction) {
+        private void processContainerItem(ContainerItemWrapper containerItem, boolean retainingContainer) {
+            ItemStack item = containerItem.getReadOnlyItemStack();
             if (item.isStackable()) {
                 int dropCount = calculateDropCount(item);
 
                 if (retainingContainer && dropCount > 0) {
-                    dropItems.addAll(createItemEntity(splitFunction.apply(dropCount)));
+                    dropItems.addAll(createItemEntity(containerItem.split(dropCount)));
                 } else if (!retainingContainer && dropCount < item.getCount()) {
-                    retainItems.addAll(splitFunction.apply(item.getCount() - dropCount));
+                    retainItems.addAll(containerItem.split(item.getCount() - dropCount));
                 }
             } else {
                 boolean retainItem = shouldRetainNonStackable(item);
-                if (item.has(DataComponents.CONTAINER)) {
-                    processContainerContents(item, retainItem);
-                } else if (item.getItem() instanceof BackpackItem) {
-                    processBackpack(item, retainItem);
+
+                for (ContainerItemWrapper content : getContents(item)) {
+                    processContainerItem(content, retainItem);
                 }
 
                 if (retainingContainer && !retainItem) {
-                    ItemStack dropItem = removeFunction.get();
+                    ItemStack dropItem = containerItem.removeNonStackable();
                     dropItem.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
                     dropItems.addAll(createItemEntity(Collections.singletonList(dropItem)));
                 } else if (!retainingContainer && retainItem) {
-                    retainItems.add(removeFunction.get());
+                    retainItems.add(containerItem.removeNonStackable());
                 }
-            }
-        }
-
-        private void processContainerContents(ItemStack container, boolean retainingContainer) {
-            ItemContainerContents itemContainerContents = container.get(DataComponents.CONTAINER);
-            for (ItemStack item : itemContainerContents.nonEmptyItems()) {
-                processContainerItem(item, retainingContainer, amount -> Collections.singletonList(item.split(amount)), item::copyAndClear);
             }
         }
 
@@ -308,50 +265,36 @@ public class InventorySnapshotSystem {
      *
      * @param player
      */
-    private static void clearItemIds(ServerPlayer player) {
-        DataComponentPatch removeIdPatch = DataComponentPatch.builder().remove(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()).build();
+    private void clearItemIds(ServerPlayer player) {
         for (ItemStack item : player.getInventory().items) {
-            item.applyComponents(removeIdPatch);
+            clearItemIds(new DirectContainerItemWrapper(item));
         }
         for (ItemStack item : player.getInventory().armor) {
-            item.applyComponents(removeIdPatch);
+            clearItemIds(new DirectContainerItemWrapper(item));
         }
         for (ItemStack item : player.getInventory().offhand) {
-            item.applyComponents(removeIdPatch);
+            clearItemIds(new DirectContainerItemWrapper(item));
         }
     }
 
-    public record ItemHandlerPatcher(IItemHandler handler, int slot) implements Consumer<DataComponentPatch> {
-        @Override
-        public void accept(DataComponentPatch dataComponentPatch) {
-            ItemStack stack = handler.extractItem(slot, handler.getStackInSlot(slot).getCount(), false);
-            stack.applyComponents(dataComponentPatch);
-            handler.insertItem(slot, stack, false);
+    private void clearItemIds(ContainerItemWrapper item) {
+        item.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
+        for (ContainerItemWrapper content : getContents(item.getReadOnlyItemStack())) {
+            clearItemIds(content);
         }
     }
 
-    public interface ItemStackSplitter {
-        List<ItemStack> apply(int amount);
-    }
-
-    public record ItemHandlerSplitter(IItemHandler handler, int slot) implements ItemStackSplitter {
-        @Override
-        public List<ItemStack> apply(int amount) {
-            ItemStack existing = handler.getStackInSlot(slot);
-            List<ItemStack> result = new ArrayList<>();
-            while (amount > existing.getMaxStackSize()) {
-                result.add(handler.extractItem(slot, existing.getMaxStackSize(), false));
-                amount -= existing.getMaxStackSize();
+    /**
+     * @param itemStack An item stack (that may or may not be a container)
+     * @return An iterable over the contents of the given itemStack, if any
+     */
+    private Iterable<ContainerItemWrapper> getContents(ItemStack itemStack) {
+        for (ContainerType strategy : containerStrategies) {
+            if (strategy.isContainer(itemStack)) {
+                return strategy.iterateContainerContents(itemStack);
             }
-            result.add(handler.extractItem(slot, amount, false));
-            return result;
         }
+        return Collections.emptyList();
     }
 
-    public record ItemHandlerRemover(IItemHandler handler, int slot) implements Supplier<ItemStack> {
-        @Override
-        public ItemStack get() {
-            return handler.extractItem(slot, handler.getStackInSlot(slot).getCount(), false);
-        }
-    }
 }
