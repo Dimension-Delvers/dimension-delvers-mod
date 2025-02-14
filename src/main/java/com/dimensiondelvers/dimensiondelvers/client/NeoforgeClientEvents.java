@@ -2,13 +2,11 @@ package com.dimensiondelvers.dimensiondelvers.client;
 
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
 import com.dimensiondelvers.dimensiondelvers.networking.data.OpenUpgradeMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
@@ -22,7 +20,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import static com.dimensiondelvers.dimensiondelvers.client.ModClientEvents.*;
 import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.*;
-import static net.minecraft.client.renderer.RenderType.GUI_OVERLAY;
 import static net.minecraft.client.renderer.RenderType.GUI_TEXTURED_OVERLAY;
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
