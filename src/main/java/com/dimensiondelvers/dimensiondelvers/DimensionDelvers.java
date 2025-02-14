@@ -1,11 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers;
 
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
-import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
-import com.dimensiondelvers.dimensiondelvers.init.ModCreativeTabs;
-import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
-import com.dimensiondelvers.dimensiondelvers.init.ModItems;
-import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
+import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -13,7 +9,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -69,7 +64,7 @@ public class DimensionDelvers {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) event.accept(ModBlocks.EXAMPLE_BLOCK);
+        //if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) event.accept(ModBlocks.EXAMPLE_BLOCK);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

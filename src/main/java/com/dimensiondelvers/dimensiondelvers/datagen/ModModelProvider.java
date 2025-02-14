@@ -1,9 +1,9 @@
 package com.dimensiondelvers.dimensiondelvers.datagen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.block.BlockFamilyHelper;
 import com.dimensiondelvers.dimensiondelvers.client.render.item.properties.select.SelectRuneGemShape;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
-import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemShape;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -12,14 +12,9 @@ import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
-import net.minecraft.client.renderer.item.properties.conditional.Damaged;
-import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,12 +28,17 @@ public class ModModelProvider extends ModelProvider {
     @Override
     protected void registerModels(BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.EXAMPLE_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
 
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
 
         this.generateRunegemItem(ModItems.RUNEGEM.get(), itemModels);
+
+        ModBlocks.BUILD_BLOCK_HELPERS.forEach(helper -> createModelsForBuildBlock(helper, blockModels, itemModels));
+    }
+
+    private void createModelsForBuildBlock(BlockFamilyHelper helper, BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        blockModels.family(helper.getBlock().get()).generateFor(helper.getFamily());
     }
 
     public void generateRunegemItem(Item item, ItemModelGenerators itemModels) {

@@ -2,8 +2,6 @@ package com.dimensiondelvers.dimensiondelvers.datagen;
 
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.init.ModItems;
-import com.dimensiondelvers.dimensiondelvers.init.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -20,10 +18,5 @@ public class ModItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(ModTags.Items.DEV_TOOLS)
-                .add(ModItems.DEV_BLOCK_ITEM.get());
-
-
-
     }
 }

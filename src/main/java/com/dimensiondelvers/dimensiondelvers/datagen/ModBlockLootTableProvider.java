@@ -17,9 +17,18 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.EXAMPLE_BLOCK.get());
         dropSelf(ModBlocks.DEV_BLOCK.get());
         dropSelf(ModBlocks.RUNE_ANVIL_BLOCK.get());
+        ModBlocks.BUILD_BLOCK_HELPERS.forEach(helper -> {
+            dropSelf(helper.getBlock().get());
+            dropSelf(helper.getSlab().get());
+            dropSelf(helper.getStairs().get());
+            dropSelf(helper.getButton().get());
+            dropSelf(helper.getPressurePlate().get());
+            dropSelf(helper.getWall().get());
+            dropSelf(helper.getFence().get());
+            dropSelf(helper.getTrapdoor().get());
+        });
     }
 
     @Override
