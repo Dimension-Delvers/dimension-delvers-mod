@@ -4,6 +4,7 @@ import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 public class UnlockAbilityUpgrade extends AbstractUpgrade{
@@ -16,18 +17,18 @@ public class UnlockAbilityUpgrade extends AbstractUpgrade{
     @Override
     public void unlock(Player p) {
 
-        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).getName()), true);
+        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).get().value().getName()), true);
 
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
-        p.sendSystemMessage(Component.literal("You learned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
+        ((ServerPlayer)p).sendSystemMessage(Component.literal("You learned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).get().value().GetTranslationString())));
         super.unlock(p);
     }
 
     @Override
     public void remove(Player p) {
 
-        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).getName()), false);
-        p.sendSystemMessage(Component.literal("You unlearned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).GetTranslationString())));
+        p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(AbilityRegistry.ABILITY_REGISTRY.get(ability).get().value().getName()), false);
+        ((ServerPlayer)p).sendSystemMessage(Component.literal("You unlearned ").append(Component.translatable(AbilityRegistry.ABILITY_REGISTRY.get(ability).get().value().GetTranslationString())));
         super.remove(p);
     }
 

@@ -5,6 +5,7 @@ import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
@@ -19,7 +20,7 @@ public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
             p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), true);
         }
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
-        p.sendSystemMessage(Component.literal("You unlocked all abilities!"));
+        ((ServerPlayer)p).sendSystemMessage(Component.literal("You unlocked all abilities!"));
         super.unlock(p);
     }
 
@@ -30,7 +31,7 @@ public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
         {
             p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), false);
         }
-        p.sendSystemMessage(Component.literal("You removed all abilities!"));
+        ((ServerPlayer)p).sendSystemMessage(Component.literal("You removed all abilities!"));
         super.remove(p);
     }
 }

@@ -4,6 +4,7 @@ import com.dimensiondelvers.dimensiondelvers.init.ModUpgrades;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public abstract class AbstractUpgrade {
                 message.append(Component.translatable(upgrade.getTranslationString()));
                 message.append(" ");
             }
-            p.sendSystemMessage(message);
+            ((ServerPlayer)p).sendSystemMessage(message);
 
             return;
         }

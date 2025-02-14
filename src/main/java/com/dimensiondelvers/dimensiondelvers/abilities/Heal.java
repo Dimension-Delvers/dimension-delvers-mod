@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.abilities;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 
@@ -14,7 +15,7 @@ public class Heal extends AbstractAbility {
     public void OnActivate(Player p) {
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("You cannot use heal!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("You cannot use heal!"));
             return;
         }
 

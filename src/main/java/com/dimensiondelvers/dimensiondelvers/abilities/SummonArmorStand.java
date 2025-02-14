@@ -3,6 +3,8 @@ package com.dimensiondelvers.dimensiondelvers.abilities;
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +19,7 @@ public class SummonArmorStand extends AbstractToggleAbility {
     public void OnActivate(Player p) {
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("You cannot use summon!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("You cannot use summon!"));
             return;
         }
 
@@ -31,16 +33,14 @@ public class SummonArmorStand extends AbstractToggleAbility {
     public void onDeactivate(Player p) {
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("You cannot use summon!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("You cannot use summon!"));
             return;
         }
 
         //This is just an example, would be much better to use something like owner and kill based on that or similar, also the range here is limited etc.
-        ArmorStand stand = p.level().getNearestEntity(ArmorStand.class, TargetingConditions.forNonCombat().selector(ent -> {
-            DimensionDelvers.LOGGER.info(ent.getName().getString());
-            return ent.getName().getString().equalsIgnoreCase("TEST-"+p.getName().getString());
-        }), null, p.position().x, p.position().y, p.position().z, AABB.ofSize(p.position(), 100,100,100));
-        if(stand != null) stand.kill();
+        ArmorStand stand = p.level().getEntitiesOfClass(ArmorStand.class, AABB.ofSize(p.position(), 100,100,100)).stream().filter(ent -> ent.getName().getString().equalsIgnoreCase("TEST-"+p.getName().getString())).toList().getFirst();
+
+        if(stand != null) stand.kill((ServerLevel) stand.level());
 
     }
 

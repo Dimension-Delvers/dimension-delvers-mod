@@ -19,7 +19,7 @@ import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.A
 public class ServerPayloadHandler {
     public static void handleAbilityOnServer(final UseAbility ability, final IPayloadContext context)
     {
-        AbstractAbility abilility = ABILITY_REGISTRY.get(ResourceLocation.parse(ability.ability_location()));
+        AbstractAbility abilility = ABILITY_REGISTRY.get(ResourceLocation.parse(ability.ability_location())).get().value();
         if(abilility == null)
         {
             DimensionDelvers.LOGGER.error("Invalid Ability Activated: " + ResourceLocation.parse(ability.ability_location()));
@@ -60,7 +60,7 @@ public class ServerPayloadHandler {
     public static void handleUpgradeOnServer(final ClaimUpgrade upgrade, final IPayloadContext context)
     {
 
-        AbstractUpgrade abstractUpgrade = UpgradeRegistry.UPGRADE_REGISTRY.get(ResourceLocation.parse(upgrade.upgrade_location()));
+        AbstractUpgrade abstractUpgrade = UpgradeRegistry.UPGRADE_REGISTRY.get(ResourceLocation.parse(upgrade.upgrade_location())).get().value();
         if(!abstractUpgrade.isUnlocked(context.player()))
         {
             abstractUpgrade.unlock(context.player());

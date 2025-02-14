@@ -8,6 +8,7 @@ import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
 import com.dimensiondelvers.dimensiondelvers.networking.data.OpenUpgradeMenu;
 import com.dimensiondelvers.dimensiondelvers.networking.data.UseAbility;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
@@ -21,6 +22,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import static com.dimensiondelvers.dimensiondelvers.client.ModClientEvents.*;
 import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.*;
+import static net.minecraft.client.renderer.RenderType.GUI_OVERLAY;
+import static net.minecraft.client.renderer.RenderType.GUI_TEXTURED_OVERLAY;
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class NeoforgeClientEvents {
@@ -76,16 +79,16 @@ public class NeoforgeClientEvents {
             {
                 double totalCD = Minecraft.getInstance().player.getAttributeValue(cd);
                 double percent = Minecraft.getInstance().player.getData(COOL_DOWN_ATTACHMENTS.get(ability.getName())) / (totalCD * 20); //TODO look into syncing attributes with modifier to client
-                event.getGuiGraphics().blit(ability.getIcon(), x,0,0,0,size, size - (int)Math.floor(size * percent), size, size);
+                event.getGuiGraphics().blit(GUI_TEXTURED_OVERLAY, ability.getIcon(), x, 0, 0.0f, 0.0f, size, size - (int)Math.floor(size * percent), size, size);
             }
             else
             {
-                event.getGuiGraphics().blit(ability.getIcon(), x,0,0,0, size, size, size, size);
+                event.getGuiGraphics().blit(GUI_TEXTURED_OVERLAY, ability.getIcon(), x, 0, 0, 0, size, size, size, size);
             }
             x += size + 2;
         }
 
         boolean isToggled = Minecraft.getInstance().player.getData(TOGGLE_ATTACHMENTS.get(ARMOR_STAND_ABILITY.get().getName()));
-        if(isToggled) event.getGuiGraphics().blit(ResourceLocation.withDefaultNamespace("textures/item/armor_stand.png"), 0,size,0,0,16, 16, 16, 16);
+        if(isToggled) event.getGuiGraphics().blit(GUI_TEXTURED_OVERLAY, ResourceLocation.withDefaultNamespace("textures/item/armor_stand.png"), 0,size,0,0,16, 16, 16, 16);
     }
 }

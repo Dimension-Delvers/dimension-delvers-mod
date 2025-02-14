@@ -33,7 +33,7 @@ public class Smol extends AbstractDurationAbility implements CooldownAbility {
             this.SetCooldown(p, GetCooldownLength());
             this.setDuration(p, AbilityAttributes.SMOL_TIME); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
 
-            p.sendSystemMessage(Component.literal("Making you smol!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("Making you smol!"));
             p.getAttribute(Attributes.SCALE).addOrReplacePermanentModifier(AbilityAttributes.SMOL_MODIFIER);
             return;
         }
@@ -41,14 +41,14 @@ public class Smol extends AbstractDurationAbility implements CooldownAbility {
         //this is an example of handing a case where the player cannot use an ability
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("You cannot be smol!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("You cannot be smol!"));
         }
     }
 
     @Override
     public void onDeactivate(Player p) {
         p.getAttribute(Attributes.SCALE).removeModifier(AbilityAttributes.SMOL_MODIFIER);
-        p.sendSystemMessage(Component.literal("You're no longer smol!"));
+        ((ServerPlayer)p).sendSystemMessage(Component.literal("You're no longer smol!"));
     }
 
     @Override

@@ -35,7 +35,7 @@ public class Boost extends AbstractCooldownAbility {
         //this is an example of handing a case where the player cannot use an ability
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("You Cannot use Boost!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("You Cannot use Boost!"));
         }
     }
 

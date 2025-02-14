@@ -54,7 +54,7 @@ public class DimensionDelvers {
         modEventBus.addListener(this::commonSetup);
 
         // Register things
-        //ModDataComponentType.DATA_COMPONENTS.register(modEventBus);
+        ModDataComponentType.DATA_COMPONENTS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
@@ -79,7 +79,7 @@ public class DimensionDelvers {
         AbilityRegistry.ABILITY_REGISTRY_DEF.register(modEventBus);
         UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(modEventBus);
 
-        ATTACHMENT_TYPES.register(modEventBus);
+        AbilityRegistry.ATTACHMENT_TYPES.register(modEventBus);
 
         AbilityAttributes.REGISTRY.register(modEventBus);
 

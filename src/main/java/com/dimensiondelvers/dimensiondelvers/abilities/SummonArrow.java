@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.abilities;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +19,7 @@ public class SummonArrow extends AbstractAbility {
     public void OnActivate(Player p) {
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("Not machine gun for you!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("Not machine gun for you!"));
             return;
         }
 

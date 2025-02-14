@@ -25,7 +25,7 @@ public class Particles extends AbstractDurationAbility{
         if(this.CanPlayerUse(p)) {
             this.setDuration(p, AbilityAttributes.PARTICLE_TIME); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
 
-            p.sendSystemMessage(Component.literal("Making you beautiful!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("Making you beautiful!"));
 
             //TODO sync durations back
             //PacketDistributor.sendToPlayer((ServerPlayer) p, new CooldownActivated(this.GetName().toString(),(int)p.getAttributeValue(AbilityAttributes.BOOST_COOLDOWN) * 20 ));
@@ -36,13 +36,13 @@ public class Particles extends AbstractDurationAbility{
         //this is an example of handing a case where the player cannot use an ability
         if(!this.CanPlayerUse(p))
         {
-            p.sendSystemMessage(Component.literal("You Cannot use paticles!"));
+            ((ServerPlayer)p).sendSystemMessage(Component.literal("You Cannot use paticles!"));
         }
     }
 
     @Override
     public void onDeactivate(Player p) {
-        p.sendSystemMessage(Component.literal("You're no longer beautiful!"));
+        ((ServerPlayer)p).sendSystemMessage(Component.literal("You're no longer beautiful!"));
     }
 
     @Override
