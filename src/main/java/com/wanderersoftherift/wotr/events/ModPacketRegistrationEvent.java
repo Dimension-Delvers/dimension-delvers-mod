@@ -2,7 +2,7 @@ package com.wanderersoftherift.wotr.events;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.network.C2SRuneAnvilApplyPacket;
-import com.wanderersoftherift.wotr.network.S2CDimensionTypesUpdatePacket;
+import com.wanderersoftherift.wotr.network.S2CLevelListUpdatePacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -20,9 +20,9 @@ public class ModPacketRegistrationEvent {
         );
 
         registrar.playToClient(
-                S2CDimensionTypesUpdatePacket.TYPE,
-                S2CDimensionTypesUpdatePacket.STREAM_CODEC,
-                new S2CDimensionTypesUpdatePacket.S2CDimensionTypesUpdatePacketHandler()
+                S2CLevelListUpdatePacket.TYPE,
+                S2CLevelListUpdatePacket.STREAM_CODEC,
+                new S2CLevelListUpdatePacket.S2CLevelListUpdatePacketHandler()
         );
     }
 }
