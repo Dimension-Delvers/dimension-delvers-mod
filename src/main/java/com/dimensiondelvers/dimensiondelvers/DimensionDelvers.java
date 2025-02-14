@@ -5,6 +5,8 @@ import com.dimensiondelvers.dimensiondelvers.config.ClientConfig;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
+import com.dimensiondelvers.dimensiondelvers.world.level.RiftDimensionSpecialEffects;
+import com.dimensiondelvers.dimensiondelvers.world.level.RiftDimensionType;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -23,6 +25,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -57,6 +60,7 @@ public class DimensionDelvers {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
+        modEventBus.addListener(this::registerDimEffects); // Register the dimension special effects
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
@@ -81,6 +85,10 @@ public class DimensionDelvers {
      */
     public static <T> TagKey<T> tagId(ResourceKey<? extends Registry<T>> registry, String name) {
         return TagKey.create(registry, id(name));
+    }
+
+    private void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
+        event.register(RiftDimensionType.RIFT_DIMENSION_RENDERER_KEY, new RiftDimensionSpecialEffects());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
