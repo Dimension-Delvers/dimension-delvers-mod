@@ -22,6 +22,8 @@ import com.wanderersoftherift.wotr.init.ModOngoingObjectiveTypes;
 import com.wanderersoftherift.wotr.init.ModOutputBlockStateTypes;
 import com.wanderersoftherift.wotr.init.ModProcessors;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
+import com.wanderersoftherift.wotr.world.level.RiftDimensionSpecialEffects;
+import com.wanderersoftherift.wotr.world.level.RiftDimensionType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -36,6 +38,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -75,6 +78,7 @@ public class WanderersOfTheRift {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
+        modEventBus.addListener(this::registerDimEffects); // Register the dimension special effects
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
@@ -99,6 +103,10 @@ public class WanderersOfTheRift {
      */
     public static <T> TagKey<T> tagId(ResourceKey<? extends Registry<T>> registry, String name) {
         return TagKey.create(registry, id(name));
+    }
+
+    private void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
+        event.register(RiftDimensionType.RIFT_DIMENSION_RENDERER_KEY, new RiftDimensionSpecialEffects());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
