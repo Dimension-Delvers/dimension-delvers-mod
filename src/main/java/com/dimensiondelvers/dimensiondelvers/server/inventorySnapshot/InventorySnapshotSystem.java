@@ -221,11 +221,11 @@ public class InventorySnapshotSystem {
                 }
 
                 if (retainingContainer && !retainItem) {
-                    ItemStack dropItem = containerItem.removeNonStackable();
-                    dropItem.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
-                    dropItems.addAll(createItemEntity(Collections.singletonList(dropItem)));
+                    List<ItemStack> dropItems = containerItem.remove();
+                    dropItems.forEach(x -> x.applyComponents(REMOVE_SNAPSHOT_ID_PATCH));
+                    this.dropItems.addAll(createItemEntity(dropItems));
                 } else if (!retainingContainer && retainItem) {
-                    retainItems.add(containerItem.removeNonStackable());
+                    retainItems.addAll(containerItem.remove());
                 }
             }
         }

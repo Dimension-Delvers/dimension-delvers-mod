@@ -93,8 +93,16 @@ public final class ItemStackHandlerContainers {
         }
 
         @Override
-        public ItemStack removeNonStackable() {
-            return handler.extractItem(slot, handler.getStackInSlot(slot).getCount(), false);
+        public List<ItemStack> remove() {
+            List<ItemStack> result = new ArrayList<>();
+            ItemStack existing = handler.getStackInSlot(slot);
+            int amount = existing.getCount();
+            while (amount > existing.getMaxStackSize()) {
+                result.add(handler.extractItem(slot, existing.getMaxStackSize(), false));
+                amount -= existing.getMaxStackSize();
+            }
+            result.add(handler.extractItem(slot, amount, false));
+            return result;
         }
 
         @Override

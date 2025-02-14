@@ -23,9 +23,9 @@ public interface ContainerItemWrapper {
     List<ItemStack> split(int amount);
 
     /**
-     * @return Removes a non-stackable item from the container.
+     * @return Removes an item from the container.
      */
-    ItemStack removeNonStackable();
+    List<ItemStack> remove();
 
     /**
      * Applies a component patch to the container item

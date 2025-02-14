@@ -28,8 +28,8 @@ public class DirectContainerItemWrapper implements ContainerItemWrapper {
     }
 
     @Override
-    public ItemStack removeNonStackable() {
-        return item.copyAndClear();
+    public List<ItemStack> remove() {
+        return Collections.singletonList(item.copyAndClear());
     }
 
     @Override
