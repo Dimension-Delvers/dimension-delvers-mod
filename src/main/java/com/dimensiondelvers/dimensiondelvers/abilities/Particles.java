@@ -1,15 +1,24 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-public class Particles extends AbstractDurationAbility{
+public class Particles extends AbstractAbility{
     public Particles(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, false, true, false);
+    }
+
+    @Override
+    public MapCodec<? extends AbstractAbility> getCodec() {
+        return null;
     }
 
     @Override
@@ -35,6 +44,11 @@ public class Particles extends AbstractDurationAbility{
     @Override
     public void onDeactivate(Player p) {
         ((ServerPlayer)p).sendSystemMessage(Component.literal("You're no longer beautiful!"));
+    }
+
+    @Override
+    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+        return null;
     }
 
     @Override

@@ -71,7 +71,7 @@ public class NeoforgeClientEvents {
         int size = 18;
         for(AbstractAbility ability: COOLDOWN_ABILITIES)
         {
-            DeferredHolder<Attribute, RangedAttribute> cd = ((CooldownAbility)ability).GetCooldownLength();
+            DeferredHolder<Attribute, RangedAttribute> cd = ability.GetCooldownLength();
             if(cd != null)
             {
                 double totalCD = Minecraft.getInstance().player.getAttributeValue(cd);

@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -10,10 +11,15 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-public class Boost extends AbstractCooldownAbility {
+public class Boost extends AbstractAbility {
     public Boost(ResourceLocation abilityName) {
-        super(abilityName); //TODO look into using attributes for storing this data
+        super(abilityName, true, false, false); //TODO look into using attributes for storing this data
         setIcon(ResourceLocation.withDefaultNamespace("textures/mob_effect/wind_charged.png"));
+    }
+
+    @Override
+    public MapCodec<? extends AbstractAbility> getCodec() {
+        return null;
     }
 
     @Override
@@ -45,6 +51,11 @@ public class Boost extends AbstractCooldownAbility {
     @Override
     public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
         return AbilityAttributes.BOOST_COOLDOWN;
+    }
+
+    @Override
+    public void tick(Player p) {
+
     }
 
 

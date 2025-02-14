@@ -40,7 +40,7 @@ public class GameEvents {
                     ability.onDeactivate(p);
                 }
                 p.setData(DURATION_ATTACHMENTS.get(ability.getName()), Math.max(p.getData(DURATION_ATTACHMENTS.get(ability.getName())) - 1, 0)); //Decrease to the lowest value 0;
-                if(((DurationAbility)ability).isActive(p)) ((DurationAbility)ability).tick(p);
+                if(ability.isActive(p)) ability.tick(p);
             }
 
         }

@@ -1,19 +1,28 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class SummonArrow extends AbstractAbility {
     public SummonArrow(ResourceLocation location) {
-        super(location);
+        super(location, false, false, false);
     }
 
+
+    @Override
+    public MapCodec<? extends AbstractAbility> getCodec() {
+        return null;
+    }
 
     @Override
     public void OnActivate(Player p) {
@@ -36,6 +45,16 @@ public class SummonArrow extends AbstractAbility {
 
     @Override
     public void onDeactivate(Player p) {
+
+    }
+
+    @Override
+    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+        return null;
+    }
+
+    @Override
+    public void tick(Player p) {
 
     }
 

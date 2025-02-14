@@ -27,6 +27,7 @@ public class CommonModEvents {
     static void registerRegistries(NewRegistryEvent event) {
         event.register(AbilityRegistry.ABILITY_REGISTRY);
         event.register(UpgradeRegistry.UPGRADE_REGISTRY);
+        event.register(AbilityRegistry.ABILITY_TYPES_REGISTRY);
     }
 
     @SubscribeEvent

@@ -6,13 +6,14 @@ import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.types.DurationAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.types.ToggleAbility;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.registries.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,6 @@ import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.*
 public class ModAbilities {
 
     //This is a map of location to a specific attachment type for cooldowns
-
     //TODO look into optimizing this to not need the list or map, might be worth keeping the Location in the list, and then lookup from the Attachments registry.
     public static final HashMap<ResourceLocation, AttachmentType<Integer>> COOL_DOWN_ATTACHMENTS = new HashMap<>();
     public static List<AbstractAbility> COOLDOWN_ABILITIES = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ModAbilities {
     }
 
     private static void registerCooldowns(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
-        COOLDOWN_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter((abstractAbility -> abstractAbility instanceof CooldownAbility)).collect(Collectors.toList());
+        COOLDOWN_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::HasCooldown).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: COOLDOWN_ABILITIES)
         {
             DimensionDelvers.LOGGER.info("Adding Cool down for: " + abstractAbility.getName());
@@ -95,7 +95,7 @@ public class ModAbilities {
     }
 
     private static void registerToggles(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
-        TOGGLE_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(abstractAbility -> abstractAbility instanceof ToggleAbility).collect(Collectors.toList());
+        TOGGLE_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::IsToggle).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: TOGGLE_ABILITIES)
         {
             DimensionDelvers.LOGGER.info("Adding Toggle for: " + abstractAbility.getName());
@@ -108,7 +108,7 @@ public class ModAbilities {
     }
 
     private static void registerDurationAbilities(RegisterEvent.RegisterHelper<AttachmentType<?>> registry) {
-        DURATION_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(abstractAbility -> abstractAbility instanceof DurationAbility).collect(Collectors.toList());
+        DURATION_ABILITIES = ABILITY_REGISTRY_DEF.getRegistry().get().stream().filter(AbstractAbility::HasDuration).collect(Collectors.toList());
         for(AbstractAbility abstractAbility: DURATION_ABILITIES)
         {
             DimensionDelvers.LOGGER.info("Adding Duration for: " + abstractAbility.getName());

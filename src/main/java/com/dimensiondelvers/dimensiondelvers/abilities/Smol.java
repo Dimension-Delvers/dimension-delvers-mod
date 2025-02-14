@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.abilities;
 import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,10 +16,15 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
 
-public class Smol extends AbstractDurationAbility implements CooldownAbility {
+public class Smol extends AbstractAbility {
     public Smol(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, true, true, false);
         this.setIcon(ResourceLocation.withDefaultNamespace("textures/mob_effect/infested.png"));
+    }
+
+    @Override
+    public MapCodec<? extends AbstractAbility> getCodec() {
+        return null;
     }
 
     /*

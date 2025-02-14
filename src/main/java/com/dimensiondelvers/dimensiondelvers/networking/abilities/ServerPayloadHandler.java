@@ -26,9 +26,9 @@ public class ServerPayloadHandler {
         }
         else
         {
-            if(abilility instanceof ToggleAbility)
+            if(abilility.IsToggle())
             {
-                if(!((ToggleAbility)abilility).IsToggled(context.player()))
+                if(!abilility.IsToggled(context.player()))
                 {
                     abilility.OnActivate(context.player());
                 }
@@ -37,7 +37,7 @@ public class ServerPayloadHandler {
                     abilility.onDeactivate(context.player());
                 }
 
-                if(abilility.CanPlayerUse(context.player())) ((ToggleAbility)abilility).Toggle(context.player());
+                if(abilility.CanPlayerUse(context.player())) abilility.Toggle(context.player());
             }
             else
             {
@@ -45,7 +45,6 @@ public class ServerPayloadHandler {
             }
         }
 //        DimensionDelvers.LOGGER.info(ability.ability_location());
-        //TODO summon arrow here
     }
 
     public static void handleUpgradeMenuOnServer(final OpenUpgradeMenu menu, final IPayloadContext context)

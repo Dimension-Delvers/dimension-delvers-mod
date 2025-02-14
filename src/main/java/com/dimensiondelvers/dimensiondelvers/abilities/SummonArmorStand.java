@@ -1,16 +1,25 @@
 package com.dimensiondelvers.dimensiondelvers.abilities;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-public class SummonArmorStand extends AbstractToggleAbility {
+public class SummonArmorStand extends AbstractAbility {
     public SummonArmorStand(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, false, false, true);
+    }
+
+    @Override
+    public MapCodec<? extends AbstractAbility> getCodec() {
+        return null;
     }
 
     @Override
@@ -39,6 +48,16 @@ public class SummonArmorStand extends AbstractToggleAbility {
         ArmorStand stand = p.level().getEntitiesOfClass(ArmorStand.class, AABB.ofSize(p.position(), 100,100,100)).stream().filter(ent -> ent.getName().getString().equalsIgnoreCase("TEST-"+p.getName().getString())).toList().getFirst();
 
         if(stand != null) stand.kill((ServerLevel) stand.level());
+
+    }
+
+    @Override
+    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+        return null;
+    }
+
+    @Override
+    public void tick(Player p) {
 
     }
 
