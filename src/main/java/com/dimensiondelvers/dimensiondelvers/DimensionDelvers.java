@@ -3,7 +3,7 @@ package com.dimensiondelvers.dimensiondelvers;
 import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
-import com.dimensiondelvers.dimensiondelvers.interop.sophisticated_backpacks.SophisticatedBackpackInterop;
+import com.dimensiondelvers.dimensiondelvers.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -76,9 +75,7 @@ public class DimensionDelvers {
     }
 
     private void modInterop(final FMLCommonSetupEvent event) {
-        ModList.get().getModContainerById("sophisticatedbackpacks").ifPresent(x -> {
-            SophisticatedBackpackInterop.load();
-        });
+        ModList.get().getModContainerById("sophisticatedbackpacks").ifPresent(x -> SophisticatedBackpackInterop.load());
     }
 
     @SubscribeEvent

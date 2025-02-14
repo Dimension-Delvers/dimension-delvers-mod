@@ -1,4 +1,4 @@
-package com.dimensiondelvers.dimensiondelvers.interop.sophisticated_backpacks;
+package com.dimensiondelvers.dimensiondelvers.interop.sophisticatedbackpacks;
 
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.ContainerItemWrapper;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.ContainerType;
