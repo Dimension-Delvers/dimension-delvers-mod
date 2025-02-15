@@ -24,6 +24,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
             helper.getVariants().forEach((variant, block) -> dropSelf(block.get()));
         });
         dropSelf(ModBlocks.RIFT_CHEST.get());
+        dropSelf(ModBlocks.RIFT_PORTAL_BLOCK.get());
     }
 
     @Override

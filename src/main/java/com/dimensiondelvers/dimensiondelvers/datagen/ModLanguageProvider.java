@@ -29,6 +29,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.DEV_BLOCK, "Dev Block");
         addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
+        addBlock(ModBlocks.RIFT_PORTAL_BLOCK, "Rift Portal");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
