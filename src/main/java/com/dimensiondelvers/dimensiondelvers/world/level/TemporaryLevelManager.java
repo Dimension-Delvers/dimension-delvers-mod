@@ -81,6 +81,7 @@ public class TemporaryLevelManager {
         NeoForge.EVENT_BUS.post(new LevelEvent.Load(level));
         PacketDistributor.sendToAllPlayers(new S2CLevelListUpdatePacket(id, false));
         TemporaryLevelManager.levels.add(level);
+        level.setBlock(new BlockPos(0,-64,0), ModBlocks.RIFT_PORTAL_BLOCK.get().defaultBlockState(), 3);
         return level;
     }
 

@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.block.RiftPortalBlock;
 import com.dimensiondelvers.dimensiondelvers.block.RuneAnvilBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -36,6 +37,16 @@ public class ModBlocks {
                     .strength(2.5F)
                     .sound(SoundType.METAL)
             )
+    );
+
+    public static final DeferredBlock<RiftPortalBlock> RIFT_PORTAL_BLOCK = BLOCKS.register(
+        "rift_portal",
+        () -> new RiftPortalBlock(BlockBehaviour.Properties.of()
+            .setId(blockId("rift_portal"))
+            .explosionResistance(3600000F)
+            .strength(2.5F)
+            .sound(SoundType.METAL)
+        )
     );
 
     private static ResourceKey<Block> blockId(String name) {

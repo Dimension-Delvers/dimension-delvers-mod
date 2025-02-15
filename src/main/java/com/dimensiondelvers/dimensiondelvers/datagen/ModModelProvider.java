@@ -35,6 +35,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.EXAMPLE_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
+        blockModels.createTrivialCube(ModBlocks.RIFT_PORTAL_BLOCK.get());
 
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
 

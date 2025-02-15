@@ -35,6 +35,11 @@ public class ModItems {
             ModBlocks.RUNE_ANVIL_BLOCK
     );
 
+    public static final DeferredItem<BlockItem> RIFT_PORTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+        "rift_portal",
+        ModBlocks.RIFT_PORTAL_BLOCK
+    );
+
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem(
             "example_item",
             new Item.Properties().food(new FoodProperties.Builder()
