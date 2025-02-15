@@ -4,6 +4,7 @@ import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.config.ClientConfig;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
+import com.dimensiondelvers.dimensiondelvers.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -57,6 +59,7 @@ public class DimensionDelvers {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
+        modEventBus.addListener(this::modInterop);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
@@ -92,6 +95,10 @@ public class DimensionDelvers {
         LOGGER.info("{} {}", Config.magicNumberIntroduction, Config.magicNumber);
 
         // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+    }
+
+    private void modInterop(final FMLCommonSetupEvent event) {
+        ModList.get().getModContainerById("sophisticatedbackpacks").ifPresent(x -> SophisticatedBackpackInterop.load());
     }
 
     @SubscribeEvent
