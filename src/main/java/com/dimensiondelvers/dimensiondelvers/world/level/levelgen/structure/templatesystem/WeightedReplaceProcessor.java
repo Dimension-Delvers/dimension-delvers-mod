@@ -1,7 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem;
 
-import com.dimensiondelvers.dimensiondelvers.util.OpenSimplex2F;
 import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.ProcessorUtil;
+import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.StructureRandomType;
 import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.WeightedBlockstateEntry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -21,40 +21,37 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.dimensiondelvers.dimensiondelvers.init.ModProcessors.WEIGHTED_REPLACE;
+import static com.dimensiondelvers.dimensiondelvers.world.level.levelgen.structure.templatesystem.util.StructureRandomType.RANDOM_TYPE_CODEC;
 
 public class WeightedReplaceProcessor extends StructureProcessor {
     public static final MapCodec<WeightedReplaceProcessor> CODEC = RecordCodecBuilder.mapCodec(builder ->
             builder.group(
                     WeightedBlockstateEntry.CODEC.listOf().fieldOf("gradient_list").forGetter(WeightedReplaceProcessor::getWeightList),
-                    Codec.INT.optionalFieldOf("seed_adjustment", 0).forGetter(WeightedReplaceProcessor::getSeedAdjustment),
-                    BuiltInRegistries.BLOCK.byNameCodec().fieldOf("to_replace").forGetter(WeightedReplaceProcessor::getToReplace)
+                    BuiltInRegistries.BLOCK.byNameCodec().fieldOf("to_replace").forGetter(WeightedReplaceProcessor::getToReplace),
+                    RANDOM_TYPE_CODEC.optionalFieldOf("random_type", StructureRandomType.BLOCK).forGetter(WeightedReplaceProcessor::getStructureRandomType),
+                    Codec.LONG.optionalFieldOf("seed_adjustment", 6551687435L).forGetter(WeightedReplaceProcessor::getSeedAdjustment)
             ).apply(builder, WeightedReplaceProcessor::new));
 
     private final List<WeightedBlockstateEntry> weightList;
-    private final int seedAdjustment;
     private final Block toReplace;
+    private final StructureRandomType structureRandomType;
+    private final long seedAdjustment;
 
-    protected static Map<Long, OpenSimplex2F> noiseGenSeeds = new HashMap<>();
-
-    public WeightedReplaceProcessor(List<WeightedBlockstateEntry> weightList, int seedAdjustment, Block toReplace) {
+    public WeightedReplaceProcessor(List<WeightedBlockstateEntry> weightList, Block toReplace, StructureRandomType structureRandomType, long seedAdjustment) {
         this.weightList = weightList;
-        this.seedAdjustment = seedAdjustment;
         this.toReplace = toReplace;
-    }
-
-    public OpenSimplex2F getNoiseGen(long seed) {
-        return noiseGenSeeds.computeIfAbsent(seed, OpenSimplex2F::new);
+        this.structureRandomType = structureRandomType;
+        this.seedAdjustment = seedAdjustment;
     }
 
     @Override
     public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos piecePos, BlockPos structurePos, StructureTemplate.StructureBlockInfo rawBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         BlockState blockstate = blockInfo.state();
         BlockPos blockPos = blockInfo.pos();
+        ProcessorUtil.getRandom(structureRandomType, blockPos, piecePos, structurePos, world, seedAdjustment);
         if (!blockstate.is(toReplace)) {
             return blockInfo;
         }
@@ -78,7 +75,7 @@ public class WeightedReplaceProcessor extends StructureProcessor {
     private BlockState getReplacementBlock(BlockPos blockPos, LevelReader world) {
         if (world instanceof WorldGenLevel worldGenLevel) {
             return WeightedRandom.getRandomItem(
-                    ((WorldGenLevel) world).getRandom(),
+                    worldGenLevel.getRandom(),
                     weightList
             ).orElse(new WeightedBlockstateEntry(null, Weight.of(1))).getBlockState();
         }
@@ -94,7 +91,11 @@ public class WeightedReplaceProcessor extends StructureProcessor {
         return weightList;
     }
 
-    public int getSeedAdjustment() {
+    public StructureRandomType getStructureRandomType() {
+        return structureRandomType;
+    }
+
+    public long getSeedAdjustment() {
         return seedAdjustment;
     }
 
