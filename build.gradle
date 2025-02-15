@@ -97,6 +97,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 
 dependencies {
+    implementation "maven.modrinth:sophisticated-core:${sophisticated_core_version}"
+    implementation "maven.modrinth:sophisticated-backpacks:${sophisticated_backpacks_version}"
+
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -132,7 +135,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
                              mod_license            : mod_license,
                              mod_version            : mod_version,
                              mod_authors            : mod_authors,
-                             mod_description        : mod_description]
+                             mod_description        : mod_description,
+                             sophisticated_backpacks_version_range : sophisticated_backpacks_version_range]
     inputs.properties replaceProperties
     expand replaceProperties
     from "src/main/templates"
