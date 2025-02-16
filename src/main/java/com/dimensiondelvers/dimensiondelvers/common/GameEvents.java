@@ -1,7 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.common;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerCooldownData;
 import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerDurationData;
@@ -10,20 +9,20 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.Optional;
 
 import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.DATA_PACK_ABILITY_REG_KEY;
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.DURATION_ATTACHMENTS;
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class GameEvents {
 
-    //TODO This is purely placeholder, find a better way to handle this, because currently each player is looking against every ability.
-    //TODO find a way to track each individual players ability (saving this into the player shouldn't be too hard)
+    //TODO This probably placeholder, maybe find a better way to handle this
+    /*
+     * This ticks for each player to reduce their overall cooldowns, and durations.
+     */
     @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Post event)
     {
@@ -48,20 +47,12 @@ public class GameEvents {
 
     }
 
-//    @SubscribeEvent
-//    public static void levelLoaded(LevelEvent.Load levelEvent)
-//    {
-//        if(levelEvent.getLevel().isClientSide()) return;
-//
-//        DimensionDelvers.LOGGER.info("Datapack exists: " + String.valueOf(levelEvent.getLevel().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent()));
-//
-//    }
 
     //TODO look into where to better handle this, we want to register unlocks for abilities
     @SubscribeEvent
     public static void serverLoaded(ServerStartingEvent event)
     {
-        DimensionDelvers.LOGGER.info("Server loaded pack exists: " + String.valueOf( event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent()));
+        DimensionDelvers.LOGGER.info("Server loaded pack exists: " + event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent());
         if(event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent())
         {
             for(AbstractAbility ability: event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).get())

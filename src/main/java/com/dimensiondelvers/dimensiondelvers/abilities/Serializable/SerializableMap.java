@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.*;
@@ -14,7 +15,7 @@ public class SerializableMap implements INBTSerializable<CompoundTag> {
 
 
     @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
         final CompoundTag cooldowns = new CompoundTag();
         for(ResourceLocation loc: hashmap.keySet()) {
 //            final CompoundTag abilityCooldown = new CompoundTag();
@@ -25,7 +26,7 @@ public class SerializableMap implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
+    public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag compoundTag) {
         hashmap.clear();
         for(String key :compoundTag.getAllKeys())
         {

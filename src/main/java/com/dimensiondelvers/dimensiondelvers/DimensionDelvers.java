@@ -68,7 +68,6 @@ public class DimensionDelvers {
         //TODO look into moving these, idk how this would handle if other mods want to add their own abilities, probably fine but not POC worth
 //        AbilityRegistry.ABILITY_REGISTRY_DEF.register(modEventBus);
         AbilityRegistry.ABILITY_TYPES.register(modEventBus);
-        AbilityRegistry.ATTACHMENT_TYPES.register(modEventBus);
         ModAbilities.ATTACHMENT_TYPES.register(modEventBus);
 
         UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(modEventBus);

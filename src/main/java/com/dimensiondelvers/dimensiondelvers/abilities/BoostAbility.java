@@ -19,12 +19,12 @@ public class BoostAbility extends AbstractAbility {
 
     Holder<Attribute> boostStrength;
     public BoostAbility(ResourceLocation abilityName) {
-        super(abilityName); //TODO look into using attributes for storing this data
+        super(abilityName);
         setIcon(ResourceLocation.withDefaultNamespace("textures/mob_effect/wind_charged.png"));
     }
 
     public BoostAbility(ResourceLocation abilityName, DeferredHolder<Attribute, RangedAttribute> cooldown) {
-        super(abilityName); //TODO look into using attributes for storing this data
+        super(abilityName);
         setIcon(ResourceLocation.withDefaultNamespace("textures/mob_effect/wind_charged.png"));
     }
 
@@ -47,6 +47,7 @@ public class BoostAbility extends AbstractAbility {
                     RangedAttribute.CODEC.fieldOf("strength").forGetter(BoostAbility::getBoostStrength)
             ).apply(instance, BoostAbility::new)
     );
+
     @Override
     public void OnActivate(Player p) {
         if(this.CanPlayerUse(p)) {

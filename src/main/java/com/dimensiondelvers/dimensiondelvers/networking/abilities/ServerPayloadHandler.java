@@ -65,12 +65,10 @@ public class ServerPayloadHandler {
 
     public static void handleUpgradeOnServer(final ClaimUpgrade upgrade, final IPayloadContext context)
     {
-
         AbstractUpgrade abstractUpgrade = UpgradeRegistry.UPGRADE_REGISTRY.get(ResourceLocation.parse(upgrade.upgrade_location())).get().value();
         if(!abstractUpgrade.isUnlocked(context.player()))
         {
             abstractUpgrade.unlock(context.player());
-
         }
         else
         {

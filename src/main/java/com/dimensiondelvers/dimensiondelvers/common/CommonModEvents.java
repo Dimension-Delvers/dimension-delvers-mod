@@ -28,11 +28,13 @@ public class CommonModEvents {
 
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
-//        event.register(AbilityRegistry.ABILITY_REGISTRY);
         event.register(UpgradeRegistry.UPGRADE_REGISTRY);
         event.register(AbilityRegistry.ABILITY_TYPES_REGISTRY);
     }
 
+    /**
+     * @param event DataPackRegistryEvent.NewRegistry Is for registering our datapack registry for storing abilities
+     */
     @SubscribeEvent
     public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
         DimensionDelvers.LOGGER.info("Registering Datapacks");
@@ -52,6 +54,9 @@ public class CommonModEvents {
         );
     }
 
+    /* TODO: Look into a better way to handle this once we decide how we want to approach scaling abilities
+     * This adds the different attributes to the player for the different abilities
+     */
     @SubscribeEvent
     static void addAttributesToPlayer(EntityAttributeModificationEvent event)
     {

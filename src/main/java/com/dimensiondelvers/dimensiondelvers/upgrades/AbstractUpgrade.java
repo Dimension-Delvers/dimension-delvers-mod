@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractUpgrade {
+    /*
+     * TODO look into making these data-packable as well. Should not be too hard if we rely on attributes. Otherwise, idk maybe Patrigan has insight
+     */
     private ResourceLocation upgradeName;
     private List<AbstractUpgrade> requiredUpgrades;
     public AbstractUpgrade(ResourceLocation upgradeName)

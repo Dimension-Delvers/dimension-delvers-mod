@@ -18,8 +18,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.function.Function;
 
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.TOGGLE_ATTACHMENTS;
-
 public abstract class AbstractAbility {
 
     public abstract MapCodec<? extends AbstractAbility> getCodec();
@@ -32,9 +30,6 @@ public abstract class AbstractAbility {
     public AbstractAbility(ResourceLocation abilityName)
     {
         this.name = abilityName;
-//        this.hasCooldown = hasCooldown;
-//        this.hasDuration = hasDuration;
-//        this.isToggle = isToggle;
     }
     public void setIcon(ResourceLocation location)
     {
@@ -132,14 +127,15 @@ public abstract class AbstractAbility {
         this.isToggle = shouldToggle;
     }
     public boolean IsToggled(Player p) {
-        return ModAbilities.TOGGLE_ATTACHMENTS.containsKey(this.getName()) && p.getData(ModAbilities.TOGGLE_ATTACHMENTS.get(this.getName()));
+//        return ModAbilities.TOGGLE_ATTACHMENTS.containsKey(this.getName()) && p.getData(ModAbilities.TOGGLE_ATTACHMENTS.get(this.getName()));
+        return false;
     }
 
     public void Toggle(Player p)
     {
         //Change the toggle to opposite and then tell the player
-        if(TOGGLE_ATTACHMENTS.containsKey(this.getName())) p.setData(TOGGLE_ATTACHMENTS.get(this.getName()), !IsToggled(p));
-        PacketDistributor.sendToPlayer((ServerPlayer) p, new ToggleState(this.getName().toString(), IsToggled(p)));
+//        if(TOGGLE_ATTACHMENTS.containsKey(this.getName())) p.setData(TOGGLE_ATTACHMENTS.get(this.getName()), !IsToggled(p));
+//        PacketDistributor.sendToPlayer((ServerPlayer) p, new ToggleState(this.getName().toString(), IsToggled(p)));
     }
 
 }
