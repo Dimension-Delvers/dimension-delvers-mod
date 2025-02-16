@@ -1,5 +1,7 @@
-package com.dimensiondelvers.dimensiondelvers.abilities;
+package com.dimensiondelvers.dimensiondelvers.abilities.old;
 
+import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
+import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -11,9 +13,9 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-public class Particles extends AbstractAbility{
+public class Particles extends AbstractAbility {
     public Particles(ResourceLocation abilityName) {
-        super(abilityName, false, true, false);
+        super(abilityName);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class Particles extends AbstractAbility{
     }
 
     @Override
-    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+    public DeferredHolder<Attribute, RangedAttribute> getCooldownLength() {
         return null;
     }
 

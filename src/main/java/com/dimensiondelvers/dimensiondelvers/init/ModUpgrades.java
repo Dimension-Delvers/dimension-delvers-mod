@@ -29,38 +29,38 @@ public class ModUpgrades {
 //            UnlockAllAbilitiesUpgrade::new
 //    );
 
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_BOOST = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/unlock_boost",
-            UnlockAbilityUpgrade.UnlockBoostAbilityUpgrade::new
-    );
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_BOOST = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/unlock_boost",
+//            UnlockAbilityUpgrade.UnlockBoostAbilityUpgrade::new
+//    );
 
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_ARROW = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/unlock_arrow",
-            UnlockAbilityUpgrade.UnlockArrowAbilityUpgrade::new
-    );
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_HEAL = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/unlock_heal",
-            UnlockAbilityUpgrade.UnlockHealAbilityUpgrade::new
-    );
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_ARMOR_STAND = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/unlock_armor_stand",
-            UnlockAbilityUpgrade.UnlockArmorStandAbilityUpgrade::new
-    );
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_ARROW = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/unlock_arrow",
+//            UnlockAbilityUpgrade.UnlockArrowAbilityUpgrade::new
+//    );
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_HEAL = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/unlock_heal",
+//            UnlockAbilityUpgrade.UnlockHealAbilityUpgrade::new
+//    );
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_ARMOR_STAND = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/unlock_armor_stand",
+//            UnlockAbilityUpgrade.UnlockArmorStandAbilityUpgrade::new
+//    );
+//
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_PRETTY = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/unlock_be_pretty",
+//            UnlockAbilityUpgrade.UnlockPrettyAbilityUpgrade::new
+//    );
 
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_PRETTY = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/unlock_be_pretty",
-            UnlockAbilityUpgrade.UnlockPrettyAbilityUpgrade::new
-    );
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UPGRADE_BOOST = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/upgrade_boost",
+//            ReduceBoostCoolDownUpgrade::new
+//    );
 
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UPGRADE_BOOST = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/upgrade_boost",
-            ReduceBoostCoolDownUpgrade::new
-    );
-
-    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_SMOL = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
-            "upgrade/unlock_be_smol",
-            UnlockAbilityUpgrade.UnlockSmolAbilityUpgrade::new
-    );
+//    public static final DeferredHolder<AbstractUpgrade, AbstractUpgrade> UNLOCK_SMOL = UpgradeRegistry.UPGRADE_REGISTRY_DEF.register(
+//            "upgrade/unlock_be_smol",
+//            UnlockAbilityUpgrade.UnlockSmolAbilityUpgrade::new
+//    );
 
 
 

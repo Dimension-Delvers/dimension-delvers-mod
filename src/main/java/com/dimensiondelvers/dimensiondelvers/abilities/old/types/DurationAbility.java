@@ -1,4 +1,4 @@
-package com.dimensiondelvers.dimensiondelvers.abilities.types;
+package com.dimensiondelvers.dimensiondelvers.abilities.old.types;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;

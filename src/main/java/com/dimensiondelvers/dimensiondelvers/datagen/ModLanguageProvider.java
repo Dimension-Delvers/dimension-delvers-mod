@@ -32,30 +32,30 @@ public class ModLanguageProvider extends LanguageProvider {
         // Adds a generic translation
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
 
-        add(ModAbilities.BOOST_ABILITY.get().GetTranslationString(), "Boost Ability");
-        add(ModAbilities.SUMMON_ARROW_ABILITY.get().GetTranslationString(), "Arrow Ability");
-        add(ModAbilities.HEAL_ABILITY.get().GetTranslationString(), "Heal Ability");
-        add(ModAbilities.ARMOR_STAND_ABILITY.get().GetTranslationString(), "Armorstand Ability");
-        add(ModAbilities.BE_PRETTY.get().GetTranslationString(), "Pretty Ability");
-        add(ModAbilities.BE_SMOL.get().GetTranslationString(), "Smol Ability");
+//        add(ModAbilities.BOOST_ABILITY.get().GetTranslationString(), "Boost Ability");
+//        add(ModAbilities.SUMMON_ARROW_ABILITY.get().GetTranslationString(), "Arrow Ability");
+//        add(ModAbilities.HEAL_ABILITY.get().GetTranslationString(), "Heal Ability");
+//        add(ModAbilities.ARMOR_STAND_ABILITY.get().GetTranslationString(), "Armorstand Ability");
+//        add(ModAbilities.BE_PRETTY.get().GetTranslationString(), "Pretty Ability");
+//        add(ModAbilities.BE_SMOL.get().GetTranslationString(), "Smol Ability");
 
 
-        add(ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Unlock Boost");
-        add("tooltip." + ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Press I to boost!");
-        add(ModUpgrades.UNLOCK_ARROW.get().getTranslationString(), "Unlock Arrow");
-        add("tooltip." + ModUpgrades.UNLOCK_ARROW.get().getTranslationString(), "Press O to shoot!");
-        add(ModUpgrades.UNLOCK_HEAL.get().getTranslationString(), "Unlock Heal");
-        add("tooltip." + ModUpgrades.UNLOCK_HEAL.get().getTranslationString(), "Press U to heal!");
-        add(ModUpgrades.UNLOCK_ARMOR_STAND.get().getTranslationString(), "Unlock Armorstand");
-        add("tooltip." + ModUpgrades.UNLOCK_ARMOR_STAND.get().getTranslationString(), "Press Y to toggle Armorstand!");
-        add(ModUpgrades.UNLOCK_PRETTY.get().getTranslationString(), "Unlock Beauty");
-        add("tooltip." + ModUpgrades.UNLOCK_PRETTY.get().getTranslationString(), "Press H to be temporarily pretty (Check F5)");
+//        add(ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Unlock Boost");
+//        add("tooltip." + ModUpgrades.UNLOCK_BOOST.get().getTranslationString(), "Press I to boost!");
+//        add(ModUpgrades.UNLOCK_ARROW.get().getTranslationString(), "Unlock Arrow");
+//        add("tooltip." + ModUpgrades.UNLOCK_ARROW.get().getTranslationString(), "Press O to shoot!");
+//        add(ModUpgrades.UNLOCK_HEAL.get().getTranslationString(), "Unlock Heal");
+//        add("tooltip." + ModUpgrades.UNLOCK_HEAL.get().getTranslationString(), "Press U to heal!");
+//        add(ModUpgrades.UNLOCK_ARMOR_STAND.get().getTranslationString(), "Unlock Armorstand");
+//        add("tooltip." + ModUpgrades.UNLOCK_ARMOR_STAND.get().getTranslationString(), "Press Y to toggle Armorstand!");
+//        add(ModUpgrades.UNLOCK_PRETTY.get().getTranslationString(), "Unlock Beauty");
+//        add("tooltip." + ModUpgrades.UNLOCK_PRETTY.get().getTranslationString(), "Press H to be temporarily pretty (Check F5)");
 
-        add(ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Boost Faster");
-        add("tooltip." + ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Makes your boost cooldown faster");
+//        add(ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Boost Faster");
+//        add("tooltip." + ModUpgrades.UPGRADE_BOOST.get().getTranslationString(), "Makes your boost cooldown faster");
 
-        add(ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Unlock Smol");
-        add("tooltip." + ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Press L to shrink!");
+//        add(ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Unlock Smol");
+//        add("tooltip." + ModUpgrades.UNLOCK_SMOL.get().getTranslationString(), "Press L to shrink!");
 
         add("ability.dimensiondelvers.cannot_unlock", "You must unlock the following to get this boost: ");
         add("container.dimensiondelvers.rune_anvil", "Rune Anvil");

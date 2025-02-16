@@ -1,0 +1,12 @@
+{
+  "type": "dimensiondelvers:apply_modifier",
+  "ability_name": "dimensiondelvers:be_smol",
+  "duration": "dimensiondelvers:smol_time",
+  "cooldown": "dimensiondelvers:smol_time",
+  "attribute": "minecraft:scale",
+  "modifier": {
+    "id": "dimensiondelvers:make_smol",
+    "amount": -0.75,
+    "operation": "add_multiplied_total"
+  }
+}

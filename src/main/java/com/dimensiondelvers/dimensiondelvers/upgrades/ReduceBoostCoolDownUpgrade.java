@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 public class ReduceBoostCoolDownUpgrade extends AbstractUpgrade{
     public ReduceBoostCoolDownUpgrade(ResourceLocation upgradeName) {
         super(upgradeName);
-        addRequirement(ModUpgrades.UNLOCK_BOOST.get());
+//        addRequirement(ModUpgrades.UNLOCK_BOOST.get());
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ReduceBoostCoolDownUpgrade extends AbstractUpgrade{
         if(isUnlocked(p)) {
             p.getAttribute(AbilityAttributes.BOOST_COOLDOWN).addOrReplacePermanentModifier(AbilityAttributes.BOOST_COOLDOWN_MODIFIER);
             //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
-            ((ServerPlayer)p).sendSystemMessage(Component.literal("You upgraded ").append(Component.translatable(ModAbilities.BOOST_ABILITY.get().GetTranslationString())));
+//            ((ServerPlayer)p).sendSystemMessage(Component.literal("You upgraded ").append(Component.translatable(ModAbilities.BOOST_ABILITY.get().GetTranslationString())));
 
         }
 
@@ -29,7 +29,7 @@ public class ReduceBoostCoolDownUpgrade extends AbstractUpgrade{
     @Override
     public void remove(Player p) {
         p.getAttribute(AbilityAttributes.BOOST_COOLDOWN).removeModifier(AbilityAttributes.BOOST_COOLDOWN_MODIFIER);
-        ((ServerPlayer)p).sendSystemMessage(Component.literal("You degraded ").append(Component.translatable(ModAbilities.BOOST_ABILITY.get().GetTranslationString())));
+//        ((ServerPlayer)p).sendSystemMessage(Component.literal("You degraded ").append(Component.translatable(ModAbilities.BOOST_ABILITY.get().GetTranslationString())));
         super.remove(p);
     }
 }

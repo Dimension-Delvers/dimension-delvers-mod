@@ -15,10 +15,10 @@ public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
 
     @Override
     public void unlock(Player p) {
-        for(AbstractAbility abstractAbility: AbilityRegistry.ABILITY_REGISTRY.stream().toList())
-        {
-            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), true);
-        }
+//        for(AbstractAbility abstractAbility: AbilityRegistry.ABILITY_REGISTRY.stream().toList())
+//        {
+//            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), true);
+//        }
         //Use translateable string when you can! This is purely for showing the system, and im too lazy for datagen stuff
         ((ServerPlayer)p).sendSystemMessage(Component.literal("You unlocked all abilities!"));
         super.unlock(p);
@@ -27,10 +27,10 @@ public class UnlockAllAbilitiesUpgrade extends AbstractUpgrade{
     @Override
     public void remove(Player p) {
 
-        for(AbstractAbility abstractAbility: AbilityRegistry.ABILITY_REGISTRY.stream().toList())
-        {
-            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), false);
-        }
+//        for(AbstractAbility abstractAbility: AbilityRegistry.ABILITY_REGISTRY.stream().toList())
+//        {
+//            p.setData(ModAbilities.ABILITY_UNLOCKED_ATTACHMENTS.get(abstractAbility.getName()), false);
+//        }
         ((ServerPlayer)p).sendSystemMessage(Component.literal("You removed all abilities!"));
         super.remove(p);
     }

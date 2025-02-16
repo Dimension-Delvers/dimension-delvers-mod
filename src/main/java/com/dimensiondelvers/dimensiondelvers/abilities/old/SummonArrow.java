@@ -1,5 +1,6 @@
-package com.dimensiondelvers.dimensiondelvers.abilities;
+package com.dimensiondelvers.dimensiondelvers.abilities.old;
 
+import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class SummonArrow extends AbstractAbility {
     public SummonArrow(ResourceLocation location) {
-        super(location, false, false, false);
+        super(location);
     }
 
 
@@ -49,7 +50,7 @@ public class SummonArrow extends AbstractAbility {
     }
 
     @Override
-    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+    public DeferredHolder<Attribute, RangedAttribute> getCooldownLength() {
         return null;
     }
 

@@ -1,6 +1,6 @@
 //package com.dimensiondelvers.dimensiondelvers.abilities;
 //
-//import com.dimensiondelvers.dimensiondelvers.abilities.types.ToggleAbility;
+//import com.dimensiondelvers.dimensiondelvers.abilities.old.types.ToggleAbility;
 //import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 //import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;
 //import com.mojang.serialization.MapCodec;

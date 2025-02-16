@@ -1,0 +1,6 @@
+{
+  "type": "dimensiondelvers:projectile",
+  "ability_name": "dimensiondelvers:summon_arrow",
+  "cooldown": "dimensiondelvers:boost_cooldown",
+  "projectile": "minecraft:arrow"
+}

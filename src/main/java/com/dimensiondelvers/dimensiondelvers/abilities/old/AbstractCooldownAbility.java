@@ -1,6 +1,6 @@
 //package com.dimensiondelvers.dimensiondelvers.abilities;
 //
-//import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
+//import com.dimensiondelvers.dimensiondelvers.abilities.old.types.CooldownAbility;
 //import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 //import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
 //import com.mojang.serialization.MapCodec;

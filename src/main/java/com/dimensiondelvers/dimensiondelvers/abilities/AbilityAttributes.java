@@ -28,7 +28,8 @@ public class AbilityAttributes {
 
     public static final DeferredHolder<Attribute, RangedAttribute> HEAL_EFFECTIVENESS = REGISTRY.register("heal_amount", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".heal_amount", 3, 0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, RangedAttribute> HEAL_COOLDOWN = REGISTRY.register("heal_cooldown", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".heal_cooldown", 10, 0, Integer.MAX_VALUE));
-    public static final DeferredHolder<Attribute, RangedAttribute> BOOST_STRENGTH = REGISTRY.register("boost_strength", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".boost_strength", 10, 0, Integer.MAX_VALUE));
+    public static final DeferredHolder<Attribute, RangedAttribute> BOOST_STRENGTH = REGISTRY.register("small_boost_strength", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".small_boost_strength", 5, 0, Integer.MAX_VALUE));
+    public static final DeferredHolder<Attribute, RangedAttribute> LARGE_BOOST_STRENGTH = REGISTRY.register("large_boost_strength", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".large_boost_strength", 10, 0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, RangedAttribute> BOOST_COOLDOWN = REGISTRY.register("boost_cooldown", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".boost_cooldown", 20, 0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, RangedAttribute> SMOL_COOLDOWN = REGISTRY.register("smol_cooldown", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".smol_cooldown", 10, 0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, RangedAttribute> ARROW_COOLDOWN = REGISTRY.register("arrow_cooldown", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".arrow_cooldown", 3, 0, Integer.MAX_VALUE));

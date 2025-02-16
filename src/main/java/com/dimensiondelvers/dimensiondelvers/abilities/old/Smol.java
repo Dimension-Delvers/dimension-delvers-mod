@@ -1,9 +1,11 @@
-package com.dimensiondelvers.dimensiondelvers.abilities;
+package com.dimensiondelvers.dimensiondelvers.abilities.old;
 
-import com.dimensiondelvers.dimensiondelvers.abilities.types.CooldownAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
+import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +20,7 @@ import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_
 
 public class Smol extends AbstractAbility {
     public Smol(ResourceLocation abilityName) {
-        super(abilityName, true, true, false);
+        super(abilityName);
         this.setIcon(ResourceLocation.withDefaultNamespace("textures/mob_effect/infested.png"));
     }
 
@@ -34,7 +36,7 @@ public class Smol extends AbstractAbility {
     @Override
     public void OnActivate(Player p) {
         if(this.CanPlayerUse(p) && !this.IsOnCooldown(p)) {
-            this.SetCooldown(p, GetCooldownLength());
+            this.setCooldown(p, getCooldownLength());
             this.setDuration(p, AbilityAttributes.SMOL_TIME); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
 
             ((ServerPlayer)p).sendSystemMessage(Component.literal("Making you smol!"));
@@ -66,13 +68,13 @@ public class Smol extends AbstractAbility {
     }
 
     @Override
-    public void SetCooldown(Player p, DeferredHolder<Attribute, RangedAttribute> attribute) {
+    public void setCooldown(Player p, Holder<Attribute> attribute) {
         p.setData(COOL_DOWN_ATTACHMENTS.get(this.getName()), (int)p.getAttributeValue(attribute) * 20); //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
-        PacketDistributor.sendToPlayer((ServerPlayer) p, new CooldownActivated(this.getName().toString(),(int)p.getAttributeValue(GetCooldownLength()) * 20 ));
+        PacketDistributor.sendToPlayer((ServerPlayer) p, new CooldownActivated(this.getName().toString(),(int)p.getAttributeValue(getCooldownLength()) * 20 ));
     }
 
     @Override
-    public DeferredHolder<Attribute, RangedAttribute> GetCooldownLength() {
+    public DeferredHolder<Attribute, RangedAttribute> getCooldownLength() {
         return AbilityAttributes.SMOL_COOLDOWN;
     }
 }

@@ -1,0 +1,6 @@
+{
+  "type": "dimensiondelvers:boost",
+  "ability_name": "dimensiondelvers:mega_boost",
+  "cooldown": "dimensiondelvers:boost_cooldown",
+  "strength": "dimensiondelvers:large_boost_strength"
+}

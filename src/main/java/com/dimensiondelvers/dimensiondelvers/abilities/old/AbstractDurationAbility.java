@@ -1,6 +1,6 @@
 //package com.dimensiondelvers.dimensiondelvers.abilities;
 //
-//import com.dimensiondelvers.dimensiondelvers.abilities.types.DurationAbility;
+//import com.dimensiondelvers.dimensiondelvers.abilities.old.types.DurationAbility;
 //import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 //import com.mojang.serialization.MapCodec;
 //import net.minecraft.resources.ResourceLocation;

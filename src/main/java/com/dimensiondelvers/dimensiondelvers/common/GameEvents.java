@@ -1,14 +1,22 @@
 package com.dimensiondelvers.dimensiondelvers.common;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
-import com.dimensiondelvers.dimensiondelvers.abilities.types.DurationAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerCooldownData;
+import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerDurationData;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.COOL_DOWN_ATTACHMENTS;
+
+import java.util.Optional;
+
+import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.DATA_PACK_ABILITY_REG_KEY;
 import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.DURATION_ATTACHMENTS;
 
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.GAME)
@@ -21,30 +29,45 @@ public class GameEvents {
     {
         Player p = event.getEntity();
 
-        //TODO look into adding a method to the ability to handle reducing its own cool down.
-        for(AbstractAbility ability: ModAbilities.COOLDOWN_ABILITIES)
+        PlayerCooldownData cooldowns = p.getData(ModAbilities.COOL_DOWNS);
+        cooldowns.reduceCooldowns();
+        p.setData(ModAbilities.COOL_DOWNS, cooldowns);
+
+        //TODO replace this with similar situation to above
+        PlayerDurationData durations = p.getData(ModAbilities.DURATIONS);
+        Optional<Registry<AbstractAbility>> abilities = p.level().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY);
+        if(abilities.isPresent())
         {
-            if(p.hasData(COOL_DOWN_ATTACHMENTS.get(ability.getName())))
+            for(AbstractAbility onDuration: durations.getRunningDurations(abilities.get()))
             {
-                p.setData(COOL_DOWN_ATTACHMENTS.get(ability.getName()), Math.max(p.getData(COOL_DOWN_ATTACHMENTS.get(ability.getName())) - 1, 0)); //Decrease to the lowest value 0;
+                if(durations.get(onDuration.getName()) == 1) { onDuration.onDeactivate(p);}
+                if(onDuration.isActive(p)) onDuration.tick(p);
             }
-
         }
+        durations.reduceDurations();
 
-        for(AbstractAbility ability: ModAbilities.DURATION_ABILITIES)
+    }
+
+//    @SubscribeEvent
+//    public static void levelLoaded(LevelEvent.Load levelEvent)
+//    {
+//        if(levelEvent.getLevel().isClientSide()) return;
+//
+//        DimensionDelvers.LOGGER.info("Datapack exists: " + String.valueOf(levelEvent.getLevel().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent()));
+//
+//    }
+
+    //TODO look into where to better handle this, we want to register unlocks for abilities
+    @SubscribeEvent
+    public static void serverLoaded(ServerStartingEvent event)
+    {
+        DimensionDelvers.LOGGER.info("Server loaded pack exists: " + String.valueOf( event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent()));
+        if(event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).isPresent())
         {
-            if(p.hasData(DURATION_ATTACHMENTS.get(ability.getName())))
+            for(AbstractAbility ability: event.getServer().registryAccess().lookup(DATA_PACK_ABILITY_REG_KEY).get())
             {
-                if(p.getData(DURATION_ATTACHMENTS.get(ability.getName())) == 1)
-                {
-                    ability.onDeactivate(p);
-                }
-                p.setData(DURATION_ATTACHMENTS.get(ability.getName()), Math.max(p.getData(DURATION_ATTACHMENTS.get(ability.getName())) - 1, 0)); //Decrease to the lowest value 0;
-                if(ability.isActive(p)) ability.tick(p);
+                DimensionDelvers.LOGGER.info(ability.getName().toString());
             }
-
         }
-
-        //TODO send cooldown packet to player to sync their GUI but gotta find where so I am not just sending a whole packet every tick lmao (maybe send over total cooldown time when the ability is activated???)
     }
 }

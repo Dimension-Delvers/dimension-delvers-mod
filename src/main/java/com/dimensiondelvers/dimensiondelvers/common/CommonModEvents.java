@@ -5,12 +5,15 @@ import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.Registries.UpgradeRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.AbilityAttributes;
+import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
+import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.ModPayloads;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 
@@ -25,9 +28,28 @@ public class CommonModEvents {
 
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
-        event.register(AbilityRegistry.ABILITY_REGISTRY);
+//        event.register(AbilityRegistry.ABILITY_REGISTRY);
         event.register(UpgradeRegistry.UPGRADE_REGISTRY);
         event.register(AbilityRegistry.ABILITY_TYPES_REGISTRY);
+    }
+
+    @SubscribeEvent
+    public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
+        DimensionDelvers.LOGGER.info("Registering Datapacks");
+        event.dataPackRegistry(
+                // The registry key.
+                AbilityRegistry.DATA_PACK_ABILITY_REG_KEY,
+                // The codec of the registry contents.
+                AbstractAbility.DIRECT_CODEC,
+                // The network codec of the registry contents. Often identical to the normal codec.
+                // May be a reduced variant of the normal codec that omits data that is not needed on the client.
+                // May be null. If null, registry entries will not be synced to the client at all.
+                // May be omitted, which is functionally identical to passing null (a method overload
+                // with two parameters is called that passes null to the normal three parameter method).
+                AbstractAbility.DIRECT_CODEC
+                // A consumer which configures the constructed registry via the RegistryBuilder.
+                // May be omitted, which is functionally identical to passing builder -> {}.
+        );
     }
 
     @SubscribeEvent
@@ -48,6 +70,10 @@ public class CommonModEvents {
 
         if(!event.has(EntityType.PLAYER, AbilityAttributes.BOOST_STRENGTH)) {
             event.add(EntityType.PLAYER, AbilityAttributes.BOOST_STRENGTH);
+        }
+
+        if(!event.has(EntityType.PLAYER, AbilityAttributes.LARGE_BOOST_STRENGTH)) {
+            event.add(EntityType.PLAYER, AbilityAttributes.LARGE_BOOST_STRENGTH);
         }
 
         if(!event.has(EntityType.PLAYER, AbilityAttributes.BOOST_COOLDOWN)) {

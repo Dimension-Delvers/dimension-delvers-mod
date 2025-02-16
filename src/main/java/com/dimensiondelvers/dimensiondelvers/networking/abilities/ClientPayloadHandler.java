@@ -1,6 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.networking.abilities;
 
-import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerCooldownData;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;
@@ -12,7 +12,9 @@ import static com.dimensiondelvers.dimensiondelvers.init.ModAbilities.TOGGLE_ATT
 public class ClientPayloadHandler {
     public static void handleCooldownOnClient(final CooldownActivated cooldownActivated, final IPayloadContext context)
     {
-        context.player().setData(ModAbilities.COOL_DOWN_ATTACHMENTS.get(ResourceLocation.parse(cooldownActivated.ability_location())), cooldownActivated.cooldownLength());
+        PlayerCooldownData cooldowns = context.player().getData(ModAbilities.COOL_DOWNS);
+        cooldowns.setCooldown(ResourceLocation.parse(cooldownActivated.ability_location()), cooldownActivated.cooldownLength());
+        context.player().setData(ModAbilities.COOL_DOWNS, cooldowns);
     }
 
     public static void handleToggleOnClient(final ToggleState toggle, final IPayloadContext context)
