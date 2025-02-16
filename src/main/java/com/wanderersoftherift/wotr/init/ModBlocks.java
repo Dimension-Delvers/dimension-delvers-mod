@@ -3,6 +3,7 @@ package com.wanderersoftherift.wotr.init;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.block.BlockFamilyHelper;
 import com.wanderersoftherift.wotr.block.RiftChestEntityBlock;
+import com.wanderersoftherift.wotr.block.RiftSpawnerBlock;
 import com.wanderersoftherift.wotr.block.RuneAnvilBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -46,6 +47,15 @@ public class ModBlocks {
             )
     );
 
+    public static final DeferredBlock<RiftSpawnerBlock> RIFT_SPAWNER = registerBlock(
+            "rift_spawner",
+            () -> new RiftSpawnerBlock(BlockBehaviour.Properties.of()
+                    .setId(blockId("rift_spawner"))
+                    .strength(2.0f)
+                    .sound(SoundType.STONE)
+            )
+    );
+
     public static final BlockFamilyHelper PROCESSOR_BLOCK_1 = registerBuildingBlock("processor_block_1", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_1"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_2 = registerBuildingBlock("processor_block_2", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_2"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_3 = registerBuildingBlock("processor_block_3", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_3"))));
@@ -60,7 +70,7 @@ public class ModBlocks {
     public static final BlockFamilyHelper PROCESSOR_BLOCK_12 = registerBuildingBlock("processor_block_12", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_12"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_13 = registerBuildingBlock("processor_block_13", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_13"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_14 = registerBuildingBlock("processor_block_14", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_14"))));
-    
+
     private static BlockFamilyHelper registerBuildingBlock(String id, Supplier<Block> sup) {
         DeferredBlock<Block> block = registerBlock(id, sup);
         BlockFamilyHelper buildingBlockHelper = new BlockFamilyHelper.Builder()

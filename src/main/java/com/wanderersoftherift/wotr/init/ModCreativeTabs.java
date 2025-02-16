@@ -18,9 +18,9 @@ public class ModCreativeTabs {
                             .withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> ModItems.EXAMPLE_ITEM.get().getDefaultInstance())
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.EXAMPLE_ITEM);
-                                ModItems.BLOCK_ITEMS.forEach(item -> output.accept(item.get()));
-
+                                output.accept(ModItems.RIFT_KEY);
                                 output.accept(ModItems.RUNEGEM);
+                                ModItems.BLOCK_ITEMS.forEach(item -> output.accept(item.get()));
                             }).build());
 
 }
