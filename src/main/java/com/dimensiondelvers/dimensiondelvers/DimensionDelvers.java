@@ -1,11 +1,14 @@
 package com.dimensiondelvers.dimensiondelvers;
 
+import com.dimensiondelvers.dimensiondelvers.client.ModShaders;
+import com.dimensiondelvers.dimensiondelvers.client.render.RiftEntranceRenderer;
 import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ShaderProgram;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -23,7 +26,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -50,6 +55,7 @@ public class DimensionDelvers {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModLootModifiers.GLOBAL_LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         ModModifierEffects.MODIFIER_EFFECT_TYPES.register(modEventBus);
+        ModEntityTypes.ENTITIES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (DimensionDelvers) to respond directly to events.
@@ -136,6 +142,16 @@ public class DimensionDelvers {
         @SubscribeEvent
         private static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(ModEntityTypes.RIFT_ENTRANCE.get(), RiftEntranceRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerShaderPrograms(RegisterShadersEvent event) {
+            event.registerShader(ModShaders.ENTITY_PARALLAX_SHADER);
         }
     }
 }
