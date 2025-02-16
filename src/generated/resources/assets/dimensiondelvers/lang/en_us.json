@@ -129,10 +129,13 @@
   "block.dimensiondelvers.processor_block_9_trapdoor": "Processor Block 9 Trapdoor",
   "block.dimensiondelvers.processor_block_9_wall": "Processor Block 9 Wall",
   "block.dimensiondelvers.rift_chest": "Rift Chest",
+  "block.dimensiondelvers.rift_spawner": "Rift Spawner",
   "block.dimensiondelvers.rune_anvil": "Rune Anvil",
   "container.dimensiondelvers.rift_chest": "Rift Chest",
   "container.dimensiondelvers.rune_anvil": "Rune Anvil",
+  "entity.dimensiondelvers.rift_entrance": "Rift Entrance",
   "item.dimensiondelvers.example_item": "Example Item",
+  "item.dimensiondelvers.rift_key": "Rift Key",
   "item.dimensiondelvers.runegem": "Runegem",
   "itemGroup.dimensiondelvers": "Dimension Delvers"
 }
