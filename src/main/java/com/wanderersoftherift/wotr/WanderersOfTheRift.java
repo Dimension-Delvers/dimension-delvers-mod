@@ -1,5 +1,7 @@
 package com.wanderersoftherift.wotr;
 
+import com.wanderersoftherift.wotr.client.ModShaders;
+import com.wanderersoftherift.wotr.client.render.entity.RiftEntranceRenderer;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
@@ -23,7 +25,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -50,6 +54,7 @@ public class WanderersOfTheRift {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModLootModifiers.GLOBAL_LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         ModModifierEffects.MODIFIER_EFFECT_TYPES.register(modEventBus);
+        ModEntityTypes.ENTITIES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Wotr) to respond directly to events.
@@ -137,6 +142,16 @@ public class WanderersOfTheRift {
         @SubscribeEvent
         private static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(ModEntityTypes.RIFT_ENTRANCE.get(), RiftEntranceRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerShaderPrograms(RegisterShadersEvent event) {
+            event.registerShader(ModShaders.RIFT_PORTAL);
         }
     }
 }
