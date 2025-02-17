@@ -6,7 +6,8 @@
   "refmap": "dimensiondelvers.refmap.json",
   "mixins": [
     "AccessorMinecraftServer",
-    "MixinEnchantingTableBlock"
+    "MixinEnchantingTableBlock",
+    "MixinMinecraftServer"
   ],
   "client": [
   ],
