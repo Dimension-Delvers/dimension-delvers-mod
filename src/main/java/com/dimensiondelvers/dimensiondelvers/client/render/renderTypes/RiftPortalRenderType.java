@@ -3,7 +3,6 @@ package com.dimensiondelvers.dimensiondelvers.client.render.renderTypes;
 import com.dimensiondelvers.dimensiondelvers.client.ModShaders;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -39,5 +38,6 @@ public final class RiftPortalRenderType {
         return RIFT_PORTAL.apply(outerTexture, innerTexture);
     }
 
-    private RiftPortalRenderType() {}
+    private RiftPortalRenderType() {
+    }
 }
