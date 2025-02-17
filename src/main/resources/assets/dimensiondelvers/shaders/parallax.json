@@ -62,13 +62,11 @@
       ]
     },
     {
-      "name": "ModelOffset",
+      "name": "Scale",
       "type": "float",
-      "count": 3,
+      "count": 1,
       "values": [
-        0,
-        0,
-        0
+        1
       ]
     }
   ]

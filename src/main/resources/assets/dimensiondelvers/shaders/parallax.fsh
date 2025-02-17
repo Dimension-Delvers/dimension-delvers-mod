@@ -4,6 +4,7 @@
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
+uniform float Scale;
 
 in vec2 texCoord0;
 in vec4 texProj0;
@@ -19,11 +20,10 @@ void main() {
 #endif
 
     if (color.x < 0.1) {
-        // Move this calc to vertex
-        vec2 coords = (texProj0.xy / texProj0.w) - 0.5;
-        vec2 correctedCoords = clamp(vec2(coords.x, coords.y / texProj0.z) + 0.5, 0.0, 1.0);
+        vec2 centeredCoords = (texProj0.xy / texProj0.w) - 0.5;
+        vec2 texCoord1 = clamp(Scale * vec2(centeredCoords.x, centeredCoords.y / texProj0.z) + 0.5, 0.0, 1.0);
 
-        color = texture(Sampler1, correctedCoords);
+        color = texture(Sampler1, texCoord1);
     }
 
     fragColor = color;
