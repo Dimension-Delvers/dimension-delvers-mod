@@ -4,10 +4,11 @@
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
-uniform float Scale;
+uniform float InnerScale;
 
 in vec2 texCoord0;
 in vec4 texProj0;
+in vec4 texProj1;
 
 out vec4 fragColor;
 
@@ -21,8 +22,12 @@ void main() {
 
     if (color.x < 0.1) {
         vec2 centeredCoords = (texProj0.xy / texProj0.w) - 0.5;
-        vec2 texCoord1 = clamp(Scale * vec2(centeredCoords.x, centeredCoords.y / texProj0.z) + 0.5, 0.0, 1.0);
-
+        vec2 texCoord = InnerScale * vec2(centeredCoords.x, centeredCoords.y / texProj0.z) + 0.5;
+        if (texCoord.x > 1.0 || texCoord.x < 0.0) {
+            centeredCoords = (texProj1.xy / texProj1.w) - 0.5;
+            texCoord = InnerScale * vec2(centeredCoords.x, centeredCoords.y / texProj1.z) + 0.5;
+        }
+        vec2 texCoord1 = clamp(texCoord, 0.0, 1.0);
         color = texture(Sampler1, texCoord1);
     }
 

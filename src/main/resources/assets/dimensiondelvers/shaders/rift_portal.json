@@ -1,6 +1,6 @@
 {
-  "vertex": "dimensiondelvers:parallax",
-  "fragment": "dimensiondelvers:parallax",
+  "vertex": "dimensiondelvers:rift_portal",
+  "fragment": "dimensiondelvers:rift_portal",
   "defines": {
     "values": {
       "ALPHA_CUTOUT": "0.1"
@@ -62,11 +62,11 @@
       ]
     },
     {
-      "name": "Scale",
+      "name": "InnerScale",
       "type": "float",
       "count": 1,
       "values": [
-        1
+        1.5
       ]
     }
   ]

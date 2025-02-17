@@ -8,7 +8,6 @@ import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ShaderProgram;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -151,7 +150,7 @@ public class DimensionDelvers {
 
         @SubscribeEvent
         public static void registerShaderPrograms(RegisterShadersEvent event) {
-            event.registerShader(ModShaders.ENTITY_PARALLAX_SHADER);
+            event.registerShader(ModShaders.RIFT_PORTAL);
         }
     }
 }

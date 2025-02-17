@@ -6,5 +6,5 @@ import net.minecraft.client.renderer.ShaderDefines;
 import net.minecraft.client.renderer.ShaderProgram;
 
 public class ModShaders {
-    public static ShaderProgram ENTITY_PARALLAX_SHADER = new ShaderProgram(DimensionDelvers.id("parallax"), DefaultVertexFormat.NEW_ENTITY, ShaderDefines.EMPTY);
+    public static ShaderProgram RIFT_PORTAL = new ShaderProgram(DimensionDelvers.id("rift_portal"), DefaultVertexFormat.NEW_ENTITY, ShaderDefines.EMPTY);
 }
