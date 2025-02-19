@@ -75,7 +75,7 @@ public abstract class AbstractAbility {
         //We only need to set a cooldown for ones that have cooldowns
         if(this.hasCooldown())
         {
-            DimensionDelvers.LOGGER.info("Setting cooldown for: " + this.getName());
+            DimensionDelvers.LOGGER.info("Setting cooldown for: " + this.getName() + " length: " + (int)p.getAttributeValue(attribute) * 20);
             PlayerCooldownData cooldowns = p.getData(ModAbilities.COOL_DOWNS);
             cooldowns.setCooldown(this.getName(), (int)p.getAttributeValue(attribute) * 20);
             p.setData(ModAbilities.COOL_DOWNS, cooldowns);

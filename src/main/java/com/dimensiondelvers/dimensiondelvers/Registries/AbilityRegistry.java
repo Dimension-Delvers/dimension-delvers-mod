@@ -5,6 +5,7 @@ import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.ApplyModifierAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.BoostAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.ProjectileAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.effects.*;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -41,4 +42,24 @@ public class AbilityRegistry {
             "projectile", ()-> ProjectileAbility.CODEC);
     public static final Supplier<MapCodec<? extends AbstractAbility>> MODIFIER_ABILITY_TYPE = ABILITY_TYPES.register(
             "apply_modifier", ()-> ApplyModifierAbility.CODEC);
+
+    public static final ResourceKey<Registry<MapCodec<? extends AbstractEffect>>> EFFECTS_REG_KEY = ResourceKey.createRegistryKey(DimensionDelvers.id("effects"));
+
+    public static final Registry<MapCodec<? extends AbstractEffect>> EFFECTS_REGISTRY = new RegistryBuilder<>(EFFECTS_REG_KEY).create();
+
+    public static final DeferredRegister<MapCodec<? extends AbstractEffect>> EFFECTS = DeferredRegister.create(
+            EFFECTS_REG_KEY, DimensionDelvers.MODID
+    );
+
+    public static final Supplier<MapCodec<? extends AbstractEffect>> HEAL_EFFECT = EFFECTS.register(
+            "heal_effect", ()-> HealEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends DamageEffect>> DAMAGE_EFFECT = EFFECTS.register(
+            "damage_effect", ()-> DamageEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends MovementEffect>> MOVEMENT_EFFECT = EFFECTS.register(
+            "movement_effect", ()-> MovementEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends TeleportEffect>> TELE_EFFECT = EFFECTS.register(
+            "teleport_effect", ()-> TeleportEffect.CODEC);
 }

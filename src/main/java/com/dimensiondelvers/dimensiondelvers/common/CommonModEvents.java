@@ -30,11 +30,9 @@ public class CommonModEvents {
     static void registerRegistries(NewRegistryEvent event) {
         event.register(UpgradeRegistry.UPGRADE_REGISTRY);
         event.register(AbilityRegistry.ABILITY_TYPES_REGISTRY);
+        event.register(AbilityRegistry.EFFECTS_REGISTRY);
     }
 
-    /**
-     * @param event DataPackRegistryEvent.NewRegistry Is for registering our datapack registry for storing abilities
-     */
     @SubscribeEvent
     public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
         DimensionDelvers.LOGGER.info("Registering Datapacks");
@@ -44,7 +42,7 @@ public class CommonModEvents {
                 // The codec of the registry contents.
                 AbstractAbility.DIRECT_CODEC,
                 // The network codec of the registry contents. Often identical to the normal codec.
-                // May be a reduced variant of the normal codec that omits data that is not needed on the client.
+                // Maybe a reduced variant of the normal codec that omits data that is not needed on the client.
                 // May be null. If null, registry entries will not be synced to the client at all.
                 // May be omitted, which is functionally identical to passing null (a method overload
                 // with two parameters is called that passes null to the normal three parameter method).

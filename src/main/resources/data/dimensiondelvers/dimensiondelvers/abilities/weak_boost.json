@@ -2,5 +2,39 @@
   "type": "dimensiondelvers:boost",
   "ability_name": "dimensiondelvers:weak_boost",
   "cooldown": "dimensiondelvers:boost_cooldown",
-  "strength": "dimensiondelvers:small_boost_strength"
+  "strength": "dimensiondelvers:small_boost_strength",
+  "effects":
+  [
+    {
+      "type": "dimensiondelvers:movement_effect",
+      "targeting": {
+        "target_type": "self",
+        "range": 0
+      },
+      "velocity": [0,2.1,0],
+      "effects": [
+
+      ]
+    },
+    {
+      "type": "dimensiondelvers:damage_effect",
+      "targeting": {
+        "target_type": "area",
+        "range": 5
+      },
+      "effects": [
+        {
+          "type": "dimensiondelvers:movement_effect",
+          "targeting": {
+            "target_type": "self",
+            "range": 0
+          },
+          "velocity": [0,1,0],
+          "effects": [
+
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -2,5 +2,35 @@
   "type": "dimensiondelvers:boost",
   "ability_name": "dimensiondelvers:mega_boost",
   "cooldown": "dimensiondelvers:boost_cooldown",
-  "strength": "dimensiondelvers:large_boost_strength"
+  "strength": "dimensiondelvers:large_boost_strength",
+  "effects":
+  [
+    {
+      "type": "dimensiondelvers:heal_effect",
+      "targeting": {
+        "target_type": "raycast",
+        "range": 200
+      },
+
+      "effects":
+      [
+        {
+          "type": "dimensiondelvers:teleport_effect",
+          "targeting": {
+            "target_type": "raycast",
+            "range": 200
+          },
+          "tele_info": {
+            "teleport_target": "user",
+            "position": [0,0,0]
+          },
+
+          "effects": [
+
+          ]
+        }
+
+      ]
+    }
+  ]
 }
