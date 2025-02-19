@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.abilities.effects;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.abilities.Targetting.EffectTargeting;
+import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo;
 import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.TeleportInfo;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.portal.TeleportTransition;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.IntFunction;
 
 public class TeleportEffect extends AbstractEffect{
@@ -32,7 +34,8 @@ public class TeleportEffect extends AbstractEffect{
             instance.group(
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
-                    TeleportInfo.CODEC.fieldOf("tele_info").forGetter(TeleportEffect::getTeleportInfo)
+                    TeleportInfo.CODEC.fieldOf("tele_info").forGetter(TeleportEffect::getTeleportInfo),
+                    Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles)
             ).apply(instance, TeleportEffect::new)
     );
 
@@ -41,8 +44,8 @@ public class TeleportEffect extends AbstractEffect{
         return CODEC;
     }
 
-    public TeleportEffect(EffectTargeting targeting, List<AbstractEffect> effects, TeleportInfo teleInfo) {
-        super(targeting, effects);
+    public TeleportEffect(EffectTargeting targeting, List<AbstractEffect> effects, TeleportInfo teleInfo, Optional<ParticleInfo> particles) {
+        super(targeting, effects, particles);
         this.teleInfo = teleInfo;
     }
 
@@ -52,9 +55,11 @@ public class TeleportEffect extends AbstractEffect{
 
     public void apply(Entity user) {
         List<Entity> targets = getTargeting().getTargets(user);
-
+        applyPariclesToUser(user);
         DimensionDelvers.LOGGER.info(user.getDirection().getName());
-        for(Entity e: targets) {
+        for(Entity target: targets) {
+            applyPariclesToTarget(target);
+
             switch(teleInfo.getTarget()) {
                 case USER -> {
                     DimensionDelvers.LOGGER.info("Teleporting Self");
@@ -67,11 +72,11 @@ public class TeleportEffect extends AbstractEffect{
                     DimensionDelvers.LOGGER.info("Teleporting Target");
                     if(teleInfo.isRelative().isEmpty() || (teleInfo.isRelative().isPresent() && teleInfo.isRelative().get()))
                     {
-                        e.teleportRelative(teleInfo.getPosition().x, teleInfo.getPosition().y, teleInfo.getPosition().z);
+                        target.teleportRelative(teleInfo.getPosition().x, teleInfo.getPosition().y, teleInfo.getPosition().z);
                     }
                     else
                     {
-                        e.teleportTo(teleInfo.getPosition().x, teleInfo.getPosition().y, teleInfo.getPosition().z);
+                        target.teleportTo(teleInfo.getPosition().x, teleInfo.getPosition().y, teleInfo.getPosition().z);
                     }
                 }
             }
@@ -79,7 +84,7 @@ public class TeleportEffect extends AbstractEffect{
 
 
             //Then apply children affects to targets
-            super.apply(e);
+            super.apply(target);
         }
     }
 

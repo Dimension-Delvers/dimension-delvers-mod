@@ -3,6 +3,7 @@ package com.dimensiondelvers.dimensiondelvers.abilities.effects;
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.abilities.BoostAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.Targetting.EffectTargeting;
+import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 import java.util.List;
+import java.util.Optional;
 
 public class HealEffect extends AbstractEffect{
 
@@ -19,7 +21,8 @@ public class HealEffect extends AbstractEffect{
     public static final MapCodec<HealEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
-                    Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects)
+                    Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
+                    Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles)
             ).apply(instance, HealEffect::new)
     );
 
@@ -28,21 +31,23 @@ public class HealEffect extends AbstractEffect{
         return CODEC;
     }
 
-    public HealEffect(EffectTargeting targeting, List<AbstractEffect> effects) {
-        super(targeting, effects);
+    public HealEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles) {
+        super(targeting, effects, particles);
     }
 
     public void apply(Entity user) {
         List<Entity> targets = getTargeting().getTargets(user);
+        applyPariclesToUser(user);
         //TODO do thing for this
         DimensionDelvers.LOGGER.info("Healing: " + targets.size());
-        for(Entity e: targets) {
-            if(e instanceof LivingEntity living)
+        for(Entity target: targets) {
+            applyPariclesToTarget(target);
+            if(target instanceof LivingEntity living)
             {
                 living.heal(2.5f);
             }
             //Then apply children affects to targets
-            super.apply(e);
+            super.apply(target);
         }
     }
 }

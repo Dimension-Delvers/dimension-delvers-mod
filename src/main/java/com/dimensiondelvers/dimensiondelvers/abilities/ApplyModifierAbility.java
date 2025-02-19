@@ -13,12 +13,8 @@ public class ApplyModifierAbility extends AbstractAbility{
     private AttributeModifier modifier;
     private Holder<Attribute> attribute;
 
-    public ApplyModifierAbility(ResourceLocation abilityName) {
-        super(abilityName);
-    }
-
     public ApplyModifierAbility(ResourceLocation abilityName, Holder<Attribute> cooldown, Holder<Attribute> duration, AttributeModifier modifier, Holder<Attribute> attribute) {
-        super(abilityName);
+        super(abilityName, null);
         this.cooldownAttribute = cooldown;
         this.durationAttribute = duration;
         this.modifier = modifier;

@@ -19,7 +19,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class Smol extends AbstractAbility {
     public Smol(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, null);
         this.setIcon(ResourceLocation.withDefaultNamespace("textures/mob_effect/infested.png"));
     }
 

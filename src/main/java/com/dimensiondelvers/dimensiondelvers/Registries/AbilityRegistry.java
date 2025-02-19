@@ -1,10 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.Registries;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.abilities.AbstractAbility;
-import com.dimensiondelvers.dimensiondelvers.abilities.ApplyModifierAbility;
-import com.dimensiondelvers.dimensiondelvers.abilities.BoostAbility;
-import com.dimensiondelvers.dimensiondelvers.abilities.ProjectileAbility;
+import com.dimensiondelvers.dimensiondelvers.abilities.*;
 import com.dimensiondelvers.dimensiondelvers.abilities.effects.*;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
@@ -36,12 +33,14 @@ public class AbilityRegistry {
     /*
      * This is where we register the different "types" of abilities that can be created and configured using datapacks
      */
-    public static final Supplier<MapCodec<? extends AbstractAbility>> BOOST_ABILITY_TYPE = ABILITY_TYPES.register(
-            "boost", ()-> BoostAbility.CODEC);
-    public static final Supplier<MapCodec<? extends AbstractAbility>> PROJECTILE_ABILITY_TYPE = ABILITY_TYPES.register(
-            "projectile", ()-> ProjectileAbility.CODEC);
-    public static final Supplier<MapCodec<? extends AbstractAbility>> MODIFIER_ABILITY_TYPE = ABILITY_TYPES.register(
-            "apply_modifier", ()-> ApplyModifierAbility.CODEC);
+//    public static final Supplier<MapCodec<? extends AbstractAbility>> BOOST_ABILITY_TYPE = ABILITY_TYPES.register(
+//            "boost", ()-> BoostAbility.CODEC);
+    public static final Supplier<MapCodec<? extends AbstractAbility>> STANDARD_ABILITY_TYPE = ABILITY_TYPES.register(
+            "standard_ability", ()-> StandardAbility.CODEC);
+//    public static final Supplier<MapCodec<? extends AbstractAbility>> PROJECTILE_ABILITY_TYPE = ABILITY_TYPES.register(
+//            "projectile", ()-> ProjectileAbility.CODEC);
+//    public static final Supplier<MapCodec<? extends AbstractAbility>> MODIFIER_ABILITY_TYPE = ABILITY_TYPES.register(
+//            "apply_modifier", ()-> ApplyModifierAbility.CODEC);
 
     public static final ResourceKey<Registry<MapCodec<? extends AbstractEffect>>> EFFECTS_REG_KEY = ResourceKey.createRegistryKey(DimensionDelvers.id("effects"));
 

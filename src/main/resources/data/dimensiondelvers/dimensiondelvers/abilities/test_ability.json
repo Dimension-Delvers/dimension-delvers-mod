@@ -1,0 +1,45 @@
+{
+  "type": "dimensiondelvers:standard_ability",
+  "ability_name": "dimensiondelvers:test_ability",
+  "cooldown": "dimensiondelvers:boost_cooldown",
+  "strength": "dimensiondelvers:large_boost_strength",
+  "effects":
+  [
+
+{
+  "type": "dimensiondelvers:heal_effect",
+  "targeting": {
+    "target_type": "raycast",
+    "range": 200
+  },
+
+  "effects":
+  [
+    {
+      "type": "dimensiondelvers:teleport_effect",
+      "targeting": {
+        "target_type": "raycast",
+        "range": 200
+      },
+      "tele_info": {
+        "teleport_target": "user",
+        "position": [0,0,0]
+      },
+
+      "effects": [
+
+      ],
+      "particles": {
+        "user": "minecraft:bubble",
+        "target": "minecraft:explosion"
+      }
+    }
+
+  ],
+  "particles": {
+    "user": "minecraft:bubble",
+    "target": "minecraft:explosion"
+  }
+}
+  ]
+}

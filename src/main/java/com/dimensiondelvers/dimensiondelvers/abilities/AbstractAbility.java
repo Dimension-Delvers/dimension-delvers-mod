@@ -4,6 +4,7 @@ import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry;
 import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerCooldownData;
 import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerDurationData;
+import com.dimensiondelvers.dimensiondelvers.abilities.effects.AbstractEffect;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
 import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;
@@ -16,9 +17,12 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.List;
 import java.util.function.Function;
 
 public abstract class AbstractAbility {
+
+    private List<AbstractEffect> effects;
 
     public abstract MapCodec<? extends AbstractAbility> getCodec();
     public static final Codec<AbstractAbility> DIRECT_CODEC = AbilityRegistry.ABILITY_TYPES_REGISTRY.byNameCodec().dispatch(AbstractAbility::getCodec, Function.identity());
@@ -27,9 +31,10 @@ public abstract class AbstractAbility {
     public Holder<Attribute> cooldownAttribute = null;
     public Holder<Attribute> durationAttribute = null;
     private boolean isToggle = false;
-    public AbstractAbility(ResourceLocation abilityName)
+    public AbstractAbility(ResourceLocation abilityName, List<AbstractEffect> effects)
     {
         this.name = abilityName;
+        this.effects = effects;
     }
     public void setIcon(ResourceLocation location)
     {
@@ -38,6 +43,9 @@ public abstract class AbstractAbility {
 
     public ResourceLocation getIcon() {
         return icon;
+    }
+    public List<AbstractEffect> getEffects() {
+        return this.effects;
     }
 
     public abstract void OnActivate(Player p);

@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class Heal extends AbstractAbility {
     public Heal(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, null);
     }
 
     @Override

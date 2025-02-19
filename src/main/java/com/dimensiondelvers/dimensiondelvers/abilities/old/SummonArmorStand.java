@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class SummonArmorStand extends AbstractAbility {
     public SummonArmorStand(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, null);
     }
 
     @Override

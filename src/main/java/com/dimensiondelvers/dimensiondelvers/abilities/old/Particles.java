@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class Particles extends AbstractAbility {
     public Particles(ResourceLocation abilityName) {
-        super(abilityName);
+        super(abilityName, null);
     }
 
     @Override

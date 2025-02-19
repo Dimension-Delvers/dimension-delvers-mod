@@ -1,12 +1,12 @@
 {
-  "type": "dimensiondelvers:boost",
+  "type": "dimensiondelvers:standard_ability",
   "ability_name": "dimensiondelvers:mega_boost",
   "cooldown": "dimensiondelvers:boost_cooldown",
   "strength": "dimensiondelvers:large_boost_strength",
   "effects":
   [
     {
-      "type": "dimensiondelvers:heal_effect",
+      "type": "dimensiondelvers:damage_effect",
       "targeting": {
         "target_type": "raycast",
         "range": 200
@@ -15,22 +15,23 @@
       "effects":
       [
         {
-          "type": "dimensiondelvers:teleport_effect",
+          "type": "dimensiondelvers:movement_effect",
           "targeting": {
-            "target_type": "raycast",
-            "range": 200
+            "target_type": "area",
+            "range": 5
           },
-          "tele_info": {
-            "teleport_target": "user",
-            "position": [0,0,0]
-          },
-
+          "velocity": [0,1,0],
           "effects": [
 
           ]
+
         }
 
-      ]
+      ],
+      "particles": {
+        "user": "minecraft:bubble",
+        "target": "minecraft:explosion"
+      }
     }
   ]
 }

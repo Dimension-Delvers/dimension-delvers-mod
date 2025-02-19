@@ -28,7 +28,7 @@ public class ProjectileAbility extends AbstractAbility{
     );
 
     public ProjectileAbility(ResourceLocation abilityName, Holder<Attribute> cooldown, ResourceLocation projectile) {
-        super(abilityName);
+        super(abilityName, null);
         this.cooldownAttribute = cooldown;
         this.projectile = projectile;
     }

@@ -16,7 +16,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class SummonArrow extends AbstractAbility {
     public SummonArrow(ResourceLocation location) {
-        super(location);
+        super(location, null);
     }
 
 
