@@ -11,34 +11,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.dimensiondelvers.dimensiondelvers.DimensionDelvers.tagId;
 
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(DimensionDelvers.MODID);
-
-
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
-            "example_block",
-            ModBlocks.EXAMPLE_BLOCK
-    );
-
-    public static final DeferredItem<BlockItem> DEV_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
-            "dev_block",
-            ModBlocks.DEV_BLOCK
-    );
-
-    public static final DeferredItem<BlockItem> RUNE_ANVIL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
-            "rune_anvil",
-            ModBlocks.RUNE_ANVIL_BLOCK
-    );
-
-    public static final DeferredItem<BlockItem> RIFT_CHEST_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
-            "rift_chest",
-            ModBlocks.RIFT_CHEST
-    );
+    public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
 
     public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem(
             "example_item",
@@ -57,5 +42,11 @@ public class ModItems {
                     .component(ModDataComponentType.RUNEGEM_DATA,
                             new RunegemData(RuneGemShape.CIRCLE, tagId(ModModifiers.MODIFIER_KEY, "raw_fire_rune"), RuneGemTier.RAW)))
     );
+
+    public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block){
+        DeferredItem<BlockItem> simpleBlockItem = ITEMS.registerSimpleBlockItem(id, block);
+        BLOCK_ITEMS.add(simpleBlockItem);
+        return simpleBlockItem;
+    }
 
 }

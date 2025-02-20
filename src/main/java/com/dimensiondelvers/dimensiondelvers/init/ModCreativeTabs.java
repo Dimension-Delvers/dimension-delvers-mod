@@ -18,11 +18,8 @@ public class ModCreativeTabs {
                             .title(Component.translatable("itemGroup.dimensiondelvers"))
                             .withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> ModItems.EXAMPLE_ITEM.get().getDefaultInstance())
                             .displayItems((parameters, output) -> {
-                                output.accept(ModItems.EXAMPLE_BLOCK_ITEM.get());
                                 output.accept(ModItems.EXAMPLE_ITEM);
-                                output.accept(ModItems.DEV_BLOCK_ITEM);
-                                output.accept(ModItems.RUNE_ANVIL_BLOCK_ITEM);
-                                output.accept(ModItems.RIFT_CHEST_BLOCK_ITEM);
+                                ModItems.BLOCK_ITEMS.forEach(item -> output.accept(item.get()));
 
                                 output.accept(ModItems.RUNEGEM);
                             }).build());

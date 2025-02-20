@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.datagen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.block.BlockFamilyHelper;
 import com.dimensiondelvers.dimensiondelvers.client.render.item.properties.select.SelectRuneGemShape;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
@@ -37,7 +38,6 @@ public class ModModelProvider extends ModelProvider {
     @Override
     protected void registerModels(BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.EXAMPLE_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
 
         ResourceLocation modelLoc = DimensionDelvers.id("block/rift_chest");
@@ -74,6 +74,12 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
 
         this.generateRunegemItem(ModItems.RUNEGEM.get(), itemModels);
+
+        ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> createModelsForBuildBlock(helper, blockModels, itemModels));
+    }
+
+    private void createModelsForBuildBlock(BlockFamilyHelper helper, BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        blockModels.family(helper.getBlock().get()).generateFor(helper.getFamily());
     }
 
     public void generateRunegemItem(Item item, ItemModelGenerators itemModels) {
