@@ -7,23 +7,12 @@ import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.TeleportInfo
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
-import net.minecraft.server.level.ServerChunkCache;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ByIdMap;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.chunk.ChunkSource;
-import net.minecraft.world.level.portal.TeleportTransition;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.IntFunction;
 
 public class TeleportEffect extends AbstractEffect{
     TeleportInfo teleInfo;

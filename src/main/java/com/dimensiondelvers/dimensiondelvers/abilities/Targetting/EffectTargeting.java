@@ -173,7 +173,7 @@ public class EffectTargeting {
         private final String name;
         private final int id;
 
-        private TargetingType(String name, int value) {
+        TargetingType(String name, int value) {
             this.name = name;
             this.id = value;
         }
