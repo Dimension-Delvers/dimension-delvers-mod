@@ -29,7 +29,9 @@ public class RiftEntranceRenderer extends EntityRenderer<RiftEntranceEntity, Ent
     @Override
     public void render(EntityRenderState state, PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.scale(3.0F, 3.0F, 3.0F);
+
+        poseStack.translate(0, 0.5f * state.boundingBoxHeight, 0);
+        poseStack.scale(state.boundingBoxHeight, state.boundingBoxHeight, state.boundingBoxHeight);
 
         // Face camera while remaining vertical
         Vector3f cameraPos = this.entityRenderDispatcher.camera.getPosition().toVector3f();

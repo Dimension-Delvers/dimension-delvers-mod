@@ -13,6 +13,7 @@ public class ModEntityTypes {
     public static final DeferredHolder<EntityType<?>, EntityType<RiftEntranceEntity>> RIFT_ENTRANCE = ENTITIES.registerEntityType(
             "rift_entrance",
             RiftEntranceEntity::new,
-            MobCategory.MISC);
+            MobCategory.MISC,
+            builder -> builder.sized(0.5f, 3f));
 
 }

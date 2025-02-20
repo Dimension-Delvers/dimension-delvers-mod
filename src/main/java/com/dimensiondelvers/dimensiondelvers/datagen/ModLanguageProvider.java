@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.datagen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
+import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -29,6 +30,8 @@ public class ModLanguageProvider extends LanguageProvider {
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
         addItem(ModItems.RUNEGEM, "Runegem");
+
+        addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 
 
         // Adds a generic translation
