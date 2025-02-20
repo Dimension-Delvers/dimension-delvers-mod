@@ -8,6 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
@@ -53,8 +54,9 @@ public class TeleportEffect extends AbstractEffect{
         return this.teleInfo;
     }
 
-    public void apply(Entity user) {
-        List<Entity> targets = getTargeting().getTargets(user);
+    @Override
+    public void apply(Entity user, List<BlockPos> blocks, Player caster) {
+        List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyPariclesToUser(user);
         DimensionDelvers.LOGGER.info(user.getDirection().getName());
         for(Entity target: targets) {
@@ -81,10 +83,14 @@ public class TeleportEffect extends AbstractEffect{
                 }
             }
 
-
-
             //Then apply children affects to targets
-            super.apply(target);
+            super.apply(target, getTargeting().getBlocks(user), caster);
+        }
+
+
+        if(targets.isEmpty())
+        {
+            super.apply(null, getTargeting().getBlocks(user), caster);
         }
     }
 

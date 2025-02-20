@@ -6,9 +6,11 @@ import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +33,9 @@ public class DamageEffect extends AbstractEffect{
         return CODEC;
     }
 
-    public void apply(Entity user) {
-        List<Entity> targets = getTargeting().getTargets(user);
+    @Override
+    public void apply(Entity user, List<BlockPos> blocks, Player caster) {
+        List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyPariclesToUser(user);
         //TODO do thing for this
         for(Entity target: targets) {
@@ -42,7 +45,12 @@ public class DamageEffect extends AbstractEffect{
                 livingTarget.hurtServer((ServerLevel) user.level(), user.damageSources().generic(), 2.5f);
             }
             //Then apply children affects to targets
-            super.apply(target);
+            super.apply(target, getTargeting().getBlocks(user), caster);
+        }
+
+        if(targets.isEmpty())
+        {
+            super.apply(null, getTargeting().getBlocks(user), caster);
         }
     }
 }

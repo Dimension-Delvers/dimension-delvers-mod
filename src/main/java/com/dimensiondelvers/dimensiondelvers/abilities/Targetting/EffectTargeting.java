@@ -1,23 +1,24 @@
 package com.dimensiondelvers.dimensiondelvers.abilities.Targetting;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.abilities.BoostAbility;
-import com.dimensiondelvers.dimensiondelvers.abilities.effects.AbstractEffect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,28 @@ public class EffectTargeting {
         return this.targetingType;
     }
 
-    public List<Entity> getTargets(Entity user) {
+
+    /**
+     * @param user This is the entity which is using the effect, this can be any entity down a chain based on the effect list, this determines the location around where the effect is targeting
+     * @param blocks A list of blocks which can be a point of reference for targeting enemies around them. This is mainly used for raycasting based effects
+     * @param caster The original player starting the effect chain
+     * @return The list of entities selected by the targeting method.
+     */
+    public List<Entity> getTargets(Entity user, List<BlockPos> blocks, Player caster) {
+        List<Entity> targets = new ArrayList<>();
+        if(user != null)
+        {
+            targets.addAll(getTargetsFromUser(user));
+        }
+        else
+        {
+            targets.addAll(getTargetsFromBlocks(blocks, caster));
+        }
+
+        return targets;
+    }
+
+    private List<Entity> getTargetsFromUser(Entity user) {
         List<Entity> targets = new ArrayList<>();
         switch(targetingType) {
             case SELF -> {
@@ -75,14 +97,70 @@ public class EffectTargeting {
             }
 
         }
+
         return targets;
     }
 
-    public void applyToAllInTarget(AbstractEffect effect, Entity user) {
-        for(Entity e: getTargets(user)) {
-            effect.apply(e);
+    private List<Entity> getTargetsFromBlocks(List<BlockPos> blocks, Player caster) {
+        List<Entity> targets = new ArrayList<>();
+        switch(targetingType) {
+            case SELF -> {
+            }
+
+            case RAYCAST -> {
+//                //TODO optimize AABB to not look behind player
+//                DimensionDelvers.LOGGER.info("Targeting Raycast");
+//                List<LivingEntity> LookedAtEntities = caster.level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blocks.get(0).getX() - (range / 2), blocks.get(0).getY() - (range / 2), blocks.get(0).getZ() - (range / 2), blocks.get(0).getX() + (range / 2), blocks.get(0).getY() + (range / 2), blocks.get(0).getZ() + (range / 2)), (Predicate<LivingEntity>) entity -> !entity.is(caster));
+//
+//                targets.addAll(LookedAtEntities);
+//                return targets;
+            }
+
+            //Gets first block and makes an area around it where the block is in the center
+            case AREA -> {
+                //TODO look into config for selecting conditions in area since we may want to select other players for large scale heals etc
+                return caster.level().getEntities(caster, new AABB(blocks.get(0).getX() - (range / 2), blocks.get(0).getY() - (range / 2), blocks.get(0).getZ() - (range / 2), blocks.get(0).getX() + (range / 2), blocks.get(0).getY() + (range / 2), blocks.get(0).getZ() + (range / 2)), (entity -> !(entity instanceof Player) && !entity.is(caster)));
+            }
+
         }
+
+        return targets;
     }
+
+    public List<BlockPos> getBlocks(Entity user)
+    {
+        List<BlockPos> blocks = new ArrayList<>();
+        switch(targetingType) {
+            case SELF -> {
+            }
+
+            case RAYCAST -> {
+
+                DimensionDelvers.LOGGER.info("Raycasting Blocks");
+                BlockHitResult hitBlock = getEntityPOVHitResult(user, this.range);
+                blocks.add(hitBlock.getBlockPos());
+                return blocks;
+            }
+
+
+            case AREA -> {
+                DimensionDelvers.LOGGER.info("Targeting AOE");
+                //TODO think about handling all blocks in an AOE?
+//                return user.level().getEntities(user, new AABB(user.position().x - (range/2), user.position().y - (range/2), user.position().z - (range/2), user.position().x + (range/2), user.position().y + (range/2), user.position().z + (range/2)), (entity -> !(entity instanceof Player) && !entity.is(user)));
+            }
+
+        }
+        return blocks;
+    }
+
+
+    public static BlockHitResult getEntityPOVHitResult(Entity entity, double range) {
+        Level level = entity.level();
+        Vec3 eyePosition = entity.getEyePosition();
+        Vec3 rayVector = eyePosition.add(entity.calculateViewVector(entity.getXRot(), entity.getYRot()).scale(range));
+        return level.clip(new ClipContext(eyePosition, rayVector, net.minecraft.world.level.ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+    }
+
 
     public enum TargetingType implements StringRepresentable {
         AREA("area", 0),

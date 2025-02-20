@@ -7,6 +7,7 @@ import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,6 +15,11 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +41,14 @@ public abstract class AbstractEffect {
         this.effects = effects;
         this.particles = particles;
     }
-    public void apply(Entity user) {
+    public void apply(Entity user, List<BlockPos> blocks, Player caster) {
+
         for(AbstractEffect effect: getEffects())
         {
-            effect.apply(user);
+            effect.apply(user, blocks, caster);
         }
+
+
     };
 
     //TODO consolidate this code below

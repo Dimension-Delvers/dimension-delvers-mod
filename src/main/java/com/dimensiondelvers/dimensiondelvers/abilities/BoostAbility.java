@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoostAbility extends AbstractAbility {
@@ -48,7 +49,7 @@ public class BoostAbility extends AbstractAbility {
     @Override
     public void OnActivate(Player p) {
         //TODO move this to abstract effect and perform on cooldown
-        this.getEffects().forEach(effect -> effect.apply(p));
+        this.getEffects().forEach(effect -> effect.apply(p, new ArrayList<>(), p));
 
         if(this.CanPlayerUse(p)) {
             if(!this.IsOnCooldown(p))

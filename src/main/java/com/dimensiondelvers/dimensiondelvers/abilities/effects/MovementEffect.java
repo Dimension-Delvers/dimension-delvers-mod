@@ -6,6 +6,7 @@ import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerChunkCache;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +44,10 @@ public class MovementEffect extends AbstractEffect {
         return CODEC;
     }
 
-    public void apply(Entity user) {
-        List<Entity> targets = getTargeting().getTargets(user);
+    @Override
+    public void apply(Entity user, List<BlockPos> blocks, Player caster) {
+        List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
+
         applyPariclesToUser(user);
 
         for(Entity target: targets) {
@@ -63,8 +67,15 @@ public class MovementEffect extends AbstractEffect {
             }
 
             //Then apply children affects to targets
-            super.apply(target);
+            super.apply(target, getTargeting().getBlocks(user), caster);
         }
+
+
+        if(targets.isEmpty())
+        {
+            super.apply(null, getTargeting().getBlocks(user), caster);
+        }
+
     }
 
     public Vec3 getVelocity() {

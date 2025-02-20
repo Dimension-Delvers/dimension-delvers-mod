@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StandardAbility extends AbstractAbility{
@@ -38,7 +39,7 @@ public class StandardAbility extends AbstractAbility{
     @Override
     public void OnActivate(Player p) {
         //TODO move this to abstract effect and perform on cooldown
-        this.getEffects().forEach(effect -> effect.apply(p));
+        this.getEffects().forEach(effect -> effect.apply(p, new ArrayList<>(), p));
 
         if(this.CanPlayerUse(p)) {
             if(!this.IsOnCooldown(p))
