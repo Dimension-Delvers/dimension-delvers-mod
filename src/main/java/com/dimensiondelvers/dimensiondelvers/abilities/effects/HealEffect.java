@@ -38,7 +38,7 @@ public class HealEffect extends AbstractEffect{
     public void apply(Entity user, List<BlockPos> blocks, Player caster) {
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyPariclesToUser(user);
-        //TODO do thing for this
+
         DimensionDelvers.LOGGER.info("Healing: " + targets.size());
         for(Entity target: targets) {
             applyPariclesToTarget(target);

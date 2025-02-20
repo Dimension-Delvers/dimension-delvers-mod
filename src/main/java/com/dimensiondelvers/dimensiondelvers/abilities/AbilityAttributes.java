@@ -23,6 +23,8 @@ public class AbilityAttributes {
      * ----THINGS NOT HERE!----
      * Things that change often, and not controlled a ton such as actual cooldown tracking, active mana amount, etc
      */
+
+    //TODO Replace these with our custom modifier system
     public static final DeferredRegister<Attribute> REGISTRY = DeferredRegister.create(Registries.ATTRIBUTE, DimensionDelvers.MODID);
     public static final DeferredHolder<Attribute, RangedAttribute> MAX_MANA = REGISTRY.register("max_mana", () -> new RangedAttribute("attribute." + DimensionDelvers.MODID + ".max_mana", 100, 0, 100));
 

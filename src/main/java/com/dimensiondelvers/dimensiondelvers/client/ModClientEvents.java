@@ -18,7 +18,7 @@ import static com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes.TEST_MENU;
 @EventBusSubscriber(modid = DimensionDelvers.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
 
-    //TODO DATA GEN LANG
+    //TODO: Replace these with finalized skill keybindings
     public static final KeyMapping ARROW_KEY  = new KeyMapping(
             "key." + DimensionDelvers.id("summon_arrow"), // Will be localized using this translation key
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard

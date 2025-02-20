@@ -36,7 +36,7 @@ public class DamageEffect extends AbstractEffect{
     public void apply(Entity user, List<BlockPos> blocks, Player caster) {
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyPariclesToUser(user);
-        //TODO do thing for this
+
         for(Entity target: targets) {
             applyPariclesToTarget(target);
             if(target instanceof LivingEntity livingTarget)

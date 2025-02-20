@@ -28,8 +28,6 @@ public class AbilityScreen extends AbstractContainerScreen<TestMenu>{
     protected void init() {
         super.init();
 
-        // Add widgets and precomputed values
-        //TODO make sure of translation string here
 
         int width = 72;
         int height = 24;
@@ -42,8 +40,7 @@ public class AbilityScreen extends AbstractContainerScreen<TestMenu>{
                 x = width + 1;
                 y += height + 1;
             }
-            //TODO make this translateable string from the location
-            //TODO or use icon
+
             this.addRenderableWidget(Button.builder(Component.translatable(upgrade.getTranslationString()), new Button.OnPress(){
                 @Override
                 public void onPress(Button button) {

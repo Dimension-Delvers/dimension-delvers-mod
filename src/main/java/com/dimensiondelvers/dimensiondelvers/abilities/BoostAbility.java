@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoostAbility extends AbstractAbility {
-
-    //Todo make this a list and also put it in the abstract ability
-
     Holder<Attribute> boostStrength;
 
     public BoostAbility(ResourceLocation resourceLocation, Holder<Attribute> cooldown , Holder<Attribute> strength, List<AbstractEffect> effects) {

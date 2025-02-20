@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-//TODO maybe look into how we can make this abstract
 public abstract class AbstractEffect {
 
 

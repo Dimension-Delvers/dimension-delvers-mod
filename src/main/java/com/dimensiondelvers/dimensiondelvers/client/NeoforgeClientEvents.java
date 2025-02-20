@@ -30,8 +30,7 @@ public class NeoforgeClientEvents {
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event)
     {
-        //TODO static register abilities and use their names here
-        //TODO also better handling of this for better control scheme based on weapons etc.
+        //TODO Better handling of this for better control scheme based on weapons etc.
         //Also look into not allowing hold down in the future
         while (ARROW_KEY.consumeClick()) {
             PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("summon_arrow").toString()));
@@ -50,7 +49,7 @@ public class NeoforgeClientEvents {
 //        }
 
 //        while (OPEN_UPGRADE_MENU_KEY.consumeClick()) {
-//            PacketDistributor.sendToServer(new OpenUpgradeMenu("")); //TODO maybe make this open any type of menu??? idk yet
+//            PacketDistributor.sendToServer(new OpenUpgradeMenu(""));
 //        }
 
 //        while (PRETTY_KEY.consumeClick()) {

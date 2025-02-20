@@ -65,8 +65,6 @@ public class DimensionDelvers {
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        //TODO look into moving these, idk how this would handle if other mods want to add their own abilities, probably fine but not POC worth
-//        AbilityRegistry.ABILITY_REGISTRY_DEF.register(modEventBus);
         AbilityRegistry.ABILITY_TYPES.register(modEventBus);
         AbilityRegistry.EFFECTS.register(modEventBus);
 
