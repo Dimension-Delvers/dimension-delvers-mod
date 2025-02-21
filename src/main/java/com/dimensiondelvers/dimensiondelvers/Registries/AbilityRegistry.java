@@ -70,4 +70,7 @@ public class AbilityRegistry {
 
     public static final Supplier<MapCodec<? extends SummonEffect>> SUMMON_EFFECT = EFFECTS.register(
             "summon_effect", ()-> SummonEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends ProjectileEffect>> PROJECTILE_EFFECT = EFFECTS.register(
+            "projectile_effect", ()-> ProjectileEffect.CODEC);
 }
