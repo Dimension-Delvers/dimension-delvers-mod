@@ -23,6 +23,8 @@ public class ModCreativeTabs {
                                 output.accept(ModItems.DEV_BLOCK_ITEM);
                                 output.accept(ModItems.RUNE_ANVIL_BLOCK_ITEM);
 
+                                output.accept(ModItems.BUILDER_GLASSES);
+
                                 output.accept(ModItems.RUNEGEM);
                             }).build());
 

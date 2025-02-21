@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.item.BuilderGlasses;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemShape;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemTier;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.Runegem;
@@ -45,12 +46,17 @@ public class ModItems {
             )
     );
 
+    public static final DeferredItem<BuilderGlasses> BUILDER_GLASSES = ITEMS.register(
+            "builder_glasses",
+            BuilderGlasses::new
+    );
+
     //Runegems
     public static final DeferredItem<Item> RUNEGEM = ITEMS.register("runegem",
             registryName -> new Runegem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(DimensionDelvers.MODID, "runegem")))
                     .component(ModDataComponentType.RUNEGEM_DATA,
                             new RunegemData(RuneGemShape.CIRCLE, tagId(Registries.ENCHANTMENT, "raw_fire_rune"), RuneGemTier.RAW)))
-            );
+    );
 
 }

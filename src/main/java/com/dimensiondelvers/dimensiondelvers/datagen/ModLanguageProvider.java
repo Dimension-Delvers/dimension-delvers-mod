@@ -27,6 +27,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
+        addItem(ModItems.BUILDER_GLASSES, "Builder Glasses");
         addItem(ModItems.RUNEGEM, "Runegem");
 
 
