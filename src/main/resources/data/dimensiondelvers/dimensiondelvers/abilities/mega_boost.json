@@ -6,32 +6,43 @@
   "effects":
   [
     {
-      "type": "dimensiondelvers:damage_effect",
+      "type": "dimensiondelvers:heal_effect",
       "targeting": {
         "target_type": "raycast",
         "range": 200
       },
-
       "effects":
       [
         {
-          "type": "dimensiondelvers:movement_effect",
+          "type": "dimensiondelvers:summon_effect",
           "targeting": {
             "target_type": "area",
-            "range": 5
+            "range": 25
           },
-          "velocity": [0,1,0],
-          "effects": [
+          "entity_type":"minecraft:skeleton",
+          "amount": 3,
+          "effects":
+          [
+            {
+              "type": "dimensiondelvers:movement_effect",
+              "targeting": {
+                "target_type": "self",
+                "range": 10
+              },
+              "velocity": [0,1,0],
+              "effects":
+              [
 
-          ]
-
+              ]
+            }
+          ],
+          "particles": {
+            "user": "minecraft:bubble",
+            "target": "minecraft:explosion"
+          }
         }
-
-      ],
-      "particles": {
-        "user": "minecraft:bubble",
-        "target": "minecraft:explosion"
-      }
+      ]
     }
+
   ]
 }

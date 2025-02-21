@@ -61,4 +61,13 @@ public class AbilityRegistry {
 
     public static final Supplier<MapCodec<? extends TeleportEffect>> TELE_EFFECT = EFFECTS.register(
             "teleport_effect", ()-> TeleportEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends ApplyStatusEffect>> STATUS_EFFECT = EFFECTS.register(
+            "status_effect", ()-> ApplyStatusEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends BreakBlockEffect>> BREAK_EFFECT = EFFECTS.register(
+            "break_effect", ()-> BreakBlockEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends SummonEffect>> SUMMON_EFFECT = EFFECTS.register(
+            "summon_effect", ()-> SummonEffect.CODEC);
 }

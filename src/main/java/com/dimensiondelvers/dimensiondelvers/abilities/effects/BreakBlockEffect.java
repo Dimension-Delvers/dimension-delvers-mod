@@ -1,12 +1,12 @@
 package com.dimensiondelvers.dimensiondelvers.abilities.effects;
 
-import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.abilities.Targetting.EffectTargeting;
 import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,15 +14,18 @@ import net.minecraft.world.entity.player.Player;
 import java.util.List;
 import java.util.Optional;
 
-public class HealEffect extends AbstractEffect{
+public class BreakBlockEffect extends AbstractEffect{
 
-    //TODO setup healing amount as part of the codec
-    public static final MapCodec<HealEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
+    public BreakBlockEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles) {
+        super(targeting, effects, particles);
+    }
+
+    public static final MapCodec<BreakBlockEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
                     Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles)
-            ).apply(instance, HealEffect::new)
+            ).apply(instance, BreakBlockEffect::new)
     );
 
     @Override
@@ -30,26 +33,20 @@ public class HealEffect extends AbstractEffect{
         return CODEC;
     }
 
-    public HealEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles) {
-        super(targeting, effects, particles);
-    }
-
     @Override
     public void apply(Entity user, List<BlockPos> blocks, Player caster) {
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyParticlesToUser(user);
 
-        DimensionDelvers.LOGGER.info("Healing: " + targets.size());
-        for(Entity target: targets) {
-            applyParticlesToTarget(target);
-            if(target instanceof LivingEntity living)
-            {
-                living.heal(2.5f);
-            }
-            //Then apply children affects to targets
-            super.apply(target, getTargeting().getBlocks(user), caster);
-        }
+        List<BlockPos> areaBlocks = getTargeting().getBlocksInArea(caster.level(), user, blocks);
 
+        for(BlockPos pos: areaBlocks)
+        {
+            //TODO: Make fortune work maybe? (Apply tool enchants etc)
+           if(caster.level().getBlockState(pos).canEntityDestroy(caster.level(), pos, caster) && caster.level().getBlockState(pos).getBlock().defaultDestroyTime() > -1) {
+               caster.level().destroyBlock(pos, true, caster);
+           }
+        }
 
         if(targets.isEmpty())
         {

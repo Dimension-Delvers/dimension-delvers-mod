@@ -42,10 +42,10 @@ public class MovementEffect extends AbstractEffect {
     public void apply(Entity user, List<BlockPos> blocks, Player caster) {
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
 
-        applyPariclesToUser(user);
+        applyParticlesToUser(user);
 
         for(Entity target: targets) {
-            applyPariclesToTarget(target);
+            applyParticlesToTarget(target);
             //TODO look into implementing scaling still
 
             //TODO look into relative vs directional

@@ -35,10 +35,10 @@ public class DamageEffect extends AbstractEffect{
     @Override
     public void apply(Entity user, List<BlockPos> blocks, Player caster) {
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
-        applyPariclesToUser(user);
+        applyParticlesToUser(user);
 
         for(Entity target: targets) {
-            applyPariclesToTarget(target);
+            applyParticlesToTarget(target);
             if(target instanceof LivingEntity livingTarget)
             {
                 livingTarget.hurtServer((ServerLevel) user.level(), user.damageSources().generic(), 2.5f);

@@ -13,6 +13,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,33 +45,32 @@ public abstract class AbstractEffect {
     };
 
     //TODO consolidate this code below
-    public void applyPariclesToUser(Entity user) {
-        if(particles.isPresent())
+    public void applyParticlesToUser(Entity user) {
+        if(particles.isPresent() && user != null)
         {
             if(!user.level().isClientSide()) {
                 ServerLevel level = (ServerLevel) user.level();
-                Optional<Holder.Reference<ParticleType<?>>> particleType = BuiltInRegistries.PARTICLE_TYPE.get(particles.get().getUserParticle());
-                if(particleType.isPresent())
-                {
-                    SimpleParticleType particle = (SimpleParticleType) particleType.get().value();
-                    level.sendParticles(particle,false, true,  user.position().x, user.position().y + 1.5, user.position().z, 10, Math.random(), Math.random(), Math.random(), 2);
-                }
+                applyParticlesToPos(level, user.position(), BuiltInRegistries.PARTICLE_TYPE.get(particles.get().getUserParticle()));
             }
         }
     }
 
-    public void applyPariclesToTarget(Entity target) {
-        if(particles.isPresent())
+    public void applyParticlesToTarget(Entity target) {
+        if(particles.isPresent() && target != null)
         {
             if(!target.level().isClientSide()) {
                 ServerLevel level = (ServerLevel) target.level();
-                Optional<Holder.Reference<ParticleType<?>>> particleType = BuiltInRegistries.PARTICLE_TYPE.get(particles.get().getTargetParticle());
-                if(particleType.isPresent())
-                {
-                    SimpleParticleType particle = (SimpleParticleType) particleType.get().value();
-                    level.sendParticles(particle, false, true, target.position().x, target.position().y + 1.5, target.position().z, 10, Math.random(), Math.random(), Math.random(), 2);
-                }
+                applyParticlesToPos(level, target.position(), BuiltInRegistries.PARTICLE_TYPE.get(particles.get().getTargetParticle()));
             }
+        }
+    }
+
+    public void applyParticlesToPos(ServerLevel level, Vec3 position, Optional<Holder.Reference<ParticleType<?>>> particleType)
+    {
+         if(particleType.isPresent())
+        {
+            SimpleParticleType particle = (SimpleParticleType) particleType.get().value();
+            level.sendParticles(particle, false, true, position.x, position.y + 1.5, position.z, 10, Math.random(), Math.random(), Math.random(), 2);
         }
     }
 

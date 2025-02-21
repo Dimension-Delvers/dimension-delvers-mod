@@ -103,17 +103,15 @@ public class EffectTargeting {
 
     private List<Entity> getTargetsFromBlocks(List<BlockPos> blocks, Player caster) {
         List<Entity> targets = new ArrayList<>();
+
+        if(blocks.isEmpty()) return targets;
+
         switch(targetingType) {
             case SELF -> {
             }
 
             case RAYCAST -> {
-//                //TODO optimize AABB to not look behind player
-//                DimensionDelvers.LOGGER.info("Targeting Raycast");
-//                List<LivingEntity> LookedAtEntities = caster.level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blocks.get(0).getX() - (range / 2), blocks.get(0).getY() - (range / 2), blocks.get(0).getZ() - (range / 2), blocks.get(0).getX() + (range / 2), blocks.get(0).getY() + (range / 2), blocks.get(0).getZ() + (range / 2)), (Predicate<LivingEntity>) entity -> !entity.is(caster));
-//
-//                targets.addAll(LookedAtEntities);
-//                return targets;
+
             }
 
             //Gets first block and makes an area around it where the block is in the center
@@ -151,6 +149,68 @@ public class EffectTargeting {
 
         }
         return blocks;
+    }
+
+    public List<BlockPos> getBlocksInArea(Level level, Entity user, List<BlockPos> targetPos) {
+        List<BlockPos> blockPos = new ArrayList<>();
+
+        if(user == null && targetPos.isEmpty()) return blockPos;
+        switch(targetingType) {
+            case RAYCAST -> {
+                if(user == null) return blockPos;
+                DimensionDelvers.LOGGER.info("Raycasting Blocks");
+                BlockHitResult hitBlock = getEntityPOVHitResult(user, this.range);
+                blockPos.add(hitBlock.getBlockPos());
+            }
+
+
+            case AREA -> {
+                DimensionDelvers.LOGGER.info("Targeting AOE");
+                int startX, startY, startZ;
+                int endX, endY, endZ;
+
+                //TODO maybe look into java ranges?
+                if(user == null)
+                {
+
+                    BlockPos first = targetPos.get(0);
+                    startX = (int) (first.getX() - (range/2));
+                    startY = (int) (first.getY() - (range/2));
+                    startZ = (int) (first.getZ() - (range/2));
+
+                    endX = (int) (first.getX() + (range/2));
+                    endY = (int) (first.getY() + (range/2));
+                    endZ = (int) (first.getZ() + (range/2));
+                }
+                else
+                {
+                    //TODO make this use player block position rather than absolute pos since it causes rounding issues converting to int.
+                    startX = (int) (user.getX() - (range/2));
+                    startY = (int) (user.getY() - (range/2));
+                    startZ = (int) (user.getZ() - (range/2));
+
+                    endX = (int) (user.getX() + (range/2));
+                    endY = (int) (user.getY() + (range/2));
+                    endZ = (int) (user.getZ() + (range/2));
+                }
+
+                for(int x = startX ; x < endX; x++)
+                {
+                    for(int y = startY; y < endY; y++)
+                    {
+                        for(int z = startZ; z < endZ; z++)
+                        {
+                            if(!level.getBlockState(new BlockPos(x, y, z)).isAir())
+                            {
+                                blockPos.add(new BlockPos(x, y, z));
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return blockPos;
     }
 
 
