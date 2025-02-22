@@ -1,5 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.world.level;
 
+import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.mixin.AccessorMinecraftServer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -41,6 +42,12 @@ public class TemporaryLevel extends ServerLevel {
         var storageSource = server.getStorageSource();
         var worldData = server.getWorldData();
         var executor = server.getExecutor();
+
+        if (portalDimension == null || portalPos == null) {
+            DimensionDelvers.LOGGER.warn("Tried to create rift {} with portal from dimension {} at position {}, using overworld spawnpoint instead.",id, portalDimension, portalPos);
+            portalDimension = Level.OVERWORLD;
+            portalPos = ServerLifecycleHooks.getCurrentServer().overworld().getSharedSpawnPos();
+        }
 
         return new TemporaryLevel(
             ServerLifecycleHooks.getCurrentServer(),
