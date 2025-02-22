@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import java.util.List;
 import java.util.Optional;
 
-public class HealEffect extends AbstractEffect{
+public class HealEffect extends AbstractEffect {
     private float healAmount = 0;
 
     //TODO setup healing amount as part of the codec
