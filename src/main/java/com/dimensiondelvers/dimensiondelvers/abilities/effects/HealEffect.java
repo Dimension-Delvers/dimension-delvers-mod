@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class HealEffect extends AbstractEffect{
-    private int healAmount = 0;
+    private float healAmount = 0;
 
     //TODO setup healing amount as part of the codec
     public static final MapCodec<HealEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -23,11 +23,11 @@ public class HealEffect extends AbstractEffect{
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
                     Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles),
-                    Codec.INT.fieldOf("amount").forGetter(HealEffect::getAmount)
+                    Codec.FLOAT.fieldOf("amount").forGetter(HealEffect::getAmount)
             ).apply(instance, HealEffect::new)
     );
 
-    public int getAmount() {
+    public float getAmount() {
         return healAmount;
     }
 
@@ -36,7 +36,7 @@ public class HealEffect extends AbstractEffect{
         return CODEC;
     }
 
-    public HealEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles, int amount) {
+    public HealEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles, float amount) {
         super(targeting, effects, particles);
         this.healAmount = amount;
     }

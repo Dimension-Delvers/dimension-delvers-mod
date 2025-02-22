@@ -1,10 +1,8 @@
 package com.dimensiondelvers.dimensiondelvers.abilities.effects;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.abilities.ProjectileAbility;
 import com.dimensiondelvers.dimensiondelvers.abilities.Targetting.EffectTargeting;
 import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.ParticleInfo;
-import com.dimensiondelvers.dimensiondelvers.abilities.effects.util.TeleportInfo;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

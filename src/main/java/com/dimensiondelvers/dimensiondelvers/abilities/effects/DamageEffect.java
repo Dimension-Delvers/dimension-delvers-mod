@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class DamageEffect extends AbstractEffect{
-    private int damageAmount = 0;
-    public DamageEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles, int amount) {
+    private float damageAmount = 0;
+    public DamageEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles, float amount) {
         super(targeting, effects, particles);
         this.damageAmount = amount;
     }
@@ -26,11 +26,11 @@ public class DamageEffect extends AbstractEffect{
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
                     Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles),
-                    Codec.INT.fieldOf("amount").forGetter(DamageEffect::getAmount)
+                    Codec.FLOAT.fieldOf("amount").forGetter(DamageEffect::getAmount)
             ).apply(instance, DamageEffect::new)
     );
 
-    private int getAmount() {
+    private float getAmount() {
         return damageAmount;
     }
 
