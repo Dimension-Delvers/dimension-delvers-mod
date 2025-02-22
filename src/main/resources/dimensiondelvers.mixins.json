@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "dimensiondelvers.refmap.json",
   "mixins": [
+    "AccessorMappedRegistry",
     "AccessorMinecraftServer",
     "MixinEnchantingTableBlock",
-    "MixinMinecraftServer"
+    "MixinMinecraftServer",
+    "MixinWorldDimensions"
   ],
   "client": [
     "MixinAccessibilityOptionsScreen",
