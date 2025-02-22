@@ -8,11 +8,11 @@
     {
       "type": "dimensiondelvers:projectile_effect",
       "targeting": {
-        "target_type": "self",
+        "target_type": "raycast",
         "range": 200
       },
       "projectile_type": "minecraft:arrow",
-      "velocity": [1,1,0],
+      "velocity": [0,0,0],
       "effects":
       [
 

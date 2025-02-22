@@ -47,7 +47,6 @@ public class TeleportEffect extends AbstractEffect{
     public void apply(Entity user, List<BlockPos> blocks, Player caster) {
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyParticlesToUser(user);
-        DimensionDelvers.LOGGER.info(user.getDirection().getName());
         for(Entity target: targets) {
             applyParticlesToTarget(target);
 

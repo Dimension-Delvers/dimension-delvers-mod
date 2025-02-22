@@ -76,8 +76,8 @@ public class ProjectileEffect extends AbstractEffect{
                         projectileEntity.setOwner(random);
 
                         //TODO tweak this calculation its not quite working right
-                        Vec3 rayVector = random.calculateViewVector(random.getXRot(), random.getYRot()).add(velocity);
-                        projectileEntity.shoot( rayVector.x, rayVector.y, rayVector.z, (float) rayVector.length(), 0);
+
+                        projectileEntity.shootFromRotation(random, (float) (random.getXRot() + velocity.y), (float) (random.getYRot() + velocity.x), 0, 1, 0);
 
                     }
 

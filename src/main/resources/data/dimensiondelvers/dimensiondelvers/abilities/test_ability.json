@@ -7,7 +7,7 @@
   [
 
 {
-  "type": "dimensiondelvers:heal_effect",
+  "type": "dimensiondelvers:blank_effect",
   "targeting": {
     "target_type": "raycast",
     "range": 200

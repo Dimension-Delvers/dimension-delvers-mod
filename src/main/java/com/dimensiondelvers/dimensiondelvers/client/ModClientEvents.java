@@ -19,20 +19,20 @@ import static com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes.TEST_MENU;
 public class ModClientEvents {
 
     //TODO: Replace these with finalized skill keybindings
-    public static final KeyMapping ARROW_KEY  = new KeyMapping(
+    public static final KeyMapping ABILITY_1_KEY = new KeyMapping(
             "key." + DimensionDelvers.id("summon_arrow"), // Will be localized using this translation key
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
             GLFW.GLFW_KEY_O, // Default key is P
             "key.categories.misc" // Mapping will be in the misc category
     );
-    public static final KeyMapping BOOST_KEY = new KeyMapping(
+    public static final KeyMapping ABILITY_3_KEY = new KeyMapping(
             "key." + DimensionDelvers.id("boost"), // Will be localized using this translation key
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
             GLFW.GLFW_KEY_I, // Default key is P
             "key.categories.misc" // Mapping will be in the misc category
     );
 
-    public static final KeyMapping HEAL_KEY = new KeyMapping(
+    public static final KeyMapping ABILITY_2_KEY = new KeyMapping(
             "key." + DimensionDelvers.id("heal"), // Will be localized using this translation key
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
             GLFW.GLFW_KEY_U, // Default key is P
@@ -78,9 +78,9 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event)
     {
-        event.register(HEAL_KEY);
-        event.register(ARROW_KEY);
-        event.register(BOOST_KEY);
+        event.register(ABILITY_2_KEY);
+        event.register(ABILITY_1_KEY);
+        event.register(ABILITY_3_KEY);
         event.register(ARMOR_STAND_KEY);
         event.register(OPEN_UPGRADE_MENU_KEY);
         event.register(PRETTY_KEY);

@@ -73,4 +73,7 @@ public class AbilityRegistry {
 
     public static final Supplier<MapCodec<? extends ProjectileEffect>> PROJECTILE_EFFECT = EFFECTS.register(
             "projectile_effect", ()-> ProjectileEffect.CODEC);
+
+    public static final Supplier<MapCodec<? extends BlankEffect>> BLANK_EFFECT = EFFECTS.register(
+            "blank_effect", ()-> BlankEffect.CODEC);
 }

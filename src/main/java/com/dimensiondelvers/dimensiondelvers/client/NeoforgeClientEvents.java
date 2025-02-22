@@ -32,16 +32,16 @@ public class NeoforgeClientEvents {
     {
         //TODO Better handling of this for better control scheme based on weapons etc.
         //Also look into not allowing hold down in the future
-        while (ARROW_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("summon_arrow").toString()));
-        }
-
-        while (HEAL_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("weak_boost").toString()));
-        }
-
-        while (BOOST_KEY.consumeClick()) {
+        while (ABILITY_1_KEY.consumeClick()) {
             PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("mega_boost").toString()));
+        }
+
+        while (ABILITY_2_KEY.consumeClick()) {
+            PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("test_ability").toString()));
+        }
+
+        while (ABILITY_3_KEY.consumeClick()) {
+            PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("summon_skeletons").toString()));
         }
 
 //        while (ARMOR_STAND_KEY.consumeClick()) {

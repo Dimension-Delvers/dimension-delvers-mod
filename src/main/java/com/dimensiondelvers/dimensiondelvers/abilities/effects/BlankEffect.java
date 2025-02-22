@@ -14,31 +14,24 @@ import net.minecraft.world.entity.player.Player;
 import java.util.List;
 import java.util.Optional;
 
-public class HealEffect extends AbstractEffect{
-    private int healAmount = 0;
+public class BlankEffect extends AbstractEffect{
 
     //TODO setup healing amount as part of the codec
-    public static final MapCodec<HealEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
+    public static final MapCodec<BlankEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
-                    Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles),
-                    Codec.INT.fieldOf("amount").forGetter(HealEffect::getAmount)
-            ).apply(instance, HealEffect::new)
+                    Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles)
+            ).apply(instance, BlankEffect::new)
     );
-
-    public int getAmount() {
-        return healAmount;
-    }
 
     @Override
     public MapCodec<? extends AbstractEffect> getCodec() {
         return CODEC;
     }
 
-    public HealEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles, int amount) {
+    public BlankEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles) {
         super(targeting, effects, particles);
-        this.healAmount = amount;
     }
 
     @Override
@@ -46,13 +39,8 @@ public class HealEffect extends AbstractEffect{
         List<Entity> targets = getTargeting().getTargets(user, blocks, caster);
         applyParticlesToUser(user);
 
-        DimensionDelvers.LOGGER.info("Healing: " + targets.size());
         for(Entity target: targets) {
             applyParticlesToTarget(target);
-            if(target instanceof LivingEntity living)
-            {
-                living.heal(healAmount);
-            }
             //Then apply children affects to targets
             super.apply(target, getTargeting().getBlocks(user), caster);
         }

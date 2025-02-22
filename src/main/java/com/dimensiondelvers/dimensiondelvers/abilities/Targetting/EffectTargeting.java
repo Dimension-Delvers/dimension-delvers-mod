@@ -133,7 +133,7 @@ public class EffectTargeting {
             }
 
             case RAYCAST -> {
-
+                if(user == null) return blocks;
                 DimensionDelvers.LOGGER.info("Raycasting Blocks");
                 BlockHitResult hitBlock = getEntityPOVHitResult(user, this.range);
                 blocks.add(hitBlock.getBlockPos());

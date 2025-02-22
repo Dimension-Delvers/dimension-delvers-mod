@@ -15,17 +15,24 @@ import java.util.List;
 import java.util.Optional;
 
 public class DamageEffect extends AbstractEffect{
-    public DamageEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles) {
+    private int damageAmount = 0;
+    public DamageEffect(EffectTargeting targeting, List<AbstractEffect> effects, Optional<ParticleInfo> particles, int amount) {
         super(targeting, effects, particles);
+        this.damageAmount = amount;
     }
 
     public static final MapCodec<DamageEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     EffectTargeting.CODEC.fieldOf("targeting").forGetter(AbstractEffect::getTargeting),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractEffect::getEffects),
-                    Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles)
+                    Codec.optionalField("particles", ParticleInfo.CODEC.codec(), true).forGetter(AbstractEffect::getParticles),
+                    Codec.INT.fieldOf("amount").forGetter(DamageEffect::getAmount)
             ).apply(instance, DamageEffect::new)
     );
+
+    private int getAmount() {
+        return damageAmount;
+    }
 
     @Override
     public MapCodec<? extends AbstractEffect> getCodec() {
@@ -41,7 +48,7 @@ public class DamageEffect extends AbstractEffect{
             applyParticlesToTarget(target);
             if(target instanceof LivingEntity livingTarget)
             {
-                livingTarget.hurtServer((ServerLevel) user.level(), user.damageSources().generic(), 2.5f);
+                livingTarget.hurtServer((ServerLevel) user.level(), user.damageSources().generic(), damageAmount);
             }
             //Then apply children affects to targets
             super.apply(target, getTargeting().getBlocks(user), caster);
