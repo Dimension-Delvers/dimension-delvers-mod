@@ -8,7 +8,6 @@
     "AccessorMappedRegistry",
     "AccessorMinecraftServer",
     "MixinEnchantingTableBlock",
-    "MixinMinecraftServer",
     "MixinWorldDimensions"
   ],
   "client": [
