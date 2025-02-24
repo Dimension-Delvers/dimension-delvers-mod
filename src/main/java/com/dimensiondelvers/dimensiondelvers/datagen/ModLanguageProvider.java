@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.datagen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
+import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -29,16 +30,19 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.DEV_BLOCK, "Dev Block");
         addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
+        addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
         addItem(ModItems.RUNEGEM, "Runegem");
+        addItem(ModItems.RIFT_KEY, "Rift Key");
+
+        addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
             helper.getVariants().forEach((variant, block) -> addBlock(block, getTranslationString(block.get())));
         });
-
 
         // Adds a generic translation
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
