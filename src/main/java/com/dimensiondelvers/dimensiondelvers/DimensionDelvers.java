@@ -4,6 +4,7 @@ import com.dimensiondelvers.dimensiondelvers.client.ModShaders;
 import com.dimensiondelvers.dimensiondelvers.client.render.entity.RiftEntranceRenderer;
 import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.config.ClientConfig;
+import com.dimensiondelvers.dimensiondelvers.gui.screen.EssenceExtractorScreen;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
@@ -94,7 +95,7 @@ public class DimensionDelvers {
 
         if (Config.logDirtBlock) LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
 
-        LOGGER.info("{} {}", Config.magicNumberIntroduction, Config.magicNumber);
+        LOGGER.info("Reticulating splines");
 
         // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
@@ -142,6 +143,7 @@ public class DimensionDelvers {
         @SubscribeEvent
         private static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+            event.register(ModMenuTypes.ESSENCE_EXTRACTOR_MENU.get(), EssenceExtractorScreen::new);
         }
 
         @SubscribeEvent

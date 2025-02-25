@@ -21,6 +21,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.RIFT_SPAWNER.get());
+        blockModels.createTrivialCube(ModBlocks.ESSENCE_EXTRACTOR.get());
 
         ResourceLocation modelLoc = DimensionDelvers.id("block/rift_chest");
         blockModels.blockStateOutput.accept(

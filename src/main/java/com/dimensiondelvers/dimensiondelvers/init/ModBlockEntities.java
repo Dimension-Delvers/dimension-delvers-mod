@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.block.blockentity.EssenceExtractorBlockEntity;
 import com.dimensiondelvers.dimensiondelvers.block.blockentity.RiftChestBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,6 +17,14 @@ public class ModBlockEntities {
             () -> new BlockEntityType<>(
                     RiftChestBlockEntity::new,
                     ModBlocks.RIFT_CHEST.get()
+            )
+    );
+
+    public static final Supplier<BlockEntityType<EssenceExtractorBlockEntity>> ESSENCE_EXTRACTOR = BLOCK_ENTITIES.register(
+            "essence_extractor",
+            () -> new BlockEntityType<>(
+                    EssenceExtractorBlockEntity::new,
+                    ModBlocks.ESSENCE_EXTRACTOR.get()
             )
     );
 }

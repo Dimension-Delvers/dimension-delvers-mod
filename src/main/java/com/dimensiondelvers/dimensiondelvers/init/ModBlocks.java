@@ -1,10 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.block.BlockFamilyHelper;
-import com.dimensiondelvers.dimensiondelvers.block.RiftChestEntityBlock;
-import com.dimensiondelvers.dimensiondelvers.block.RiftSpawnerBlock;
-import com.dimensiondelvers.dimensiondelvers.block.RuneAnvilBlock;
+import com.dimensiondelvers.dimensiondelvers.block.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -52,6 +49,15 @@ public class ModBlocks {
             () -> new RiftSpawnerBlock(BlockBehaviour.Properties.of()
                     .setId(blockId("rift_spawner"))
                     .strength(2.0f)
+                    .sound(SoundType.STONE)
+            )
+    );
+
+    public static final DeferredBlock<EssenceExtractorBlock> ESSENCE_EXTRACTOR = registerBlock(
+            "essence_extractor",
+            () -> new EssenceExtractorBlock(BlockBehaviour.Properties.of()
+                    .setId(blockId("essence_extractor"))
+                    .strength(2)
                     .sound(SoundType.STONE)
             )
     );

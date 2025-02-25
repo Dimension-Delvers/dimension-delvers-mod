@@ -15,8 +15,10 @@ import java.util.Optional;
  * A Rift Spawner block is a usable block for generating rift entrances.
  */
 public class RiftSpawnerBlock extends Block {
+    // TODO: Probably remove the codec as unn
     public static final MapCodec<RiftSpawnerBlock> CODEC = simpleCodec(RiftSpawnerBlock::new);
 
+    @Override
     public @NotNull MapCodec<RiftSpawnerBlock> codec() {
         return CODEC;
     }

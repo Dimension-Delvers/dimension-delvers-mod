@@ -2,7 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.gui.screen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.gui.menu.RuneAnvilMenu;
-import com.dimensiondelvers.dimensiondelvers.gui.menu.RunegemSlot;
+import com.dimensiondelvers.dimensiondelvers.gui.menu.slots.RunegemSlot;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemShape;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

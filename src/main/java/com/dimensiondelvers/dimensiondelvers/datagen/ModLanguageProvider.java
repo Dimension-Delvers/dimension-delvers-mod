@@ -31,6 +31,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
         addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
+        addBlock(ModBlocks.ESSENCE_EXTRACTOR, "Essence Extractor");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
@@ -49,6 +50,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add("container.dimensiondelvers.rune_anvil", "Rune Anvil");
         add("container.dimensiondelvers.rift_chest", "Rift Chest");
+        add("container.dimensiondelvers.essence_extractor", "Essence Extractor");
 
         add("accessibility.dimensiondelvers.screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility.dimensiondelvers.menubutton", "DimDelvers Accessibility (tmp)");

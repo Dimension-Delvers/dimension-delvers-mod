@@ -25,6 +25,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         });
         dropSelf(ModBlocks.RIFT_CHEST.get());
         dropSelf(ModBlocks.RIFT_SPAWNER.get());
+        dropSelf(ModBlocks.ESSENCE_EXTRACTOR.get());
     }
 
     @Override
