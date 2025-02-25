@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class EssenceExtractorMenu extends AbstractContainerMenu {
 
-    private Container container;
+    private final Container container;
 
     public EssenceExtractorMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, new SimpleContainer(EssenceExtractorBlockEntity.SIZE));
