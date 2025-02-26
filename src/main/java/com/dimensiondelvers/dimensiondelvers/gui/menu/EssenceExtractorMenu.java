@@ -64,7 +64,7 @@ public class EssenceExtractorMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack intermediateStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack sourceStack = slot.getItem();
             intermediateStack = sourceStack.copy();
             if (index < PLAYER_INVENTORY_SLOTS) {
