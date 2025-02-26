@@ -26,12 +26,15 @@ public class EssenceExtractorScreen extends AbstractContainerScreen<EssenceExtra
     }
 
     @Override
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(RenderType::guiTextured, BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-
-        int completion = 64;
-        int progressWidth = PROGRESS_WIDTH * completion / 100;
-        guiGraphics.blit(RenderType::guiTextured, BACKGROUND, this.leftPos + PROGRESS_X, this.topPos + PROGRESS_Y, 0, imageHeight, progressWidth, PROGRESS_HEIGHT, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        guiGraphics.blit(RenderType::guiTextured, BACKGROUND, this.leftPos + PROGRESS_X, this.topPos + PROGRESS_Y, 0, imageHeight, (int) (PROGRESS_WIDTH * menu.getProgress()), PROGRESS_HEIGHT, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 
     }
 }

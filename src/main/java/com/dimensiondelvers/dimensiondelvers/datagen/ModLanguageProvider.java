@@ -37,6 +37,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
         addItem(ModItems.RUNEGEM, "Runegem");
         addItem(ModItems.RIFT_KEY, "Rift Key");
+        addItem(ModItems.ESSENCE, "Essence");
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 

@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceItem;
 import com.dimensiondelvers.dimensiondelvers.item.riftkey.RiftKey;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemShape;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RuneGemTier;
@@ -46,6 +47,10 @@ public class ModItems {
 
     public static final DeferredItem<Item> RIFT_KEY = ITEMS.register("rift_key", registryName -> new RiftKey(new Item.Properties()
             .setId(ResourceKey.create(Registries.ITEM, DimensionDelvers.id("rift_key"))
+            )));
+
+    public static final DeferredItem<Item> ESSENCE = ITEMS.register("essence", registryName -> new EssenceItem(new Item.Properties()
+            .setId(ResourceKey.create(Registries.ITEM, DimensionDelvers.id("essence"))
             )));
 
     public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block){
