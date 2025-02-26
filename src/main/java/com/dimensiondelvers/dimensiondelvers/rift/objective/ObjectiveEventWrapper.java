@@ -15,7 +15,7 @@ public class ObjectiveEventWrapper {
             LevelRiftObjectiveData data = LevelRiftObjectiveData.getFromLevel(serverLevel);
             if(data != null && data.getObjective() != null){
                 boolean dirty = data.getObjective().onLivingDeath(event, serverLevel, data);
-                data.setDirty(dirty);
+                if (dirty) data.setDirty();
             }
         }
     }
