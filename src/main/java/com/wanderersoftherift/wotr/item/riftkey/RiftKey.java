@@ -1,30 +1,42 @@
 package com.wanderersoftherift.wotr.item.riftkey;
 
+import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.block.RiftSpawnerBlock;
 import com.wanderersoftherift.wotr.entity.RiftEntranceEntity;
+import com.wanderersoftherift.wotr.init.ModDataComponentType;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
+import com.wanderersoftherift.wotr.init.ModEssenceTypes;
+import com.wanderersoftherift.wotr.item.essence.EssenceType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
 public class RiftKey extends Item {
+    private static final String NAME = "item." + WanderersOfTheRift.MODID + ".rift_key.themed";
+    private static final String TIER_TOOLTIP = "tooltip." + WanderersOfTheRift.MODID + ".rift_key_tier";
+
     public RiftKey(Properties properties) {
         super(properties);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = level.getBlockState(blockpos);
@@ -50,6 +62,24 @@ public class RiftKey extends Item {
             }
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public @NotNull Component getName(ItemStack stack) {
+        EssenceType theme = stack.getOrDefault(ModDataComponentType.RIFT_THEME, ModEssenceTypes.NONE.get());
+        if (theme != ModEssenceTypes.NONE.get()) {
+            return Component.translatable(NAME, theme.getName());
+        } else {
+            return super.getName(stack);
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
+        int tier = stack.getOrDefault(ModDataComponentType.RIFT_TIER, 0);
+        if (tier > 0) {
+            components.add(Component.translatable(TIER_TOOLTIP, tier).withColor(Color.GRAY.getRGB()));
+        }
     }
 
     private List<RiftEntranceEntity> getExistingRifts(Level level, BlockPos pos) {

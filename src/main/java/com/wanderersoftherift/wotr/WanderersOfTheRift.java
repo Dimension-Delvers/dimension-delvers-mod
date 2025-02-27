@@ -4,6 +4,7 @@ import com.wanderersoftherift.wotr.client.ModShaders;
 import com.wanderersoftherift.wotr.client.render.entity.RiftEntranceRenderer;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.gui.screen.KeyForgeScreen;
 import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
 import com.wanderersoftherift.wotr.init.*;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
@@ -49,6 +50,7 @@ public class WanderersOfTheRift {
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModEssenceTypes.ESSENCE_TYPES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
@@ -94,7 +96,7 @@ public class WanderersOfTheRift {
 
         if (Config.logDirtBlock) LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
 
-        LOGGER.info("{} {}", Config.magicNumberIntroduction, Config.magicNumber);
+        LOGGER.info("Reticulating splines");
 
         // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
@@ -142,6 +144,7 @@ public class WanderersOfTheRift {
         @SubscribeEvent
         private static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+            event.register(ModMenuTypes.KEY_FORGE_MENU.get(), KeyForgeScreen::new);
         }
 
         @SubscribeEvent

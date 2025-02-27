@@ -1,10 +1,7 @@
 package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.block.BlockFamilyHelper;
-import com.wanderersoftherift.wotr.block.RiftChestEntityBlock;
-import com.wanderersoftherift.wotr.block.RiftSpawnerBlock;
-import com.wanderersoftherift.wotr.block.RuneAnvilBlock;
+import com.wanderersoftherift.wotr.block.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +48,15 @@ public class ModBlocks {
             "rift_spawner",
             () -> new RiftSpawnerBlock(BlockBehaviour.Properties.of()
                     .setId(blockId("rift_spawner"))
+                    .strength(2.0f)
+                    .sound(SoundType.STONE)
+            )
+    );
+
+    public static final DeferredBlock<KeyForgeBlock> KEY_FORGE = registerBlock(
+      "key_forge",
+            () -> new KeyForgeBlock(BlockBehaviour.Properties.of()
+                    .setId(blockId("key_forge"))
                     .strength(2.0f)
                     .sound(SoundType.STONE)
             )

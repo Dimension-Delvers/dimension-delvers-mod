@@ -13,6 +13,7 @@ public class RegistryEvents {
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
         event.register(ModModifierEffects.MODIFIER_TYPE_REGISTRY);
+        event.register(ModEssenceTypes.ESSENCE_TYPE_REGISTRY);
     }
 
     @SubscribeEvent
@@ -27,5 +28,7 @@ public class RegistryEvents {
                 Modifier.DIRECT_CODEC,
                 Modifier.DIRECT_CODEC
         );
+
     }
+
 }
