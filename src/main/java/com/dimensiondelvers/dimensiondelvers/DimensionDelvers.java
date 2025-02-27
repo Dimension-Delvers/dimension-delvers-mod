@@ -6,6 +6,7 @@ import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.config.ClientConfig;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceTypeLookup;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -30,10 +31,13 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import org.slf4j.Logger;
 
 @Mod(DimensionDelvers.MODID)
@@ -62,10 +66,15 @@ public class DimensionDelvers {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
+        modEventBus.addListener(this::modifyComponents);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    public void modifyComponents(ModifyDefaultComponentsEvent event) {
+        LOGGER.info("Time to modify components");
     }
 
     /**
@@ -127,6 +136,16 @@ public class DimensionDelvers {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("HELLO from server starting"); // Do something when the server starts
+    }
+
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        EssenceTypeLookup.generateLookup(event.getServer().registryAccess());
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(ServerStoppingEvent event) {
+        EssenceTypeLookup.clearLookup();
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
