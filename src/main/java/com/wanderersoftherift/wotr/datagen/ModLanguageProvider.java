@@ -1,17 +1,20 @@
 package com.wanderersoftherift.wotr.datagen;
 
-import com.mojang.datafixers.optics.Wander;
+import com.wanderersoftherift.wotr.init.ModEssenceTypes;
+import com.wanderersoftherift.wotr.item.essence.EssenceType;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
 import com.wanderersoftherift.wotr.init.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 /* Handles Data Generation for I18n of the locale 'en_us' of the Wotr mod */
 public class ModLanguageProvider extends LanguageProvider {
@@ -32,6 +35,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
         addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
+        addBlock(ModBlocks.KEY_FORGE, "Key Forge");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
@@ -39,6 +43,11 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(ModItems.RIFT_KEY, "Rift Key");
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
+
+        addEssenceType(ModEssenceTypes.EARTH, "Earth");
+        addEssenceType(ModEssenceTypes.LIFE, "Life");
+        addEssenceType(ModEssenceTypes.WATER, "Water");
+        addEssenceType(ModEssenceTypes.MEAT, "Meat");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
@@ -49,8 +58,11 @@ public class ModLanguageProvider extends LanguageProvider {
         // Adds a generic translation
         add("itemGroup." + WanderersOfTheRift.MODID, "Dimension Delvers");
 
+        add("item." + WanderersOfTheRift.MODID + ".rift_key.themed", "Rift Key of %s");
+
         add("container." + WanderersOfTheRift.MODID + ".rune_anvil", "Rune Anvil");
         add("container." + WanderersOfTheRift.MODID + ".rift_chest", "Rift Chest");
+        add("container." + WanderersOfTheRift.MODID + ".key_forge", "Key Forge");
 
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility." + WanderersOfTheRift.MODID + ".menubutton", "DimDelvers Accessibility (tmp)");
@@ -68,6 +80,14 @@ public class ModLanguageProvider extends LanguageProvider {
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.high_contrast", "Enhances UI and HUD elements with higher contrast for better visibility");
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.hard_of_hearing", "Enhances audio cues for better accessibility");
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.reduced_motion", "Disables or slows down UI animations, camera shake, or screen effects");
+
+        add("tooltip." + WanderersOfTheRift.MODID + ".rift_key_tier", "Rift Tier: %s");
+        add("tooltip." + WanderersOfTheRift.MODID + ".essence_value", "Essence: %s %s");
+    }
+
+    private void addEssenceType(Supplier<EssenceType> essenceType, String value) {
+        ResourceLocation loc = essenceType.get().getId();
+        add(EssenceType.LANG_PREFIX + "." + loc.getNamespace() + "." + loc.getPath(), value);
     }
 
     private static @NotNull String getTranslationString(Block block) {

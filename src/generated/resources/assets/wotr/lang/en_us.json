@@ -16,6 +16,7 @@
   "accessibility.wotr.screen.tooltip.trypophobia": "Removes any trypophobia-triggering aspects",
   "accessibility.wotr.screen.trypophobia": "Trypophobia",
   "block.wotr.dev_block": "Dev Block",
+  "block.wotr.key_forge": "Key Forge",
   "block.wotr.processor_block_1": "Processor Block 1",
   "block.wotr.processor_block_10": "Processor Block 10",
   "block.wotr.processor_block_10_button": "Processor Block 10 Button",
@@ -131,11 +132,19 @@
   "block.wotr.rift_chest": "Rift Chest",
   "block.wotr.rift_spawner": "Rift Spawner",
   "block.wotr.rune_anvil": "Rune Anvil",
+  "container.wotr.key_forge": "Key Forge",
   "container.wotr.rift_chest": "Rift Chest",
   "container.wotr.rune_anvil": "Rune Anvil",
   "entity.wotr.rift_entrance": "Rift Entrance",
+  "essence_type.wotr.earth": "Earth",
+  "essence_type.wotr.life": "Life",
+  "essence_type.wotr.meat": "Meat",
+  "essence_type.wotr.water": "Water",
   "item.wotr.example_item": "Example Item",
   "item.wotr.rift_key": "Rift Key",
+  "item.wotr.rift_key.themed": "Rift Key of %s",
   "item.wotr.runegem": "Runegem",
-  "itemGroup.wotr": "Dimension Delvers"
+  "itemGroup.wotr": "Dimension Delvers",
+  "tooltip.wotr.essence_value": "Essence: %s %s",
+  "tooltip.wotr.rift_key_tier": "Rift Tier: %s"
 }
