@@ -44,7 +44,6 @@ public class RiftSpawnerBlock extends Block {
             )
     );
 
-
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
     public RiftSpawnerBlock(Properties properties) {
@@ -95,7 +94,6 @@ public class RiftSpawnerBlock extends Block {
                 return Optional.of(new SpawnLocation(origin, origin.getBottomCenter(), Direction.UP));
             }
         }
-
 
         BlockPos adjacentPos = pos.relative(facing);
         if (allowsPortal(level, adjacentPos) && allowsPortal(level, adjacentPos.above()) && allowsPortal(level, adjacentPos.below())) {

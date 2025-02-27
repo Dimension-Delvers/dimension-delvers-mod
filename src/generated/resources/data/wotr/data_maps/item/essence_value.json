@@ -1,0 +1,28 @@
+{
+  "values": {
+    "#c:cobblestones": {
+      "type": "wotr:earth",
+      "value": 1
+    },
+    "#c:crops": {
+      "type": "wotr:life",
+      "value": 1
+    },
+    "#c:foods/cooked_meat": {
+      "type": "wotr:meat",
+      "value": 2
+    },
+    "#c:foods/raw_meat": {
+      "type": "wotr:meat",
+      "value": 1
+    },
+    "#c:stones": {
+      "type": "wotr:earth",
+      "value": 2
+    },
+    "#c:stripped_logs": {
+      "type": "wotr:life",
+      "value": 8
+    }
+  }
+}
