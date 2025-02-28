@@ -45,8 +45,9 @@ public class ModItems {
     );
 
     public static final DeferredItem<Item> RIFT_KEY = ITEMS.register("rift_key", registryName -> new RiftKey(new Item.Properties()
-            .setId(ResourceKey.create(Registries.ITEM, DimensionDelvers.id("rift_key"))
-            )));
+            .setId(ResourceKey.create(Registries.ITEM, DimensionDelvers.id("rift_key")))
+            .stacksTo(1)
+            ));
 
     public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block){
         DeferredItem<BlockItem> simpleBlockItem = ITEMS.registerSimpleBlockItem(id, block);

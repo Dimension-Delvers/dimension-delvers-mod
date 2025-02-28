@@ -14,8 +14,8 @@ public final class EssenceTypeLookup {
 
     public static void generateLookup(RegistryAccess registryAccess) {
         final Table<Item, EssenceType, Integer> newLookup = HashBasedTable.create();
-        registryAccess.get(EssenceType.ESSENCE_TYPE_REGISTRY_KEY).ifPresent(
-                essenceRegistry -> essenceRegistry.value().stream().forEach(
+        registryAccess.lookup(EssenceType.ESSENCE_TYPE_REGISTRY_KEY).ifPresent(
+                essenceRegistry -> essenceRegistry.stream().forEach(
                         essenceType -> essenceType.streamItems().forEach(
                                 pair -> pair.getKey().forEach(
                                         item -> newLookup.put(item.value(), essenceType, pair.getValue())))));

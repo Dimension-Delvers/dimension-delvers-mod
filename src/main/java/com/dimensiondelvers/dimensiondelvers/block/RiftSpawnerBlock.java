@@ -1,13 +1,11 @@
 package com.dimensiondelvers.dimensiondelvers.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -15,11 +13,6 @@ import java.util.Optional;
  * A Rift Spawner block is a usable block for generating rift entrances.
  */
 public class RiftSpawnerBlock extends Block {
-    public static final MapCodec<RiftSpawnerBlock> CODEC = simpleCodec(RiftSpawnerBlock::new);
-
-    public @NotNull MapCodec<RiftSpawnerBlock> codec() {
-        return CODEC;
-    }
 
     public RiftSpawnerBlock(Properties properties) {
         super(properties);
