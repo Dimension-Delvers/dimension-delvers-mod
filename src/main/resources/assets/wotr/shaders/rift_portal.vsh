@@ -24,8 +24,9 @@ vec4 getPortalProjection(vec3 position) {
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
     float frameSize0 = 1.0 / Frames0;
-    float frame = floor(FrameRate0 * GameTime * 1200.0);
-    texCoord0 = vec2(UV0.x, frameSize0 * (frame + UV0.y));
+    float frame = floor(FrameRate0 * GameTime * 1200.0);        
+    //texCoord0 = vec2(UV0.x, frameSize0 * (frame + UV0.y));
+    texCoord0 = UV0.xy;
 
     float aspect = ProjMat[1][1]/ProjMat[0][0];
     texProj0 = getPortalProjection(Position);
