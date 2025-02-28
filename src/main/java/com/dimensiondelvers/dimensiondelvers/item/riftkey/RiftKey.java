@@ -2,12 +2,19 @@ package com.dimensiondelvers.dimensiondelvers.item.riftkey;
 
 import com.dimensiondelvers.dimensiondelvers.block.RiftSpawnerBlock;
 import com.dimensiondelvers.dimensiondelvers.entity.RiftEntranceEntity;
+import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
 import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +22,7 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +58,24 @@ public class RiftKey extends Item {
             }
         }
         return InteractionResult.PASS;
+    }
+
+//    @Override
+//    public Component getName(ItemStack stack) {
+//        EssenceType theme = stack.getOrDefault(ModDataComponentType.RIFT_THEME, null);
+//        if (theme != null) {
+//            return Component.translatable("item.dimensiondelvers.rift_key.themed", theme.getName());
+//        } else {
+//            super.getName(stack);
+//        }
+//    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
+        int tier = stack.getOrDefault(ModDataComponentType.RIFT_TIER, 0);
+        if (tier > 0) {
+            components.add(Component.translatable("tooltip.dimensiondelvers.rift_key_tier", tier).withColor(Color.GRAY.getRGB()));
+        }
     }
 
     private List<RiftEntranceEntity> getExistingRifts(Level level, BlockPos pos) {

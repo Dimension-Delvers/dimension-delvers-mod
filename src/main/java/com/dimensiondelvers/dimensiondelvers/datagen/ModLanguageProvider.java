@@ -70,6 +70,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("accessibility.dimensiondelvers.screen.tooltip.high_contrast", "Enhances UI and HUD elements with higher contrast for better visibility");
         add("accessibility.dimensiondelvers.screen.tooltip.hard_of_hearing", "Enhances audio cues for better accessibility");
         add("accessibility.dimensiondelvers.screen.tooltip.reduced_motion", "Disables or slows down UI animations, camera shake, or screen effects");
+
+        add("tooltip.dimensiondelvers.rift_key_tier", "Rift Tier: %s");
     }
 
     private static @NotNull String getTranslationString(Block block) {

@@ -1,11 +1,13 @@
 package com.dimensiondelvers.dimensiondelvers.gui.menu;
 
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
+import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
 import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
 import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceTypeLookup;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -94,8 +96,10 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         int tier = tierPercent.get() / 100;
         if (tier == 0 && !resultContainer.isEmpty()) {
             resultContainer.clearContent();
-        } else if (tier > 0 && resultContainer.isEmpty()) {
-            resultContainer.setItem(0, ModItems.RIFT_KEY.toStack());
+        } else if (tier > 0 && resultContainer.isEmpty() || resultContainer.getItem(0).getOrDefault(ModDataComponentType.RIFT_TIER.get(), 0) != tier) {
+            ItemStack output = ModItems.RIFT_KEY.toStack();
+            output.applyComponents(DataComponentPatch.builder().set(ModDataComponentType.RIFT_TIER.get(), tier).build());
+            resultContainer.setItem(0, output);
         }
     }
 
