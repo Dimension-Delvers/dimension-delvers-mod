@@ -10,6 +10,7 @@ uniform float InnerScale;
 in vec2 texCoord0;
 in vec4 texProj0;
 in vec4 texProj1;
+in float dist;
 
 out vec4 fragColor;
 
@@ -19,8 +20,7 @@ void main() {
     float iTime = GameTime * 1000.0;
     vec2 UV0 = round(texCoord0 * PIXELATE) / PIXELATE;
 
-    float distance0 = (sin(iTime / 2.0)*2.0+1.0) / 2.0;
-    distance0 = clamp(distance0, 0.0, 1.0);
+    distance0 = clamp(1.0 - (dist / 50.0), 0.0, 1.0);
 
     float SHARPNESS = mix(4.0, 0.3, distance0);
     float width = mix(0.5, 1.25, distance0);
