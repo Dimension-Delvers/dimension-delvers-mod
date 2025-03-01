@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dimensiondelvers:block/key_forge"
+    }
+  }
+}

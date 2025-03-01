@@ -40,6 +40,8 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.RIFT_PORTAL_BLOCK.get());
+        blockModels.createTrivialCube(ModBlocks.RIFT_SPAWNER.get());
+        blockModels.createTrivialCube(ModBlocks.KEY_FORGE.get());
 
         ResourceLocation modelLoc = DimensionDelvers.id("block/rift_chest");
         blockModels.blockStateOutput.accept(
@@ -75,6 +77,7 @@ public class ModModelProvider extends ModelProvider {
         itemModels.itemModelOutput.accept(ModItems.BUILDER_GLASSES.get(), ItemModelUtils.plainModel(DimensionDelvers.id("item/builder_glasses")));
 
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.RIFT_KEY.get(), ModelTemplates.FLAT_ITEM);
 
         this.generateRunegemItem(ModItems.RUNEGEM.get(), itemModels);
 

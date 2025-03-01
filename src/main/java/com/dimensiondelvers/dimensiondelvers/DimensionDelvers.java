@@ -1,9 +1,13 @@
 package com.dimensiondelvers.dimensiondelvers;
 
+import com.dimensiondelvers.dimensiondelvers.client.ModShaders;
+import com.dimensiondelvers.dimensiondelvers.client.render.entity.RiftEntranceRenderer;
 import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.config.ClientConfig;
+import com.dimensiondelvers.dimensiondelvers.gui.screen.KeyForgeScreen;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
 import com.dimensiondelvers.dimensiondelvers.init.*;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceTypeLookup;
 import com.dimensiondelvers.dimensiondelvers.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -23,13 +27,17 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import org.slf4j.Logger;
 
 @Mod(DimensionDelvers.MODID)
@@ -52,6 +60,7 @@ public class DimensionDelvers {
         ModLootModifiers.GLOBAL_LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         ModModifierEffects.MODIFIER_EFFECT_TYPES.register(modEventBus);
         ModChunkGenerators.CHUNK_GENERATORS.register(modEventBus);
+        ModEntityTypes.ENTITIES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (DimensionDelvers) to respond directly to events.
@@ -91,7 +100,7 @@ public class DimensionDelvers {
 
         if (Config.logDirtBlock) LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
 
-        LOGGER.info("{} {}", Config.magicNumberIntroduction, Config.magicNumber);
+        LOGGER.info("Reticulating splines");
 
         // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
@@ -126,6 +135,16 @@ public class DimensionDelvers {
         LOGGER.info("HELLO from server starting"); // Do something when the server starts
     }
 
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        EssenceTypeLookup.generateLookup(event.getServer().registryAccess());
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(ServerStoppingEvent event) {
+        EssenceTypeLookup.clearLookup();
+    }
+
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
@@ -139,6 +158,17 @@ public class DimensionDelvers {
         @SubscribeEvent
         private static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+            event.register(ModMenuTypes.KEY_FORGE_MENU.get(), KeyForgeScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(ModEntityTypes.RIFT_ENTRANCE.get(), RiftEntranceRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerShaderPrograms(RegisterShadersEvent event) {
+            event.registerShader(ModShaders.RIFT_PORTAL);
         }
     }
 }

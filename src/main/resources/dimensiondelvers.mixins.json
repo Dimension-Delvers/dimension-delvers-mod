@@ -8,7 +8,7 @@
     "AccessorMappedRegistry",
     "AccessorMinecraftServer",
     "MixinEnchantingTableBlock",
-    "MixinWorldDimensions"
+    "MixinWorldDimensions",
     "InvokerBlockBehaviour",
     "MixinEnchantingTableBlock",
     "MixinStructureTemplate"

@@ -1,0 +1,7 @@
+{
+  "name_id" : "essence_type.dimensiondelvers.meat",
+  "items" : {
+    "#meat" : 1,
+    "minecraft:spider_eye" : 2
+  }
+}

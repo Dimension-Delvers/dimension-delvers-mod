@@ -2,6 +2,7 @@ package com.dimensiondelvers.dimensiondelvers.datagen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
+import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -30,23 +31,28 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
         addBlock(ModBlocks.RIFT_PORTAL_BLOCK, "Rift Portal");
+        addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
+        addBlock(ModBlocks.KEY_FORGE, "Key Forge");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
         addItem(ModItems.BUILDER_GLASSES, "Builder Glasses");
         addItem(ModItems.RUNEGEM, "Runegem");
+        addItem(ModItems.RIFT_KEY, "Rift Key");
+
+        addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
             helper.getVariants().forEach((variant, block) -> addBlock(block, getTranslationString(block.get())));
         });
 
-
         // Adds a generic translation
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
 
         add("container.dimensiondelvers.rune_anvil", "Rune Anvil");
         add("container.dimensiondelvers.rift_chest", "Rift Chest");
+        add("container.dimensiondelvers.key_forge", "Key Forge");
 
         add("accessibility.dimensiondelvers.screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility.dimensiondelvers.menubutton", "DimDelvers Accessibility (tmp)");

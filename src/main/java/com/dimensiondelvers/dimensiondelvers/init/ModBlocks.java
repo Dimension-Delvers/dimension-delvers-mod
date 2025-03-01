@@ -1,10 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.block.RiftPortalBlock;
-import com.dimensiondelvers.dimensiondelvers.block.BlockFamilyHelper;
-import com.dimensiondelvers.dimensiondelvers.block.RiftChestEntityBlock;
-import com.dimensiondelvers.dimensiondelvers.block.RuneAnvilBlock;
+import com.dimensiondelvers.dimensiondelvers.block.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -55,6 +52,24 @@ public class ModBlocks {
             .strength(2.5F)
             .sound(SoundType.METAL)
         )
+    );
+
+    public static final DeferredBlock<RiftSpawnerBlock> RIFT_SPAWNER = registerBlock(
+            "rift_spawner",
+            () -> new RiftSpawnerBlock(BlockBehaviour.Properties.of()
+                    .setId(blockId("rift_spawner"))
+                    .strength(2.0f)
+                    .sound(SoundType.STONE)
+            )
+    );
+
+    public static final DeferredBlock<KeyForgeBlock> KEY_FORGE = registerBlock(
+      "key_forge",
+            () -> new KeyForgeBlock(BlockBehaviour.Properties.of()
+                    .setId(blockId("key_forge"))
+                    .strength(2.0f)
+                    .sound(SoundType.STONE)
+            )
     );
 
     public static final BlockFamilyHelper PROCESSOR_BLOCK_1 = registerBuildingBlock("processor_block_1", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_1"))));
