@@ -7,7 +7,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +18,10 @@ public class DataGenerators {
         event.createProvider(ModLanguageProvider::new);
         event.createProvider(ModModelProvider::new);
         event.createProvider((output, lookupProvider) -> new LootTableProvider(
-                output, Set.of(), List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider
+                output, Set.of(), List.of(
+                        new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK),
+                        new LootTableProvider.SubProviderEntry(ModChestLootTableProvider::new, LootContextParamSets.CHEST)
+                ), lookupProvider
         ));
 
         event.createProvider(ModRecipeProvider.Runner::new);
