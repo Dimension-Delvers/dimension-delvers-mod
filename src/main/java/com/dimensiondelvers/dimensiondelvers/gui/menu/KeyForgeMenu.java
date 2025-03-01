@@ -96,6 +96,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
                 if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + OUTPUT_SLOTS, INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_SLOTS, true)) {
                     return ItemStack.EMPTY;
                 }
+                update();
             } else {
                 if (!this.moveItemStackTo(slotStack, 0, INPUT_SLOTS, false)) {
                     // Move from player inventory to hotbar
