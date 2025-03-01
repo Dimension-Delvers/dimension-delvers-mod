@@ -1,0 +1,28 @@
+{
+  "values": {
+    "#c:cobblestones": {
+      "type": "dimensiondelvers:earth",
+      "value": 1
+    },
+    "#c:crops": {
+      "type": "dimensiondelvers:life",
+      "value": 1
+    },
+    "#c:foods/cooked_meat": {
+      "type": "dimensiondelvers:meat",
+      "value": 2
+    },
+    "#c:foods/raw_meat": {
+      "type": "dimensiondelvers:meat",
+      "value": 1
+    },
+    "#c:stones": {
+      "type": "dimensiondelvers:earth",
+      "value": 2
+    },
+    "#c:stripped_logs": {
+      "type": "dimensiondelvers:life",
+      "value": 8
+    }
+  }
+}

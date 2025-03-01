@@ -7,6 +7,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+
 import java.util.List;
 import java.util.Set;
 
@@ -27,5 +28,7 @@ public class DataGenerators {
 
         event.createProvider((output, lookupProvider)
                 -> new ModItemTagProvider(output, lookupProvider, modBlockTagProvider.contentsGetter()));
+
+        event.createProvider(ModDataMapProvider::new);
     }
 }
