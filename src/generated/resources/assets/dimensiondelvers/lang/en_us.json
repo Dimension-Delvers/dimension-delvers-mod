@@ -142,6 +142,7 @@
   "essence_type.dimensiondelvers.water": "Water",
   "item.dimensiondelvers.example_item": "Example Item",
   "item.dimensiondelvers.rift_key": "Rift Key",
+  "item.dimensiondelvers.rift_key.themed": "Rift Key of %s",
   "item.dimensiondelvers.runegem": "Runegem",
   "itemGroup.dimensiondelvers": "Dimension Delvers",
   "tooltip.dimensiondelvers.rift_key_tier": "Rift Tier: %s"

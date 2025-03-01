@@ -4,6 +4,8 @@ import com.dimensiondelvers.dimensiondelvers.block.RiftSpawnerBlock;
 import com.dimensiondelvers.dimensiondelvers.entity.RiftEntranceEntity;
 import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
 import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
+import com.dimensiondelvers.dimensiondelvers.init.ModEssenceTypes;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
@@ -29,7 +32,7 @@ public class RiftKey extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = level.getBlockState(blockpos);
@@ -57,18 +60,18 @@ public class RiftKey extends Item {
         return InteractionResult.PASS;
     }
 
-//    @Override
-//    public Component getName(ItemStack stack) {
-//        EssenceType theme = stack.getOrDefault(ModDataComponentType.RIFT_THEME, null);
-//        if (theme != null) {
-//            return Component.translatable("item.dimensiondelvers.rift_key.themed", theme.getName());
-//        } else {
-//            super.getName(stack);
-//        }
-//    }
+    @Override
+    public @NotNull Component getName(ItemStack stack) {
+        EssenceType theme = stack.getOrDefault(ModDataComponentType.RIFT_THEME, ModEssenceTypes.NONE.get());
+        if (theme != ModEssenceTypes.NONE.get()) {
+            return Component.translatable("item.dimensiondelvers.rift_key.themed", theme.getName());
+        } else {
+            return super.getName(stack);
+        }
+    }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.@NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         int tier = stack.getOrDefault(ModDataComponentType.RIFT_TIER, 0);
         if (tier > 0) {
             components.add(Component.translatable("tooltip.dimensiondelvers.rift_key_tier", tier).withColor(Color.GRAY.getRGB()));

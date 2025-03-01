@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,7 +21,7 @@ public class ModDataMapProvider extends DataMapProvider {
     }
 
     @Override
-    protected void gather(HolderLookup.Provider provider) {
+    protected void gather(HolderLookup.@NotNull Provider provider) {
         // Core
         this.builder(ModDataMaps.ESSENCE_VALUE_DATA)
                 .add(Tags.Items.FOODS_RAW_MEAT, new EssenceValue(ModEssenceTypes.MEAT.get(), 1), false)
