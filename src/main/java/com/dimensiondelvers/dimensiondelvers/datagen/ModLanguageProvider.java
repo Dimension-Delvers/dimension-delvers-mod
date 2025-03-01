@@ -3,14 +3,18 @@ package com.dimensiondelvers.dimensiondelvers.datagen;
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
 import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
+import com.dimensiondelvers.dimensiondelvers.init.ModEssenceTypes;
 import com.dimensiondelvers.dimensiondelvers.init.ModItems;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 /* Handles Data Generation for I18n of the locale 'en_us' of the DimensionDelvers mod */
 public class ModLanguageProvider extends LanguageProvider {
@@ -37,6 +41,11 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
         addItem(ModItems.RUNEGEM, "Runegem");
         addItem(ModItems.RIFT_KEY, "Rift Key");
+
+        addEssenceType(ModEssenceTypes.EARTH, "Earth");
+        addEssenceType(ModEssenceTypes.LIFE, "Life");
+        addEssenceType(ModEssenceTypes.WATER, "Water");
+        addEssenceType(ModEssenceTypes.MEAT, "Meat");
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 
@@ -70,6 +79,11 @@ public class ModLanguageProvider extends LanguageProvider {
         add("accessibility.dimensiondelvers.screen.tooltip.reduced_motion", "Disables or slows down UI animations, camera shake, or screen effects");
 
         add("tooltip.dimensiondelvers.rift_key_tier", "Rift Tier: %s");
+    }
+
+    private void addEssenceType(Supplier<EssenceType> essenceType, String value) {
+        ResourceLocation loc = essenceType.get().getId();
+        add(EssenceType.LANG_PREFIX + "." + loc.getNamespace() + "." + loc.getPath(), value);
     }
 
     private static @NotNull String getTranslationString(Block block) {

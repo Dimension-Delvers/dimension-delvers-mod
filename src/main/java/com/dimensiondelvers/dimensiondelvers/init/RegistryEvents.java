@@ -1,7 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
-import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import com.dimensiondelvers.dimensiondelvers.modifier.Modifier;
 import com.dimensiondelvers.dimensiondelvers.modifier.effect.AbstractModifierEffect;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,6 +13,7 @@ public class RegistryEvents {
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
         event.register(ModModifierEffects.MODIFIER_TYPE_REGISTRY);
+        event.register(ModEssenceTypes.ESSENCE_TYPE_REGISTRY);
     }
 
     @SubscribeEvent
@@ -27,11 +27,6 @@ public class RegistryEvents {
                 ModModifiers.MODIFIER_KEY,
                 Modifier.DIRECT_CODEC,
                 Modifier.DIRECT_CODEC
-        );
-        event.dataPackRegistry(
-                EssenceType.ESSENCE_TYPE_REGISTRY_KEY,
-                EssenceType.DIRECT_CODEC,
-                null
         );
 
     }

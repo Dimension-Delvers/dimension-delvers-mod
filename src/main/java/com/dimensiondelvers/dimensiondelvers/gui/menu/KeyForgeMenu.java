@@ -1,11 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.gui.menu;
 
-import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
-import com.dimensiondelvers.dimensiondelvers.init.ModDataComponentType;
-import com.dimensiondelvers.dimensiondelvers.init.ModItems;
-import com.dimensiondelvers.dimensiondelvers.init.ModMenuTypes;
-import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
-import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceTypeLookup;
+import com.dimensiondelvers.dimensiondelvers.init.*;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceValue;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Menu for the Key Forge.
@@ -84,8 +79,9 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         int totalEssence = 0;
         for (int i = 0; i < inputContainer.getContainerSize(); i++) {
             ItemStack input = inputContainer.getItem(i);
-            for (Map.Entry<EssenceType, Integer> essenceValue : EssenceTypeLookup.getEssencesFor(input.getItem()).entrySet()) {
-                totalEssence += essenceValue.getValue() * input.getCount();
+            EssenceValue value = input.getItemHolder().getData(ModDataMaps.ESSENCE_VALUE_DATA);
+            if (value != null) {
+                totalEssence += value.value() * input.getCount();
             }
         }
         updateTier(totalEssence);
