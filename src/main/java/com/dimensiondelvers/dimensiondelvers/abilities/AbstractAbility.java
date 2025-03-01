@@ -7,10 +7,10 @@ import com.dimensiondelvers.dimensiondelvers.abilities.Serializable.PlayerDurati
 import com.dimensiondelvers.dimensiondelvers.abilities.effects.AbstractEffect;
 import com.dimensiondelvers.dimensiondelvers.init.ModAbilities;
 import com.dimensiondelvers.dimensiondelvers.networking.data.CooldownActivated;
-import com.dimensiondelvers.dimensiondelvers.networking.data.ToggleState;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -20,12 +20,15 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.dimensiondelvers.dimensiondelvers.Registries.AbilityRegistry.DATA_PACK_ABILITY_REG_KEY;
+
 public abstract class AbstractAbility {
 
     private List<AbstractEffect> effects;
 
     public abstract MapCodec<? extends AbstractAbility> getCodec();
     public static final Codec<AbstractAbility> DIRECT_CODEC = AbilityRegistry.ABILITY_TYPES_REGISTRY.byNameCodec().dispatch(AbstractAbility::getCodec, Function.identity());
+    public static final Codec<Holder<AbstractAbility>> CODEC = RegistryFixedCodec.create(DATA_PACK_ABILITY_REG_KEY);
     private ResourceLocation name;
     private ResourceLocation icon = ResourceLocation.withDefaultNamespace("textures/misc/forcefield.png");
     public Holder<Attribute> cooldownAttribute = null;
