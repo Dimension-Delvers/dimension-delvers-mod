@@ -58,6 +58,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         // Adds a generic translation
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
+        add("item.dimensiondelvers.rift_key.themed", "Rift Key of %s");
 
         add("container.dimensiondelvers.rune_anvil", "Rune Anvil");
         add("container.dimensiondelvers.rift_chest", "Rift Chest");

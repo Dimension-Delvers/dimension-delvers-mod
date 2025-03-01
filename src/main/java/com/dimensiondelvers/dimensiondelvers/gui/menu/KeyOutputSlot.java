@@ -29,6 +29,11 @@ public class KeyOutputSlot extends Slot {
     }
 
     @Override
+    protected void onQuickCraft(@NotNull ItemStack stack, int amount) {
+        inputContainer.clearContent();
+    }
+
+    @Override
     public boolean isFake() {
         return true;
     }

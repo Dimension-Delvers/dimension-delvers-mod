@@ -1,8 +1,12 @@
 package com.dimensiondelvers.dimensiondelvers.gui.menu;
 
 import com.dimensiondelvers.dimensiondelvers.init.*;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceValue;
+import com.dimensiondelvers.dimensiondelvers.util.Object2IntMapUtil;
 import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -22,8 +26,10 @@ import java.util.List;
  * the essence type distribution determines the theme.
  */
 public class KeyForgeMenu extends AbstractContainerMenu {
-    public final static int NUM_SLOTS = 4;
+    public final static int INPUT_SLOTS = 4;
     private final static int OUTPUT_SLOTS = 1;
+    private final static int PLAYER_INVENTORY_SLOTS = 3 * 9;
+    private final static int PLAYER_SLOTS = PLAYER_INVENTORY_SLOTS + 9;
     private final static int INPUT_SLOTS_X = 31;
     private final static int INPUT_SLOTS_Y = 33;
     private final static int INPUT_SLOT_X_OFFSET = 25;
@@ -53,7 +59,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         this.resultContainer = new ResultContainer();
         for (int slotY = 0; slotY < 2; slotY++) {
             for (int slotX = 0; slotX < 2; slotX++) {
-                addSlot(new Slot(inputContainer, slotY * 2 + slotX, INPUT_SLOTS_X + INPUT_SLOT_X_OFFSET * slotX, INPUT_SLOTS_Y + INPUT_SLOT_Y_OFFSET * slotY));
+                addSlot(new EssenceInputSlot(inputContainer, slotY * 2 + slotX, INPUT_SLOTS_X + INPUT_SLOT_X_OFFSET * slotX, INPUT_SLOTS_Y + INPUT_SLOT_Y_OFFSET * slotY));
             }
         }
         addSlot(new KeyOutputSlot(resultContainer, 4, 148, 78, inputContainer));
@@ -71,33 +77,68 @@ public class KeyForgeMenu extends AbstractContainerMenu {
     public void slotsChanged(@NotNull Container container) {
         this.access.execute((level, pos) -> {
             if (level instanceof ServerLevel) {
-                updateResults();
+                update();
             }
         });
     }
 
-    private void updateResults() {
+    @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+        Slot slot = slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack slotStack = slot.getItem();
+            ItemStack originalStack = slotStack.copy();
+            if (slot instanceof KeyOutputSlot) {
+                if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + OUTPUT_SLOTS, INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_SLOTS, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(slotStack, originalStack);
+            } else if (slot instanceof EssenceInputSlot) {
+                if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + OUTPUT_SLOTS, INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_SLOTS, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (!this.moveItemStackTo(slotStack, 0, INPUT_SLOTS, false)) {
+                    // Move from player inventory to hotbar
+                    if (index < INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_INVENTORY_SLOTS) {
+                        if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_INVENTORY_SLOTS, INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_SLOTS, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    }
+                    // Move from hotbar to player inventory
+                    else if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + OUTPUT_SLOTS, INPUT_SLOTS + OUTPUT_SLOTS + PLAYER_INVENTORY_SLOTS, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(this.access, player, ModBlocks.KEY_FORGE.get());
+    }
+
+    @Override
+    public void removed(@NotNull Player player) {
+        this.access.execute((world, pos) -> this.clearContainer(player, inputContainer));
+    }
+
+    private void update() {
         int totalEssence = 0;
+        Object2IntMap<EssenceType> essenceMap = new Object2IntArrayMap<>();
         for (int i = 0; i < inputContainer.getContainerSize(); i++) {
             ItemStack input = inputContainer.getItem(i);
             EssenceValue value = input.getItemHolder().getData(ModDataMaps.ESSENCE_VALUE_DATA);
             if (value != null) {
+                essenceMap.mergeInt(value.type(), value.value(), Integer::sum);
                 totalEssence += value.value() * input.getCount();
             }
         }
-        updateTier(totalEssence);
-        updateOutput();
-    }
 
-    private void updateOutput() {
-        int tier = tierPercent.get() / 100;
-        if (tier == 0 && !resultContainer.isEmpty()) {
-            resultContainer.clearContent();
-        } else if (tier > 0 && resultContainer.isEmpty() || resultContainer.getItem(0).getOrDefault(ModDataComponentType.RIFT_TIER.get(), 0) != tier) {
-            ItemStack output = ModItems.RIFT_KEY.toStack();
-            output.applyComponents(DataComponentPatch.builder().set(ModDataComponentType.RIFT_TIER.get(), tier).build());
-            resultContainer.setItem(0, output);
-        }
+        updateTier(totalEssence);
+        updateOutput(Object2IntMapUtil.max(essenceMap));
     }
 
     private void updateTier(int totalEssence) {
@@ -115,18 +156,27 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         tierPercent.set(result);
     }
 
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        return ItemStack.EMPTY;
+    private void updateOutput(EssenceType type) {
+        int tier = tierPercent.get() / 100;
+        if (tier == 0 && !resultContainer.isEmpty()) {
+            resultContainer.clearContent();
+        } else if (tier > 0 && resultContainer.isEmpty()) {
+            DataComponentPatch patch = buildKeyComponentPatch(tier, type);
+            ItemStack output = ModItems.RIFT_KEY.toStack();
+            output.applyComponents(patch);
+            output.applyComponents(DataComponentPatch.builder().set(ModDataComponentType.RIFT_TIER.get(), tier).build());
+
+            resultContainer.setItem(0, output);
+        } else if (tier > 0 && !resultContainer.isEmpty()) {
+            resultContainer.getItem(0).applyComponents(buildKeyComponentPatch(tier, type));
+        }
     }
 
-    @Override
-    public boolean stillValid(@NotNull Player player) {
-        return stillValid(this.access, player, ModBlocks.KEY_FORGE.get());
+    private DataComponentPatch buildKeyComponentPatch(int tier, EssenceType theme) {
+        return DataComponentPatch.builder()
+                .set(ModDataComponentType.RIFT_TIER.get(), tier)
+                .set(ModDataComponentType.RIFT_THEME.get(), theme)
+                .build();
     }
 
-    @Override
-    public void removed(@NotNull Player player) {
-        this.access.execute((world, pos) -> this.clearContainer(player, inputContainer));
-    }
 }

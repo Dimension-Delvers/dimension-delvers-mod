@@ -1,6 +1,7 @@
 package com.dimensiondelvers.dimensiondelvers.init;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceType;
 import com.dimensiondelvers.dimensiondelvers.item.runegem.RunegemData;
 import com.dimensiondelvers.dimensiondelvers.item.socket.GearSockets;
 import com.mojang.serialization.Codec;
@@ -23,6 +24,7 @@ public class ModDataComponentType {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<RunegemData>> RUNEGEM_DATA  = register("runegem_data", RunegemData.CODEC, null);
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> INVENTORY_SNAPSHOT_ID = register("inventory_snapshot_id", UUIDUtil.CODEC, null);
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> RIFT_TIER = register("rift_tier", Codec.INT, ByteBufCodecs.INT);
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<EssenceType>> RIFT_THEME = register("rift_theme", ModEssenceTypes.ESSENCE_TYPE_REGISTRY.byNameCodec(), ByteBufCodecs.registry(ModEssenceTypes.ESSENCE_TYPE_REGISTRY_KEY));
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, final Codec<T> codec, @Nullable final StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
         if (streamCodec == null) {
