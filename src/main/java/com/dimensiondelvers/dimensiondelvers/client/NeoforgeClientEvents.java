@@ -56,9 +56,9 @@ public class NeoforgeClientEvents {
 //            PacketDistributor.sendToServer(new UseAbility(BE_PRETTY.get().getName().toString()));
 //        }
 
-        while (SMOL_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("be_smol").toString()));
-        }
+//        while (SMOL_KEY.consumeClick()) {
+//            PacketDistributor.sendToServer(new UseAbility(DimensionDelvers.id("be_smol").toString()));
+//        }
     }
 
     //TODO remove this and do a better render stuff later

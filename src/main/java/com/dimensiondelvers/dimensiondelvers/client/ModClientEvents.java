@@ -20,52 +20,54 @@ public class ModClientEvents {
 
     //TODO: Replace these with finalized skill keybindings
     public static final KeyMapping ABILITY_1_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("summon_arrow"), // Will be localized using this translation key
+            "key." + DimensionDelvers.id("ability1"), // Will be localized using this translation key //arrow
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
             GLFW.GLFW_KEY_O, // Default key is P
             "key.categories.misc" // Mapping will be in the misc category
     );
-    public static final KeyMapping ABILITY_3_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("boost"), // Will be localized using this translation key
-            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_I, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
-    );
 
     public static final KeyMapping ABILITY_2_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("heal"), // Will be localized using this translation key
+            "key." + DimensionDelvers.id("ability2"), // Will be localized using this translation key //heal
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
             GLFW.GLFW_KEY_U, // Default key is P
             "key.categories.misc" // Mapping will be in the misc category
     );
 
-    public static final KeyMapping ARMOR_STAND_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("armor_stand"), // Will be localized using this translation key
+    public static final KeyMapping ABILITY_3_KEY = new KeyMapping(
+            "key." + DimensionDelvers.id("ability3"), // Will be localized using this translation key //boost
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_Y, // Default key is P
+            GLFW.GLFW_KEY_I, // Default key is P
             "key.categories.misc" // Mapping will be in the misc category
     );
 
-    public static final KeyMapping OPEN_UPGRADE_MENU_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("unlock_all"), // Will be localized using this translation key
-            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_J, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
-    );
 
-    public static final KeyMapping PRETTY_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("be_pretty"), // Will be localized using this translation key
-            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_H, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
-    );
+//    public static final KeyMapping ARMOR_STAND_KEY = new KeyMapping(
+//            "key." + DimensionDelvers.id("armor_stand"), // Will be localized using this translation key
+//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+//            GLFW.GLFW_KEY_Y, // Default key is P
+//            "key.categories.misc" // Mapping will be in the misc category
+//    );
 
-    public static final KeyMapping SMOL_KEY = new KeyMapping(
-            "key." + DimensionDelvers.id("be_smol"), // Will be localized using this translation key
-            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_L, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
-    );
+//    public static final KeyMapping OPEN_UPGRADE_MENU_KEY = new KeyMapping(
+//            "key." + DimensionDelvers.id("unlock_all"), // Will be localized using this translation key
+//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+//            GLFW.GLFW_KEY_J, // Default key is P
+//            "key.categories.misc" // Mapping will be in the misc category
+//    );
+//
+//    public static final KeyMapping PRETTY_KEY = new KeyMapping(
+//            "key." + DimensionDelvers.id("be_pretty"), // Will be localized using this translation key
+//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+//            GLFW.GLFW_KEY_H, // Default key is P
+//            "key.categories.misc" // Mapping will be in the misc category
+//    );
+//
+//    public static final KeyMapping SMOL_KEY = new KeyMapping(
+//            "key." + DimensionDelvers.id("be_smol"), // Will be localized using this translation key
+//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+//            GLFW.GLFW_KEY_L, // Default key is P
+//            "key.categories.misc" // Mapping will be in the misc category
+//    );
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
@@ -81,10 +83,10 @@ public class ModClientEvents {
         event.register(ABILITY_2_KEY);
         event.register(ABILITY_1_KEY);
         event.register(ABILITY_3_KEY);
-        event.register(ARMOR_STAND_KEY);
-        event.register(OPEN_UPGRADE_MENU_KEY);
-        event.register(PRETTY_KEY);
-        event.register(SMOL_KEY);
+//        event.register(ARMOR_STAND_KEY);
+//        event.register(OPEN_UPGRADE_MENU_KEY);
+//        event.register(PRETTY_KEY);
+//        event.register(SMOL_KEY);
     }
 
     @SubscribeEvent
