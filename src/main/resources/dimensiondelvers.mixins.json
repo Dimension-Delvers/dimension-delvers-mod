@@ -9,6 +9,9 @@
     "AccessorMinecraftServer",
     "MixinEnchantingTableBlock",
     "MixinWorldDimensions"
+    "InvokerBlockBehaviour",
+    "MixinEnchantingTableBlock",
+    "MixinStructureTemplate"
   ],
   "client": [
     "MixinAccessibilityOptionsScreen",
