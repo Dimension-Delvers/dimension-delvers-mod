@@ -72,7 +72,7 @@ public class RiftEntranceEntity extends Entity {
             player.displayClientMessage(Component.literal("Failed to create rift"), true);
         }
         RiftData.get(lvl).addPlayer(player.getUUID());
-        player.displayClientMessage(Component.literal("Created rift with id: " + lvl.dimension().location()), true);
+//        player.displayClientMessage(Component.literal("Created rift with id: " + lvl.dimension().location()), true);
 
         var riftSpawnCoords = getRiftSpawnCoords();
         player.teleportTo(lvl, riftSpawnCoords.x, riftSpawnCoords.y, riftSpawnCoords.z, Set.of(), player.getYRot(), 0, false);
