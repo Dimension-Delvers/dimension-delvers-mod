@@ -89,13 +89,10 @@ public class RiftLevelManager {
         level.getServer().markWorldsDirty();
         NeoForge.EVENT_BUS.post(new LevelEvent.Load(level));
         PacketDistributor.sendToAllPlayers(new S2CLevelListUpdatePacket(id, false));
-        level.setBlock(new BlockPos(0, -1, 0), ModBlocks.RIFT_SPAWNER.get().defaultBlockState(), 3);
 
-        Optional<RiftSpawnerBlock.SpawnLocation> spawnLocation = ModBlocks.RIFT_SPAWNER.get().getSpawnLocation(level, new BlockPos(0,-1,0), Direction.UP);
-        if (spawnLocation.isPresent()) {
-            RiftSpawnerBlock.SpawnLocation loc = spawnLocation.get();
-            spawnRift(level, loc.position(), loc.direction());
-        }
+        var pos = new BlockPos(0, 0, 0);
+        var sl = new RiftSpawnerBlock.SpawnLocation(pos, pos.getBottomCenter(), Direction.UP);
+        spawnRift(level, sl.position(), sl.direction());
 
         DimensionDelvers.LOGGER.debug("Created rift level {}", id);
         return level;
