@@ -49,7 +49,7 @@ public class RiftKey extends Item {
                     return InteractionResult.SUCCESS;
                 }
 
-                spawnRift(level, loc.position(), loc.direction());
+                spawnRift(level, loc.position(), loc.direction(), context.getItemInHand().getOrDefault(ModDataComponentType.RIFT_TIER, 0));
                 context.getItemInHand().shrink(1);
                 return InteractionResult.SUCCESS;
             }
@@ -79,11 +79,12 @@ public class RiftKey extends Item {
         return level.getEntities(EntityTypeTest.forClass(RiftEntranceEntity.class), new AABB(pos), x -> true);
     }
 
-    private void spawnRift(Level level, Vec3 pos, Direction dir) {
+    private void spawnRift(Level level, Vec3 pos, Direction dir, int riftSize) {
         RiftEntranceEntity rift = new RiftEntranceEntity(ModEntityTypes.RIFT_ENTRANCE.get(), level);
         rift.setPos(pos);
         rift.setYRot(dir.toYRot());
         rift.setBillboard(dir.getAxis().isVertical());
+        rift.setRiftSize(riftSize);
         level.addFreshEntity(rift);
     }
 }

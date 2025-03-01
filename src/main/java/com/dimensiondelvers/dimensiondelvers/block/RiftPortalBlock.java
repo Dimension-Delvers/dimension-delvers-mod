@@ -43,7 +43,7 @@ public class RiftPortalBlock extends Block {
 
     private static InteractionResult tpToRift(ServerPlayer player, ServerLevel level, BlockPos pos) {
         ResourceLocation riftId = DimensionDelvers.id("rift_" + pos.getX() + "_" + pos.getY() + "_" + pos.getZ());
-        ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos);
+        ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos, 0);
         if (lvl == null) {
             player.displayClientMessage(Component.literal("Failed to create rift"), true);
             return InteractionResult.FAIL;

@@ -1,13 +1,19 @@
 package com.dimensiondelvers.dimensiondelvers.core.rift;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.block.RiftSpawnerBlock;
+import com.dimensiondelvers.dimensiondelvers.entity.RiftEntranceEntity;
 import com.dimensiondelvers.dimensiondelvers.init.ModBlocks;
+import com.dimensiondelvers.dimensiondelvers.init.ModEntityTypes;
 import com.dimensiondelvers.dimensiondelvers.mixin.AccessorMappedRegistry;
 import com.dimensiondelvers.dimensiondelvers.mixin.AccessorMinecraftServer;
 import com.dimensiondelvers.dimensiondelvers.network.S2CLevelListUpdatePacket;
 import com.dimensiondelvers.dimensiondelvers.world.level.PocRiftChunkGenerator;
 import com.dimensiondelvers.dimensiondelvers.world.level.RiftDimensionType;
+import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.theme.LevelRiftThemeData;
+import com.dimensiondelvers.dimensiondelvers.world.level.levelgen.theme.RiftTheme;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
@@ -23,6 +29,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.storage.DerivedLevelData;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -36,12 +43,13 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class RiftLevelManager {
 
     //TODO: unload the dimesnions if all plauers are disconnected, but still in the dimension
     @SuppressWarnings("deprecation")
-    public static ServerLevel getOrCreateRiftLevel(ResourceLocation id, ResourceKey<Level> portalDimension, BlockPos portalPos) {
+    public static ServerLevel getOrCreateRiftLevel(ResourceLocation id, ResourceKey<Level> portalDimension, BlockPos portalPos, int riftSize) {
         var server = ServerLifecycleHooks.getCurrentServer();
         var ow = server.overworld();
 
@@ -66,7 +74,7 @@ public class RiftLevelManager {
             return null;
         }
 
-        ServerLevel level = createRift(id, stem, portalDimension, portalPos);
+        ServerLevel level = createRift(id, stem, portalDimension, portalPos, riftSize);
 
         Registry<Level> registry = dimensionRegistry.get();
         if (registry instanceof MappedRegistry<Level> mappedRegistry) {
@@ -81,9 +89,24 @@ public class RiftLevelManager {
         level.getServer().markWorldsDirty();
         NeoForge.EVENT_BUS.post(new LevelEvent.Load(level));
         PacketDistributor.sendToAllPlayers(new S2CLevelListUpdatePacket(id, false));
-        level.setBlock(new BlockPos(0, -1, 0), ModBlocks.RIFT_PORTAL_BLOCK.get().defaultBlockState(), 3);
+        level.setBlock(new BlockPos(0, -1, 0), ModBlocks.RIFT_SPAWNER.get().defaultBlockState(), 3);
+
+        Optional<RiftSpawnerBlock.SpawnLocation> spawnLocation = ModBlocks.RIFT_SPAWNER.get().getSpawnLocation(level, new BlockPos(0,-1,0), Direction.UP);
+        if (spawnLocation.isPresent()) {
+            RiftSpawnerBlock.SpawnLocation loc = spawnLocation.get();
+            spawnRift(level, loc.position(), loc.direction());
+        }
+
         DimensionDelvers.LOGGER.debug("Created rift level {}", id);
         return level;
+    }
+
+    private static void spawnRift(Level level, Vec3 pos, Direction dir) {
+        RiftEntranceEntity rift = new RiftEntranceEntity(ModEntityTypes.RIFT_ENTRANCE.get(), level);
+        rift.setPos(pos);
+        rift.setYRot(dir.toYRot());
+        rift.setBillboard(dir.getAxis().isVertical());
+        level.addFreshEntity(rift);
     }
 
     @SuppressWarnings("deprecation")
@@ -186,7 +209,7 @@ public class RiftLevelManager {
         return new PocRiftChunkGenerator(new FixedBiomeSource(voidBiome), ResourceLocation.withDefaultNamespace("melon"));
     }
 
-    private static ServerLevel createRift(ResourceLocation id, LevelStem stem, ResourceKey<Level> portalDimension, BlockPos portalPos) {
+    private static ServerLevel createRift(ResourceLocation id, LevelStem stem, ResourceKey<Level> portalDimension, BlockPos portalPos, int riftSize) {
         AccessorMinecraftServer server = (AccessorMinecraftServer) ServerLifecycleHooks.getCurrentServer();
         var chunkProgressListener = server.getProgressListenerFactory().create(0);
         var storageSource = server.getStorageSource();
@@ -216,7 +239,21 @@ public class RiftLevelManager {
         var riftData = RiftData.get(riftLevel);
         riftData.setPortalDimension(portalDimension);
         riftData.setPortalPos(portalPos);
-        placeInitialJigsaw(riftLevel, DimensionDelvers.id("start"), ResourceLocation.withDefaultNamespace("empty"), 6, new BlockPos(0, 0, 0));
+
+        // theme
+        var registryReference = riftLevel.registryAccess().lookup(Registries.PROCESSOR_LIST);
+        var themeList = List.of( // TODO: pull from registry/config
+            registryReference.get().get(ResourceLocation.fromNamespaceAndPath(DimensionDelvers.MODID, "cave")).get().value(),
+            registryReference.get().get(ResourceLocation.fromNamespaceAndPath(DimensionDelvers.MODID, "forest")).get().value()
+        );
+        Random random = new Random();
+        var theme = themeList.get(random.nextInt(themeList.size()));
+
+        LevelRiftThemeData.getFromLevel(riftLevel).setTheme(Holder.direct(new RiftTheme(Holder.direct(theme)))); // WHAT THE FUCK?
+        if (riftSize == 0 ){
+            riftSize = 5;
+        }
+        placeInitialJigsaw(riftLevel, DimensionDelvers.id("rift/room_portal"), ResourceLocation.fromNamespaceAndPath("dd","room"), riftSize, new BlockPos(23, 2, 0));
         return riftLevel;
     }
 

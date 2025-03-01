@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
     private final static int INPUT_SLOTS_Y = 33;
     private final static int INPUT_SLOT_X_OFFSET = 25;
     private final static int INPUT_SLOT_Y_OFFSET = 25;
-    private static final List<Integer> TIER_COSTS = ImmutableList.of(20, 60, 180, 540, 1620);
+    private static final List<Integer> TIER_COSTS = Collections.nCopies(20,20);
 
     private final ContainerLevelAccess access;
     private final Container inputContainer;
