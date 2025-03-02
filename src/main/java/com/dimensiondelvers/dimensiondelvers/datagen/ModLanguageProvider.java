@@ -80,6 +80,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("accessibility.dimensiondelvers.screen.tooltip.reduced_motion", "Disables or slows down UI animations, camera shake, or screen effects");
 
         add("tooltip.dimensiondelvers.rift_key_tier", "Rift Tier: %s");
+        add("tooltip.dimensiondelvers.essence_value", "Essence: %s %s");
     }
 
     private void addEssenceType(Supplier<EssenceType> essenceType, String value) {

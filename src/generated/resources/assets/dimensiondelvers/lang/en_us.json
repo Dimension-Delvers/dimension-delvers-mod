@@ -145,5 +145,6 @@
   "item.dimensiondelvers.rift_key.themed": "Rift Key of %s",
   "item.dimensiondelvers.runegem": "Runegem",
   "itemGroup.dimensiondelvers": "Dimension Delvers",
+  "tooltip.dimensiondelvers.essence_value": "Essence: %s %s",
   "tooltip.dimensiondelvers.rift_key_tier": "Rift Tier: %s"
 }

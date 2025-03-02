@@ -2,15 +2,21 @@ package com.dimensiondelvers.dimensiondelvers.gui.screen;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
 import com.dimensiondelvers.dimensiondelvers.gui.menu.KeyForgeMenu;
+import com.dimensiondelvers.dimensiondelvers.init.ModDataMaps;
+import com.dimensiondelvers.dimensiondelvers.item.essence.EssenceValue;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * This screen renders the Key Forge Menu
@@ -36,7 +42,30 @@ public class KeyForgeScreen extends AbstractContainerScreen<KeyForgeMenu> {
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
+        renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderTooltip(@NotNull GuiGraphics guiGraphics, int x, int y) {
+        if (this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
+            ItemStack itemStack = this.hoveredSlot.getItem();
+            if (this.menu.getCarried().isEmpty() || itemStack.getTooltipImage().map(ClientTooltipComponent::create).map(ClientTooltipComponent::showTooltipWithItemInHand).orElse(false)) {
+                List<Component> tooltips = this.getTooltipFromContainerItem(itemStack);
+                EssenceValue essenceValue = itemStack.getItemHolder().getData(ModDataMaps.ESSENCE_VALUE_DATA);
+                if (essenceValue != null) {
+                    tooltips.add(Component.translatable("tooltip.dimensiondelvers.essence_value", essenceValue.value(), essenceValue.type().getName()).withColor(Color.GRAY.getRGB()));
+                }
+                guiGraphics.renderTooltip(
+                        this.font,
+                        tooltips,
+                        itemStack.getTooltipImage(),
+                        itemStack,
+                        x,
+                        y,
+                        itemStack.get(DataComponents.TOOLTIP_STYLE)
+                );
+            }
+        }
     }
 
     @Override

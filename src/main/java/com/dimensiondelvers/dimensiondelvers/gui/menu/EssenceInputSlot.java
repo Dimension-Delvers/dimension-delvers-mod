@@ -14,4 +14,5 @@ public class EssenceInputSlot extends Slot {
     public boolean mayPlace(ItemStack stack) {
         return stack.getItemHolder().getData(ModDataMaps.ESSENCE_VALUE_DATA) != null;
     }
+
 }
