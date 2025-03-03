@@ -16,6 +16,7 @@ public class StealthObjective extends AbstractObjective {
     ).apply(inst, StealthObjective::new));
 
     private int alarmProgress;
+    private final int maxProgress = 20000;
     private boolean complete;
 
     public StealthObjective() {
@@ -31,6 +32,10 @@ public class StealthObjective extends AbstractObjective {
         return alarmProgress;
     }
 
+    public int getMaxProgress() {
+        return maxProgress;
+    }
+
     public boolean isComplete() {
         return complete;
     }
@@ -39,7 +44,7 @@ public class StealthObjective extends AbstractObjective {
     public boolean onLivingDeath(LivingDeathEvent event, ServerLevel serverLevel, LevelRiftObjectiveData data) {
         if(complete) return false;
         alarmProgress += event.getEntity().tickCount;
-        if(alarmProgress >= 20000){
+        if(alarmProgress >= maxProgress){
             complete = true;
         }
         return true;

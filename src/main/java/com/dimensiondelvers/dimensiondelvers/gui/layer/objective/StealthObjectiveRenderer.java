@@ -1,6 +1,8 @@
 package com.dimensiondelvers.dimensiondelvers.gui.layer.objective;
 
 import com.dimensiondelvers.dimensiondelvers.DimensionDelvers;
+import com.dimensiondelvers.dimensiondelvers.rift.objective.AbstractObjective;
+import com.dimensiondelvers.dimensiondelvers.rift.objective.types.StealthObjective;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
@@ -16,21 +18,22 @@ public class StealthObjectiveRenderer extends ObjectiveRenderer {
     private static final ResourceLocation BAR_BACKGROUND_SPRITE = DimensionDelvers.id("objective/stealth/bar_background");
     private static final ResourceLocation BAR_PROGRESS_SPRITE = DimensionDelvers.id("objective/stealth/bar_progress");
 
+    private final StealthObjective stealthObjective;
+
+    public StealthObjectiveRenderer(StealthObjective stealthObjective) {
+        this.stealthObjective = stealthObjective;
+    }
+
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        PoseStack poseStack = guiGraphics.pose();
         Minecraft mc = Minecraft.getInstance();
-        Window window = mc.getWindow();
-        int scaledWidth = window.getGuiScaledWidth();
-        int scaledHeight = window.getGuiScaledHeight();
         LocalPlayer player = mc.player;
-
 
         int textureWidth = 52;
         int spacing = 5;
         int x = (guiGraphics.guiWidth()/2) - (textureWidth/2);
         int y = 14;
-        float progress = 0.84F;
+        float progress = (float) stealthObjective.getAlarmProgress() / stealthObjective.getMaxProgress();
         int progressWidth = (int) (progress * (textureWidth+1));
         guiGraphics.blitSprite(RenderType::guiTextured, ALARM_SPRITE, x-spacing-10 , y-2, 10, 10);
         guiGraphics.blitSprite(RenderType::guiTextured, BAR_BACKGROUND_SPRITE, x, y, textureWidth, 5);
@@ -43,6 +46,12 @@ public class StealthObjectiveRenderer extends ObjectiveRenderer {
         if(progress >= 0.84F && player.tickCount % 16 < 8) {
             guiGraphics.blitSprite(RenderType::guiTextured, ALERT_SPRITE, x+textureWidth+spacing , y-5, 14, 14);
         }
+    }
 
+    public static StealthObjectiveRenderer create(AbstractObjective objective) {
+        if(objective instanceof StealthObjective stealthObjective) {
+            return new StealthObjectiveRenderer(stealthObjective);
+        }
+        return null;
     }
 }
