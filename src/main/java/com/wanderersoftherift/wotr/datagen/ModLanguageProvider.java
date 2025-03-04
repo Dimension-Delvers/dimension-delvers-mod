@@ -30,6 +30,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.DEV_BLOCK, "Dev Block");
         addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
+        addBlock(ModBlocks.SKILL_BENCH, "Skill Bench");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
@@ -46,6 +47,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add("container." + WanderersOfTheRift.MODID + ".rune_anvil", "Rune Anvil");
         add("container." + WanderersOfTheRift.MODID + ".rift_chest", "Rift Chest");
+        add("container." + WanderersOfTheRift.MODID + ".skill_bench", "Skill Bench");
+
+        add("skill_bench." + WanderersOfTheRift.MODID + ".screen.upgrade", "Upgrades");
 
         add("ability." + WanderersOfTheRift.MODID + ".cannot_unlock", "You must unlock the following to get this boost: ");
 

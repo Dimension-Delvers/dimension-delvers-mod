@@ -4,6 +4,7 @@ import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.block.BlockFamilyHelper;
 import com.wanderersoftherift.wotr.block.RiftChestEntityBlock;
 import com.wanderersoftherift.wotr.block.RuneAnvilBlock;
+import com.wanderersoftherift.wotr.block.SkillBenchBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +36,12 @@ public class ModBlocks {
             .setId(blockId("rune_anvil"))
             .strength(2.5F)
             .sound(SoundType.METAL)
+    ));
+
+    public static final DeferredBlock<SkillBenchBlock> SKILL_BENCH = registerBlock("skill_bench", () -> new SkillBenchBlock(BlockBehaviour.Properties.of()
+            .setId(blockId("skill_bench"))
+            .strength(2.0f)
+            .sound(SoundType.WOOD)
     ));
 
     public static final DeferredBlock<RiftChestEntityBlock> RIFT_CHEST = registerBlock(

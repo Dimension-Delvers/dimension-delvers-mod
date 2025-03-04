@@ -1,0 +1,6 @@
+{
+  "name" : "Mana Cost Decrease",
+  "description" : "Decreases mana cost by 10%",
+  "icon" : "wotr:textures/item/runegem/shape/pentagon.png",
+  "maxCount" : 5
+}

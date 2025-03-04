@@ -1,0 +1,6 @@
+{
+  "name" : "Projectile Speed",
+  "description" : "Increases Projectile speed by 10%",
+  "icon" : "wotr:textures/item/runegem/shape/square.png",
+  "maxCount" : 10
+}

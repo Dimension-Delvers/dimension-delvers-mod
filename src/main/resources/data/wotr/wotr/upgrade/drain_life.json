@@ -1,0 +1,6 @@
+{
+  "name" : "Drain Life",
+  "description" : "Drains 1 life per target hit",
+  "icon" : "wotr:textures/item/runegem/shape/heart.png",
+  "maxCount" : 3
+}
