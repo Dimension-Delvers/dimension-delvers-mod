@@ -38,6 +38,7 @@ public class ModModelProvider extends ModelProvider {
     @Override
     protected void registerModels(BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
+        blockModels.createTrivialCube(ModBlocks.SKILL_BENCH.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
 
         ResourceLocation modelLoc = WanderersOfTheRift.id("block/rift_chest");

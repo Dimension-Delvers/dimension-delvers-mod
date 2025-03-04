@@ -3,6 +3,7 @@ package com.wanderersoftherift.wotr.init;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.Serializable.PlayerCooldownData;
 import com.wanderersoftherift.wotr.abilities.Serializable.PlayerDurationData;
+import com.wanderersoftherift.wotr.item.skillgem.AbilitySlots;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -25,4 +26,5 @@ public class ModAttachments {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerDurationData>> DURATIONS = ATTACHMENT_TYPES.register(
             "durations", () -> AttachmentType.serializable(PlayerDurationData::new).build()
     );
+    public static final Supplier<AttachmentType<AbilitySlots>> ABILITY_SLOTS = ATTACHMENT_TYPES.register("ability_slots", () -> AttachmentType.builder(AbilitySlots::new).serialize(AbilitySlots.CODEC).copyOnDeath().build());
 }

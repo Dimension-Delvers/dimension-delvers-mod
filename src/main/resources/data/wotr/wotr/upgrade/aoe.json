@@ -1,0 +1,6 @@
+{
+  "name" : "Area of Attack",
+  "description" : "Increases Area of Attack by 1 block",
+  "icon" : "wotr:textures/item/runegem/shape/circle.png",
+  "maxCount" : 3
+}

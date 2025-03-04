@@ -3,10 +3,14 @@ package com.wanderersoftherift.wotr;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.Registries.AbilityRegistry;
 import com.wanderersoftherift.wotr.Registries.UpgradeRegistry;
+import com.wanderersoftherift.wotr.commands.SkillGemCommands;
 import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.gui.menu.SkillBenchMenu;
 import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
 import com.wanderersoftherift.wotr.abilities.AbilityAttributes;
+import com.wanderersoftherift.wotr.gui.screen.SkillBenchScreen;
 import com.wanderersoftherift.wotr.init.*;
+import com.wanderersoftherift.wotr.network.SelectSkillUpgradeRequest;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -33,12 +37,15 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.slf4j.Logger;
 
 @Mod(WanderersOfTheRift.MODID)
 public class WanderersOfTheRift {
     public static final String MODID = "wotr";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String PROTOCOL_VERSION = "1";
 
     public WanderersOfTheRift(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -62,6 +69,7 @@ public class WanderersOfTheRift {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
+        modEventBus.addListener(this::registerPayloadHandler);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
@@ -111,6 +119,16 @@ public class WanderersOfTheRift {
     @SubscribeEvent
     private void registerCommands(RegisterCommandsEvent event) {
         InventorySnapshotCommands.register(event.getDispatcher(), event.getBuildContext());
+        SkillGemCommands.register(event.getDispatcher(), event.getBuildContext());
+    }
+
+    private void registerPayloadHandler(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(MODID).versioned(PROTOCOL_VERSION);
+        registrar.playToServer(SelectSkillUpgradeRequest.ID, SelectSkillUpgradeRequest.STREAM_CODEC, ((payload, context) -> {
+            if (context.player().containerMenu instanceof SkillBenchMenu menu && menu.stillValid(context.player())) {
+                menu.selectSkill(payload.choice(), payload.selection());
+            }
+        }));
     }
 
     @SubscribeEvent
@@ -151,6 +169,7 @@ public class WanderersOfTheRift {
         @SubscribeEvent
         private static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
+            event.register(ModMenuTypes.SKILL_BENCH_MENU.get(), SkillBenchScreen::new);
         }
     }
 }

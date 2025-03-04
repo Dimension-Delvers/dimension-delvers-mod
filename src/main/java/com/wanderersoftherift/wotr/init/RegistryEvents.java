@@ -1,6 +1,7 @@
 package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
+import com.wanderersoftherift.wotr.item.skillgem.Upgrade;
 import com.wanderersoftherift.wotr.modifier.Modifier;
 import com.wanderersoftherift.wotr.modifier.effect.AbstractModifierEffect;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -26,6 +27,11 @@ public class RegistryEvents {
                 ModModifiers.MODIFIER_KEY,
                 Modifier.DIRECT_CODEC,
                 Modifier.DIRECT_CODEC
+        );
+        event.dataPackRegistry(
+                Upgrade.UPGRADE_REGISTRY_KEY,
+                Upgrade.CODEC,
+                Upgrade.CODEC
         );
     }
 }
