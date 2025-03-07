@@ -44,6 +44,11 @@ public class ModLanguageProvider extends LanguageProvider {
         add("itemGroup.dimensiondelvers", "Dimension Delvers");
 
         add("container.dimensiondelvers.rune_anvil", "Rune Anvil");
+
+        add("command.dimensiondelvers.dev_world_set", "Dev World settings applied:\n - %1$s: Disabled\n - %2$s: Disabled\n - %3$s: Disabled\n - %4$s: Disabled\n - %5$s: Disabled\n - %6$s: Disabled");
+        add("command.dimensiondelvers.get_item_stack_components.invalid_item", "Held item is empty!");
+        add("command.dimensiondelvers.get_item_stack_components.invalid_player", "Player is null!");
+        add("command.dimensiondelvers.get_item_stack_components.success", "Item Components available for '%1$s'");
         add("container.dimensiondelvers.rift_chest", "Rift Chest");
 
         add("accessibility.dimensiondelvers.screen.title", "Dimension Delvers: Accessibility Settings");

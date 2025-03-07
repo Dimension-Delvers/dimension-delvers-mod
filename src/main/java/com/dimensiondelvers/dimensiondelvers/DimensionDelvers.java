@@ -1,5 +1,6 @@
 package com.dimensiondelvers.dimensiondelvers;
 
+import com.dimensiondelvers.dimensiondelvers.commands.DebugCommands;
 import com.dimensiondelvers.dimensiondelvers.commands.InventorySnapshotCommands;
 import com.dimensiondelvers.dimensiondelvers.config.ClientConfig;
 import com.dimensiondelvers.dimensiondelvers.gui.screen.RuneAnvilScreen;
@@ -97,6 +98,8 @@ public class DimensionDelvers {
     @SubscribeEvent
     private void registerCommands(RegisterCommandsEvent event) {
         InventorySnapshotCommands.register(event.getDispatcher(), event.getBuildContext());
+        new DebugCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
+
     }
 
     @SubscribeEvent
