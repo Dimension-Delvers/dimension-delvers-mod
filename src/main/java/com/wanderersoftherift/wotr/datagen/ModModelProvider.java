@@ -39,6 +39,7 @@ public class ModModelProvider extends ModelProvider {
     protected void registerModels(BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
+        blockModels.createTrivialCube(ModBlocks.RIFT_SPAWNER.get());
 
         ResourceLocation modelLoc = WanderersOfTheRift.id("block/rift_chest");
         blockModels.blockStateOutput.accept(
@@ -72,6 +73,7 @@ public class ModModelProvider extends ModelProvider {
         );
 
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.RIFT_KEY.get(), ModelTemplates.FLAT_ITEM);
 
         this.generateRunegemItem(ModItems.RUNEGEM.get(), itemModels);
 
