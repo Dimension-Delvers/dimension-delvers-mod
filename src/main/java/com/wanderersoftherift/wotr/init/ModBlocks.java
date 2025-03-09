@@ -4,6 +4,7 @@ import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.block.BlockFamilyHelper;
 import com.wanderersoftherift.wotr.block.RiftChestEntityBlock;
 import com.wanderersoftherift.wotr.block.RuneAnvilBlock;
+import com.wanderersoftherift.wotr.item.RiftChestType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -14,13 +15,17 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.wanderersoftherift.wotr.block.BlockFamilyHelper.*;
+import static net.minecraft.world.level.block.state.properties.WoodType.OAK;
 
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(WanderersOfTheRift.MODID);
+    public static final Map<RiftChestType, DeferredBlock<Block>> CHEST_TYPES = new HashMap<>();
     public static final List<BlockFamilyHelper> BLOCK_FAMILY_HELPERS = new ArrayList<>();
 
     public static final DeferredBlock<Block> DEV_BLOCK = registerBlock("dev_block", () -> new Block(BlockBehaviour.Properties.of()
@@ -37,13 +42,14 @@ public class ModBlocks {
             .sound(SoundType.METAL)
     ));
 
-    public static final DeferredBlock<RiftChestEntityBlock> RIFT_CHEST = registerBlock(
+    public static final DeferredBlock<RiftChestEntityBlock> RIFT_CHEST = registerChestBlock(
             "rift_chest",
-            () -> new RiftChestEntityBlock(BlockBehaviour.Properties.of()
+            () -> new RiftChestEntityBlock(ModBlockEntities.RIFT_CHEST::get, BlockBehaviour.Properties.of()
                     .setId(blockId("rift_chest"))
                     .strength(1.5F)
                     .sound(SoundType.WOOD)
-            )
+            ),
+            RiftChestType.WOODEN
     );
 
     public static final BlockFamilyHelper PROCESSOR_BLOCK_1 = registerBuildingBlock("processor_block_1", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_1"))));
@@ -60,7 +66,7 @@ public class ModBlocks {
     public static final BlockFamilyHelper PROCESSOR_BLOCK_12 = registerBuildingBlock("processor_block_12", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_12"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_13 = registerBuildingBlock("processor_block_13", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_13"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_14 = registerBuildingBlock("processor_block_14", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_14"))));
-    
+
     private static BlockFamilyHelper registerBuildingBlock(String id, Supplier<Block> sup) {
         DeferredBlock<Block> block = registerBlock(id, sup);
         BlockFamilyHelper buildingBlockHelper = new BlockFamilyHelper.Builder()
@@ -71,10 +77,17 @@ public class ModBlocks {
                 .withPressurePlate(registerBlock(id + PLATE_SUFFIX, () -> new PressurePlateBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(block.get()).noCollission().strength(0.5F).setId(blockId(id + PLATE_SUFFIX)))))
                 .withWall(registerBlock(id + WALL_SUFFIX, () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(block.get()).setId(blockId(id + WALL_SUFFIX)))))
                 .withFence(registerBlock(id + FENCE_SUFFIX, () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(block.get()).setId(blockId(id + FENCE_SUFFIX)))))
+                .withFenceGate(registerBlock(id + FENCE_GATE_SUFFIX, () -> new FenceGateBlock(OAK, BlockBehaviour.Properties.ofFullCopy(block.get()).setId(blockId(id + FENCE_GATE_SUFFIX)))))
                 .withTrapdoor(registerBlock(id + TRAPDOOR_SUFFIX, () -> new TrapDoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(block.get()).setId(blockId(id + TRAPDOOR_SUFFIX)))))
                 .createBuildBlockHelper();
         BLOCK_FAMILY_HELPERS.add(buildingBlockHelper);
         return buildingBlockHelper;
+    }
+
+    private static <T extends Block> DeferredBlock<T> registerChestBlock(String riftChest, Supplier<T> supplier, RiftChestType riftChestType) {
+        DeferredBlock<T> register = registerBlock(riftChest, supplier);
+        CHEST_TYPES.put(riftChestType, (DeferredBlock<Block>) register);
+        return register;
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String key, Supplier<T> sup) {
