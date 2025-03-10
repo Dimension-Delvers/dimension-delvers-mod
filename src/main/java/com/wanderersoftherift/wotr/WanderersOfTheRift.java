@@ -1,18 +1,18 @@
 package com.wanderersoftherift.wotr;
 
-import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
+import com.mojang.logging.LogUtils;
 import com.wanderersoftherift.wotr.Registries.AbilityRegistry;
 import com.wanderersoftherift.wotr.Registries.UpgradeRegistry;
+import com.wanderersoftherift.wotr.abilities.AbilityAttributes;
+import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.commands.SkillGemCommands;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.gui.menu.SkillBenchMenu;
 import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
-import com.wanderersoftherift.wotr.abilities.AbilityAttributes;
 import com.wanderersoftherift.wotr.gui.screen.SkillBenchScreen;
 import com.wanderersoftherift.wotr.init.*;
 import com.wanderersoftherift.wotr.network.SelectSkillUpgradeRequest;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -61,6 +61,7 @@ public class WanderersOfTheRift {
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModLootModifiers.GLOBAL_LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         ModModifierEffects.MODIFIER_EFFECT_TYPES.register(modEventBus);
+        ModCommands.COMMAND_ARGUMENT_TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Wotr) to respond directly to events.
