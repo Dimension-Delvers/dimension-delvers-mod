@@ -1,8 +1,8 @@
 package com.wanderersoftherift.wotr.client;
 
 
-import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.Registries.AbilityRegistry;
+import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.AbilityAttributeHelper;
 import com.wanderersoftherift.wotr.abilities.AbilityAttributes;
 import com.wanderersoftherift.wotr.abilities.AbstractAbility;
@@ -32,15 +32,15 @@ public class NeoforgeClientEvents {
         //TODO Better handling of this for better control scheme based on weapons etc.
         //Also look into not allowing hold down in the future
         while (ABILITY_1_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new UseAbility(WanderersOfTheRift.id("fireball").toString()));
+            PacketDistributor.sendToServer(new UseAbility(0));
         }
 
         while (ABILITY_2_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new UseAbility(WanderersOfTheRift.id("test_ability").toString()));
+            PacketDistributor.sendToServer(new UseAbility(1));
         }
 
         while (ABILITY_3_KEY.consumeClick()) {
-            PacketDistributor.sendToServer(new UseAbility(WanderersOfTheRift.id("summon_skeletons").toString()));
+            PacketDistributor.sendToServer(new UseAbility(2));
         }
 
 //        while (ARMOR_STAND_KEY.consumeClick()) {
