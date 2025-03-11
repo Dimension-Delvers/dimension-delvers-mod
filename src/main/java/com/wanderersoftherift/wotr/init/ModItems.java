@@ -5,6 +5,7 @@ import com.wanderersoftherift.wotr.item.runegem.RuneGemShape;
 import com.wanderersoftherift.wotr.item.runegem.RuneGemTier;
 import com.wanderersoftherift.wotr.item.runegem.Runegem;
 import com.wanderersoftherift.wotr.item.runegem.RunegemData;
+import com.wanderersoftherift.wotr.item.skillgem.SkillGem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +44,12 @@ public class ModItems {
                             new RunegemData(RuneGemShape.CIRCLE, tagId(ModModifiers.MODIFIER_KEY, "raw_fire_rune"), RuneGemTier.RAW)))
     );
 
-    public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block){
+    public static final DeferredItem<Item> SKILL_GEM = ITEMS.register("skill_gem",
+            registryName -> new SkillGem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("skill_gem")))
+            ));
+
+    public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block) {
         DeferredItem<BlockItem> simpleBlockItem = ITEMS.registerSimpleBlockItem(id, block);
         BLOCK_ITEMS.add(simpleBlockItem);
         return simpleBlockItem;

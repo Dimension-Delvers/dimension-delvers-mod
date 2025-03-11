@@ -1,6 +1,5 @@
 package com.wanderersoftherift.wotr.datagen;
 
-import com.mojang.datafixers.optics.Wander;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModItems;
@@ -35,6 +34,7 @@ public class ModLanguageProvider extends LanguageProvider {
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
         addItem(ModItems.RUNEGEM, "Runegem");
+        addItem(ModItems.SKILL_GEM, "Unidentified Skill");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
@@ -52,6 +52,10 @@ public class ModLanguageProvider extends LanguageProvider {
         add("skill_bench." + WanderersOfTheRift.MODID + ".screen.upgrade", "Upgrades");
 
         add("ability." + WanderersOfTheRift.MODID + ".cannot_unlock", "You must unlock the following to get this boost: ");
+        add("ability." + WanderersOfTheRift.MODID + ".fireball_ability", "Fireball");
+        add("ability." + WanderersOfTheRift.MODID + ".mega_boost", "Mega Boost");
+        add("ability." + WanderersOfTheRift.MODID + ".summon_skeletons", "Summon Skeletons");
+        add("ability." + WanderersOfTheRift.MODID + ".test_ability", "Test Ability");
 
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility." + WanderersOfTheRift.MODID + ".menubutton", "DimDelvers Accessibility (tmp)");

@@ -1,6 +1,8 @@
 {
   "type": "wotr:standard_ability",
   "ability_name": "wotr:fireball_ability",
+  "icon" : "minecraft:textures/item/fire_charge.png",
+  "model" : "minecraft:fire_charge",
   "cooldown": 1,
   "effects": [
     {

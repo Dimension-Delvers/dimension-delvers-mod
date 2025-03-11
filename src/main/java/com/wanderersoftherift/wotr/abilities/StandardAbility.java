@@ -1,10 +1,10 @@
 package com.wanderersoftherift.wotr.abilities;
 
-import com.wanderersoftherift.wotr.abilities.effects.AbstractEffect;
-import com.wanderersoftherift.wotr.networking.data.CooldownActivated;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.wanderersoftherift.wotr.abilities.effects.AbstractEffect;
+import com.wanderersoftherift.wotr.networking.data.CooldownActivated;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,13 +24,15 @@ public class StandardAbility extends AbstractAbility{
     public static final MapCodec<StandardAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     ResourceLocation.CODEC.fieldOf("ability_name").forGetter(StandardAbility::getName),
+                    ResourceLocation.CODEC.fieldOf("icon").forGetter(StandardAbility::getIcon),
+                    ResourceLocation.CODEC.fieldOf("model").forGetter(StandardAbility::getModel),
                     Codec.INT.fieldOf("cooldown").forGetter(ability -> (int) ability.getBaseCooldown()),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractAbility::getEffects)
             ).apply(instance, StandardAbility::new)
     );
 
-    public StandardAbility(ResourceLocation resourceLocation, int baseCooldown, List<AbstractEffect> effects) {
-        super(resourceLocation, effects);
+    public StandardAbility(ResourceLocation resourceLocation, ResourceLocation icon, ResourceLocation model, int baseCooldown, List<AbstractEffect> effects) {
+        super(resourceLocation, icon, model, effects);
         this.baseCooldown = baseCooldown;
     }
 

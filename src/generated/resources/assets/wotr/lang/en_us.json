@@ -1,5 +1,9 @@
 {
   "ability.wotr.cannot_unlock": "You must unlock the following to get this boost: ",
+  "ability.wotr.fireball_ability": "Fireball",
+  "ability.wotr.mega_boost": "Mega Boost",
+  "ability.wotr.summon_skeletons": "Summon Skeletons",
+  "ability.wotr.test_ability": "Test Ability",
   "accessibility.wotr.menubutton": "DimDelvers Accessibility (tmp)",
   "accessibility.wotr.screen.arachnophobia": "Arachnophobia",
   "accessibility.wotr.screen.flashing_lights": "Flashing Lights",
@@ -137,6 +141,7 @@
   "container.wotr.skill_bench": "Skill Bench",
   "item.wotr.example_item": "Example Item",
   "item.wotr.runegem": "Runegem",
+  "item.wotr.skill_gem": "Unidentified Skill",
   "itemGroup.wotr": "Dimension Delvers",
   "skill_bench.wotr.screen.upgrade": "Upgrades"
 }

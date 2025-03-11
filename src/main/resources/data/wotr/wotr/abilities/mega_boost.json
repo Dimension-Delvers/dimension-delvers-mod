@@ -1,6 +1,8 @@
 {
   "type": "wotr:standard_ability",
   "ability_name": "wotr:mega_boost",
+  "icon" : "minecraft:textures/item/leather_boots.png",
+  "model" : "minecraft:leather_boots",
   "cooldown": 1,
   "strength": "wotr:large_boost_strength",
   "effects":
