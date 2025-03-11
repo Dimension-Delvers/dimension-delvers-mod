@@ -90,7 +90,7 @@ public class SkillBenchMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(slotStack, originalStack);
-            } else {
+            } else if (index < INPUT_SLOTS + PLAYER_SLOTS){
                 if (!this.moveItemStackTo(slotStack, 0, INPUT_SLOTS, false)) {
                     // Move from player inventory to hotbar
                     if (index < INPUT_SLOTS + PLAYER_INVENTORY_SLOTS) {
@@ -102,6 +102,10 @@ public class SkillBenchMenu extends AbstractContainerMenu {
                     else if (!this.moveItemStackTo(slotStack, INPUT_SLOTS, INPUT_SLOTS + PLAYER_INVENTORY_SLOTS, false)) {
                         return ItemStack.EMPTY;
                     }
+                }
+            } else {
+                if (!this.moveItemStackTo(slotStack, INPUT_SLOTS, INPUT_SLOTS + PLAYER_SLOTS, true)) {
+                    return ItemStack.EMPTY;
                 }
             }
         }
