@@ -25,14 +25,13 @@ public class StandardAbility extends AbstractAbility{
             instance.group(
                     ResourceLocation.CODEC.fieldOf("ability_name").forGetter(StandardAbility::getName),
                     ResourceLocation.CODEC.fieldOf("icon").forGetter(StandardAbility::getIcon),
-                    ResourceLocation.CODEC.fieldOf("model").forGetter(StandardAbility::getModel),
                     Codec.INT.fieldOf("cooldown").forGetter(ability -> (int) ability.getBaseCooldown()),
                     Codec.list(AbstractEffect.DIRECT_CODEC).fieldOf("effects").forGetter(AbstractAbility::getEffects)
             ).apply(instance, StandardAbility::new)
     );
 
-    public StandardAbility(ResourceLocation resourceLocation, ResourceLocation icon, ResourceLocation model, int baseCooldown, List<AbstractEffect> effects) {
-        super(resourceLocation, icon, model, effects);
+    public StandardAbility(ResourceLocation resourceLocation, ResourceLocation icon, int baseCooldown, List<AbstractEffect> effects) {
+        super(resourceLocation, icon, effects);
         this.baseCooldown = baseCooldown;
     }
 

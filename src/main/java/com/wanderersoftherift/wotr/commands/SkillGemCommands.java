@@ -14,7 +14,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -51,7 +50,6 @@ public class SkillGemCommands {
                 DataComponentPatch patch = DataComponentPatch.builder()
                         .set(ModDataComponentType.ABILITY.get(), abilities.wrapAsHolder(ability))
                         .set(ModDataComponentType.UPGRADE_POOL.get(), upgradePool.toImmutable())
-                        .set(DataComponents.ITEM_MODEL, ability.getModel())
                         .build();
                 item.applyComponents(patch);
                 source.sendSuccess(() -> Component.literal("Applied skill gem components"), true);

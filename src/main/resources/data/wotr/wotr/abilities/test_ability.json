@@ -2,7 +2,6 @@
   "type": "wotr:standard_ability",
   "ability_name": "wotr:test_ability",
   "icon" : "minecraft:textures/item/iron_pickaxe.png",
-  "model" : "minecraft:iron_pickaxe",
   "cooldown": 1,
   "strength": "wotr:large_boost_strength",
   "effects": [

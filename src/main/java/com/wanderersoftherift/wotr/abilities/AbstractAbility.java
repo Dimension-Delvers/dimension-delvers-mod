@@ -35,16 +35,14 @@ public abstract class AbstractAbility {
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<AbstractAbility>> STREAM_CODEC = ByteBufCodecs.holderRegistry(DATA_PACK_ABILITY_REG_KEY);
     private ResourceLocation name;
     private ResourceLocation icon = ResourceLocation.withDefaultNamespace("textures/misc/forcefield.png");
-    private ResourceLocation model = ResourceLocation.withDefaultNamespace("fire_charge");
     public float baseCooldown = 0;
     public Holder<Attribute> durationAttribute = null;
     private boolean isToggle = false;
-    public AbstractAbility(ResourceLocation abilityName, ResourceLocation icon, ResourceLocation model, List<AbstractEffect> effects)
+    public AbstractAbility(ResourceLocation abilityName, ResourceLocation icon, List<AbstractEffect> effects)
     {
         this.name = abilityName;
         this.effects = effects;
         this.icon = icon;
-        this.model = model;
     }
     public void setIcon(ResourceLocation location)
     {
@@ -53,10 +51,6 @@ public abstract class AbstractAbility {
 
     public ResourceLocation getIcon() {
         return icon;
-    }
-
-    public ResourceLocation getModel() {
-        return model;
     }
 
     public List<AbstractEffect> getEffects() {

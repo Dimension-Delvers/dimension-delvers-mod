@@ -2,7 +2,6 @@
   "type": "wotr:standard_ability",
   "ability_name": "wotr:summon_skeletons",
   "icon" : "minecraft:textures/item/bone.png",
-  "model" : "minecraft:bone",
   "cooldown": 1,
   "effects": [
     {

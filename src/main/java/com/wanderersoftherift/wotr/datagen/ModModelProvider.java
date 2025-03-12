@@ -2,6 +2,7 @@ package com.wanderersoftherift.wotr.datagen;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.block.BlockFamilyHelper;
+import com.wanderersoftherift.wotr.client.render.item.ability.AbilitySpecialRenderer;
 import com.wanderersoftherift.wotr.client.render.item.properties.select.SelectRuneGemShape;
 import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModItems;
@@ -16,6 +17,7 @@ import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
+import net.minecraft.client.renderer.item.SpecialModelWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -73,7 +75,13 @@ public class ModModelProvider extends ModelProvider {
         );
 
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
-        itemModels.generateFlatItem(ModItems.SKILL_GEM.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.BASE_SKILL_GEM.get(), ModelTemplates.FLAT_ITEM);
+
+        itemModels.itemModelOutput.accept(ModItems.SKILL_GEM.get(),
+                new SpecialModelWrapper.Unbaked(
+                  WanderersOfTheRift.id("item/base_skill_gem"),
+                  new AbilitySpecialRenderer.Unbaked(ModItems.BASE_SKILL_GEM)
+                ));
 
         this.generateRunegemItem(ModItems.RUNEGEM.get(), itemModels);
 

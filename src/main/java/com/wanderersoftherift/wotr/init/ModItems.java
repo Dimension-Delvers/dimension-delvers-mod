@@ -44,6 +44,11 @@ public class ModItems {
                             new RunegemData(RuneGemShape.CIRCLE, tagId(ModModifiers.MODIFIER_KEY, "raw_fire_rune"), RuneGemTier.RAW)))
     );
 
+    public static final DeferredItem<Item> BASE_SKILL_GEM = ITEMS.register("base_skill_gem",
+            registryName -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("base_skill_gem")))
+            ));
+
     public static final DeferredItem<Item> SKILL_GEM = ITEMS.register("skill_gem",
             registryName -> new SkillGem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("skill_gem")))

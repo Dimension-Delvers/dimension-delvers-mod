@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "wotr:item/skill_gem"
+    "layer0": "wotr:item/base_skill_gem"
   }
 }
