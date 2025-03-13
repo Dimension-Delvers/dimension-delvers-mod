@@ -60,8 +60,8 @@ public record AbilitySpecialRenderer(Holder<Item> baseItem) implements SpecialMo
             vertex(consumer, pose, packedLight, 0.35f, -0.35f, 0.0f, 1, 1);
             vertex(consumer, pose, packedLight, 0.35f, 0.35f, 0.0f, 1, 0);
             vertex(consumer, pose, packedLight, -0.35f, 0.35f, 0.0f, 0, 0);
-            poseStack.popPose();
         }
+        poseStack.popPose();
     }
 
     private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int packedLight, float x, float y, float z, int u, int v) {

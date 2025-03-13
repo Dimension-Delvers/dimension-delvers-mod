@@ -7,6 +7,7 @@ import com.wanderersoftherift.wotr.abilities.AbilityAttributeHelper;
 import com.wanderersoftherift.wotr.abilities.AbilityAttributes;
 import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.abilities.Serializable.PlayerCooldownData;
+import com.wanderersoftherift.wotr.client.gui.hud.AbilityBar;
 import com.wanderersoftherift.wotr.networking.data.UseAbility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -63,8 +64,9 @@ public class NeoforgeClientEvents {
     //TODO remove this and do a better render stuff later
     @SubscribeEvent
     public static void hudRender(RenderGuiEvent.Post event) {
-//        event.getGuiGraphics().drawString(Minecraft.getInstance().font, "TEST", 0, 0, 10);
 
+        AbilityBar.render(event.getGuiGraphics(), Minecraft.getInstance().player, Minecraft.getInstance().level, event.getPartialTick());
+//        event.getGuiGraphics().drawString(Minecraft.getInstance().font, "TEST", 0, 0, 10);
         int x = 0;
         int size = 18;
         Optional<Registry<AbstractAbility>> abilityReg = Minecraft.getInstance().level.registryAccess().lookup(AbilityRegistry.DATA_PACK_ABILITY_REG_KEY);

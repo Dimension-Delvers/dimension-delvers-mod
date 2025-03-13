@@ -2,6 +2,7 @@ package com.wanderersoftherift.wotr.item.skillgem;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -40,20 +41,12 @@ public class AbilitySlots implements IItemHandlerModifiable {
         return ItemStack.EMPTY;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
+    public AbstractAbility getAbilityInSlot(int slot) {
+        ItemStack stack = getStackInSlot(slot);
+        if (!stack.isEmpty() && stack.has(ModDataComponentType.ABILITY)) {
+            return stack.get(ModDataComponentType.ABILITY).value();
         }
-        if (obj instanceof AbilitySlots other) {
-            return Objects.equals(abilities, other.abilities) && selected == other.selected;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(abilities, selected);
+        return null;
     }
 
     @Override
@@ -100,11 +93,28 @@ public class AbilitySlots implements IItemHandlerModifiable {
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-        return stack.has(ModDataComponentType.UPGRADE_POOL);
+        return stack.has(ModDataComponentType.ABILITY);
     }
 
     @Override
     public void setStackInSlot(int slot, @NotNull ItemStack stack) {
         abilities.set(slot, stack);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof AbilitySlots other) {
+            return Objects.equals(abilities, other.abilities) && selected == other.selected;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(abilities, selected);
+    }
+
 }
