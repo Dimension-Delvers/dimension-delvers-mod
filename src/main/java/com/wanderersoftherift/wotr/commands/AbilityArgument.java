@@ -11,6 +11,7 @@ import com.wanderersoftherift.wotr.Registries.AbilityRegistry;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -34,8 +35,9 @@ public class AbilityArgument implements ArgumentType<ResourceLocation> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        // TODO
-        return Suggestions.empty();
+        return context.getSource() instanceof SharedSuggestionProvider
+                ? SharedSuggestionProvider.suggestResource(((SharedSuggestionProvider)context.getSource()).registryAccess().lookupOrThrow(AbilityRegistry.DATA_PACK_ABILITY_REG_KEY).keySet(), builder)
+                : Suggestions.empty();
     }
 
     @Override
