@@ -20,7 +20,7 @@ void main() {
     float iTime = GameTime * 1000.0;
     vec2 UV0 = round(texCoord0 * PIXELATE) / PIXELATE;
 
-    distance0 = clamp(1.0 - (dist / 50.0), 0.0, 1.0);
+    float distance0 = clamp(1.0 - (dist / 50.0), 0.0, 1.0);
 
     float SHARPNESS = mix(4.0, 0.3, distance0);
     float width = mix(0.5, 1.25, distance0);
