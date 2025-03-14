@@ -38,7 +38,7 @@ public final class AbilityBar {
         for (int i = 0; i < abilitySlots.getSlots(); i++) {
             AbstractAbility ability = abilitySlots.getAbilityInSlot(i);
             if (ability != null) {
-                graphics.blit(RenderType::guiTextured, ability.getIcon(), BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + i * 20, 0, 0, 16, 16, 16, 16);
+                graphics.blit(RenderType::guiTextured, ability.getIcon(), BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + i * 18, 0, 0, 16, 16, 16, 16);
             }
         }
     }
