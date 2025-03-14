@@ -4,13 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 
-
 public class ModifierInstance {
 
-    public static Codec<ModifierInstance> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            Modifier.CODEC.fieldOf("modifier").forGetter(ModifierInstance::getModifier),
-            Codec.FLOAT.fieldOf("roll").forGetter(ModifierInstance::getRoll)
-    ).apply(inst, ModifierInstance::new));
+    public static final Codec<ModifierInstance> CODEC = RecordCodecBuilder.create(inst -> inst
+            .group(Modifier.CODEC.fieldOf("modifier").forGetter(ModifierInstance::getModifier),
+                    Codec.FLOAT.fieldOf("roll").forGetter(ModifierInstance::getRoll))
+            .apply(inst, ModifierInstance::new));
 
     public final Holder<Modifier> modifier;
 

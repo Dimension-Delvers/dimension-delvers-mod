@@ -13,7 +13,8 @@ public class Runegem extends Item {
     }
 
     private Holder<Enchantment> getRandomModifier(ServerLevel serverLevel, TagKey<Enchantment> tag) {
-        return serverLevel.registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
+        return serverLevel.registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
                 .get(tag)
                 .flatMap(holders -> holders.getRandomElement(serverLevel.random))
                 .orElse(null);

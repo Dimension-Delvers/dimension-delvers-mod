@@ -1,4 +1,4 @@
-package com.wanderersoftherift.wotr.server.inventorySnapshot.containers;
+package com.wanderersoftherift.wotr.core.inventory.snapshot.containers;
 
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.ItemStack;
@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Interop for working with containers that use Neoforge's ItemStackHandler interface. For use in producing
- * container types for mods
+ * Interop for working with containers that use Neoforge's ItemStackHandler interface. For use in producing container
+ * types for mods
  */
 public final class ItemStackHandlerContainers {
 
@@ -108,8 +108,10 @@ public final class ItemStackHandlerContainers {
 
         @Override
         public void applyComponents(DataComponentPatch patch) {
-            // Note: there can actually be multile of a non-stacking item within ItemStackHandler slot,
-            // so pull them out one by one and apply the component patch to them before adding them all back in
+            /*
+             * Note: there can actually be multile of a non-stacking item within ItemStackHandler slot, so pull them out
+             * one by one and apply the component patch to them before adding them all back in
+             */
             int amount = handler.getStackInSlot(slot).getCount();
             List<ItemStack> tagged = new ArrayList<>(amount);
             for (int i = 0; i < amount; i++) {
@@ -123,5 +125,3 @@ public final class ItemStackHandlerContainers {
         }
     }
 }
-
-
