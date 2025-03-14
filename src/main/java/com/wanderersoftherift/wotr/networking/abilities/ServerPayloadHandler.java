@@ -25,17 +25,20 @@ public class ServerPayloadHandler {
             return;
         }
         AbstractAbility ability = abilityItem.get(ModDataComponentType.ABILITY).value();
+
         if (ability.IsToggle()) // Should check last toggle, because pressing a button can send multiple packets
         {
             if (!ability.IsToggled(context.player())) {
-                ability.OnActivate(context.player());
+                ability.OnActivate(context.player(), useAbilityPacket.slot());
             } else {
-                ability.onDeactivate(context.player());
+                ability.onDeactivate(context.player(), useAbilityPacket.slot());
             }
 
-            if (ability.CanPlayerUse(context.player())) ability.Toggle(context.player());
+            if (ability.CanPlayerUse(context.player())) {
+                ability.Toggle(context.player());
+            }
         } else {
-            ability.OnActivate(context.player());
+            ability.OnActivate(context.player(), useAbilityPacket.slot());
         }
     }
 

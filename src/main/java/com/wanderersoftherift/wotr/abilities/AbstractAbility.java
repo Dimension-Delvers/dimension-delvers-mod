@@ -57,8 +57,8 @@ public abstract class AbstractAbility {
         return this.effects;
     }
 
-    public abstract void OnActivate(Player player);
-    public abstract void onDeactivate(Player player);
+    public abstract void OnActivate(Player player, int slot);
+    public abstract void onDeactivate(Player player, int slot);
 
     public boolean CanPlayerUse(Player player)
     {
@@ -80,30 +80,30 @@ public abstract class AbstractAbility {
     COOL DOWN RELATED STUFF HERE
     */
 
-    public boolean IsOnCooldown(Player player) {
+    public boolean IsOnCooldown(Player player, int slot) {
         //If we registered this ability as one that has a cooldown and the player has a cooldown active for this ability.
-        return player.getData(ModAttachments.COOL_DOWNS).isOnCooldown(this.getName());
+        return player.getData(ModAttachments.COOL_DOWNS).isOnCooldown(slot);
 //        return ModAbilities.COOL_DOWN_ATTACHMENTS.containsKey(this.getName()) && p.getData(ModAbilities.COOL_DOWN_ATTACHMENTS.get(this.getName())) > 0;
     }
 
     //TODO refactor this because I dont think we need to pass in this attribute anymore?
-    public void setCooldown(Player player) {
+    public void setCooldown(Player player, int slot) {
         float cooldown = AbilityAttributeHelper.getAbilityAttribute(AbilityAttributes.COOLDOWN, this.getBaseCooldown(), player);
         //We only need to set a cooldown for ones that have cooldowns
         if(this.hasCooldown())
         {
             WanderersOfTheRift.LOGGER.info("Setting cooldown for: " + this.getName() + " length: " + cooldown);
             PlayerCooldownData cooldowns = player.getData(ModAttachments.COOL_DOWNS);
-            cooldowns.setCooldown(this.getName(), (int) cooldown);
+            cooldowns.setCooldown(slot, (int) cooldown);
             player.setData(ModAttachments.COOL_DOWNS, cooldowns);
         }
          //TODO maybe make helper to calculate time based on ticks for find a different method (maybe include in the attribute???)
-        PacketDistributor.sendToPlayer((ServerPlayer) player, new CooldownActivated(this.getName().toString(),(int) cooldown ));
+        PacketDistributor.sendToPlayer((ServerPlayer) player, new CooldownActivated(slot,(int) cooldown ));
     }
     public boolean hasCooldown() { return getBaseCooldown() > 0; }
 
-    public int getActiveCooldown(Player player) {
-        return player.getData(ModAttachments.COOL_DOWNS).getCooldown(this.getName());
+    public int getActiveCooldown(Player player, int slot) {
+        return player.getData(ModAttachments.COOL_DOWNS).getCooldown(slot);
     }
 
     public float getBaseCooldown() {

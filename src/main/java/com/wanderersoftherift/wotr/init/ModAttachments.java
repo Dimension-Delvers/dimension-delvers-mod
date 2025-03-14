@@ -21,7 +21,7 @@ public class ModAttachments {
     public static final Supplier<AttachmentType<InventorySnapshot>> INVENTORY_SNAPSHOT = ATTACHMENT_TYPES.register("inventory_snapshot", () -> AttachmentType.builder(InventorySnapshot::new).serialize(InventorySnapshot.CODEC).build());
     public static final Supplier<AttachmentType<List<ItemStack>>> RESPAWN_ITEMS = ATTACHMENT_TYPES.register("respawn_items", () -> AttachmentType.builder(() -> (List<ItemStack>)new ArrayList<ItemStack>()).serialize(ItemStack.CODEC.listOf()).copyOnDeath().build());
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerCooldownData>> COOL_DOWNS = ATTACHMENT_TYPES.register(
-            "cooldowns", () -> AttachmentType.serializable(PlayerCooldownData::new).build()
+            "cooldowns", () -> AttachmentType.builder(() -> new PlayerCooldownData()).serialize(PlayerCooldownData.CODEC).build()
     );
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerDurationData>> DURATIONS = ATTACHMENT_TYPES.register(
             "durations", () -> AttachmentType.serializable(PlayerDurationData::new).build()

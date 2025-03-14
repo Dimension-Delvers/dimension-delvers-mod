@@ -1,46 +1,57 @@
 package com.wanderersoftherift.wotr.abilities.Serializable;
 
-import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.abilities.AbstractAbility;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.wanderersoftherift.wotr.item.skillgem.AbilitySlots;
+import com.wanderersoftherift.wotr.util.FastUtils;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
-import java.util.ArrayList;
-import java.util.List;
+public class PlayerCooldownData {
 
-public class PlayerCooldownData extends SerializableMap {
+    public static final Codec<PlayerCooldownData> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Codec.INT.listOf().<IntList>xmap(IntArrayList::new, FastUtils::toList).fieldOf("cooldowns").forGetter(x -> x.cooldowns)
+            ).apply(instance, PlayerCooldownData::new)
+    );
 
+    private final IntList cooldowns = new IntArrayList(new int[AbilitySlots.ABILITY_BAR_SIZE]);
 
-    public void setCooldown(ResourceLocation loc, int amount) {
-        this.insert(loc, amount);
+    public PlayerCooldownData() {
+
     }
 
-    public int getCooldown(ResourceLocation loc)
-    {
-        return this.get(loc);
+    public PlayerCooldownData(IntList cooldowns) {
+        this.cooldowns.clear();
+        this.cooldowns.addAll(cooldowns);
     }
 
-    public boolean isOnCooldown(ResourceLocation loc)
+    public void setCooldown(int slot, int amount) {
+        if (slot < 0) {
+            return;
+        }
+        while (slot >= cooldowns.size()) {
+            cooldowns.add(0);
+        }
+        cooldowns.set(slot, amount);
+    }
+
+    public int getCooldown(int slot)
     {
-        return this.containsKey(loc) && this.get(loc) > 0;
+        if (slot >= 0 && slot < cooldowns.size()) {
+            return cooldowns.getInt(slot);
+        }
+        return 0;
+    }
+
+    public boolean isOnCooldown(int slot)
+    {
+        return getCooldown(slot) > 0;
     }
 
     public void reduceCooldowns()
     {
-        reduceAll(1);
+        cooldowns.replaceAll(x -> x - 1);
     }
 
-    public List<AbstractAbility> getActiveCooldowns(Registry<AbstractAbility> abilityRegistry)
-    {
-        List<AbstractAbility> onCoolDown = new ArrayList<>();
-        for(ResourceLocation loc: this.getKeys())
-        {
-            if(abilityRegistry.get(loc).isPresent())
-            {
-                onCoolDown.add(abilityRegistry.get(loc).get().value());
-            }
-        }
-
-        return onCoolDown;
-    }
 }

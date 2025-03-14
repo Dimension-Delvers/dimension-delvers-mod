@@ -36,17 +36,17 @@ public class StandardAbility extends AbstractAbility{
     }
 
     @Override
-    public void OnActivate(Player player) {
+    public void OnActivate(Player player, int slot) {
         if(this.CanPlayerUse(player)) {
-            if(!this.IsOnCooldown(player))
+            if(!this.IsOnCooldown(player, slot))
             {
                 this.getEffects().forEach(effect -> effect.apply(player, new ArrayList<>(), player));
-                this.setCooldown(player);
+                this.setCooldown(player, slot);
             }
 
             //TODO clean this up, since we should just send this data on when the player joins the server. But for now, the player can just press the button to sync back up
             else {
-                PacketDistributor.sendToPlayer((ServerPlayer) player, new CooldownActivated(this.getName().toString(),this.getActiveCooldown(player) ));
+                PacketDistributor.sendToPlayer((ServerPlayer) player, new CooldownActivated(slot,this.getActiveCooldown(player, slot)));
             }
 
         }
@@ -61,7 +61,7 @@ public class StandardAbility extends AbstractAbility{
 
 
     @Override
-    public void onDeactivate(Player player) {
+    public void onDeactivate(Player player, int slot) {
 
     }
 
