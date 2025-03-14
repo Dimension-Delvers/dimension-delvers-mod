@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Rift key is an item that when used on a rift spawner will generate a rift portal. It also can close an existing rift without being consumed.
+ * Rift key is an item that when used on a rift spawner will generate a rift portal. It also can close an existing rift
+ * without being consumed.
  */
 public class RiftKey extends Item {
     public RiftKey(Properties properties) {
@@ -37,7 +38,8 @@ public class RiftKey extends Item {
         } else if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {
-            Optional<PortalSpawnLocation> spawnLocation = spawnerBlock.getSpawnLocation(level, blockpos, context.getClickedFace());
+            Optional<PortalSpawnLocation> spawnLocation = spawnerBlock.getSpawnLocation(level, blockpos,
+                    context.getClickedFace());
             if (spawnLocation.isPresent()) {
                 PortalSpawnLocation loc = spawnLocation.get();
                 List<RiftPortalEntity> existingRifts = getExistingRifts(level, loc.position());
@@ -57,7 +59,8 @@ public class RiftKey extends Item {
     }
 
     private List<RiftPortalEntity> getExistingRifts(Level level, Vec3 pos) {
-        return level.getEntities(EntityTypeTest.forClass(RiftPortalEntity.class), new AABB(BlockPos.containing(pos)), x -> true);
+        return level.getEntities(EntityTypeTest.forClass(RiftPortalEntity.class), new AABB(BlockPos.containing(pos)),
+                x -> true);
     }
 
     private void spawnRift(Level level, Vec3 pos, Direction dir) {

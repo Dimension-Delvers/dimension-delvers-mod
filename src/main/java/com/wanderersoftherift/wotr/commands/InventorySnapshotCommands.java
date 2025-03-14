@@ -1,15 +1,13 @@
 package com.wanderersoftherift.wotr.commands;
 
-import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.client.Minecraft;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.InventorySnapshotSystem;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.fml.util.thread.EffectiveSide;
 
 /**
  * Debug commands for testing the inventory snapshot system
@@ -17,11 +15,8 @@ import net.neoforged.fml.util.thread.EffectiveSide;
 public class InventorySnapshotCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
-        dispatcher.register(
-                Commands.literal("wotr:createInventorySnapshot").executes(
-                    (ctx) -> createInventorySnapshot(ctx.getSource()
-                )
-        ));
+        dispatcher.register(Commands.literal("wotr:createInventorySnapshot")
+                .executes((ctx) -> createInventorySnapshot(ctx.getSource())));
 
     }
 

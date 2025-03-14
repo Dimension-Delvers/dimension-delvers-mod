@@ -1,7 +1,6 @@
 package com.wanderersoftherift.wotr.client.tooltip;
 
 import com.wanderersoftherift.wotr.util.TextureUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,8 +15,8 @@ import org.joml.Matrix4f;
 
 /**
  * Responsible for being able to render assets passed in as a ResourceLocation<br>
- * Assets passed in get their width/height dynamically calculated,
- * meaning that texturepacks may modify it with their own asset
+ * Assets passed in get their width/height dynamically calculated, meaning that texturepacks may modify it with their
+ * own asset
  */
 
 public class ImageTooltipRenderer implements ClientTooltipComponent {
@@ -34,17 +33,15 @@ public class ImageTooltipRenderer implements ClientTooltipComponent {
 
     @Override
     public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics guiGraphics) {
-        guiGraphics.blit(RenderType::guiTextured, this.component.asset, x, y+ 1, 0F, 0F,
-                this.textureWidth,
-                this.textureHeight,
-                this.textureWidth,
-                this.textureHeight
-        );
+        guiGraphics.blit(RenderType::guiTextured, this.component.asset, x, y + 1, 0F, 0F, this.textureWidth,
+                this.textureHeight, this.textureWidth, this.textureHeight);
     }
 
     @Override
-    public void renderText(Font pFont, int pX, int pY, Matrix4f pMatrix4f, MultiBufferSource.BufferSource pBufferSource) {
-        pFont.drawInBatch(component.base, pX + textureWidth + 2, pY + 1, 0xAABBCC, true, pMatrix4f, pBufferSource, Font.DisplayMode.NORMAL, 0, 15728880);
+    public void renderText(Font pFont, int pX, int pY, Matrix4f pMatrix4f,
+            MultiBufferSource.BufferSource pBufferSource) {
+        pFont.drawInBatch(component.base, pX + textureWidth + 2, pY + 1, 0xAABBCC, true, pMatrix4f, pBufferSource,
+                Font.DisplayMode.NORMAL, 0, 15_728_880);
     }
 
     @Override
@@ -57,5 +54,6 @@ public class ImageTooltipRenderer implements ClientTooltipComponent {
         return Math.max(0, font.width(this.component.base.getString()) + textureWidth) + 2;
     }
 
-    public record ImageComponent(ItemStack stack, Component base, ResourceLocation asset) implements TooltipComponent {}
+    public record ImageComponent(ItemStack stack, Component base, ResourceLocation asset) implements TooltipComponent {
+    }
 }

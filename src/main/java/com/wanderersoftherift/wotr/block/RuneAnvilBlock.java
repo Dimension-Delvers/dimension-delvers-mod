@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.block;
 
-import com.wanderersoftherift.wotr.gui.menu.RuneAnvilMenu;
 import com.mojang.serialization.MapCodec;
+import com.wanderersoftherift.wotr.gui.menu.RuneAnvilMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -20,19 +20,21 @@ public class RuneAnvilBlock extends Block {
     public static final MapCodec<RuneAnvilBlock> CODEC = simpleCodec(RuneAnvilBlock::new);
     private static final Component CONTAINER_TITLE = Component.translatable("container.wotr.rune_anvil");
 
-    public @NotNull MapCodec<RuneAnvilBlock> codec() {
-        return CODEC;
-    }
-
     public RuneAnvilBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
-    protected MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
-        return new SimpleMenuProvider((containerId, playerInventory, player) -> new RuneAnvilMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+    public @NotNull MapCodec<RuneAnvilBlock> codec() {
+        return CODEC;
     }
 
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
+        return new SimpleMenuProvider((containerId, playerInventory, player) -> new RuneAnvilMenu(containerId,
+                playerInventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+    }
+
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+            @NotNull Player player, @NotNull BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {

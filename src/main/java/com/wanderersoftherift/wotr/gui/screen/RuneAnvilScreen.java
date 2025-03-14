@@ -17,9 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class RuneAnvilScreen extends AbstractContainerScreen<RuneAnvilMenu> implements ContainerListener {
-    private static final ResourceLocation BACKGROUND = WanderersOfTheRift.id("textures/gui/container/rune_anvil/background.png");
+    private static final ResourceLocation BACKGROUND = WanderersOfTheRift
+            .id("textures/gui/container/rune_anvil/background.png");
     private static final ResourceLocation SLOTS = WanderersOfTheRift.id("textures/gui/container/rune_anvil/slots.png");
-    //TODO: Make sure blit is passed correct texture size for all calls.
+
+    // TODO: Make sure blit is passed correct texture size for all calls.
     public RuneAnvilScreen(RuneAnvilMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageHeight = 248;
@@ -34,7 +36,8 @@ public class RuneAnvilScreen extends AbstractContainerScreen<RuneAnvilMenu> impl
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(RenderType::guiTextured, BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(RenderType::guiTextured, BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth,
+                this.imageHeight, 256, 256);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class RuneAnvilScreen extends AbstractContainerScreen<RuneAnvilMenu> impl
         super.renderSlot(guiGraphics, slot);
     }
 
-    //TODO: Find replacement for this override.
+    // TODO: Find replacement for this override.
 //    @Override
 //    protected void renderSlotHighlight(@NotNull GuiGraphics guiGraphics, @NotNull Slot slot, int mouseX, int mouseY, float partialTick) {
 //        if (!slot.isHighlightable()) {
@@ -114,8 +117,9 @@ public class RuneAnvilScreen extends AbstractContainerScreen<RuneAnvilMenu> impl
 //            }
 //        }
 
-        //renderSlotHighlight(guiGraphics, slot.x, slot.y, 0, this.getSlotColor(slot.index));
-   // }
+    // renderSlotHighlight(guiGraphics, slot.x, slot.y, 0,
+    // this.getSlotColor(slot.index));
+    // }
 
     @Override
     public void slotChanged(@NotNull AbstractContainerMenu abstractContainerMenu, int i, @NotNull ItemStack itemStack) {
