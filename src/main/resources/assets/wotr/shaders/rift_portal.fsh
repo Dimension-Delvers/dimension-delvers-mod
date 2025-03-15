@@ -1,7 +1,5 @@
 #version 150
 
-#moj_import <minecraft:matrix.glsl>
-
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
 uniform float GameTime;
@@ -15,14 +13,16 @@ in float dist;
 out vec4 fragColor;
 
 const float PIXELATE = 64.0;
+const float OPEN_DISTANCE = 3;
+const float CLOSE_DISTANCE = 16;
 
 void main() {
     float iTime = GameTime * 1000.0;
     vec2 UV0 = round(texCoord0 * PIXELATE) / PIXELATE;
 
-    float distance0 = clamp(1.0 - (dist / 50.0), 0.0, 1.0);
+    float distance0 = clamp(1.0 - ((dist - OPEN_DISTANCE) / (CLOSE_DISTANCE - OPEN_DISTANCE)), 0.0, 1.0);
 
-    float SHARPNESS = mix(4.0, 0.3, distance0);
+    float sharpness = mix(4.0, 0.3, distance0);
     float width = mix(0.5, 1.25, distance0);
     float edgeThickness = mix(0.9, 0.99, distance0);
     
@@ -34,8 +34,7 @@ void main() {
     float noise = texture(Sampler0, UV0 + vec2(iTime / 10.0, iTime / 2.0)).x;
     float noiseStrength = 0.05;
     float innerStrength = 0.1;
-    
-    
+
     float dist1 = distance(uv, vec2(0.5));
     vec2 dist2 = vec2(
         distance(uv.x, 0.5),
@@ -43,10 +42,10 @@ void main() {
     );
     
     float mixValue1 = round(
-        mix(dist1, dist2.x + dist2.y, SHARPNESS) + noise * noiseStrength
+        mix(dist1, dist2.x + dist2.y, sharpness) + noise * noiseStrength
     );
     float mixValue2 = round(
-        mix(dist1 / edgeThickness, dist2.x / edgeThickness * 1.4 + dist2.y / edgeThickness, SHARPNESS) + noise * innerStrength
+        mix(dist1 / edgeThickness, dist2.x / edgeThickness * 1.4 + dist2.y / edgeThickness, sharpness) + noise * innerStrength
     );
     
     vec3 color1 = mix(vec3(1.0), vec3(0.0), mixValue1);

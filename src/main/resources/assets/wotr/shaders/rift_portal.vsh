@@ -28,7 +28,6 @@ void main() {
     gl_Position = ProjMat * cameraPos;
     float frameSize0 = 1.0 / Frames0;
     float frame = floor(FrameRate0 * GameTime * 1200.0);        
-    //texCoord0 = vec2(UV0.x, frameSize0 * (frame + UV0.y));
     texCoord0 = UV0.xy;
 
     float aspect = ProjMat[1][1]/ProjMat[0][0];
