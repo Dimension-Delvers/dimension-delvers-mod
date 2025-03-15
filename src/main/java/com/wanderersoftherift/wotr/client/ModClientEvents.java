@@ -1,5 +1,6 @@
 package com.wanderersoftherift.wotr.client;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.client.gui.screen.AbilityScreen;
@@ -13,6 +14,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import org.lwjgl.glfw.GLFW;
 
 import static com.wanderersoftherift.wotr.init.ModMenuTypes.TEST_MENU;
@@ -20,56 +22,83 @@ import static com.wanderersoftherift.wotr.init.ModMenuTypes.TEST_MENU;
 @EventBusSubscriber(modid = WanderersOfTheRift.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
 
-    //TODO: Replace these with finalized skill keybindings
+    public static final String ABILITY_CATEGORY = WanderersOfTheRift.translationId("key", "categories.ability");
+
     public static final KeyMapping ABILITY_1_KEY = new KeyMapping(
-            "key." + WanderersOfTheRift.id("ability1"), // Will be localized using this translation key //arrow
+            WanderersOfTheRift.translationId("key","ability.1"),
+            KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_O, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
+            GLFW.GLFW_KEY_U,
+            ABILITY_CATEGORY
     );
 
     public static final KeyMapping ABILITY_2_KEY = new KeyMapping(
-            "key." + WanderersOfTheRift.id("ability2"), // Will be localized using this translation key //heal
+            WanderersOfTheRift.translationId("key","ability.2"),
+            KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_U, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
+            GLFW.GLFW_KEY_I,
+            ABILITY_CATEGORY
     );
 
     public static final KeyMapping ABILITY_3_KEY = new KeyMapping(
-            "key." + WanderersOfTheRift.id("ability3"), // Will be localized using this translation key //boost
+            WanderersOfTheRift.translationId("key","ability.3"),
+            KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-            GLFW.GLFW_KEY_I, // Default key is P
-            "key.categories.misc" // Mapping will be in the misc category
+            GLFW.GLFW_KEY_O,
+            ABILITY_CATEGORY
     );
 
+    public static final KeyMapping ABILITY_4_KEY = new KeyMapping(
+            WanderersOfTheRift.translationId("key","ability.4"),
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_J,
+            ABILITY_CATEGORY
+    );
 
-//    public static final KeyMapping ARMOR_STAND_KEY = new KeyMapping(
-//            "key." + WanderersOfTheRift.id("armor_stand"), // Will be localized using this translation key
-//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-//            GLFW.GLFW_KEY_Y, // Default key is P
-//            "key.categories.misc" // Mapping will be in the misc category
-//    );
+    public static final KeyMapping ABILITY_5_KEY = new KeyMapping(
+            WanderersOfTheRift.translationId("key","ability.5"),
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_K,
+            ABILITY_CATEGORY
+    );
 
-//    public static final KeyMapping OPEN_UPGRADE_MENU_KEY = new KeyMapping(
-//            "key." + WanderersOfTheRift.id("unlock_all"), // Will be localized using this translation key
-//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-//            GLFW.GLFW_KEY_J, // Default key is P
-//            "key.categories.misc" // Mapping will be in the misc category
-//    );
-//
-//    public static final KeyMapping PRETTY_KEY = new KeyMapping(
-//            "key." + WanderersOfTheRift.id("be_pretty"), // Will be localized using this translation key
-//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-//            GLFW.GLFW_KEY_H, // Default key is P
-//            "key.categories.misc" // Mapping will be in the misc category
-//    );
-//
-//    public static final KeyMapping SMOL_KEY = new KeyMapping(
-//            "key." + WanderersOfTheRift.id("be_smol"), // Will be localized using this translation key
-//            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
-//            GLFW.GLFW_KEY_L, // Default key is P
-//            "key.categories.misc" // Mapping will be in the misc category
-//    );
+    public static final KeyMapping ABILITY_6_KEY = new KeyMapping(
+            WanderersOfTheRift.translationId("key","ability.6"),
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_L,
+            ABILITY_CATEGORY
+    );
+
+    public static final KeyMapping ABILITY_7_KEY = new KeyMapping(
+            WanderersOfTheRift.translationId("key","ability.7"),
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_M,
+            ABILITY_CATEGORY
+    );
+
+    public static final KeyMapping ABILITY_8_KEY = new KeyMapping(
+            WanderersOfTheRift.translationId("key","ability.8"),
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_N,
+            ABILITY_CATEGORY
+    );
+
+    public static final KeyMapping ABILITY_9_KEY = new KeyMapping(
+            WanderersOfTheRift.translationId("key","ability.9"),
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
+            GLFW.GLFW_KEY_COMMA,
+            ABILITY_CATEGORY
+    );
+
+    public static final ImmutableList<KeyMapping> ABILITY_SLOT_KEYS = ImmutableList.<KeyMapping>builder().add(
+            ABILITY_1_KEY, ABILITY_2_KEY, ABILITY_3_KEY, ABILITY_4_KEY, ABILITY_5_KEY,
+            ABILITY_6_KEY, ABILITY_7_KEY, ABILITY_8_KEY, ABILITY_9_KEY).build();
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
@@ -80,15 +109,10 @@ public class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerKeys(RegisterKeyMappingsEvent event)
-    {
-        event.register(ABILITY_2_KEY);
-        event.register(ABILITY_1_KEY);
-        event.register(ABILITY_3_KEY);
-//        event.register(ARMOR_STAND_KEY);
-//        event.register(OPEN_UPGRADE_MENU_KEY);
-//        event.register(PRETTY_KEY);
-//        event.register(SMOL_KEY);
+    public static void registerKeys(RegisterKeyMappingsEvent event) {
+        for (KeyMapping key : ABILITY_SLOT_KEYS) {
+            event.register(key);
+        }
     }
 
     @SubscribeEvent

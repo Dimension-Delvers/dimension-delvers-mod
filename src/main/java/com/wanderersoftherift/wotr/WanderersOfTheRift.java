@@ -1,6 +1,6 @@
 package com.wanderersoftherift.wotr;
 
-import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
+import com.mojang.logging.LogUtils;
 import com.wanderersoftherift.wotr.Registries.AbilityRegistry;
 import com.wanderersoftherift.wotr.Registries.UpgradeRegistry;
 import com.wanderersoftherift.wotr.abilities.AbilityAttributes;
@@ -11,7 +11,6 @@ import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
 import com.wanderersoftherift.wotr.gui.screen.SkillBenchScreen;
 import com.wanderersoftherift.wotr.init.*;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -89,6 +88,16 @@ public class WanderersOfTheRift {
      */
     public static ResourceLocation id(String name) {
         return ResourceLocation.fromNamespaceAndPath(MODID, name);
+    }
+
+    /**
+     * Helper method to get a translationId string containing our mod id.
+     * @param category The category of the translationId (becomes a prefix)
+     * @param item The translationId item
+     * @return A combination of category, our mod id and the item. e.g. if category is "item" and item is "nosering.description" the result is "item.wotr.nosering.description"
+     */
+    public static String translationId(String category, String item) {
+        return category + "." + MODID + "." + item;
     }
 
     /**

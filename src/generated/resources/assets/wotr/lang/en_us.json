@@ -143,5 +143,15 @@
   "item.wotr.runegem": "Runegem",
   "item.wotr.skill_gem": "Unidentified Skill",
   "itemGroup.wotr": "Dimension Delvers",
+  "key.wotr.ability.1": "Use Ability 1",
+  "key.wotr.ability.2": "Use Ability 2",
+  "key.wotr.ability.3": "Use Ability 3",
+  "key.wotr.ability.4": "Use Ability 4",
+  "key.wotr.ability.5": "Use Ability 5",
+  "key.wotr.ability.6": "Use Ability 6",
+  "key.wotr.ability.7": "Use Ability 7",
+  "key.wotr.ability.8": "Use Ability 8",
+  "key.wotr.ability.9": "Use Ability 9",
+  "key.wotr.categories.ability": "Abilities",
   "skill_bench.wotr.screen.upgrade": "Upgrades"
 }

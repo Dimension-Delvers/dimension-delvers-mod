@@ -3,13 +3,18 @@ package com.wanderersoftherift.wotr.gui.hud;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.abilities.Serializable.PlayerCooldownData;
+import com.wanderersoftherift.wotr.client.ModClientEvents;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.item.skillgem.AbilitySlots;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.wanderersoftherift.wotr.init.ModAttachments.COOL_DOWNS;
@@ -40,6 +45,7 @@ public final class AbilityBar {
     }
 
     private static void renderAbilities(GuiGraphics graphics, LocalPlayer player, AbilitySlots abilitySlots, PlayerCooldownData cooldowns) {
+        Font font = Minecraft.getInstance().font;
         int yOffset = BAR_OFFSET_Y + SKILL_START_OFFSET_Y;
         for (int slot = 0; slot < abilitySlots.getSlots(); slot++) {
             AbstractAbility ability = abilitySlots.getAbilityInSlot(slot);
@@ -50,6 +56,12 @@ public final class AbilityBar {
             if (cooldowns.isOnCooldown(slot)) {
                 int overlayHeight = Math.clamp((int) (16 * cooldowns.getCooldown(slot) / ability.getBaseCooldown()), 0, 16);
                 graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + slot * 18  + 16 - overlayHeight, 0, 0, 16, overlayHeight, 16, 16);
+            }
+
+            Component keyText = ModClientEvents.ABILITY_SLOT_KEYS.get(slot).getTranslatedKeyMessage();
+            int keyTextWidth = font.width(keyText);
+            if (keyTextWidth <= 15) {
+                graphics.drawString(font, keyText, BAR_OFFSET_X + SKILL_OFFSET_X + 15 - keyTextWidth, yOffset + (slot + 1) * 18 - font.lineHeight - 2, ChatFormatting.WHITE.getColor());
             }
         }
     }
