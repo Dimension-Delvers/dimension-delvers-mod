@@ -153,5 +153,12 @@
   "key.wotr.ability.8": "Use Ability 8",
   "key.wotr.ability.9": "Use Ability 9",
   "key.wotr.categories.ability": "Abilities",
+  "keybinds.wotr.l_alt": "LAlt",
+  "keybinds.wotr.l_ctrl": "LCtrl",
+  "keybinds.wotr.mod_alt": "Alt+",
+  "keybinds.wotr.mod_ctrl": "Ctrl+",
+  "keybinds.wotr.mod_shift": "Shi+",
+  "keybinds.wotr.r_alt": "RAlt",
+  "keybinds.wotr.r_ctrl": "RCtrl",
   "skill_bench.wotr.screen.upgrade": "Upgrades"
 }

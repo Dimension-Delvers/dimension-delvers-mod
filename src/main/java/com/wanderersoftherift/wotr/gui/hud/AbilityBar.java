@@ -1,5 +1,6 @@
 package com.wanderersoftherift.wotr.gui.hud;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.abilities.Serializable.PlayerCooldownData;
@@ -8,6 +9,7 @@ import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.item.skillgem.AbilitySlots;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,6 +34,7 @@ public final class AbilityBar {
     private static final int SKILL_OFFSET_X = 4;
     private static final int SKILL_START_OFFSET_Y = 4;
     private static final int SKILL_OFFSET_Y = 2;
+    private static final float KEYBIND_SCALE = 0.5f;
 
     public static void render(GuiGraphics graphics, LocalPlayer player, ClientLevel level, DeltaTracker partialTick) {
         AbilitySlots abilitySlots = player.getData(ModAttachments.ABILITY_SLOTS);
@@ -41,11 +44,11 @@ public final class AbilityBar {
         PlayerCooldownData cooldowns = player.getData(COOL_DOWNS);
 
         renderBackground(graphics, abilitySlots);
-        renderAbilities(graphics, player, abilitySlots, cooldowns);
+        renderAbilities(graphics, abilitySlots, cooldowns);
+        renderAbilityKeyBinds(graphics);
     }
 
-    private static void renderAbilities(GuiGraphics graphics, LocalPlayer player, AbilitySlots abilitySlots, PlayerCooldownData cooldowns) {
-        Font font = Minecraft.getInstance().font;
+    private static void renderAbilities(GuiGraphics graphics, AbilitySlots abilitySlots, PlayerCooldownData cooldowns) {
         int yOffset = BAR_OFFSET_Y + SKILL_START_OFFSET_Y;
         for (int slot = 0; slot < abilitySlots.getSlots(); slot++) {
             AbstractAbility ability = abilitySlots.getAbilityInSlot(slot);
@@ -55,15 +58,52 @@ public final class AbilityBar {
 
             if (cooldowns.isOnCooldown(slot)) {
                 int overlayHeight = Math.clamp((int) (16 * cooldowns.getCooldown(slot) / ability.getBaseCooldown()), 0, 16);
-                graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + slot * 18  + 16 - overlayHeight, 0, 0, 16, overlayHeight, 16, 16);
-            }
-
-            Component keyText = ModClientEvents.ABILITY_SLOT_KEYS.get(slot).getTranslatedKeyMessage();
-            int keyTextWidth = font.width(keyText);
-            if (keyTextWidth <= 15) {
-                graphics.drawString(font, keyText, BAR_OFFSET_X + SKILL_OFFSET_X + 15 - keyTextWidth, yOffset + (slot + 1) * 18 - font.lineHeight - 2, ChatFormatting.WHITE.getColor());
+                graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + slot * 18 + 16 - overlayHeight, 0, 0, 16, overlayHeight, 16, 16);
             }
         }
+    }
+
+    private static void renderAbilityKeyBinds(GuiGraphics graphics) {
+        Font font = Minecraft.getInstance().font;
+        int yOffset = BAR_OFFSET_Y + SKILL_START_OFFSET_Y;
+        graphics.pose().pushPose();
+        graphics.pose().scale(KEYBIND_SCALE, KEYBIND_SCALE, KEYBIND_SCALE);
+        float inverseScale = 1.0f / KEYBIND_SCALE;
+        for (int slot = 0; slot < ModClientEvents.ABILITY_SLOT_KEYS.size(); slot++) {
+            Component keyText = getShortKeyDescription(ModClientEvents.ABILITY_SLOT_KEYS.get(slot));
+            int keyTextWidth = font.width(keyText);
+            if (keyTextWidth > 31) {
+                keyText = Component.literal("...");
+                keyTextWidth = font.width(keyText);
+            }
+            graphics.drawString(font, keyText, (int) (inverseScale * (BAR_OFFSET_X + SKILL_OFFSET_X + 16)) - keyTextWidth - 1, (int) (inverseScale * (yOffset + (slot + 1) * 18 - 2)) - font.lineHeight, ChatFormatting.WHITE.getColor());
+        }
+        graphics.pose().popPose();
+    }
+
+    private static Component getShortKeyDescription(KeyMapping keyMapping) {
+        return switch (keyMapping.getKeyModifier()) {
+            case ALT -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "mod_alt")).append(getUnmodifiedKeyDescription(keyMapping));
+            case SHIFT -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "mod_shift")).append(getUnmodifiedKeyDescription(keyMapping));
+            case CONTROL -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "mod_ctrl")).append(getUnmodifiedKeyDescription(keyMapping));
+            case NONE -> getUnmodifiedKeyDescription(keyMapping);
+        };
+    }
+
+    private static Component getUnmodifiedKeyDescription(KeyMapping keyMapping) {
+        if (keyMapping.getKey().getType() == InputConstants.Type.MOUSE) {
+            return Component.literal("M" + keyMapping.getKey().getValue());
+        }
+        if (keyMapping.getKey().getType() == InputConstants.Type.KEYSYM) {
+            return switch (keyMapping.getKey().getValue()) {
+                case InputConstants.KEY_LALT -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "l_alt"));
+                case InputConstants.KEY_RALT -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "r_alt"));
+                case InputConstants.KEY_LCONTROL -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "l_ctrl"));
+                case InputConstants.KEY_RCONTROL -> Component.translatable(WanderersOfTheRift.translationId("keybinds", "r_ctrl"));
+                default -> keyMapping.getKey().getDisplayName();
+            };
+        }
+        return keyMapping.getKey().getDisplayName();
     }
 
     private static void renderBackground(GuiGraphics graphics, AbilitySlots abilitySlots) {

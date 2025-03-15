@@ -86,6 +86,13 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModClientEvents.ABILITY_8_KEY.getName(), "Use Ability 8");
         add(ModClientEvents.ABILITY_9_KEY.getName(), "Use Ability 9");
 
+        add(WanderersOfTheRift.translationId("keybinds", "l_alt"), "LAlt");
+        add(WanderersOfTheRift.translationId("keybinds", "r_alt"), "RAlt");
+        add(WanderersOfTheRift.translationId("keybinds", "l_ctrl"), "LCtrl");
+        add(WanderersOfTheRift.translationId("keybinds", "r_ctrl"), "RCtrl");
+        add(WanderersOfTheRift.translationId("keybinds", "mod_alt"), "Alt+");
+        add(WanderersOfTheRift.translationId("keybinds", "mod_ctrl"), "Ctrl+");
+        add(WanderersOfTheRift.translationId("keybinds", "mod_shift"), "Shi+");
     }
 
     private static @NotNull String getTranslationString(Block block) {
