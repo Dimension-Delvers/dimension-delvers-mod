@@ -57,7 +57,7 @@ public final class AbilityBar {
             }
 
             if (cooldowns.isOnCooldown(slot)) {
-                int overlayHeight = Math.clamp((int) (16 * cooldowns.getCooldown(slot) / ability.getBaseCooldown()), 0, 16);
+                int overlayHeight = Math.clamp((16L * cooldowns.getCooldownRemaining(slot) / cooldowns.getLastCooldownValue(slot)), 0, 16);
                 graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + slot * 18 + 16 - overlayHeight, 0, 0, 16, overlayHeight, 16, 16);
             }
         }

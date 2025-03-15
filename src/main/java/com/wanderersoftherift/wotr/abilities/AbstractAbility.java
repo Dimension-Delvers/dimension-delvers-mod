@@ -103,7 +103,7 @@ public abstract class AbstractAbility {
     public boolean hasCooldown() { return getBaseCooldown() > 0; }
 
     public int getActiveCooldown(Player player, int slot) {
-        return player.getData(ModAttachments.COOL_DOWNS).getCooldown(slot);
+        return player.getData(ModAttachments.COOL_DOWNS).getCooldownRemaining(slot);
     }
 
     public float getBaseCooldown() {

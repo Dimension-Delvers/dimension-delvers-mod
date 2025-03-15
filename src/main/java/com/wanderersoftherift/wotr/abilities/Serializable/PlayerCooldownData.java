@@ -11,47 +11,61 @@ public class PlayerCooldownData {
 
     public static final Codec<PlayerCooldownData> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    Codec.INT.listOf().<IntList>xmap(IntArrayList::new, FastUtils::toList).fieldOf("cooldowns").forGetter(x -> x.cooldowns)
+                    Codec.INT.listOf().<IntList>xmap(IntArrayList::new, FastUtils::toList).fieldOf("cooldowns").forGetter(x -> x.currentCooldowns),
+                    Codec.INT.listOf().<IntList>xmap(IntArrayList::new, FastUtils::toList).fieldOf("lastCooldowns").forGetter(x -> x.lastCooldowns)
             ).apply(instance, PlayerCooldownData::new)
     );
 
-    private final IntList cooldowns = new IntArrayList(new int[AbilitySlots.ABILITY_BAR_SIZE]);
+    private final IntList lastCooldowns;
+    private final IntList currentCooldowns;
 
     public PlayerCooldownData() {
-
+        lastCooldowns = new IntArrayList(new int[AbilitySlots.ABILITY_BAR_SIZE]);
+        currentCooldowns = new IntArrayList(new int[AbilitySlots.ABILITY_BAR_SIZE]);
     }
 
-    public PlayerCooldownData(IntList cooldowns) {
-        this.cooldowns.clear();
-        this.cooldowns.addAll(cooldowns);
+    public PlayerCooldownData(IntList lastCooldowns, IntList currentCooldowns) {
+        this.currentCooldowns = new IntArrayList(currentCooldowns);
+        this.lastCooldowns = new IntArrayList(lastCooldowns);
     }
 
     public void setCooldown(int slot, int amount) {
         if (slot < 0) {
             return;
         }
-        while (slot >= cooldowns.size()) {
-            cooldowns.add(0);
+        while (slot >= currentCooldowns.size()) {
+            currentCooldowns.add(0);
         }
-        cooldowns.set(slot, amount);
+        while (slot >= lastCooldowns.size()) {
+            lastCooldowns.add(0);
+        }
+        currentCooldowns.set(slot, amount);
+        lastCooldowns.set(slot, amount);
     }
 
-    public int getCooldown(int slot)
+    public int getCooldownRemaining(int slot)
     {
-        if (slot >= 0 && slot < cooldowns.size()) {
-            return cooldowns.getInt(slot);
+        if (slot >= 0 && slot < currentCooldowns.size()) {
+            return currentCooldowns.getInt(slot);
+        }
+        return 0;
+    }
+
+    public int getLastCooldownValue(int slot) {
+        if (slot >= 0 && slot < lastCooldowns.size()) {
+            return lastCooldowns.getInt(slot);
         }
         return 0;
     }
 
     public boolean isOnCooldown(int slot)
     {
-        return getCooldown(slot) > 0;
+        return getCooldownRemaining(slot) > 0;
     }
 
     public void reduceCooldowns()
     {
-        cooldowns.replaceAll(x -> x - 1);
+        currentCooldowns.replaceAll(x -> x > 0 ? x - 1 : 0);
     }
 
 }
