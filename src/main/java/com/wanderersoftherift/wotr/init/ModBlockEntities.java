@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.block.blockentity.DittoBlockEntity;
+import com.wanderersoftherift.wotr.block.blockentity.SkyboxBlockEntity;
 import com.wanderersoftherift.wotr.block.blockentity.RiftChestBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,17 +21,13 @@ public class ModBlockEntities {
             )
     );
 
-    public static final Supplier<BlockEntityType<DittoBlockEntity>> DITTO_BLOCK_ENTITY = BLOCK_ENTITIES.register(
-            "ditto_block_entity",
+    public static final Supplier<BlockEntityType<SkyboxBlockEntity>> SKYBOX_BLOCK_ENTITY = BLOCK_ENTITIES.register(
+            "skybox_block_entity",
             // The block entity type.
             () -> new BlockEntityType<>(
-                    DittoBlockEntity::new,
+                    SkyboxBlockEntity::new,
                     Set.of(
-                            ModBlocks.DITTO_BLOCK.get(),
-                            ModBlocks.TRAP_BLOCK.get(),
-                            ModBlocks.MOB_TRAP_BLOCK.get(),
-                            ModBlocks.PLAYER_TRAP_BLOCK.get(),
-                            ModBlocks.SPRING_BLOCK.get()
+                            ModBlocks.SKYBOX_BLOCK.get()
                     )
             )
     );

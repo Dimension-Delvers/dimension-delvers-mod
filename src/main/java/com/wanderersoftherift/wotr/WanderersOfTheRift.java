@@ -1,7 +1,8 @@
 package com.wanderersoftherift.wotr;
 
 import com.mojang.logging.LogUtils;
-import com.wanderersoftherift.wotr.block.blockentity.DittoBlockEntityRenderer;
+import com.wanderersoftherift.wotr.block.blockentity.SkyboxBlockRenderer;
+import com.wanderersoftherift.wotr.client.ModShaders;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
@@ -14,7 +15,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -27,6 +27,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -145,7 +146,12 @@ public class WanderersOfTheRift {
 
         @SubscribeEvent
         private static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(ModBlockEntities.DITTO_BLOCK_ENTITY.get(), DittoBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.SKYBOX_BLOCK_ENTITY.get(), SkyboxBlockRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerShaderPrograms(RegisterShadersEvent event) {
+            event.registerShader(ModShaders.SKYBOX);
         }
     }
 }

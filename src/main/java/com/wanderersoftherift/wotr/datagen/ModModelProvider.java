@@ -39,11 +39,7 @@ public class ModModelProvider extends ModelProvider {
     protected void registerModels(BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.RUNE_ANVIL_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.DEV_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.MOB_TRAP_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.PLAYER_TRAP_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.TRAP_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.DITTO_BLOCK.get());
-        blockModels.createTrivialCube(ModBlocks.SPRING_BLOCK.get());
+        blockModels.createTrivialCube(ModBlocks.SKYBOX_BLOCK.get());
 
         ResourceLocation modelLoc = WanderersOfTheRift.id("block/rift_chest");
         blockModels.blockStateOutput.accept(

@@ -1,8 +1,5 @@
-// 1.21.4	2025-03-16T14:22:47.9066761	Loot Tables
+// 1.21.4	2025-03-16T19:58:36.2923701	Loot Tables
 e0ce10bcca36578497733d904681369617d72453 data/wotr/loot_table/blocks/dev_block.json
-b7051273949f5d9f58f364199fdef30f6c206979 data/wotr/loot_table/blocks/ditto_block.json
-a15e07c3ffdbe7e17d30a05dd689b67bb4fcad90 data/wotr/loot_table/blocks/mob_trap_block.json
-e63cb29b7467d89f43db86377a70badf97deb5b1 data/wotr/loot_table/blocks/player_trap_block.json
 e3d6885466ff9b5af5da7d297c8765a5f6ed748d data/wotr/loot_table/blocks/processor_block_1.json
 90452c52891c3612523e97b35eb777486511c9e6 data/wotr/loot_table/blocks/processor_block_10.json
 c7b6869f0455f5679c570e71b404f748145a21b8 data/wotr/loot_table/blocks/processor_block_10_button.json
@@ -117,5 +114,4 @@ cdfd4bd2ba325837989532909198915ee7c0154a data/wotr/loot_table/blocks/processor_b
 4ad99035308b588cf0927543c9ebb359f4c24249 data/wotr/loot_table/blocks/processor_block_9_wall.json
 540ee319d2a1e3f53cdd38b08441756df66a3b70 data/wotr/loot_table/blocks/rift_chest.json
 d81ead197df999f675f9bc7b59dc798b90307185 data/wotr/loot_table/blocks/rune_anvil.json
-43394cb97b09800d7c7b53c23db84c54d5704ec0 data/wotr/loot_table/blocks/spring_block.json
-74a021d0bdba6c29c38a7a049f2b504443cf04ad data/wotr/loot_table/blocks/trap_block.json
+0f02990b5d9627d1b92e5e22629fc370d418ee7f data/wotr/loot_table/blocks/skybox_block.json
