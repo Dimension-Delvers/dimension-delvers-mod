@@ -3,13 +3,18 @@ package com.wanderersoftherift.wotr.block;
 import com.mojang.serialization.MapCodec;
 import com.wanderersoftherift.wotr.block.blockentity.SkyboxBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 
 public class SkyboxBlock extends BaseEntityBlock {
 	public static final MapCodec<SkyboxBlock> CODEC = simpleCodec(SkyboxBlock::new);

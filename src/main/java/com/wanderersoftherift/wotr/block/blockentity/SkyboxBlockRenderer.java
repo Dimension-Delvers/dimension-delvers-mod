@@ -13,6 +13,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.sun.jna.platform.win32.OpenGL32;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.client.ModShaders;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -24,6 +25,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForgeConfig;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL;
 
@@ -64,8 +66,11 @@ public class SkyboxBlockRenderer<T extends SkyboxBlockEntity> implements BlockEn
 
 			Uniform view = shader.getUniform("View");
 			if (view != null) {
-				float x = Minecraft.getInstance().player.getXRot();
-				float y = Mth.wrapDegrees(Minecraft.getInstance().player.getYRot());
+				float x = Minecraft.getInstance().cameraEntity.getXRot();
+				if (Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
+					x *= -1;
+				}
+				float y = Mth.wrapDegrees(Minecraft.getInstance().cameraEntity.getYRot());
 				view.set(x, y);
 			}
 
