@@ -6,7 +6,7 @@ import com.wanderersoftherift.wotr.gui.widget.ScrollContainerEntry;
 import com.wanderersoftherift.wotr.gui.widget.ScrollContainerWidget;
 import com.wanderersoftherift.wotr.item.skillgem.Upgrade;
 import com.wanderersoftherift.wotr.item.skillgem.UpgradePool;
-import com.wanderersoftherift.wotr.network.SelectSkillUpgradeRequest;
+import com.wanderersoftherift.wotr.network.SelectSkillUpgradePayload;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -226,7 +226,7 @@ public class SkillBenchScreen extends AbstractContainerScreen<SkillBenchMenu> {
         public void onPress() {
             UpgradePool pool = upgradePool.get();
             if (pool != null && pool.getSelectedIndex(choice) != selection) {
-                PacketDistributor.sendToServer(new SelectSkillUpgradeRequest(choice, selection));
+                PacketDistributor.sendToServer(new SelectSkillUpgradePayload(choice, selection));
             }
         }
 

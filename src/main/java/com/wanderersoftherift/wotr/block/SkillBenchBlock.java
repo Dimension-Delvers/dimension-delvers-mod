@@ -5,7 +5,7 @@ import com.wanderersoftherift.wotr.gui.menu.SkillBenchMenu;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.item.handler.ChangeAwareItemHandler;
 import com.wanderersoftherift.wotr.item.skillgem.AbilitySlots;
-import com.wanderersoftherift.wotr.network.AbilitySlotsUpdateMessage;
+import com.wanderersoftherift.wotr.network.AbilitySlotsUpdatePayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,7 +35,7 @@ public class SkillBenchBlock extends Block {
             IItemHandler replicatedSlots = new ChangeAwareItemHandler(slots) {
                     @Override
                     public void onSlotChanged(int slot) {
-                        PacketDistributor.sendToPlayer((ServerPlayer) player, new AbilitySlotsUpdateMessage(slot, slots.getStackInSlot(slot)));
+                        PacketDistributor.sendToPlayer((ServerPlayer) player, new AbilitySlotsUpdatePayload(slot, slots.getStackInSlot(slot)));
                     }
                 };
             return new SkillBenchMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos), replicatedSlots);

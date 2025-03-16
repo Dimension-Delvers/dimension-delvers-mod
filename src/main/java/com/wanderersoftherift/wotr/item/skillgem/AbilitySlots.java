@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class AbilitySlots implements IItemHandlerModifiable {
@@ -20,8 +22,8 @@ public class AbilitySlots implements IItemHandlerModifiable {
             ).apply(instance, AbilitySlots::new)
     );
 
-    public final NonNullList<ItemStack> abilities = NonNullList.withSize(ABILITY_BAR_SIZE, ItemStack.EMPTY);
-    public int selected = 0;
+    private final NonNullList<ItemStack> abilities = NonNullList.withSize(ABILITY_BAR_SIZE, ItemStack.EMPTY);
+    private int selected = 0;
 
     public AbilitySlots() {
 
@@ -34,11 +36,26 @@ public class AbilitySlots implements IItemHandlerModifiable {
         this.selected = selected;
     }
 
-    public ItemStack getSelected() {
-        if (selected >= 0 && selected < ABILITY_BAR_SIZE) {
-            return abilities.get(selected);
+    public int getSelectedSlot() {
+        return selected;
+    }
+
+    public void setSelectedSlot(int slot) {
+        if (slot >= 0 && slot < ABILITY_BAR_SIZE) {
+            selected = slot;
         }
-        return ItemStack.EMPTY;
+    }
+
+    public void decrementSelected() {
+        selected = (selected + abilities.size() - 1) % abilities.size();
+    }
+
+    public void incrementSelected() {
+        selected = (selected + 1) % abilities.size();
+    }
+
+    public List<ItemStack> getAbilities() {
+        return Collections.unmodifiableList(abilities);
     }
 
     public AbstractAbility getAbilityInSlot(int slot) {

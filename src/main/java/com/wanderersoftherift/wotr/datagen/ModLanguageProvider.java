@@ -85,6 +85,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModClientEvents.ABILITY_7_KEY.getName(), "Use Ability 7");
         add(ModClientEvents.ABILITY_8_KEY.getName(), "Use Ability 8");
         add(ModClientEvents.ABILITY_9_KEY.getName(), "Use Ability 9");
+        add(ModClientEvents.PREV_ABILITY_KEY.getName(), "Select Previous Ability");
+        add(ModClientEvents.NEXT_ABILITY_KEY.getName(), "Select Next Ability");
+        add(ModClientEvents.USE_ABILITY_KEY.getName(), "Use Selected Ability");
 
         add(WanderersOfTheRift.translationId("keybinds", "l_alt"), "LAlt");
         add(WanderersOfTheRift.translationId("keybinds", "r_alt"), "RAlt");

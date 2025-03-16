@@ -2,9 +2,10 @@ package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.item.skillgem.AbilitySlots;
-import com.wanderersoftherift.wotr.network.AbilitySlotsContentMessage;
-import com.wanderersoftherift.wotr.network.AbilitySlotsUpdateMessage;
-import com.wanderersoftherift.wotr.network.SelectSkillUpgradeRequest;
+import com.wanderersoftherift.wotr.network.AbilitySlotsContentPayload;
+import com.wanderersoftherift.wotr.network.AbilitySlotsUpdatePayload;
+import com.wanderersoftherift.wotr.network.SelectAbilitySlotPayload;
+import com.wanderersoftherift.wotr.network.SelectSkillUpgradePayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,9 +21,10 @@ public class ModPayloadHandlers {
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(WanderersOfTheRift.MODID).versioned(PROTOCOL_VERSION);
 
-        registrar.playToServer(SelectSkillUpgradeRequest.ID, SelectSkillUpgradeRequest.STREAM_CODEC, SelectSkillUpgradeRequest::handleOnServer);
-        registrar.playToClient(AbilitySlotsContentMessage.ID, AbilitySlotsContentMessage.STREAM_CODEC, AbilitySlotsContentMessage::handleOnClient);
-        registrar.playToClient(AbilitySlotsUpdateMessage.ID, AbilitySlotsUpdateMessage.STREAM_CODEC, AbilitySlotsUpdateMessage::handleOnClient);
+        registrar.playToServer(SelectSkillUpgradePayload.ID, SelectSkillUpgradePayload.STREAM_CODEC, SelectSkillUpgradePayload::handleOnServer);
+        registrar.playToServer(SelectAbilitySlotPayload.ID, SelectAbilitySlotPayload.STREAM_CODEC, SelectAbilitySlotPayload::handleOnServer);
+        registrar.playToClient(AbilitySlotsContentPayload.ID, AbilitySlotsContentPayload.STREAM_CODEC, AbilitySlotsContentPayload::handleOnClient);
+        registrar.playToClient(AbilitySlotsUpdatePayload.ID, AbilitySlotsUpdatePayload.STREAM_CODEC, AbilitySlotsUpdatePayload::handleOnClient);
     }
 
     @SubscribeEvent
@@ -32,7 +34,7 @@ public class ModPayloadHandlers {
         }
 
         AbilitySlots abilitySlots = loggedInEvent.getEntity().getData(ModAttachments.ABILITY_SLOTS);
-        PacketDistributor.sendToPlayer(serverPlayer, new AbilitySlotsContentMessage(abilitySlots.abilities));
+        PacketDistributor.sendToPlayer(serverPlayer, new AbilitySlotsContentPayload(abilitySlots.getAbilities(), abilitySlots.getSelectedSlot()));
     }
 
 

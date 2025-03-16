@@ -25,6 +25,7 @@ public final class AbilityBar {
 
     private static final ResourceLocation BACKGROUND = WanderersOfTheRift.id("textures/gui/hud/ability_bar/background.png");
     private static final ResourceLocation COOLDOWN_OVERLAY = WanderersOfTheRift.id("textures/gui/hud/ability_bar/cooldown_overlay.png");
+    private static final ResourceLocation SELECTED_OVERLAY = WanderersOfTheRift.id("textures/gui/hud/ability_bar/select.png");
 
     private static final int BACKGROUND_WIDTH = 24;
     private static final int BACKGROUND_HEIGHT = 60;
@@ -61,6 +62,8 @@ public final class AbilityBar {
                 graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, BAR_OFFSET_X + SKILL_OFFSET_X, yOffset + slot * 18 + 16 - overlayHeight, 0, 0, 16, overlayHeight, 16, 16);
             }
         }
+        int selected = abilitySlots.getSelectedSlot();
+        graphics.blit(RenderType::guiTextured, SELECTED_OVERLAY, BAR_OFFSET_X + SKILL_OFFSET_X - 6, yOffset + selected * 18 - 3, 0, 0, 28, 22, 28, 22);
     }
 
     private static void renderAbilityKeyBinds(GuiGraphics graphics) {

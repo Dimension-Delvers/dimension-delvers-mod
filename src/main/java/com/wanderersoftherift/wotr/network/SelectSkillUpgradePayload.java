@@ -9,12 +9,12 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record SelectSkillUpgradeRequest(int choice, int selection) implements CustomPacketPayload {
-    public static final Type<SelectSkillUpgradeRequest> ID = new Type<>(WanderersOfTheRift.id("select_skill_upgrade_request"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, SelectSkillUpgradeRequest> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, SelectSkillUpgradeRequest::choice,
-            ByteBufCodecs.INT, SelectSkillUpgradeRequest::selection,
-            SelectSkillUpgradeRequest::new
+public record SelectSkillUpgradePayload(int choice, int selection) implements CustomPacketPayload {
+    public static final Type<SelectSkillUpgradePayload> ID = new Type<>(WanderersOfTheRift.id("select_skill_upgrade_request"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, SelectSkillUpgradePayload> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, SelectSkillUpgradePayload::choice,
+            ByteBufCodecs.INT, SelectSkillUpgradePayload::selection,
+            SelectSkillUpgradePayload::new
     );
 
     @Override

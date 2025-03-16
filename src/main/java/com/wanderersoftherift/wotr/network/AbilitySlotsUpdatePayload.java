@@ -11,12 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record AbilitySlotsUpdateMessage(int slot, ItemStack stack) implements CustomPacketPayload {
-    public static final Type<AbilitySlotsUpdateMessage> ID = new Type<>(WanderersOfTheRift.id("ability_slots_update"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, AbilitySlotsUpdateMessage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, AbilitySlotsUpdateMessage::slot,
-            ItemStack.OPTIONAL_STREAM_CODEC, AbilitySlotsUpdateMessage::stack,
-            AbilitySlotsUpdateMessage::new
+public record AbilitySlotsUpdatePayload(int slot, ItemStack stack) implements CustomPacketPayload {
+    public static final Type<AbilitySlotsUpdatePayload> ID = new Type<>(WanderersOfTheRift.id("ability_slots_update"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, AbilitySlotsUpdatePayload> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, AbilitySlotsUpdatePayload::slot,
+            ItemStack.OPTIONAL_STREAM_CODEC, AbilitySlotsUpdatePayload::stack,
+            AbilitySlotsUpdatePayload::new
     );
 
     @Override
