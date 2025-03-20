@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.block;
 
-import com.wanderersoftherift.wotr.block.blockentity.RiftChestBlockEntity;
 import com.mojang.serialization.MapCodec;
+import com.wanderersoftherift.wotr.block.blockentity.RiftChestBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -43,7 +43,8 @@ public class RiftChestEntityBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos,
+            @NotNull CollisionContext context) {
         return SHAPE;
     }
 
@@ -55,11 +56,16 @@ public class RiftChestEntityBlock extends BaseEntityBlock {
     protected MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
         return new SimpleMenuProvider((containerId, playerInventory, player) -> {
             RiftChestBlockEntity blockEntity = (RiftChestBlockEntity) level.getBlockEntity(pos);
-            return blockEntity == null ? null : blockEntity.createMenu(containerId, playerInventory, player);
+            if (blockEntity == null) {
+                return null;
+            } else {
+                return blockEntity.createMenu(containerId, playerInventory, player);
+            }
         }, CONTAINER_TITLE);
     }
 
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos,
+            @NotNull Player player, @NotNull BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {

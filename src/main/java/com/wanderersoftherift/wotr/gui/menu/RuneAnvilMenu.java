@@ -11,7 +11,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -21,17 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RuneAnvilMenu extends AbstractContainerMenu {
-    private static final int GEAR_SLOT = 36;
-    private static final Vector2i GEAR_SLOT_POSITION = new Vector2i(80, 76);
-    private static final List<Integer> RUNE_SLOTS = List.of(37, 38, 39, 40, 41, 42);
+    // spotless:off
     public static final List<Vector2i> RUNE_SLOT_POSITIONS = List.of( // CLOCKWISE FROM TOP CENTER
             new Vector2i(80, 26),
             new Vector2i(127, 51),
             new Vector2i(127, 101),
             new Vector2i(80, 126),
             new Vector2i(33, 101),
-            new Vector2i(33, 51)
-    );
+            new Vector2i(33, 51));
+    // spotless:on
+
+    private static final int GEAR_SLOT = 36;
+    private static final Vector2i GEAR_SLOT_POSITION = new Vector2i(80, 76);
+    private static final List<Integer> RUNE_SLOTS = List.of(37, 38, 39, 40, 41, 42);
+
+    public int activeSocketSlots = 0;
 
     private Inventory playerInventory;
     private ContainerLevelAccess access;
@@ -39,7 +45,6 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
     private Container socketSlotsContainer;
     private Slot gearSlot;
     private final List<RunegemSlot> socketSlots = new ArrayList<>();
-    public int activeSocketSlots = 0;
 
     // Client
     public RuneAnvilMenu(int containerId, Inventory playerInventory) {
@@ -52,20 +57,21 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
         this.playerInventory = playerInventory;
         this.access = access;
 
-        // please for the love of all that is holy, do not change the order of these lines else it will fuck everything up
+        // please for the love of all that is holy, do not change the order of these lines else it will fuck everything
+        // up
         this.createInventorySlots(playerInventory);
         this.createGearSlot();
         this.createSocketSlots();
     }
 
     private void createInventorySlots(Inventory inventory) {
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 9; ++j) {
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 9; ++j) {
                 this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 166 + i * 18));
             }
         }
 
-        for(int k = 0; k < 9; ++k) {
+        for (int k = 0; k < 9; ++k) {
             this.addSlot(new Slot(inventory, k, 8 + k * 18, 224));
         }
     }
@@ -84,18 +90,24 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
         for (int i = 0; i < 6; i++) {
             Vector2i position = RUNE_SLOT_POSITIONS.get(i);
             int finalI = i;
-            socketSlots.add(
-                    (RunegemSlot) this.addSlot(new RunegemSlot(this.socketSlotsContainer, finalI, position.x, position.y, null) {
+            socketSlots.add((RunegemSlot) this
+                    .addSlot(new RunegemSlot(this.socketSlotsContainer, finalI, position.x, position.y, null) {
                         private final int index = finalI;
 
                         public boolean mayPlace(@NotNull ItemStack stack) {
-                            if (this.isFake() || !stack.is(ModItems.RUNEGEM)) return false;
+                            if (this.isFake() || !stack.is(ModItems.RUNEGEM)) {
+                                return false;
+                            }
                             ItemStack item = gearSlotContainer.getItem(0);
                             GearSockets gearSockets = item.get(ModDataComponentType.GEAR_SOCKETS.get());
                             RunegemData runegemData = stack.get(ModDataComponentType.RUNEGEM_DATA.get());
-                            if(item.isEmpty() || stack.isEmpty() || gearSockets == null || runegemData == null) return false;
+                            if (item.isEmpty() || stack.isEmpty() || gearSockets == null || runegemData == null) {
+                                return false;
+                            }
                             List<GearSocket> sockets = gearSockets.sockets();
-                            if (sockets.size() <= this.index) return false;
+                            if (sockets.size() <= this.index) {
+                                return false;
+                            }
                             GearSocket socket = sockets.get(this.index);
                             return socket.canBeApplied(runegemData);
                         }
@@ -107,8 +119,7 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
                         public boolean isFake() {
                             return this.index >= activeSocketSlots;
                         }
-                    })
-            );
+                    }));
         }
     }
 
@@ -154,7 +165,7 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
                 return;
             }
             List<GearSocket> socketList = sockets.sockets();
-            //apply runes
+            // apply runes
         }
     }
 
@@ -182,7 +193,9 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
      */
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        if (index >= this.slots.size()) return ItemStack.EMPTY; // just to be sure
+        if (index >= this.slots.size()) {
+            return ItemStack.EMPTY; // just to be sure
+        }
         Slot slot = this.slots.get(index);
         if (!slot.hasItem()) {
             return ItemStack.EMPTY;
@@ -220,7 +233,8 @@ public class RuneAnvilMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return access.evaluate((world, pos) -> isValidBlock(world.getBlockState(pos)) && player.canInteractWithBlock(pos, 4.0F), true);
+        return access.evaluate(
+                (world, pos) -> isValidBlock(world.getBlockState(pos)) && player.canInteractWithBlock(pos, 4.0F), true);
     }
 
     protected boolean isValidBlock(BlockState state) {

@@ -18,15 +18,8 @@ public class RegistryEvents {
 
     @SubscribeEvent
     public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(
-                ModModifierEffects.MODIFIER_EFFECT_KEY,
-                AbstractModifierEffect.DIRECT_CODEC,
-                AbstractModifierEffect.DIRECT_CODEC
-        );
-        event.dataPackRegistry(
-                ModModifiers.MODIFIER_KEY,
-                Modifier.DIRECT_CODEC,
-                Modifier.DIRECT_CODEC
-        );
+        event.dataPackRegistry(ModModifierEffects.MODIFIER_EFFECT_KEY, AbstractModifierEffect.DIRECT_CODEC,
+                AbstractModifierEffect.DIRECT_CODEC);
+        event.dataPackRegistry(ModModifiers.MODIFIER_KEY, Modifier.DIRECT_CODEC, Modifier.DIRECT_CODEC);
     }
 }

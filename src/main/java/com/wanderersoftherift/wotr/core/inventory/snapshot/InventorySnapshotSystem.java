@@ -1,15 +1,24 @@
-package com.wanderersoftherift.wotr.server.inventorySnapshot;
+package com.wanderersoftherift.wotr.core.inventory.snapshot;
 
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.BundleContainerType;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.ComponentContainerType;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.ContainerItemWrapper;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.ContainerType;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.ContainerWrapper;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.DirectContainerItemWrapper;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.containers.NonContainerWrapper;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
-import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.*;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * System for capturing Inventory Snapshots and applying them on death and respawn of a player
@@ -17,32 +26,34 @@ import java.util.*;
  * The envisioned behavior is:
  * </p>
  * <ul>
- *     <li>When a snapshot is initially captured, all items in the players inventory and sub-inventories are enumerated</li>
- *     <li>When a player dies, the player's inventory is compared to the snapshot. Their inventory is split into a set of items that they have from the snapshot,
- *     and a set of items that are new</li>
- *     <li>When a player respawns the items they still had from the snapshot are returned and the snapshot is removed</li>
- *     <li>All other items are dropped where they died</li>
+ * <li>When a snapshot is initially captured, all items in the players inventory and sub-inventories are enumerated</li>
+ * <li>When a player dies, the player's inventory is compared to the snapshot. Their inventory is split into a set of
+ * items that they have from the snapshot, and a set of items that are new</li>
+ * <li>When a player respawns the items they still had from the snapshot are returned and the snapshot is removed</li>
+ * <li>All other items are dropped where they died</li>
  * </ul>
  * <p>
- * Snapshots are created by adding a unique snapshot id to any non-stackable items, and directly record any stackable, with the assumption that stackable items will
- * not vary in a non-comparable manner.
+ * Snapshots are created by adding a unique snapshot id to any non-stackable items, and directly record any stackable,
+ * with the assumption that stackable items will not vary in a non-comparable manner.
  * </p>
  */
 public class InventorySnapshotSystem {
 
-    private static final DataComponentPatch REMOVE_SNAPSHOT_ID_PATCH = DataComponentPatch.builder().remove(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()).build();
+    private static final DataComponentPatch REMOVE_SNAPSHOT_ID_PATCH = DataComponentPatch.builder()
+            .remove(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get())
+            .build();
 
     private static final InventorySnapshotSystem instance = new InventorySnapshotSystem();
 
     private final List<ContainerType> containerStrategies = new ArrayList<>();
 
-    public static InventorySnapshotSystem getInstance() {
-        return instance;
-    }
-
     private InventorySnapshotSystem() {
         containerStrategies.add(new ComponentContainerType());
         containerStrategies.add(new BundleContainerType());
+    }
+
+    public static InventorySnapshotSystem getInstance() {
+        return instance;
     }
 
     public void registerContainerStrategy(ContainerType strategy) {
@@ -70,8 +81,8 @@ public class InventorySnapshotSystem {
     }
 
     /**
-     * Updates the snapshot for the player's death. This will reduce the captured items to what the player
-     * still had on them at time of death.
+     * Updates the snapshot for the player's death. This will reduce the captured items to what the player still had on
+     * them at time of death.
      *
      * @param player
      * @param event
@@ -99,7 +110,9 @@ public class InventorySnapshotSystem {
         for (ItemStack item : player.getData(ModAttachments.RESPAWN_ITEMS)) {
             if (!player.getInventory().add(item)) {
                 item.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
-                player.level().addFreshEntity(new ItemEntity(player.level(), player.position().x, player.position().y, player.position().z, item));
+                player.level()
+                        .addFreshEntity(new ItemEntity(player.level(), player.position().x, player.position().y,
+                                player.position().z, item));
             }
         }
         player.setData(ModAttachments.RESPAWN_ITEMS, new ArrayList<>());
@@ -111,7 +124,9 @@ public class InventorySnapshotSystem {
         private UUID snapshotId = UUID.randomUUID();
         private List<ItemStack> items = new ArrayList<>();
 
-        private DataComponentPatch addSnapshotIdPatch = DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), snapshotId).build();
+        private DataComponentPatch addSnapshotIdPatch = DataComponentPatch.builder()
+                .set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), snapshotId)
+                .build();
 
         /**
          * Generates an InventorySnapshot for a player's inventory
@@ -159,7 +174,8 @@ public class InventorySnapshotSystem {
         private final List<ItemStack> snapshotItems;
         private final UUID snapshotId;
 
-        public RespawnItemsCalculator(ServerPlayer player, InventorySnapshot snapshot, Collection<ItemEntity> heldItems) {
+        public RespawnItemsCalculator(ServerPlayer player, InventorySnapshot snapshot,
+                Collection<ItemEntity> heldItems) {
             this.player = player;
             this.snapshotItems = new ArrayList<>(snapshot.items());
             this.snapshotId = snapshot.id();
@@ -198,7 +214,8 @@ public class InventorySnapshotSystem {
         }
 
         private boolean shouldRetainNonStackable(ItemStack item) {
-            return item.getComponents().has(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()) && snapshotId.equals(item.getComponents().get(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()));
+            return item.getComponents().has(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get())
+                    && snapshotId.equals(item.getComponents().get(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()));
         }
 
         // If we're retaining the container
@@ -238,7 +255,10 @@ public class InventorySnapshotSystem {
 
         private int calculateDropCount(ItemStack item) {
             int dropCount = item.getCount();
-            // Walk through the list of snapshotted items, reducing stack counts of matching stacks until all items are accounted for
+            /*
+             * Walk through the list of snapshotted items, reducing stack counts of matching stacks until all items are
+             * accounted for
+             */
             int index = 0;
             while (dropCount > 0 && index < snapshotItems.size()) {
                 ItemStack snapshotItem = snapshotItems.get(index);
@@ -260,7 +280,8 @@ public class InventorySnapshotSystem {
         private List<ItemEntity> createItemEntity(List<ItemStack> stacks) {
             List<ItemEntity> entities = new ArrayList<>();
             for (ItemStack stack : stacks) {
-                entities.add(new ItemEntity(player.level(), player.position().x, player.position().y, player.position().z, stack));
+                entities.add(new ItemEntity(player.level(), player.position().x, player.position().y,
+                        player.position().z, stack));
             }
             return entities;
         }

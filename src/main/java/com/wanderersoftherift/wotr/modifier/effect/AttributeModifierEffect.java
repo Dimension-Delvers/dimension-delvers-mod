@@ -8,6 +8,15 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 
 public class AttributeModifierEffect extends AbstractModifierEffect {
 
+    public static final MapCodec<AttributeModifierEffect> MODIFIER_CODEC = RecordCodecBuilder
+            .mapCodec(instance -> instance
+                    .group(BuiltInRegistries.ATTRIBUTE.byNameCodec()
+                            .fieldOf("attribute")
+                            .forGetter(AttributeModifierEffect::getAttribute),
+                            Codec.INT.fieldOf("minRoll").forGetter(AttributeModifierEffect::getMinimumRoll),
+                            Codec.INT.fieldOf("maxRoll").forGetter(AttributeModifierEffect::getMaximumRoll))
+                    .apply(instance, AttributeModifierEffect::new));
+
     private final Attribute attribute;
     // private final ObjectArrayList<Integer> rolls;
     private final int minRoll;
@@ -26,27 +35,20 @@ public class AttributeModifierEffect extends AbstractModifierEffect {
         return MODIFIER_CODEC;
     }
 
-    public static final MapCodec<AttributeModifierEffect> MODIFIER_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            BuiltInRegistries.ATTRIBUTE.byNameCodec().fieldOf("attribute").forGetter(AttributeModifierEffect::getAttribute),
-            Codec.INT.fieldOf("minRoll").forGetter(AttributeModifierEffect::getMinimumRoll),
-            Codec.INT.fieldOf("maxRoll").forGetter(AttributeModifierEffect::getMaximumRoll)
-            ).apply(instance, AttributeModifierEffect::new)
-    );
-
     @Override
     public void applyModifier() {
 
     }
 
-    public Attribute getAttribute(){
+    public Attribute getAttribute() {
         return attribute;
     }
 
-    public int getMinimumRoll(){
+    public int getMinimumRoll() {
         return minRoll;
     }
 
-    public int getMaximumRoll(){
+    public int getMaximumRoll() {
         return maxRoll;
     }
 }

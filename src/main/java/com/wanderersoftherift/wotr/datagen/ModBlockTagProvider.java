@@ -21,10 +21,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(family -> {
-            if(family.getVariant(BlockFamily.Variant.WALL) != null) {
+            if (family.getVariant(BlockFamily.Variant.WALL) != null) {
                 tag(WALLS).add(family.getVariant(BlockFamily.Variant.WALL).get());
             }
-            if(family.getVariant(BlockFamily.Variant.FENCE) != null) {
+            if (family.getVariant(BlockFamily.Variant.FENCE) != null) {
                 tag(FENCES).add(family.getVariant(BlockFamily.Variant.FENCE).get());
             }
         });

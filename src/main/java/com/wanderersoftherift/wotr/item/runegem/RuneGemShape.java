@@ -1,6 +1,5 @@
 package com.wanderersoftherift.wotr.item.runegem;
 
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 
@@ -13,7 +12,8 @@ public enum RuneGemShape {
     HEART("heart"),
     PENTAGON("pentagon");
 
-    public static final Codec<RuneGemShape> CODEC = Codec.STRING.flatComapMap(s -> RuneGemShape.byName(s, null), d -> DataResult.success(d.getName()));
+    public static final Codec<RuneGemShape> CODEC = Codec.STRING.flatComapMap(s -> RuneGemShape.byName(s, null),
+            d -> DataResult.success(d.getName()));
 
     private final String name;
 
@@ -26,7 +26,7 @@ public enum RuneGemShape {
     }
 
     public static RuneGemShape byName(String name, RuneGemShape defaultReturn) {
-        for (RuneGemShape value : values()){
+        for (RuneGemShape value : values()) {
             if (value.name.equalsIgnoreCase(name)) {
                 return value;
             }

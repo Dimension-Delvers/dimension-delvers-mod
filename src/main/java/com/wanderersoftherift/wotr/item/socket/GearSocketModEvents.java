@@ -11,28 +11,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import static com.wanderersoftherift.wotr.WanderersOfTheRift.MODID;
-import static net.neoforged.fml.common.EventBusSubscriber.*;
+import static net.neoforged.fml.common.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(bus = Bus.MOD, modid = MODID)
 public class GearSocketModEvents {
 
     @SubscribeEvent
     public static void modifyComponents(ModifyDefaultComponentsEvent event) {
-        event.modify(Items.IRON_SWORD, builder ->
-                builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets1()))
-        );
+        event.modify(Items.IRON_SWORD,
+                builder -> builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets1())));
 
-        event.modify(Items.GOLDEN_SWORD, builder ->
-                builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets2()))
-        );
+        event.modify(Items.GOLDEN_SWORD,
+                builder -> builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets2())));
 
-        event.modify(Items.DIAMOND_SWORD, builder ->
-                builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets3()))
-        );
+        event.modify(Items.DIAMOND_SWORD,
+                builder -> builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets3())));
 
-        event.modify(Items.NETHERITE_SWORD, builder ->
-                builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets4()))
-        );
+        event.modify(Items.NETHERITE_SWORD,
+                builder -> builder.set(ModDataComponentType.GEAR_SOCKETS.get(), new GearSockets(getExampleSockets4())));
     }
 
     private static @NotNull ArrayList<GearSocket> getExampleSockets1() {

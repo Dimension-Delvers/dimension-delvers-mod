@@ -10,7 +10,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, WanderersOfTheRift.MODID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU,
+            WanderersOfTheRift.MODID);
 
-    public static final Supplier<MenuType<RuneAnvilMenu>> RUNE_ANVIL_MENU = MENUS.register("rune_anvil_menu", () -> new MenuType<>(RuneAnvilMenu::new, FeatureFlags.DEFAULT_FLAGS));
+    public static final Supplier<MenuType<RuneAnvilMenu>> RUNE_ANVIL_MENU = MENUS.register("rune_anvil_menu",
+            () -> new MenuType<>(RuneAnvilMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

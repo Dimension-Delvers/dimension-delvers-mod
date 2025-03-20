@@ -13,8 +13,9 @@ public abstract class MixinItemStack {
     @Inject(method = "isDamageableItem", at = @At("HEAD"), cancellable = true)
     private void preventDurability(CallbackInfoReturnable<Boolean> cir) {
         ItemStack stack = ((ItemStack) (Object) this);
-        if(!stack.is(ModTags.Items.UNBREAKABLE_EXCLUSIONS)) {
-            cir.setReturnValue(false); // We may want certain items to be excluded, which can be done here, currently all items are targeted that do not have the UNBREAKABLE_EXCLUSIONS tag
+        if (!stack.is(ModTags.Items.UNBREAKABLE_EXCLUSIONS)) {
+            cir.setReturnValue(false); // We may want certain items to be excluded, which can be done here, currently
+                                       // all items are targeted that do not have the UNBREAKABLE_EXCLUSIONS tag
         }
     }
 }
