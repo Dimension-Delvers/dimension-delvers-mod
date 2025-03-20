@@ -15,11 +15,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 /**
- * This screen renders the Key Forge Menu
+ * This screen renders the Key Forge Menu.
+ * <p>
+ * This includes an output tier level and contribution meter and tooltips showing the essence value and type of items.
+ * </p>
  */
 public class KeyForgeScreen extends AbstractContainerScreen<KeyForgeMenu> {
     private static final String ESSENCE_TOOLTIP = "tooltip." + WanderersOfTheRift.MODID + ".essence_value";

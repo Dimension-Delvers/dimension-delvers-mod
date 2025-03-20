@@ -4,7 +4,10 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 
 import javax.annotation.Nullable;
 
-public final class Object2IntMapUtil {
+/**
+ * Utility methods relating to the fastutil collection types
+ */
+public final class FastCollectionUtils {
 
     /**
      * @param map
@@ -24,7 +27,6 @@ public final class Object2IntMapUtil {
         return result;
     }
 
-
-    private Object2IntMapUtil() {
+    private FastCollectionUtils() {
     }
 }

@@ -1,10 +1,14 @@
 package com.wanderersoftherift.wotr.gui.menu;
 
 import com.google.common.collect.ImmutableList;
-import com.wanderersoftherift.wotr.init.*;
+import com.wanderersoftherift.wotr.init.ModBlocks;
+import com.wanderersoftherift.wotr.init.ModDataComponentType;
+import com.wanderersoftherift.wotr.init.ModDataMaps;
+import com.wanderersoftherift.wotr.init.ModItems;
+import com.wanderersoftherift.wotr.init.ModMenuTypes;
 import com.wanderersoftherift.wotr.item.essence.EssenceType;
 import com.wanderersoftherift.wotr.item.essence.EssenceValue;
-import com.wanderersoftherift.wotr.util.Object2IntMapUtil;
+import com.wanderersoftherift.wotr.util.FastCollectionUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.component.DataComponentPatch;
@@ -13,7 +17,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -138,7 +146,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         }
 
         updateTier(totalEssence);
-        updateOutput(Object2IntMapUtil.max(essenceMap));
+        updateOutput(FastCollectionUtils.max(essenceMap));
     }
 
     private void updateTier(int totalEssence) {
