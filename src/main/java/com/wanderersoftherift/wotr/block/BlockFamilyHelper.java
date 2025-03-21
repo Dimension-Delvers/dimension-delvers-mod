@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.block;
 
-import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.google.common.collect.Maps;
+import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;

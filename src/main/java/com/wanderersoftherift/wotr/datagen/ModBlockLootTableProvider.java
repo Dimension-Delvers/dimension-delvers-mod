@@ -18,11 +18,11 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.DEV_BLOCK.get());
-        dropSelf(ModBlocks.RUNE_ANVIL_BLOCK.get());
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             dropSelf(helper.getBlock().get());
             helper.getVariants().forEach((variant, block) -> dropSelf(block.get()));
         });
+        dropSelf(ModBlocks.RUNE_ANVIL_ENTITY_BLOCK.get());
         dropSelf(ModBlocks.RIFT_CHEST.get());
         dropSelf(ModBlocks.RIFT_SPAWNER.get());
     }

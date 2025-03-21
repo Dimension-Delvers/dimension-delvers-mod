@@ -134,8 +134,10 @@
   "container.wotr.rift_chest": "Rift Chest",
   "container.wotr.rune_anvil": "Rune Anvil",
   "entity.wotr.rift_entrance": "Rift Entrance",
+  "container.wotr.rune_anvil.apply": "Apply",
   "item.wotr.example_item": "Example Item",
   "item.wotr.rift_key": "Rift Key",
   "item.wotr.runegem": "Runegem",
-  "itemGroup.wotr": "Dimension Delvers"
+  "itemGroup.wotr": "Wanderers of the Rift",
+  "tooltip.wotr.socket": "Sockets: "
 }

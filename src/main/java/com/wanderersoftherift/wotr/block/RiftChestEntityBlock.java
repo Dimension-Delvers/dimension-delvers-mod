@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.block;
 
-import com.wanderersoftherift.wotr.block.blockentity.RiftChestBlockEntity;
 import com.mojang.serialization.MapCodec;
+import com.wanderersoftherift.wotr.block.blockentity.RiftChestBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

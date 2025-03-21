@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "wotr.refmap.json",
   "mixins": [
+    "InvokerAbstractContainerMenu",
     "MixinEnchantingTableBlock",
     "MixinItemStack",
+    "MixinLivingEntity",
+    "MixinServerPlayer",
     "MixinSetItemDamageFunction"
   ],
   "client": [

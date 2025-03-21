@@ -1,6 +1,5 @@
 package com.wanderersoftherift.wotr.datagen;
 
-import com.mojang.datafixers.optics.Wander;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
@@ -29,7 +28,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         // Adds a block translation.
         addBlock(ModBlocks.DEV_BLOCK, "Dev Block");
-        addBlock(ModBlocks.RUNE_ANVIL_BLOCK, "Rune Anvil");
+        addBlock(ModBlocks.RUNE_ANVIL_ENTITY_BLOCK, "Rune Anvil");
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
         addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
 
@@ -47,10 +46,11 @@ public class ModLanguageProvider extends LanguageProvider {
 
 
         // Adds a generic translation
-        add("itemGroup." + WanderersOfTheRift.MODID, "Dimension Delvers");
-
-        add("container." + WanderersOfTheRift.MODID + ".rune_anvil", "Rune Anvil");
+        add("itemGroup." + WanderersOfTheRift.MODID, "Wanderers of the Rift");
         add("container." + WanderersOfTheRift.MODID + ".rift_chest", "Rift Chest");
+        add("container." + WanderersOfTheRift.MODID + ".rune_anvil", "Rune Anvil");
+        add("container." + WanderersOfTheRift.MODID + ".rune_anvil.apply", "Apply");
+        add("tooltip." + WanderersOfTheRift.MODID + ".socket", "Sockets: ");
 
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility." + WanderersOfTheRift.MODID + ".menubutton", "DimDelvers Accessibility (tmp)");
