@@ -11,6 +11,7 @@ import com.wanderersoftherift.wotr.client.map.MapCell;
 import com.wanderersoftherift.wotr.client.map.MapData;
 import com.wanderersoftherift.wotr.client.map.MapRoom;
 import com.wanderersoftherift.wotr.commands.RiftMapCommands;
+import com.wanderersoftherift.wotr.commands.DebugCommands;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -113,6 +114,7 @@ public class WanderersOfTheRift {
         if (FMLEnvironment.dist.isClient()) {
             RiftMapCommands.register(event.getDispatcher(), event.getBuildContext());
         }
+        new DebugCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
     }
 
     @SubscribeEvent
