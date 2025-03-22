@@ -1,10 +1,8 @@
 package com.wanderersoftherift.wotr.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sun.jna.platform.EnumUtils;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.block.blockentity.SkyboxBlockEntity;
-import com.wanderersoftherift.wotr.init.ModBlocks;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
@@ -15,7 +13,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DebugStickItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -35,13 +32,17 @@ import javax.annotation.Nullable;
 public class SkyboxBlock extends BaseEntityBlock {
 	public enum Sky implements StringRepresentable {
 		CLOUDS("clouds", WanderersOfTheRift.id("textures/environment/skybox.png"), true),
+		SATARA_NIGHT_NO_LAMPS("satara_night_no_lamps", WanderersOfTheRift.id("textures/environment/satara_night_no_lamps.png"), true),
+		FURRY_CLOUDS("furry_clouds", WanderersOfTheRift.id("textures/environment/furry_clouds.png"), true),
+		WILDFLOWER_FIELD("wildflower_field", WanderersOfTheRift.id("textures/environment/wildflower_field.png"), true),
 		  FISH("fish",   WanderersOfTheRift.id("textures/environment/fish.png"),   false),
 		RANDOM("random", WanderersOfTheRift.id("textures/environment/random.png"), false),
 		CATDOG("catdog", WanderersOfTheRift.id("textures/environment/catdog.png"), false),
 		 PIZZA("pizza",  WanderersOfTheRift.id("textures/environment/pizza.png"),  false),
 		 KITTY("kitty",  WanderersOfTheRift.id("textures/environment/kitty.png"),  false),
+		BUCEES("bucees", WanderersOfTheRift.id("textures/environment/buc_ees.png"),false),
 		CRYING("crying", ResourceLocation.withDefaultNamespace("textures/block/crying_obsidian.png"), false),
-		 SCULK("sculk", ResourceLocation.withDefaultNamespace("textures/block/sculk.png"), false);
+		 SCULK("sculk",  ResourceLocation.withDefaultNamespace("textures/block/sculk.png"),           false);
 
 		public static final MapCodec<ClickEvent.Action> UNSAFE_CODEC = StringRepresentable.fromEnum(ClickEvent.Action::values).fieldOf("sky");
 		public static final MapCodec<ClickEvent.Action> CODEC = UNSAFE_CODEC.validate(ClickEvent.Action::filterForSerialization);
