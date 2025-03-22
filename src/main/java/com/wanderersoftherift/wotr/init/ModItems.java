@@ -1,6 +1,7 @@
 package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
+import com.wanderersoftherift.wotr.item.BuilderGlasses;
 import com.wanderersoftherift.wotr.item.riftkey.RiftKey;
 import com.wanderersoftherift.wotr.item.runegem.RuneGemShape;
 import com.wanderersoftherift.wotr.item.runegem.RuneGemTier;
@@ -34,6 +35,11 @@ public class ModItems {
                     .saturationModifier(2f)
                     .build()
             )
+    );
+
+    public static final DeferredItem<BuilderGlasses> BUILDER_GLASSES = ITEMS.register(
+            "builder_glasses",
+            BuilderGlasses::new
     );
 
     //Runegems

@@ -19,8 +19,11 @@ public class ModCreativeTabs {
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.EXAMPLE_ITEM);
                                 output.accept(ModItems.RIFT_KEY);
-                                output.accept(ModItems.RUNEGEM);
                                 ModItems.BLOCK_ITEMS.forEach(item -> output.accept(item.get()));
+
+                                output.accept(ModItems.BUILDER_GLASSES);
+
+                                output.accept(ModItems.RUNEGEM);
                             }).build());
 
 }

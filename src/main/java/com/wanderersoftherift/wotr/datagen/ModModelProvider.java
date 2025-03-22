@@ -56,6 +56,8 @@ public class ModModelProvider extends ModelProvider {
 
 
 
+        itemModels.itemModelOutput.accept(ModItems.BUILDER_GLASSES.get(), ItemModelUtils.plainModel(WanderersOfTheRift.id("item/builder_glasses")));
+
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.RIFT_KEY.get(), ModelTemplates.FLAT_ITEM);
 

@@ -7,7 +7,9 @@
   "mixins": [
     "MixinEnchantingTableBlock",
     "MixinItemStack",
-    "MixinSetItemDamageFunction"
+    "MixinSetItemDamageFunction",
+    "InvokerBlockBehaviour",
+    "MixinStructureTemplate"
   ],
   "client": [
     "MixinAccessibilityOptionsScreen",
