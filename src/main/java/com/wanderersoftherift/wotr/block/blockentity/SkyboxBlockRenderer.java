@@ -33,11 +33,18 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL;
 
+import java.util.HashMap;
+
 @OnlyIn(Dist.CLIENT)
 public class SkyboxBlockRenderer<T extends SkyboxBlockEntity> implements BlockEntityRenderer<T> {
 	private static final RenderStateShard.ShaderStateShard SKYBOX_SHADER = new RenderStateShard.ShaderStateShard(ModShaders.SKYBOX);
 
+	public static final HashMap<SkyboxBlock.Sky, RenderType> RENDER_TYPES = HashMap.newHashMap(SkyboxBlock.Sky.values().length);
+
 	public SkyboxBlockRenderer(BlockEntityRendererProvider.Context context) {
+		for (SkyboxBlock.Sky value : SkyboxBlock.Sky.values()) {
+			RENDER_TYPES.put(value, createRenderType(value));
+		}
 	}
 
 	public void render(@NotNull T blockEntity, float p_112651_, PoseStack poseStack, @NotNull MultiBufferSource buffer, int p_112654_, int p_112655_) {
@@ -62,7 +69,7 @@ public class SkyboxBlockRenderer<T extends SkyboxBlockEntity> implements BlockEn
 
 			shader.apply();
 		}
-		this.renderCube(blockEntity, matrix4f, buffer.getBuffer(getRenderType(blockEntity.getBlockState().getValue(SkyboxBlock.SKY))));
+		this.renderCube(blockEntity, matrix4f, buffer.getBuffer(RENDER_TYPES.get(blockEntity.getBlockState().getValue(SkyboxBlock.SKY))));
 	}
 
 	private void renderCube(T blockEntity, Matrix4f pose, VertexConsumer consumer) {
@@ -106,7 +113,7 @@ public class SkyboxBlockRenderer<T extends SkyboxBlockEntity> implements BlockEn
 	}
 
 
-	public static RenderType getRenderType(SkyboxBlock.Sky sky)  {
+	private static RenderType createRenderType(SkyboxBlock.Sky sky)  {
 		return RenderType.create(
 				WanderersOfTheRift.MODID + "_skybox_" + sky.name(),
 				DefaultVertexFormat.POSITION,
