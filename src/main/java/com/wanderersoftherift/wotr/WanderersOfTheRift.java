@@ -1,20 +1,21 @@
 package com.wanderersoftherift.wotr;
 
-import com.wanderersoftherift.wotr.client.ModShaders;
-import com.wanderersoftherift.wotr.client.map.Direction;
 import com.mojang.logging.LogUtils;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
-import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.gui.screen.KeyForgeScreen;
-import com.wanderersoftherift.wotr.gui.screen.RuneAnvilScreen;
-import com.wanderersoftherift.wotr.init.*;
-import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
-import com.wanderersoftherift.wotr.client.map.MapCell;
-import com.wanderersoftherift.wotr.client.map.MapData;
-import com.wanderersoftherift.wotr.client.map.MapRoom;
 import com.wanderersoftherift.wotr.commands.RiftMapCommands;
-import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
+import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.init.ModAttachments;
+import com.wanderersoftherift.wotr.init.ModBlockEntities;
+import com.wanderersoftherift.wotr.init.ModBlocks;
+import com.wanderersoftherift.wotr.init.ModCreativeTabs;
+import com.wanderersoftherift.wotr.init.ModDataComponentType;
+import com.wanderersoftherift.wotr.init.ModEntityTypes;
+import com.wanderersoftherift.wotr.init.ModItems;
+import com.wanderersoftherift.wotr.init.ModLootModifiers;
+import com.wanderersoftherift.wotr.init.ModMenuTypes;
+import com.wanderersoftherift.wotr.init.ModModifierEffects;
+import com.wanderersoftherift.wotr.init.ModOngoingObjectiveTypes;
+import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -29,21 +30,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.fml.util.thread.EffectiveSide;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 import org.slf4j.Logger;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
 
 @Mod(WanderersOfTheRift.MODID)
 public class WanderersOfTheRift {
@@ -58,7 +51,6 @@ public class WanderersOfTheRift {
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModEssenceTypes.ESSENCE_TYPES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModAttachments.ATTACHMENT_TYPES.register(modEventBus);

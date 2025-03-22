@@ -1,20 +1,17 @@
 package com.wanderersoftherift.wotr.datagen;
 
-import com.wanderersoftherift.wotr.init.ModEssenceTypes;
-import com.wanderersoftherift.wotr.item.essence.EssenceType;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
 import com.wanderersoftherift.wotr.init.ModItems;
+import com.wanderersoftherift.wotr.item.essence.EssenceValue;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 /* Handles Data Generation for I18n of the locale 'en_us' of the Wotr mod */
 public class ModLanguageProvider extends LanguageProvider {
@@ -44,10 +41,10 @@ public class ModLanguageProvider extends LanguageProvider {
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 
-        addEssenceType(ModEssenceTypes.EARTH, "Earth");
-        addEssenceType(ModEssenceTypes.LIFE, "Life");
-        addEssenceType(ModEssenceTypes.WATER, "Water");
-        addEssenceType(ModEssenceTypes.MEAT, "Meat");
+        addEssenceType("earth", "Earth");
+        addEssenceType("life", "Life");
+        addEssenceType("water", "Water");
+        addEssenceType("meat", "Meat");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
@@ -85,9 +82,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip." + WanderersOfTheRift.MODID + ".essence_value", "Essence: %s %s");
     }
 
-    private void addEssenceType(Supplier<EssenceType> essenceType, String value) {
-        ResourceLocation loc = essenceType.get().getId();
-        add(EssenceType.LANG_PREFIX + "." + loc.getNamespace() + "." + loc.getPath(), value);
+    private void addEssenceType(String id, String value) {
+        add(EssenceValue.ESSENCE_TYPE_PREFIX + "." + WanderersOfTheRift.MODID + "." + id, value);
     }
 
     private static @NotNull String getTranslationString(Block block) {

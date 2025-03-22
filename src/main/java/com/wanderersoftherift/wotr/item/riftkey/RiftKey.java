@@ -6,12 +6,12 @@ import com.wanderersoftherift.wotr.entity.portal.PortalSpawnLocation;
 import com.wanderersoftherift.wotr.entity.portal.RiftPortalEntity;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
-import com.wanderersoftherift.wotr.init.ModEssenceTypes;
-import com.wanderersoftherift.wotr.item.essence.EssenceType;
+import com.wanderersoftherift.wotr.item.essence.EssenceValue;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -70,9 +70,9 @@ public class RiftKey extends Item {
 
     @Override
     public @NotNull Component getName(ItemStack stack) {
-        EssenceType theme = stack.getOrDefault(ModDataComponentType.RIFT_THEME, ModEssenceTypes.NONE.get());
-        if (theme != ModEssenceTypes.NONE.get()) {
-            return Component.translatable(NAME, theme.getName());
+        ResourceLocation theme = stack.get(ModDataComponentType.RIFT_THEME);
+        if (theme != null) {
+            return Component.translatable(NAME, Component.translatable(EssenceValue.ESSENCE_TYPE_PREFIX + "." + theme.getNamespace() + "." + theme.getPath()));
         } else {
             return super.getName(stack);
         }

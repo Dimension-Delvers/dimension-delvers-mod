@@ -57,7 +57,8 @@ public class KeyForgeScreen extends AbstractContainerScreen<KeyForgeMenu> {
                 List<Component> tooltips = this.getTooltipFromContainerItem(itemStack);
                 EssenceValue essenceValue = itemStack.getItemHolder().getData(ModDataMaps.ESSENCE_VALUE_DATA);
                 if (essenceValue != null) {
-                    tooltips.add(Component.translatable(ESSENCE_TOOLTIP, essenceValue.value(), essenceValue.type().getName()).withColor(Color.GRAY.getRGB()));
+                    Component essenceType = Component.translatable(EssenceValue.ESSENCE_TYPE_PREFIX + "." + essenceValue.type().getNamespace() + "." + essenceValue.type().getPath());
+                    tooltips.add(Component.translatable(ESSENCE_TOOLTIP, essenceValue.value(), essenceType).withColor(Color.GRAY.getRGB()));
                 }
                 guiGraphics.renderTooltip(
                         this.font,

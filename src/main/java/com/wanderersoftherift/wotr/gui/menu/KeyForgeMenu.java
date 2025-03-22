@@ -6,12 +6,12 @@ import com.wanderersoftherift.wotr.init.ModDataComponentType;
 import com.wanderersoftherift.wotr.init.ModDataMaps;
 import com.wanderersoftherift.wotr.init.ModItems;
 import com.wanderersoftherift.wotr.init.ModMenuTypes;
-import com.wanderersoftherift.wotr.item.essence.EssenceType;
 import com.wanderersoftherift.wotr.item.essence.EssenceValue;
 import com.wanderersoftherift.wotr.util.FastCollectionUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -135,7 +135,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
 
     private void update() {
         int totalEssence = 0;
-        Object2IntMap<EssenceType> essenceMap = new Object2IntArrayMap<>();
+        Object2IntMap<ResourceLocation> essenceMap = new Object2IntArrayMap<>();
         for (int i = 0; i < inputContainer.getContainerSize(); i++) {
             ItemStack input = inputContainer.getItem(i);
             EssenceValue value = input.getItemHolder().getData(ModDataMaps.ESSENCE_VALUE_DATA);
@@ -164,7 +164,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         tierPercent.set(result);
     }
 
-    private void updateOutput(EssenceType type) {
+    private void updateOutput(ResourceLocation type) {
         int tier = tierPercent.get() / 100;
         if (tier == 0 && !resultContainer.isEmpty()) {
             resultContainer.clearContent();
@@ -180,7 +180,7 @@ public class KeyForgeMenu extends AbstractContainerMenu {
         }
     }
 
-    private DataComponentPatch buildKeyComponentPatch(int tier, EssenceType theme) {
+    private DataComponentPatch buildKeyComponentPatch(int tier, ResourceLocation theme) {
         return DataComponentPatch.builder()
                 .set(ModDataComponentType.RIFT_TIER.get(), tier)
                 .set(ModDataComponentType.RIFT_THEME.get(), theme)
