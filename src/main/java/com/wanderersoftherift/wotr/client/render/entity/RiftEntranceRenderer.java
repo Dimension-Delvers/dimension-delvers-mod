@@ -58,12 +58,12 @@ public class RiftEntranceRenderer
             dir = state.facingDir.getUnitVec3().toVector3f();
         }
 
-
         CompiledShaderProgram shader = RenderSystem.setShader(ModShaders.RIFT_PORTAL);
         if (shader != null) {
             Uniform screenSize = shader.getUniform("ScreenSize");
             if (screenSize != null) {
-                screenSize.set((float) Minecraft.getInstance().getWindow().getWidth(), (float)Minecraft.getInstance().getWindow().getHeight());
+                screenSize.set((float) Minecraft.getInstance().getWindow().getWidth(),
+                        (float) Minecraft.getInstance().getWindow().getHeight());
             }
 
             Uniform view = shader.getUniform("View");
