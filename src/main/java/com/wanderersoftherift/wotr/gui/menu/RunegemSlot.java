@@ -6,8 +6,7 @@ import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.Nullable;
 
 public class RunegemSlot extends Slot {
-    @Nullable
-   private RuneGemShape shape = null;
+    @Nullable private RuneGemShape shape = null;
 
     public RunegemSlot(Container container, int slot, int x, int y, @Nullable RuneGemShape shape) {
         super(container, slot, x, y);

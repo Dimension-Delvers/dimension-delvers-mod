@@ -12,10 +12,7 @@ public class ModPacketRegistrationEvents {
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToClient(
-                S2CRiftObjectiveStatusPacket.TYPE,
-                S2CRiftObjectiveStatusPacket.STREAM_CODEC,
-                new S2CRiftObjectiveStatusPacket.S2CRiftObjectiveStatusPacketHandler()
-        );
+        registrar.playToClient(S2CRiftObjectiveStatusPacket.TYPE, S2CRiftObjectiveStatusPacket.STREAM_CODEC,
+                new S2CRiftObjectiveStatusPacket.S2CRiftObjectiveStatusPacketHandler());
     }
 }

@@ -19,7 +19,8 @@ import java.util.Collections;
  */
 public class RiftPortalEntity extends Entity {
     private static final String BILLBOARD = "billboard";
-    private static final EntityDataAccessor<Boolean> DATA_BILLBOARD = SynchedEntityData.defineId(RiftPortalEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_BILLBOARD = SynchedEntityData.defineId(RiftPortalEntity.class,
+            EntityDataSerializers.BOOLEAN);
 
     public RiftPortalEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -36,7 +37,8 @@ public class RiftPortalEntity extends Entity {
         super.tick();
         if (level() instanceof ServerLevel serverLevel) {
             for (Entity player : serverLevel.getEntities(this, makeBoundingBox(), x -> x instanceof Player)) {
-                player.teleportTo(serverLevel.getServer().getLevel(Level.NETHER), 0,50,0, Collections.emptySet(), 0, 0, false);
+                player.teleportTo(serverLevel.getServer().getLevel(Level.NETHER), 0, 50, 0, Collections.emptySet(), 0,
+                        0, false);
             }
         }
     }

@@ -27,34 +27,25 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(WanderersOfTheRift.MODID);
     public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
 
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem(
-            "example_item",
-            new Item.Properties().food(new FoodProperties.Builder()
-                    .alwaysEdible()
-                    .nutrition(1)
-                    .saturationModifier(2f)
-                    .build()
-            )
-    );
+    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties()
+            .food(new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f).build()));
 
-    public static final DeferredItem<BuilderGlasses> BUILDER_GLASSES = ITEMS.register(
-            "builder_glasses",
-            BuilderGlasses::new
-    );
+    public static final DeferredItem<BuilderGlasses> BUILDER_GLASSES = ITEMS.register("builder_glasses",
+            BuilderGlasses::new);
 
-    //Runegems
+    // Runegems
     public static final DeferredItem<Item> RUNEGEM = ITEMS.register("runegem",
             registryName -> new Runegem(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "runegem")))
-                    .component(ModDataComponentType.RUNEGEM_DATA,
-                            new RunegemData(RuneGemShape.CIRCLE, tagId(ModModifiers.MODIFIER_KEY, "raw_fire_rune"), RuneGemTier.RAW)))
-    );
+                    .setId(ResourceKey.create(Registries.ITEM,
+                            ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "runegem")))
+                    .component(ModDataComponentType.RUNEGEM_DATA, new RunegemData(RuneGemShape.CIRCLE,
+                            tagId(ModModifiers.MODIFIER_KEY, "raw_fire_rune"), RuneGemTier.RAW))));
 
-    public static final DeferredItem<Item> RIFT_KEY = ITEMS.register("rift_key", registryName -> new RiftKey(new Item.Properties()
-            .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("rift_key")))
-            .stacksTo(1)
-    ));
-
+    public static final DeferredItem<Item> RIFT_KEY = ITEMS
+            .register("rift_key",
+                    registryName -> new RiftKey(new Item.Properties()
+                            .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("rift_key")))
+                            .stacksTo(1)));
 
     public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block) {
         DeferredItem<BlockItem> simpleBlockItem = ITEMS.registerSimpleBlockItem(id, block);

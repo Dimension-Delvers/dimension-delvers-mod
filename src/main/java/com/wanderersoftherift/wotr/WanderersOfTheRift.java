@@ -6,6 +6,7 @@ import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.commands.RiftMapCommands;
 import com.wanderersoftherift.wotr.commands.SpawnPieceCommand;
 import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.InventorySnapshotSystem;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.ModBlockEntities;
 import com.wanderersoftherift.wotr.init.ModBlocks;
@@ -20,7 +21,6 @@ import com.wanderersoftherift.wotr.init.ModModifierEffects;
 import com.wanderersoftherift.wotr.init.ModOngoingObjectiveTypes;
 import com.wanderersoftherift.wotr.init.ModOutputBlockStateTypes;
 import com.wanderersoftherift.wotr.init.ModProcessors;
-import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -67,9 +67,11 @@ public class WanderersOfTheRift {
         ModOngoingObjectiveTypes.ONGOING_OBJECTIVE_TYPES.register(modEventBus);
         ModEntityTypes.ENTITIES.register(modEventBus);
 
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (Wotr) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+        /*
+         * Register ourselves for server and other game events we are interested in. Note that this is necessary if and
+         * only if we want *this* class (Wotr) to respond directly to events. Do not add this line if there are
+         * no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+         */
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
@@ -103,7 +105,9 @@ public class WanderersOfTheRift {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
 
-        if (Config.logDirtBlock) LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
+        if (Config.logDirtBlock) {
+            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
+        }
 
         LOGGER.info("Reticulating splines");
 
@@ -136,7 +140,8 @@ public class WanderersOfTheRift {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        //if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) event.accept(ModBlocks.EXAMPLE_BLOCK);
+        // if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
+        // event.accept(ModBlocks.EXAMPLE_BLOCK);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
