@@ -21,7 +21,8 @@ public class ClientRegistryEvents {
 
     @SubscribeEvent
     public static void registerSelectItemModelProperties(RegisterSelectItemModelPropertyEvent event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "runegem_shape"), SelectRuneGemShape.TYPE);
+        event.register(ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "runegem_shape"),
+                SelectRuneGemShape.TYPE);
     }
 
     @SubscribeEvent
@@ -37,9 +38,6 @@ public class ClientRegistryEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(
-                BlockEntityType.JIGSAW,
-                JigsawBlockEntityRenderer::new
-        );
+        event.registerBlockEntityRenderer(BlockEntityType.JIGSAW, JigsawBlockEntityRenderer::new);
     }
 }

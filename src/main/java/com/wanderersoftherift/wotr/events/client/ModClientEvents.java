@@ -15,12 +15,8 @@ import org.lwjgl.glfw.GLFW;
 public class ModClientEvents {
 
     public static final KeyMapping JIGSAW_NAME_TOGGLE_KEY = new KeyMapping(
-            "key." + WanderersOfTheRift.id("jigsaw_name_toggle"),
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_UNKNOWN,
-            "key.categories.misc"
-    );
-
+            "key." + WanderersOfTheRift.id("jigsaw_name_toggle"), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN,
+            "key.categories.misc");
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {

@@ -10,10 +10,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModEntityTypes {
     public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(WanderersOfTheRift.MODID);
 
-    public static final DeferredHolder<EntityType<?>, EntityType<RiftPortalEntity>> RIFT_ENTRANCE = ENTITIES.registerEntityType(
-            "rift_entrance",
-            RiftPortalEntity::new,
-            MobCategory.MISC,
-            builder -> builder.sized(0.5f, 3f));
+    public static final DeferredHolder<EntityType<?>, EntityType<RiftPortalEntity>> RIFT_ENTRANCE = ENTITIES
+            .registerEntityType("rift_entrance", RiftPortalEntity::new, MobCategory.MISC,
+                    builder -> builder.sized(0.5f, 3f));
 
 }

@@ -50,7 +50,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addEssenceType("meat", "Meat");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
-            //addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
+            // addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
             helper.getVariants().forEach((variant, block) -> addBlock(block, getTranslationString(block.get())));
         });
 
@@ -69,7 +69,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add("block." + WanderersOfTheRift.MODID + ".processor_block_13", "Processor Block 13");
         add("block." + WanderersOfTheRift.MODID + ".processor_block_14", "Processor Block 14");
 
-
         // Adds a generic translation
         add("itemGroup." + WanderersOfTheRift.MODID, "Wanderers of the Rift");
 
@@ -80,10 +79,12 @@ public class ModLanguageProvider extends LanguageProvider {
         add("container." + WanderersOfTheRift.MODID + ".rift_chest", "Rift Chest");
         add("container." + WanderersOfTheRift.MODID + ".key_forge", "Key Forge");
 
-        add("command." + WanderersOfTheRift.MODID + ".dev_world_set", "Dev World settings applied:\n - %1$s: Disabled\n - %2$s: Disabled\n - %3$s: Disabled\n - %4$s: Disabled\n - %5$s: Disabled\n - %6$s: Disabled");
+        add("command." + WanderersOfTheRift.MODID + ".dev_world_set",
+                "Dev World settings applied:\n - %1$s: Disabled\n - %2$s: Disabled\n - %3$s: Disabled\n - %4$s: Disabled\n - %5$s: Disabled\n - %6$s: Disabled");
         add("command." + WanderersOfTheRift.MODID + ".invalid_item", "Held item is empty!");
         add("command." + WanderersOfTheRift.MODID + ".get_item_stack_components.invalid_player", "Player is null!");
-        add("command." + WanderersOfTheRift.MODID + ".get_item_stack_components.success", "Item Components available for '%1$s'");
+        add("command." + WanderersOfTheRift.MODID + ".get_item_stack_components.success",
+                "Item Components available for '%1$s'");
 
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility." + WanderersOfTheRift.MODID + ".menubutton", "DimDelvers Accessibility (tmp)");
@@ -94,13 +95,20 @@ public class ModLanguageProvider extends LanguageProvider {
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.high_contrast", "High Contrast");
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.hard_of_hearing", "Hard of Hearing");
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.reduced_motion", "Reduced Motion");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.trypophobia", "Removes any trypophobia-triggering aspects");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.arachnophobia", "Replaces all the spiders with cute cats!");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.flashing_lights", "Reduces flashing-light effects");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.misophonia", "Replaces certain sounds that are potentially triggering with different ones (?)");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.high_contrast", "Enhances UI and HUD elements with higher contrast for better visibility");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.hard_of_hearing", "Enhances audio cues for better accessibility");
-        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.reduced_motion", "Disables or slows down UI animations, camera shake, or screen effects");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.trypophobia",
+                "Removes any trypophobia-triggering aspects");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.arachnophobia",
+                "Replaces all the spiders with cute cats!");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.flashing_lights",
+                "Reduces flashing-light effects");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.misophonia",
+                "Replaces certain sounds that are potentially triggering with different ones (?)");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.high_contrast",
+                "Enhances UI and HUD elements with higher contrast for better visibility");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.hard_of_hearing",
+                "Enhances audio cues for better accessibility");
+        add("accessibility." + WanderersOfTheRift.MODID + ".screen.tooltip.reduced_motion",
+                "Disables or slows down UI animations, camera shake, or screen effects");
 
         add("command." + WanderersOfTheRift.MODID + ".spawn_piece.generating", "Generating %s");
 

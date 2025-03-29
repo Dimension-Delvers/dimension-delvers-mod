@@ -18,10 +18,11 @@ import static com.wanderersoftherift.wotr.init.ModModifiers.MODIFIER_KEY;
 public class Modifier {
     public static Codec<Modifier> DIRECT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Codec.INT.fieldOf("tier").forGetter(Modifier::getTier),
-            AbstractModifierEffect.DIRECT_CODEC.listOf().fieldOf("modifiers").forGetter(Modifier::getModifierEffects)
-    ).apply(inst, Modifier::new));
+            AbstractModifierEffect.DIRECT_CODEC.listOf().fieldOf("modifiers").forGetter(Modifier::getModifierEffects))
+            .apply(inst, Modifier::new));
     public static final Codec<Holder<Modifier>> CODEC = RegistryFixedCodec.create(MODIFIER_KEY);
-    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Modifier>> STREAM_CODEC = ByteBufCodecs.holderRegistry(MODIFIER_KEY);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Modifier>> STREAM_CODEC = ByteBufCodecs
+            .holderRegistry(MODIFIER_KEY);
 
     private final int tier;
     private final List<AbstractModifierEffect> modifierEffects;
@@ -39,14 +40,14 @@ public class Modifier {
         return modifierEffects;
     }
 
-    public void enableModifier(float roll, Entity entity, ModifierSource source){
-        for(AbstractModifierEffect effect : modifierEffects){
+    public void enableModifier(float roll, Entity entity, ModifierSource source) {
+        for (AbstractModifierEffect effect : modifierEffects) {
             effect.enableModifier(roll, entity, source);
         }
     }
 
-    public void disableModifier(float roll, Entity entity, ModifierSource source){
-        for(AbstractModifierEffect effect : modifierEffects){
+    public void disableModifier(float roll, Entity entity, ModifierSource source) {
+        for (AbstractModifierEffect effect : modifierEffects) {
             effect.disableModifier(roll, entity, source);
         }
     }

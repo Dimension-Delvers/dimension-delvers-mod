@@ -22,25 +22,10 @@ public class RegistryEvents {
 
     @SubscribeEvent
     public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
-        event.dataPackRegistry(
-                ModModifierEffects.MODIFIER_EFFECT_KEY,
-                AbstractModifierEffect.DIRECT_CODEC,
-                AbstractModifierEffect.DIRECT_CODEC
-        );
-        event.dataPackRegistry(
-                ModDatapackRegistries.MODIFIER_KEY,
-                Modifier.DIRECT_CODEC,
-                Modifier.DIRECT_CODEC
-        );
-        event.dataPackRegistry(
-                ModRiftThemes.RIFT_THEME_KEY,
-                RiftTheme.DIRECT_CODEC,
-                RiftTheme.DIRECT_SYNC_CODEC
-        );
-        event.dataPackRegistry(
-                ModDatapackRegistries.RUNEGEM_DATA_KEY,
-                RunegemData.CODEC,
-                RunegemData.CODEC
-        );
+        event.dataPackRegistry(ModModifierEffects.MODIFIER_EFFECT_KEY, AbstractModifierEffect.DIRECT_CODEC,
+                AbstractModifierEffect.DIRECT_CODEC);
+        event.dataPackRegistry(ModDatapackRegistries.MODIFIER_KEY, Modifier.DIRECT_CODEC, Modifier.DIRECT_CODEC);
+        event.dataPackRegistry(ModRiftThemes.RIFT_THEME_KEY, RiftTheme.DIRECT_CODEC, RiftTheme.DIRECT_SYNC_CODEC);
+        event.dataPackRegistry(ModDatapackRegistries.RUNEGEM_DATA_KEY, RunegemData.CODEC, RunegemData.CODEC);
     }
 }
