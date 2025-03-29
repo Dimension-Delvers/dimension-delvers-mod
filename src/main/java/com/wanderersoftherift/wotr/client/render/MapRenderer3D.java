@@ -36,15 +36,18 @@ public class MapRenderer3D {
     public Vector2i mapPosition = new Vector2i(0, 0);
     public Vector2i mapSize = new Vector2i(Minecraft.getInstance().getWindow().getGuiScaledWidth(),
             Minecraft.getInstance().getWindow().getGuiScaledHeight());
-    private Vector2i scissorCoords = new Vector2i(0, 0);
-    private Vector2i scissorSize = new Vector2i(0, 0);
-
-    private VirtualCamera camera = new VirtualCamera(70.0f, 16f / 9f, 0.1f, 1000.0f);
 
     public float camPitch = 35;
     public float camYaw = -25;
     public Vector3f camPos = new Vector3f(0.5f);
     public float distance = 10;
+
+    private Vector2i scissorCoords = new Vector2i(0, 0);
+    private Vector2i scissorSize = new Vector2i(0, 0);
+
+    private VirtualCamera camera = new VirtualCamera(70.0f, 16f / 9f, 0.1f, 1000.0f);
+
+    private float renderDistance = 10;
 
     public MapRenderer3D(int x, int y, int width, int height, float renderDistance) {
         setMapSize(x, y, width, height);
@@ -65,8 +68,6 @@ public class MapRenderer3D {
         ;
         MemoryUtil.memPutFloat(i, (float) effectFlags);
     }
-
-    private float renderDistance = 10;
 
     private boolean isInRenderDistance(Vector3f pos) {
         return pos.distance(camPos) < renderDistance;
@@ -119,7 +120,9 @@ public class MapRenderer3D {
                 .getFlags(new MapRoomEffects.Flag[] { MapRoomEffects.Flag.DOTS, MapRoomEffects.Flag.EDGE_HIGHLIGHT, }));
 
         rooms.forEach((pos, room) -> {
-            if (isInRenderDistance(room.pos1)) room.renderWireframe(lineBuffer, camera, mapPosition, mapSize);
+            if (isInRenderDistance(room.pos1)) {
+                room.renderWireframe(lineBuffer, camera, mapPosition, mapSize);
+            }
         });
         /*
          * cells.forEach((pos, cell) -> { cell.renderWireframe(lineBuffer, camera, mapPosition, mapSize); });
@@ -138,8 +141,9 @@ public class MapRenderer3D {
         RenderSystem.depthMask(false);
 
         rooms.forEach((pos, room) -> {
-            if (isInRenderDistance(room.pos1))
+            if (isInRenderDistance(room.pos1)) {
                 room.renderCube(quadBuffer, camera, new Vector4f(0f, 1f, 0f, 0.2f), mapPosition, mapSize);
+            }
         });
         /*
          * cells.forEach((pos, cell) -> { cell.renderCube(quadBuffer, camera, new Vector4f(0f, 0f, 1f, 0.2f),

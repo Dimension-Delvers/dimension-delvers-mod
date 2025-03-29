@@ -13,6 +13,11 @@ import static com.wanderersoftherift.wotr.init.ModModifierEffects.MODIFIER_EFFEC
 import static com.wanderersoftherift.wotr.init.ModModifierEffects.MODIFIER_TYPE_REGISTRY;
 
 public abstract class AbstractModifierEffect {
+    public static final Codec<AbstractModifierEffect> DIRECT_CODEC = MODIFIER_TYPE_REGISTRY.byNameCodec()
+            .dispatch(AbstractModifierEffect::getCodec, Function.identity());
+
+    public static final Codec<Holder<AbstractModifierEffect>> CODEC = RegistryFixedCodec.create(MODIFIER_EFFECT_KEY);
+
     public abstract MapCodec<? extends AbstractModifierEffect> getCodec();
 
     public abstract void enableModifier(float roll, Entity entity, ModifierSource source);
@@ -20,10 +25,5 @@ public abstract class AbstractModifierEffect {
     public abstract void disableModifier(float roll, Entity entity, ModifierSource source);
 
     public abstract void applyModifier();
-
-    public static final Codec<AbstractModifierEffect> DIRECT_CODEC = MODIFIER_TYPE_REGISTRY.byNameCodec()
-            .dispatch(AbstractModifierEffect::getCodec, Function.identity());
-
-    public static final Codec<Holder<AbstractModifierEffect>> CODEC = RegistryFixedCodec.create(MODIFIER_EFFECT_KEY);
 
 }

@@ -26,19 +26,27 @@ import java.util.Map;
 
 @EventBusSubscriber(modid = WanderersOfTheRift.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class GearSocketTooltipEvent {
-    private static final Map<RunegemShape, ChatFormatting> colorMap = Map.of(RunegemShape.CIRCLE, ChatFormatting.BLUE,
-            RunegemShape.SQUARE, ChatFormatting.YELLOW, RunegemShape.TRIANGLE, ChatFormatting.GREEN,
-            RunegemShape.DIAMOND, ChatFormatting.RED, RunegemShape.HEART, ChatFormatting.LIGHT_PURPLE,
+    // spotless:off
+    private static final Map<RunegemShape, ChatFormatting> colorMap = Map.of(
+            RunegemShape.CIRCLE, ChatFormatting.BLUE,
+            RunegemShape.SQUARE, ChatFormatting.YELLOW,
+            RunegemShape.TRIANGLE, ChatFormatting.GREEN,
+            RunegemShape.DIAMOND, ChatFormatting.RED,
+            RunegemShape.HEART, ChatFormatting.LIGHT_PURPLE,
             RunegemShape.PENTAGON, ChatFormatting.DARK_PURPLE);
-
+    // spotless:on
     @SubscribeEvent
     public static void on(RenderTooltipEvent.GatherComponents event) {
         List<Either<FormattedText, TooltipComponent>> list = event.getTooltipElements();
         ItemStack stack = event.getItemStack();
-        if (!stack.has(ModDataComponentType.GEAR_SOCKETS)) return;
+        if (!stack.has(ModDataComponentType.GEAR_SOCKETS)) {
+            return;
+        }
 
         GearSockets sockets = stack.get(ModDataComponentType.GEAR_SOCKETS);
-        if (sockets == null) return;
+        if (sockets == null) {
+            return;
+        }
         List<GearSocket> socketList = sockets.sockets();
 
         List<TooltipComponent> toAdd = new ArrayList<>();

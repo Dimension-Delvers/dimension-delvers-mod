@@ -1,4 +1,4 @@
-package com.wanderersoftherift.wotr.server.inventorySnapshot.containers;
+package com.wanderersoftherift.wotr.core.inventory.snapshot.containers;
 
 import org.jetbrains.annotations.NotNull;
 

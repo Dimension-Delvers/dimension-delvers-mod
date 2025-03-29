@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshot;
+import com.wanderersoftherift.wotr.core.inventory.snapshot.InventorySnapshot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;

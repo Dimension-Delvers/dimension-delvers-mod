@@ -10,7 +10,7 @@ import net.minecraft.util.RandomSource;
 
 public record ModifierInstance(Holder<Modifier> modifier, float roll) {
 
-    public static Codec<ModifierInstance> CODEC = RecordCodecBuilder
+    public static final Codec<ModifierInstance> CODEC = RecordCodecBuilder
             .create(inst -> inst
                     .group(Modifier.CODEC.fieldOf("modifier").forGetter(ModifierInstance::modifier),
                             Codec.FLOAT.fieldOf("roll").forGetter(ModifierInstance::roll))
