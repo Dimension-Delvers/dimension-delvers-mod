@@ -14,19 +14,15 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public class AttributeModifierEffect extends AbstractModifierEffect {
-    public static final MapCodec<AttributeModifierEffect> MODIFIER_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ResourceLocation.CODEC.fieldOf("id").forGetter(AttributeModifierEffect::getId),
-                    Attribute.CODEC.fieldOf("attribute").forGetter(AttributeModifierEffect::getAttribute),
-                    Codec.INT.fieldOf("min_roll").forGetter(AttributeModifierEffect::getMinimumRoll),
-                    Codec.INT.fieldOf("max_roll").forGetter(AttributeModifierEffect::getMaximumRoll),
-                    AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(AttributeModifierEffect::getOperation)
-            ).apply(instance, AttributeModifierEffect::new)
-    );
-
-    @Override
-    public MapCodec<? extends AbstractModifierEffect> getCodec() {
-        return MODIFIER_CODEC;
-    }
+    public static final MapCodec<AttributeModifierEffect> MODIFIER_CODEC = RecordCodecBuilder
+            .mapCodec(instance -> instance
+                    .group(ResourceLocation.CODEC.fieldOf("id").forGetter(AttributeModifierEffect::getId),
+                            Attribute.CODEC.fieldOf("attribute").forGetter(AttributeModifierEffect::getAttribute),
+                            Codec.INT.fieldOf("min_roll").forGetter(AttributeModifierEffect::getMinimumRoll),
+                            Codec.INT.fieldOf("max_roll").forGetter(AttributeModifierEffect::getMaximumRoll),
+                            AttributeModifier.Operation.CODEC.fieldOf("operation")
+                                    .forGetter(AttributeModifierEffect::getOperation))
+                    .apply(instance, AttributeModifierEffect::new));
 
     private final ResourceLocation id;
     private final Holder<Attribute> attribute;
@@ -34,7 +30,8 @@ public class AttributeModifierEffect extends AbstractModifierEffect {
     private final int maxRoll;
     private final AttributeModifier.Operation operation;
 
-    public AttributeModifierEffect(ResourceLocation id, Holder<Attribute> attribute, int minRoll, int maxRoll, AttributeModifier.Operation operation) {
+    public AttributeModifierEffect(ResourceLocation id, Holder<Attribute> attribute, int minRoll, int maxRoll,
+            AttributeModifier.Operation operation) {
         this.id = id;
         this.attribute = attribute;
         this.minRoll = minRoll;
@@ -42,19 +39,24 @@ public class AttributeModifierEffect extends AbstractModifierEffect {
         this.operation = operation;
     }
 
+    @Override
+    public MapCodec<? extends AbstractModifierEffect> getCodec() {
+        return MODIFIER_CODEC;
+    }
+
     public ResourceLocation getId() {
         return id;
     }
 
-    public Holder<Attribute> getAttribute(){
+    public Holder<Attribute> getAttribute() {
         return attribute;
     }
 
-    public int getMinimumRoll(){
+    public int getMinimumRoll() {
         return minRoll;
     }
 
-    public int getMaximumRoll(){
+    public int getMaximumRoll() {
         return maxRoll;
     }
 
@@ -67,7 +69,7 @@ public class AttributeModifierEffect extends AbstractModifierEffect {
     }
 
     public AttributeModifier getModifier(float roll, StringRepresentable source) {
-        return new AttributeModifier(this.idForSlot(source), calculateModifier(roll) , this.getOperation());
+        return new AttributeModifier(this.idForSlot(source), calculateModifier(roll), this.getOperation());
     }
 
     public double calculateModifier(float roll) {

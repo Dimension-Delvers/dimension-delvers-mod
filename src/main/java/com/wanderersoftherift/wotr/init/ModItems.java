@@ -30,46 +30,38 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(WanderersOfTheRift.MODID);
     public static final List<DeferredItem<BlockItem>> BLOCK_ITEMS = new ArrayList<>();
 
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem(
-            "example_item",
-            new Item.Properties().food(new FoodProperties.Builder()
-                    .alwaysEdible()
-                    .nutrition(1)
-                    .saturationModifier(2f)
-                    .build()
-            )
-    );
+    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties()
+            .food(new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f).build()));
 
-    public static final DeferredItem<BuilderGlasses> BUILDER_GLASSES = ITEMS.register(
-            "builder_glasses",
-            BuilderGlasses::new
-    );
+    public static final DeferredItem<BuilderGlasses> BUILDER_GLASSES = ITEMS.register("builder_glasses",
+            BuilderGlasses::new);
 
-    //Runegems
+    // Runegems
     public static final DeferredItem<Item> RUNEGEM = ITEMS.register("runegem",
             registryName -> new Runegem(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "runegem")))
+                    .setId(ResourceKey.create(Registries.ITEM,
+                            ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "runegem")))
                     .component(ModDataComponentType.RUNEGEM_DATA,
-                            new RunegemData(RunegemShape.CIRCLE, new ArrayList<>(), RunegemTier.RAW)))
-    );
+                            new RunegemData(RunegemShape.CIRCLE, new ArrayList<>(), RunegemTier.RAW))));
 
-    public static final DeferredItem<Item> RIFT_KEY = ITEMS.register("rift_key", registryName -> new RiftKey(new Item.Properties()
-            .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("rift_key")))
-            .stacksTo(1)
-    ));
+    public static final DeferredItem<Item> RIFT_KEY = ITEMS
+            .register("rift_key",
+                    registryName -> new RiftKey(new Item.Properties()
+                            .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("rift_key")))
+                            .stacksTo(1)));
 
     public static final DeferredItem<Item> RUNEGEM_GEODE = ITEMS.register("runegem_geode",
             registryName -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, WanderersOfTheRift.id("runegem_geode")))
-                    .component(DataComponents.CONSUMABLE, Consumable.builder()
-                            .consumeSeconds(0.1F)
-                            .animation(ItemUseAnimation.DRINK)
-                            .sound(SoundEvents.GENERIC_DRINK)
-                            .hasConsumeParticles(false).build())
-                    .component(ModDataComponentType.LOOT_BOX,
-                            new LootBox(ResourceKey.create(Registries.LOOT_TABLE, WanderersOfTheRift.id("loot_box/runegem_geode"))))
-            ));
-
+                    .component(DataComponents.CONSUMABLE,
+                            Consumable.builder()
+                                    .consumeSeconds(0.1F)
+                                    .animation(ItemUseAnimation.DRINK)
+                                    .sound(SoundEvents.GENERIC_DRINK)
+                                    .hasConsumeParticles(false)
+                                    .build())
+                    .component(ModDataComponentType.LOOT_BOX, new LootBox(ResourceKey.create(Registries.LOOT_TABLE,
+                            WanderersOfTheRift.id("loot_box/runegem_geode"))))));
 
     public static <T extends Block> DeferredItem<BlockItem> registerSimpleBlockItem(String id, DeferredBlock<T> block) {
         DeferredItem<BlockItem> simpleBlockItem = ITEMS.registerSimpleBlockItem(id, block);

@@ -13,18 +13,19 @@ import static com.wanderersoftherift.wotr.WanderersOfTheRift.LOGGER;
 
 public class LevelRiftThemeData extends SavedData {
 
-    public static Codec<LevelRiftThemeData> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-            RiftTheme.CODEC.fieldOf("theme").forGetter(LevelRiftThemeData::getTheme)
-    ).apply(inst, LevelRiftThemeData::new));
+    public static final Codec<LevelRiftThemeData> CODEC = RecordCodecBuilder
+            .create(inst -> inst.group(RiftTheme.CODEC.fieldOf("theme").forGetter(LevelRiftThemeData::getTheme))
+                    .apply(inst, LevelRiftThemeData::new));
 
     private Holder<RiftTheme> theme;
 
-    public static LevelRiftThemeData getFromLevel(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(new Factory<>(LevelRiftThemeData::create, LevelRiftThemeData::load), "rift_theme");
-    }
-
     public LevelRiftThemeData(Holder<RiftTheme> theme) {
         this.theme = theme;
+    }
+
+    public static LevelRiftThemeData getFromLevel(ServerLevel level) {
+        return level.getDataStorage()
+                .computeIfAbsent(new Factory<>(LevelRiftThemeData::create, LevelRiftThemeData::load), "rift_theme");
     }
 
     public static LevelRiftThemeData create() {
@@ -32,8 +33,7 @@ public class LevelRiftThemeData extends SavedData {
     }
 
     public static LevelRiftThemeData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        Holder<RiftTheme> theme = RiftTheme.CODEC
-                .parse(NbtOps.INSTANCE, tag.get("theme"))
+        Holder<RiftTheme> theme = RiftTheme.CODEC.parse(NbtOps.INSTANCE, tag.get("theme"))
                 .resultOrPartial(LOGGER::error)
                 .orElse(null);
         return new LevelRiftThemeData(theme);
@@ -41,8 +41,7 @@ public class LevelRiftThemeData extends SavedData {
 
     @Override
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-        RiftTheme.CODEC
-                .encodeStart(NbtOps.INSTANCE, this.getTheme())
+        RiftTheme.CODEC.encodeStart(NbtOps.INSTANCE, this.getTheme())
                 .resultOrPartial(LOGGER::error)
                 .ifPresent(compound -> tag.put("theme", compound));
         return tag;

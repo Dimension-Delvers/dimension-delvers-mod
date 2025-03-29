@@ -19,12 +19,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public class RiftChestEntityBlock extends ChestBlock {
-    public static final MapCodec<RiftChestEntityBlock> CODEC = simpleCodec((properties) -> new RiftChestEntityBlock(ModBlockEntities.RIFT_CHEST::get, properties));
+    public static final MapCodec<RiftChestEntityBlock> CODEC = simpleCodec(
+            (properties) -> new RiftChestEntityBlock(ModBlockEntities.RIFT_CHEST::get, properties));
     protected static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 15.0, 15.0);
 
     private static final Component CONTAINER_TITLE = Component.translatable("container.wotr.rift_chest");
 
-    public RiftChestEntityBlock(Supplier<BlockEntityType<? extends ChestBlockEntity>> riftChest, Properties properties) {
+    public RiftChestEntityBlock(Supplier<BlockEntityType<? extends ChestBlockEntity>> riftChest,
+            Properties properties) {
         super(riftChest, properties);
     }
 
@@ -34,7 +36,8 @@ public class RiftChestEntityBlock extends ChestBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos,
+            @NotNull CollisionContext context) {
         return SHAPE;
     }
 

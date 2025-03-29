@@ -13,7 +13,11 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.blockstates.Variant;
 import net.minecraft.client.data.models.blockstates.VariantProperties;
-import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.core.Direction;
@@ -31,7 +35,8 @@ public class ModModelProvider extends ModelProvider {
         super(output, WanderersOfTheRift.MODID);
     }
 
-    private static ResourceLocation createRuneGemShapeModel(ResourceLocation location, Item item, String suffix, ModelTemplate modelTemplate, ItemModelGenerators itemModels) {
+    private static ResourceLocation createRuneGemShapeModel(ResourceLocation location, Item item, String suffix,
+            ModelTemplate modelTemplate, ItemModelGenerators itemModels) {
         return modelTemplate.create(location, TextureMapping.layer0(location), itemModels.modelOutput);
     }
 
@@ -42,22 +47,19 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.KEY_FORGE.get());
 
         ResourceLocation baseChestModel = WanderersOfTheRift.id("block/rift_chest");
-        blockModels.blockStateOutput.accept(
-                MultiVariantGenerator.multiVariant(
-                                ModBlocks.RIFT_CHEST.get(),
-                                Variant.variant().with(VariantProperties.MODEL, baseChestModel))
-                        .with(BlockModelGenerators.createHorizontalFacingDispatch())
-        );
+        blockModels.blockStateOutput.accept(MultiVariantGenerator
+                .multiVariant(ModBlocks.RIFT_CHEST.get(),
+                        Variant.variant().with(VariantProperties.MODEL, baseChestModel))
+                .with(BlockModelGenerators.createHorizontalFacingDispatch()));
 
         ResourceLocation baseRiftSpawnerModel = WanderersOfTheRift.id("block/rift_spawner");
-        blockModels.blockStateOutput.accept(
-                MultiVariantGenerator.multiVariant(ModBlocks.RIFT_SPAWNER.get(), Variant.variant().with(VariantProperties.MODEL, baseRiftSpawnerModel))
-                        .with(createFacingDispatchFromUpModel())
-        );
+        blockModels.blockStateOutput.accept(MultiVariantGenerator
+                .multiVariant(ModBlocks.RIFT_SPAWNER.get(),
+                        Variant.variant().with(VariantProperties.MODEL, baseRiftSpawnerModel))
+                .with(createFacingDispatchFromUpModel()));
 
-
-
-        itemModels.itemModelOutput.accept(ModItems.BUILDER_GLASSES.get(), ItemModelUtils.plainModel(WanderersOfTheRift.id("item/builder_glasses")));
+        itemModels.itemModelOutput.accept(ModItems.BUILDER_GLASSES.get(),
+                ItemModelUtils.plainModel(WanderersOfTheRift.id("item/builder_glasses")));
 
         itemModels.generateFlatItem(ModItems.EXAMPLE_ITEM.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.RIFT_KEY.get(), ModelTemplates.FLAT_ITEM);
@@ -68,19 +70,24 @@ public class ModModelProvider extends ModelProvider {
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> createModelsForBuildBlock(helper, blockModels, itemModels));
     }
 
-    private void createModelsForBuildBlock(BlockFamilyHelper helper, BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+    private void createModelsForBuildBlock(BlockFamilyHelper helper, BlockModelGenerators blockModels,
+            ItemModelGenerators itemModels) {
         blockModels.family(helper.getBlock().get()).generateFor(helper.getFamily());
     }
 
     public void generateRunegemItem(Item item, ItemModelGenerators itemModels) {
         ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(item);
-        ResourceLocation shapeLocation = ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID, "item/runegem/shape/");
+        ResourceLocation shapeLocation = ResourceLocation.fromNamespaceAndPath(WanderersOfTheRift.MODID,
+                "item/runegem/shape/");
         List<SelectItemModel.SwitchCase<RunegemShape>> list = new ArrayList<>(RunegemShape.values().length);
         for (RunegemShape shape : RunegemShape.values()) {
-            ItemModel.Unbaked model = ItemModelUtils.plainModel(createRuneGemShapeModel(shapeLocation.withSuffix(shape.getName()), ModItems.RUNEGEM.get(), shape.getName(), ModelTemplates.FLAT_ITEM, itemModels));
+            ItemModel.Unbaked model = ItemModelUtils
+                    .plainModel(createRuneGemShapeModel(shapeLocation.withSuffix(shape.getName()),
+                            ModItems.RUNEGEM.get(), shape.getName(), ModelTemplates.FLAT_ITEM, itemModels));
             list.add(ItemModelUtils.when(shape, model));
         }
-        itemModels.itemModelOutput.accept(item, ItemModelUtils.select(new SelectRuneGemShape(), ItemModelUtils.plainModel(modelLocation), list));
+        itemModels.itemModelOutput.accept(item,
+                ItemModelUtils.select(new SelectRuneGemShape(), ItemModelUtils.plainModel(modelLocation), list));
     }
 
     /**
@@ -89,11 +96,22 @@ public class ModModelProvider extends ModelProvider {
     public static PropertyDispatch createFacingDispatchFromUpModel() {
         return PropertyDispatch.property(BlockStateProperties.FACING)
                 .select(Direction.UP, Variant.variant())
-                .select(Direction.DOWN, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
-                .select(Direction.NORTH, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-                .select(Direction.EAST, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                .select(Direction.WEST, Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+                .select(Direction.DOWN,
+                        Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.NORTH,
+                        Variant.variant().with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+                .select(Direction.EAST,
+                        Variant.variant()
+                                .with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+                                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                .select(Direction.SOUTH,
+                        Variant.variant()
+                                .with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+                                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.WEST,
+                        Variant.variant()
+                                .with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+                                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
     }
 
 }

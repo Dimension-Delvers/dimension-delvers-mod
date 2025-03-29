@@ -57,7 +57,8 @@ public class ModRecipeProvider extends RecipeProvider {
         }
 
         @Override
-        protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.@NotNull Provider provider, @NotNull RecipeOutput output) {
+        protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.@NotNull Provider provider,
+                @NotNull RecipeOutput output) {
             return new ModRecipeProvider(provider, output);
         }
 

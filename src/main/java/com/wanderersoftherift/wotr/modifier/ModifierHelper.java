@@ -12,14 +12,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModifierHelper {
 
-    public static void runIterationOnItem(
-            ItemStack stack, EquipmentSlot slot, LivingEntity entity, ModifierHelper.ModifierInSlotVisitor visitor
-    ) {
+    public static void runIterationOnItem(ItemStack stack, EquipmentSlot slot, LivingEntity entity,
+            ModifierHelper.ModifierInSlotVisitor visitor) {
         if (!stack.isEmpty()) {
             GearSockets gearSockets = stack.get(ModDataComponentType.GEAR_SOCKETS);
 
             if (gearSockets != null && !gearSockets.isEmpty()) {
-                for(GearSocket socket : gearSockets.sockets()) {
+                for (GearSocket socket : gearSockets.sockets()) {
                     if (socket.isEmpty()) {
                         continue;
                     }
@@ -40,28 +39,23 @@ public class ModifierHelper {
     }
 
     public static void enableModifier(LivingEntity entity) {
-        runIterationOnEquipment(
-                entity, (modifierHolder, roll, source) -> modifierHolder.value().enableModifier(roll, entity, source)
-        );
+        runIterationOnEquipment(entity,
+                (modifierHolder, roll, source) -> modifierHolder.value().enableModifier(roll, entity, source));
     }
 
     public static void enableModifier(ItemStack stack, LivingEntity entity, EquipmentSlot slot) {
-        runIterationOnItem(
-                stack,
-                slot,
-                entity,
-                (modifierHolder, roll, source) -> modifierHolder.value().enableModifier(roll, entity, source)
-        );
+        runIterationOnItem(stack, slot, entity,
+                (modifierHolder, roll, source) -> modifierHolder.value().enableModifier(roll, entity, source));
     }
 
     public static void disableModifier(LivingEntity entity) {
-        runIterationOnEquipment(entity, (modifierHolder, roll, source) -> modifierHolder.value().disableModifier(roll, entity, source));
+        runIterationOnEquipment(entity,
+                (modifierHolder, roll, source) -> modifierHolder.value().disableModifier(roll, entity, source));
     }
 
     public static void disableModifier(ItemStack stack, LivingEntity entity, EquipmentSlot slot) {
-        runIterationOnItem(
-                stack, slot, entity, (modifierHolder, roll, source) -> modifierHolder.value().disableModifier(roll, entity, source)
-        );
+        runIterationOnItem(stack, slot, entity,
+                (modifierHolder, roll, source) -> modifierHolder.value().disableModifier(roll, entity, source));
     }
 
     @FunctionalInterface
