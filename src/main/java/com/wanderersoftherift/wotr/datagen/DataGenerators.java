@@ -34,5 +34,6 @@ public class DataGenerators {
                 -> new ModItemTagProvider(output, lookupProvider, modBlockTagProvider.contentsGetter()));
 
         event.createProvider(ModDataMapProvider::new);
+        event.createProvider(ModSoundsProvider::new);
     }
 }
