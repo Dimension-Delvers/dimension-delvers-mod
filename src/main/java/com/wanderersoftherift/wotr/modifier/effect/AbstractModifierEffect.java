@@ -4,6 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.wanderersoftherift.wotr.modifier.source.ModifierSource;
 import net.minecraft.core.Holder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.entity.Entity;
 
@@ -25,5 +28,7 @@ public abstract class AbstractModifierEffect {
     public static final Codec<AbstractModifierEffect> DIRECT_CODEC = MODIFIER_TYPE_REGISTRY.byNameCodec().dispatch(AbstractModifierEffect::getCodec, Function.identity());
 
     public static final Codec<Holder<AbstractModifierEffect>> CODEC = RegistryFixedCodec.create(MODIFIER_EFFECT_KEY);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<AbstractModifierEffect>> STREAM_CODEC = ByteBufCodecs.holderRegistry(MODIFIER_EFFECT_KEY);
 
 }

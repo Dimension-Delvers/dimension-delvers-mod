@@ -21,6 +21,13 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup("software.bernie.geckolib")
+        }
+    }
 }
 
 base {
@@ -111,6 +118,8 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 
 dependencies {
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+
     runtimeOnly "curse.maven:cloth-config-348521:${cloth_config_version}"
     runtimeOnly "curse.maven:architectury-api-419699:${architectury_version}"
     runtimeOnly "curse.maven:sodium-394468:${sodium_version}"

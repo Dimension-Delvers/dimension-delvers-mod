@@ -1,6 +1,7 @@
 package com.wanderersoftherift.wotr.modifier.effect;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -93,9 +94,8 @@ public class AttributeModifierEffect extends AbstractModifierEffect {
         // NOOP
     }
 
-    private HashMultimap<Holder<Attribute>, AttributeModifier> makeAttributeMap(float roll, ModifierSource source) {
-        HashMultimap<Holder<Attribute>, AttributeModifier> hashmultimap = HashMultimap.create();
-        hashmultimap.put(this.attribute, this.getModifier(roll, source));
-        return hashmultimap;
+    private Multimap<Holder<Attribute>, AttributeModifier> makeAttributeMap(float roll, ModifierSource source) {
+        return ImmutableMultimap.of(this.attribute, this.getModifier(roll, source));
+
     }
 }

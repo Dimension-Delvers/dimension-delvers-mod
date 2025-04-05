@@ -1,0 +1,27 @@
+{
+  "type": "wotr:standard_ability",
+  "ability_name": "wotr:heal",
+  "icon" : "minecraft:textures/mob_effect/regeneration.png",
+  "cooldown": 200,
+  "effects":
+  [
+    {
+      "type": "wotr:heal_effect",
+      "amount": 0,
+      "targeting": {
+        "type": "wotr:area_targeting",
+        "range": 2,
+        "target": {
+          "attitude": "not_foe"
+        }
+      }
+    },
+    {
+      "type": "wotr:sound_effect",
+      "targeting": {
+        "type": "wotr:self_targeting"
+      },
+      "sound": "minecraft:entity.splash_potion.break"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
 import com.wanderersoftherift.wotr.init.ModItems;
 import com.wanderersoftherift.wotr.item.essence.EssenceValue;
+import com.wanderersoftherift.wotr.init.client.ModKeybinds;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
@@ -34,6 +35,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
         addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
         addBlock(ModBlocks.KEY_FORGE, "Key Forge");
+        addBlock(ModBlocks.SKILL_BENCH, "Skill Bench");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");
@@ -41,6 +43,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(ModItems.RUNEGEM, "Runegem");
         addItem(ModItems.RIFT_KEY, "Rift Key");
         addItem(ModItems.RUNEGEM_GEODE, "Runegem Geode");
+        addItem(ModItems.SKILL_GEM, "Unidentified Skill");
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
 
@@ -48,6 +51,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addEssenceType("life", "Life");
         addEssenceType("water", "Water");
         addEssenceType("meat", "Meat");
+
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             //addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
@@ -79,11 +83,23 @@ public class ModLanguageProvider extends LanguageProvider {
         add("container." + WanderersOfTheRift.MODID + ".rune_anvil.apply", "Apply");
         add("container." + WanderersOfTheRift.MODID + ".rift_chest", "Rift Chest");
         add("container." + WanderersOfTheRift.MODID + ".key_forge", "Key Forge");
+        add("container." + WanderersOfTheRift.MODID + ".skill_bench", "Skill Bench");
+
+        add("skill_bench." + WanderersOfTheRift.MODID + ".screen.upgrade", "Upgrades");
 
         add("command." + WanderersOfTheRift.MODID + ".dev_world_set", "Dev World settings applied:\n - %1$s: Disabled\n - %2$s: Disabled\n - %3$s: Disabled\n - %4$s: Disabled\n - %5$s: Disabled\n - %6$s: Disabled");
         add("command." + WanderersOfTheRift.MODID + ".invalid_item", "Held item is empty!");
         add("command." + WanderersOfTheRift.MODID + ".get_item_stack_components.invalid_player", "Player is null!");
         add("command." + WanderersOfTheRift.MODID + ".get_item_stack_components.success", "Item Components available for '%1$s'");
+
+        add("ability." + WanderersOfTheRift.MODID + ".cannot_unlock", "You must unlock the following to get this boost: ");
+        add("ability." + WanderersOfTheRift.MODID + ".fireball_ability", "Fireball");
+        add("ability." + WanderersOfTheRift.MODID + ".mega_boost", "Mega Boost");
+        add("ability." + WanderersOfTheRift.MODID + ".dash", "Dash");
+        add("ability." + WanderersOfTheRift.MODID + ".summon_skeletons", "Summon Skeletons");
+        add("ability." + WanderersOfTheRift.MODID + ".test_ability", "Test Ability");
+        add("ability." + WanderersOfTheRift.MODID + ".knockback", "Knockback");
+        add("ability." + WanderersOfTheRift.MODID + ".pull", "Pull");
 
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.title", "Dimension Delvers: Accessibility Settings");
         add("accessibility." + WanderersOfTheRift.MODID + ".menubutton", "DimDelvers Accessibility (tmp)");
@@ -109,6 +125,27 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip." + WanderersOfTheRift.MODID + ".essence_header", "Essence:");
         add("tooltip." + WanderersOfTheRift.MODID + ".socket", "Sockets: ");
 
+        add(ModKeybinds.ABILITY_CATEGORY, "Abilities");
+        add(ModKeybinds.ABILITY_1_KEY.getName(), "Use Ability 1");
+        add(ModKeybinds.ABILITY_2_KEY.getName(), "Use Ability 2");
+        add(ModKeybinds.ABILITY_3_KEY.getName(), "Use Ability 3");
+        add(ModKeybinds.ABILITY_4_KEY.getName(), "Use Ability 4");
+        add(ModKeybinds.ABILITY_5_KEY.getName(), "Use Ability 5");
+        add(ModKeybinds.ABILITY_6_KEY.getName(), "Use Ability 6");
+        add(ModKeybinds.ABILITY_7_KEY.getName(), "Use Ability 7");
+        add(ModKeybinds.ABILITY_8_KEY.getName(), "Use Ability 8");
+        add(ModKeybinds.ABILITY_9_KEY.getName(), "Use Ability 9");
+        add(ModKeybinds.PREV_ABILITY_KEY.getName(), "Select Previous Ability");
+        add(ModKeybinds.NEXT_ABILITY_KEY.getName(), "Select Next Ability");
+        add(ModKeybinds.USE_ABILITY_KEY.getName(), "Use Selected Ability");
+
+        add(WanderersOfTheRift.translationId("keybinds", "l_alt"), "LAlt");
+        add(WanderersOfTheRift.translationId("keybinds", "r_alt"), "RAlt");
+        add(WanderersOfTheRift.translationId("keybinds", "l_ctrl"), "LCtrl");
+        add(WanderersOfTheRift.translationId("keybinds", "r_ctrl"), "RCtrl");
+        add(WanderersOfTheRift.translationId("keybinds", "mod_alt"), "Alt+");
+        add(WanderersOfTheRift.translationId("keybinds", "mod_ctrl"), "Ctrl+");
+        add(WanderersOfTheRift.translationId("keybinds", "mod_shift"), "Shi+");
     }
 
     private void addEssenceType(String id, String value) {

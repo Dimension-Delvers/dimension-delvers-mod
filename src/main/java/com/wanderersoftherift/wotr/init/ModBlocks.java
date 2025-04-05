@@ -7,6 +7,7 @@ import com.wanderersoftherift.wotr.block.RuneAnvilEntityBlock;
 import com.wanderersoftherift.wotr.block.RiftSpawnerBlock;
 import com.wanderersoftherift.wotr.item.RiftChestType;
 import com.wanderersoftherift.wotr.block.*;
+import com.wanderersoftherift.wotr.block.SkillBenchBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -74,6 +75,12 @@ public class ModBlocks {
                     .sound(SoundType.STONE)
             )
     );
+
+    public static final DeferredBlock<SkillBenchBlock> SKILL_BENCH = registerBlock("skill_bench", () -> new SkillBenchBlock(BlockBehaviour.Properties.of()
+            .setId(blockId("skill_bench"))
+            .strength(2.0f)
+            .sound(SoundType.WOOD)
+    ));
 
     public static final BlockFamilyHelper PROCESSOR_BLOCK_1 = registerBuildingBlock("processor_block_1", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_1"))));
     public static final BlockFamilyHelper PROCESSOR_BLOCK_2 = registerBuildingBlock("processor_block_2", () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_2"))));

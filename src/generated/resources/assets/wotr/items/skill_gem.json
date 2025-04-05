@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "wotr:item/base_skill_gem",
+    "model": {
+      "type": "wotr:ability_item",
+      "base_item": "wotr:base_skill_gem"
+    }
+  }
+}
