@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "wotr:block/player_trap_block"
+    }
+  }
+}

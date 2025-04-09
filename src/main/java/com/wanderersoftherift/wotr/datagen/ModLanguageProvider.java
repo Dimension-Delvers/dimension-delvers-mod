@@ -34,6 +34,11 @@ public class ModLanguageProvider extends LanguageProvider {
         addBlock(ModBlocks.RIFT_CHEST, "Rift Chest");
         addBlock(ModBlocks.RIFT_SPAWNER, "Rift Spawner");
         addBlock(ModBlocks.KEY_FORGE, "Key Forge");
+        addBlock(ModBlocks.DITTO_BLOCK, "Ditto Block");
+        addBlock(ModBlocks.SPRING_BLOCK, "Spring Block");
+        addBlock(ModBlocks.TRAP_BLOCK, "Trap Block");
+        addBlock(ModBlocks.PLAYER_TRAP_BLOCK, "Player Trap Block");
+        addBlock(ModBlocks.MOB_TRAP_BLOCK, "Mob Trap Block");
 
         // Adds an item translation.
         addItem(ModItems.EXAMPLE_ITEM, "Example Item");

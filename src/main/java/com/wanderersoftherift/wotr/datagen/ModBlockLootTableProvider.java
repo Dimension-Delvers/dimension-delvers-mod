@@ -27,6 +27,11 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.RUNE_ANVIL_ENTITY_BLOCK.get());
         dropSelf(ModBlocks.RIFT_CHEST.get());
         dropSelf(ModBlocks.RIFT_SPAWNER.get());
+        dropSelf(ModBlocks.DITTO_BLOCK.get());
+        dropSelf(ModBlocks.TRAP_BLOCK.get());
+        dropSelf(ModBlocks.PLAYER_TRAP_BLOCK.get());
+        dropSelf(ModBlocks.MOB_TRAP_BLOCK.get());
+        dropSelf(ModBlocks.SPRING_BLOCK.get());
     }
 
     @Override
