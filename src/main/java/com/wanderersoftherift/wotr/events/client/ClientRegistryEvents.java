@@ -2,10 +2,12 @@ package com.wanderersoftherift.wotr.events.client;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.client.render.blockentity.JigsawBlockEntityRenderer;
+import com.wanderersoftherift.wotr.client.render.entity.SimpleEffectProjectileRenderer;
 import com.wanderersoftherift.wotr.client.render.item.properties.select.SelectRuneGemShape;
 import com.wanderersoftherift.wotr.client.tooltip.GearSocketTooltipRenderer;
 import com.wanderersoftherift.wotr.client.tooltip.ImageTooltipRenderer;
 import com.wanderersoftherift.wotr.gui.layer.objective.ObjectiveLayer;
+import com.wanderersoftherift.wotr.init.ModEntities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
@@ -40,6 +42,10 @@ public class ClientRegistryEvents {
         event.registerBlockEntityRenderer(
                 BlockEntityType.JIGSAW,
                 JigsawBlockEntityRenderer::new
+        );
+        event.registerEntityRenderer(
+                ModEntities.SIMPLE_EFFECT_PROJECTILE.get(),
+                SimpleEffectProjectileRenderer::new
         );
     }
 }

@@ -1,4 +1,4 @@
-package com.wanderersoftherift.wotr.gui.menu;
+package com.wanderersoftherift.wotr.gui.menu.slot;
 
 import com.wanderersoftherift.wotr.item.runegem.RunegemShape;
 import com.wanderersoftherift.wotr.item.socket.GearSocket;

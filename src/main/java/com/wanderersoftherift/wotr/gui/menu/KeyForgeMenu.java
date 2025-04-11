@@ -1,6 +1,8 @@
 package com.wanderersoftherift.wotr.gui.menu;
 
 import com.google.common.collect.ImmutableList;
+import com.wanderersoftherift.wotr.gui.menu.slot.EssenceInputSlot;
+import com.wanderersoftherift.wotr.gui.menu.slot.KeyOutputSlot;
 import com.wanderersoftherift.wotr.init.ModBlocks;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
 import com.wanderersoftherift.wotr.init.ModDataMaps;

@@ -1,4 +1,4 @@
-package com.wanderersoftherift.wotr.gui.menu;
+package com.wanderersoftherift.wotr.gui.menu.slot;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;

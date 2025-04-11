@@ -2,7 +2,7 @@ package com.wanderersoftherift.wotr.gui.screen;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.gui.menu.RuneAnvilMenu;
-import com.wanderersoftherift.wotr.gui.menu.RunegemSlot;
+import com.wanderersoftherift.wotr.gui.menu.slot.RunegemSlot;
 import com.wanderersoftherift.wotr.item.runegem.RunegemShape;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;

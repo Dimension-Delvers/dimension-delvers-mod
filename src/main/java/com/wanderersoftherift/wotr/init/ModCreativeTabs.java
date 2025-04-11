@@ -19,11 +19,11 @@ public class ModCreativeTabs {
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.EXAMPLE_ITEM);
                                 output.accept(ModItems.RIFT_KEY);
-                                ModItems.BLOCK_ITEMS.forEach(item -> output.accept(item.get()));
-
-                                output.accept(ModItems.BUILDER_GLASSES);
-
+                                output.accept(ModItems.ABILITY_HOLDER);
+                                output.accept(ModItems.SKILL_THREAD);
                                 output.accept(ModItems.RUNEGEM_GEODE);
+                                ModItems.BLOCK_ITEMS.forEach(item -> output.accept(item.get()));
+                                output.accept(ModItems.BUILDER_GLASSES);
                             }).build());
 
 }

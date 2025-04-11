@@ -1,16 +1,23 @@
 package com.wanderersoftherift.wotr;
 
 import com.mojang.logging.LogUtils;
+import com.wanderersoftherift.wotr.Registries.AbilityRegistry;
+import com.wanderersoftherift.wotr.commands.AbilityCommands;
 import com.wanderersoftherift.wotr.commands.DebugCommands;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.commands.RiftMapCommands;
 import com.wanderersoftherift.wotr.commands.SpawnPieceCommand;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
+import com.wanderersoftherift.wotr.init.ModAttributes;
 import com.wanderersoftherift.wotr.init.ModBlockEntities;
 import com.wanderersoftherift.wotr.init.ModBlocks;
+import com.wanderersoftherift.wotr.init.ModCommands;
 import com.wanderersoftherift.wotr.init.ModCreativeTabs;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
+import com.wanderersoftherift.wotr.init.ModEffects;
+import com.wanderersoftherift.wotr.init.ModEntities;
+import com.wanderersoftherift.wotr.init.ModEntityDataSerializers;
 import com.wanderersoftherift.wotr.init.ModEntityTypes;
 import com.wanderersoftherift.wotr.init.ModInputBlockStateTypes;
 import com.wanderersoftherift.wotr.init.ModItems;
@@ -20,17 +27,16 @@ import com.wanderersoftherift.wotr.init.ModMenuTypes;
 import com.wanderersoftherift.wotr.init.ModModifierEffects;
 import com.wanderersoftherift.wotr.init.ModOngoingObjectiveTypes;
 import com.wanderersoftherift.wotr.init.ModOutputBlockStateTypes;
+import com.wanderersoftherift.wotr.init.ModPayloadHandlers;
 import com.wanderersoftherift.wotr.init.ModProcessors;
-import com.wanderersoftherift.wotr.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import com.wanderersoftherift.wotr.init.ModSoundEvents;
+import com.wanderersoftherift.wotr.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -53,13 +59,12 @@ public class WanderersOfTheRift {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public WanderersOfTheRift(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::commonSetup);
-
         // Register things
         ModDataComponentType.DATA_COMPONENTS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModProcessors.PROCESSORS.register(modEventBus);
@@ -71,6 +76,10 @@ public class WanderersOfTheRift {
         ModOngoingObjectiveTypes.ONGOING_OBJECTIVE_TYPES.register(modEventBus);
         ModEntityTypes.ENTITIES.register(modEventBus);
         ModLootItemFunctionTypes.LOOT_ITEM_FUNCTION_TYPES.register(modEventBus);
+        ModEffects.EFFECTS.register(modEventBus);
+        ModCommands.COMMAND_ARGUMENT_TYPES.register(modEventBus);
+        ModEntityDataSerializers.ENTITY_DATA_SERIALIZERS.register(modEventBus);
+        ModAttributes.ATTRIBUTES.register(modEventBus);
         ModSoundEvents.SOUND_EVENTS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
@@ -80,10 +89,15 @@ public class WanderersOfTheRift {
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
         modEventBus.addListener(this::modInterop);
+        modEventBus.addListener(ModPayloadHandlers::registerPayloadHandlers);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        AbilityRegistry.ABILITY_TYPES.register(modEventBus);
+        AbilityRegistry.EFFECTS.register(modEventBus);
+        AbilityRegistry.EFFECT_TARGETING.register(modEventBus);
     }
 
     /**
@@ -97,6 +111,16 @@ public class WanderersOfTheRift {
     }
 
     /**
+     * Helper method to get a translationId string containing our mod id.
+     * @param category The category of the translationId (becomes a prefix)
+     * @param item The translationId item
+     * @return A combination of category, our mod id and the item. e.g. if category is "item" and item is "nosering.description" the result is "item.wotr.nosering.description"
+     */
+    public static String translationId(String category, String item) {
+        return category + "." + MODID + "." + item;
+    }
+
+    /**
      * Helper method to get a {@code TagKey} with our Mod Id and a passed in name
      *
      * @param name the name to create the {@code TagKey} with
@@ -104,17 +128,6 @@ public class WanderersOfTheRift {
      */
     public static <T> TagKey<T> tagId(ResourceKey<? extends Registry<T>> registry, String name) {
         return TagKey.create(registry, id(name));
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (Config.logDirtBlock) LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-
-        LOGGER.info("Reticulating splines");
-
-        // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
     private void modInterop(final FMLCommonSetupEvent event) {
@@ -129,6 +142,7 @@ public class WanderersOfTheRift {
             RiftMapCommands.register(event.getDispatcher(), event.getBuildContext());
         }
         new DebugCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
+        AbilityCommands.register(event.getDispatcher(), event.getBuildContext());
     }
 
     @SubscribeEvent

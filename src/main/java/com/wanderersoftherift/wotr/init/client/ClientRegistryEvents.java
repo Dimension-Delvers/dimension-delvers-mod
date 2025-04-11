@@ -54,17 +54,6 @@ public final class ClientRegistryEvents {
     }
 
     @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-
-    }
-
-    @SubscribeEvent
-    private static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.RUNE_ANVIL_MENU.get(), RuneAnvilScreen::new);
-        event.register(ModMenuTypes.KEY_FORGE_MENU.get(), KeyForgeScreen::new);
-    }
-
-    @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.RIFT_ENTRANCE.get(), RiftEntranceRenderer::new);
     }
