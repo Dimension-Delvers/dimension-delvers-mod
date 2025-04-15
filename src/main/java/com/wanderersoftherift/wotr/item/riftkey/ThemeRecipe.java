@@ -14,6 +14,10 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A recipe for imbuing a rift key with a theme. This specifies requirements for the ingredients to be valid for the theme, and a priority for determining
+ * the theme to use if there are overlaps.
+ */
 public class ThemeRecipe {
     public static final Codec<ThemeRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             DeferrableRegistryCodec.create(ModRiftThemes.RIFT_THEME_KEY).fieldOf("theme").forGetter(ThemeRecipe::getTheme),
@@ -79,20 +83,37 @@ public class ThemeRecipe {
         private final List<EssencePredicate> essenceRequirements = new ArrayList<>();
         private final List<ItemPredicate> itemRequirements = new ArrayList<>();
 
+        /**
+         * @param theme The theme this recipe is for
+         */
         public Builder(Holder<RiftTheme> theme) {
             this.theme = theme;
         }
 
+        /**
+         * @param priority The priority of this recipe against other recipes (higher overrides lower)
+         * @return
+         */
         public Builder setPriority(int priority) {
             this.priority = priority;
             return this;
         }
 
+        /**
+         * Can be specified multiple times, with all requirements needing to be met
+         * @param essenceReq A predicate specifying a requirement on a type of essence that has to be met by the ingredients.
+         * @return
+         */
         public Builder withEssenceReq(EssencePredicate essenceReq) {
             this.essenceRequirements.add(essenceReq);
             return this;
         }
 
+        /**
+         * Can be specified multiple times, with all requirements needing to be met
+         * @param itemReq A predicate specifying a requirement on a type of item that has to be met by the ingredients
+         * @return
+         */
         public Builder withItemReq(ItemPredicate itemReq) {
             this.itemRequirements.add(itemReq);
             return this;

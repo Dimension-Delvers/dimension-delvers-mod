@@ -12,11 +12,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Configuration for generating a rift
+ * @param tier The tier of the rift
+ * @param theme The theme of the rift
+ * @param seed Optional, the seed for the rift
+ */
 public record RiftConfig(int tier, Holder<RiftTheme> theme, Optional<Integer> seed) {
 
     public static final Codec<RiftConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -41,41 +46,5 @@ public record RiftConfig(int tier, Holder<RiftTheme> theme, Optional<Integer> se
         Component themeName = Component.translatable("rift_theme." + themeId.getNamespace() + "." + themeId.getPath());
         return List.of(Component.translatable("tooltip." + WanderersOfTheRift.MODID + ".rift_key_tier", tier).withColor(ChatFormatting.GRAY.getColor()),
                 Component.translatable("tooltip." + WanderersOfTheRift.MODID + ".rift_key_theme", themeName).withColor(ChatFormatting.GRAY.getColor()));
-    }
-
-    public static class Builder {
-        private int tier = 1;
-        private Holder<RiftTheme> theme;
-        private Optional<Integer> seed = Optional.empty();
-
-        public Builder(@Nullable RiftConfig existing) {
-            this.tier = existing.tier();
-            this.theme = existing.theme();
-            this.seed = existing.seed();
-        }
-
-        public Builder(Holder<RiftTheme> theme) {
-            this.theme = theme;
-        }
-
-        public Builder setTier(int tier) {
-            this.tier = tier;
-            return this;
-        }
-
-        public Builder setTheme(Holder<RiftTheme> theme) {
-            this.theme = theme;
-            return this;
-        }
-
-        public Builder setSeed(int seed) {
-            this.seed = Optional.of(seed);
-            return this;
-        }
-
-        public RiftConfig build() {
-            return new RiftConfig(tier, theme, seed);
-        }
-
     }
 }

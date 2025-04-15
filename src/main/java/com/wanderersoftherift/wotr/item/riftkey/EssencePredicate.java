@@ -5,25 +5,26 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Optional;
-
+/**
+ * EssencePredicate provides the ability to filter on a map of essence type to value
+ */
 public class EssencePredicate {
 
     public static final Codec<EssencePredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("essenceType").forGetter(x -> x.essenceType),
-            Codec.INT.optionalFieldOf("min").forGetter(x -> x.min),
-            Codec.INT.optionalFieldOf("max").forGetter(x -> x.max),
-            Codec.FLOAT.optionalFieldOf("minPercent").forGetter(x -> x.minPercent),
-            Codec.FLOAT.optionalFieldOf("maxPercent").forGetter(x-> x.maxPercent)
+            Codec.INT.optionalFieldOf("min", 0).forGetter(x -> x.min),
+            Codec.INT.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(x -> x.max),
+            Codec.FLOAT.optionalFieldOf("minPercent", 0f).forGetter(x -> x.minPercent),
+            Codec.FLOAT.optionalFieldOf("maxPercent", 100f).forGetter(x-> x.maxPercent)
     ).apply(instance, EssencePredicate::new));
 
     private final ResourceLocation essenceType;
-    private final Optional<Integer> min;
-    private final Optional<Integer> max;
-    private final Optional<Float> minPercent;
-    private final Optional<Float> maxPercent;
+    private final int min;
+    private final int max;
+    private final float minPercent;
+    private final float maxPercent;
 
-    public EssencePredicate(ResourceLocation essenceType, Optional<Integer> min, Optional<Integer> max, Optional<Float> minPercent, Optional<Float> maxPercent) {
+    public EssencePredicate(ResourceLocation essenceType, int min, int max, float minPercent, float maxPercent) {
         this.essenceType = essenceType;
         this.min = min;
         this.max = max;
@@ -33,18 +34,18 @@ public class EssencePredicate {
 
     public boolean match(Object2IntMap<ResourceLocation> essenceAmounts) {
         int amount = essenceAmounts.getOrDefault(essenceType, 0);
-        if (min.isPresent() && amount < min.get()) {
+        if (amount < min) {
             return false;
         }
-        if (max.isPresent() && amount > max.get()) {
+        if (amount > max) {
             return false;
         }
         int total = essenceAmounts.values().intStream().sum();
         float percent = 100f * amount / total;
-        if (minPercent.isPresent() && percent < minPercent.get()) {
+        if (percent < minPercent) {
             return false;
         }
-        if (maxPercent.isPresent() && percent > maxPercent.get()) {
+        if (percent > maxPercent) {
             return false;
         }
         return true;
@@ -52,32 +53,52 @@ public class EssencePredicate {
 
     public static class Builder {
         private final ResourceLocation essenceType;
-        private Optional<Integer> min = Optional.empty();
-        private Optional<Integer> max = Optional.empty();
-        private Optional<Float> minPercent = Optional.empty();
-        private Optional<Float> maxPercent = Optional.empty();
+        private int min = 0;
+        private int max = Integer.MAX_VALUE;
+        private float minPercent = 0;
+        private float maxPercent = 100f;
 
+        /**
+         * @param essenceType The type of essence to filter on
+         */
         public Builder(ResourceLocation essenceType) {
             this.essenceType = essenceType;
         }
 
+        /**
+         * @param min The minimum quantity of the essence type required
+         * @return this builder for method chaining
+         */
         public Builder setMin(int min) {
-            this.min = Optional.of(min);
+            this.min = min;
             return this;
         }
 
+        /**
+         * @param max The maximum quantity of the essence type allowed
+         * @return
+         */
         public Builder setMax(int max) {
-            this.max = Optional.of(max);
+            this.max = max;
             return this;
         }
 
+        /**
+         * @param min The minimum percentage of the essence type required
+         * @return
+         */
         public Builder setMinPercent(float min) {
-            this.minPercent = Optional.of(min);
+            this.minPercent = min;
             return this;
         }
 
+        /**
+         *
+         * @param max The maximum percentage of the essence type allowed
+         * @return
+         */
         public Builder setMaxPercent(float max) {
-            this.maxPercent = Optional.of(max);
+            this.maxPercent = max;
             return this;
         }
 
