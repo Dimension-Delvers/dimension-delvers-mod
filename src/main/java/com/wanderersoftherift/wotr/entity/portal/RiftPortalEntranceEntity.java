@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.Set;
@@ -32,22 +30,21 @@ import static com.wanderersoftherift.wotr.core.rift.RiftLevelManager.isRiftExist
 /**
  * This entity provides the entrance into a rift.
  */
-public class RiftPortalEntranceEntity extends Entity {
-    private static final String BILLBOARD = "billboard";
-    private static final EntityDataAccessor<Boolean> DATA_BILLBOARD = SynchedEntityData.defineId(RiftPortalEntranceEntity.class, EntityDataSerializers.BOOLEAN);
+public class RiftPortalEntranceEntity extends RiftPortalEntity {
     private static final EntityDataAccessor<ItemStack> DATA_RIFTKEY = SynchedEntityData.defineId(RiftPortalEntranceEntity.class, EntityDataSerializers.ITEM_STACK);
 
     private boolean generated = false;
     private ResourceLocation riftDimensionID = WanderersOfTheRift.id("rift_" + UUID.randomUUID());
 
-    public RiftPortalEntranceEntity(EntityType<?> entityType, Level level) {
+    public RiftPortalEntranceEntity(EntityType<? extends RiftPortalEntranceEntity> entityType, Level level) {
         super(entityType, level);
         blocksBuilding = true;
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_BILLBOARD, true).define(DATA_RIFTKEY, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(DATA_RIFTKEY, ItemStack.EMPTY);
     }
 
     public ResourceLocation getRiftDimensionID() {
@@ -72,7 +69,7 @@ public class RiftPortalEntranceEntity extends Entity {
         if (level() instanceof ServerLevel serverLevel) {
             for (Entity player : serverLevel.getEntities(this, makeBoundingBox(), x -> x instanceof ServerPlayer)) {
                 if (player instanceof ServerPlayer serverPlayer) {
-                        tpToRift(serverPlayer, serverLevel, blockPosition(), getRiftKey());
+
                 }
             }
             if(generated){
@@ -83,6 +80,10 @@ public class RiftPortalEntranceEntity extends Entity {
         }
     }
 
+    @Override
+    protected void onPlayerInPortal(ServerPlayer player, ServerLevel level) {
+        tpToRift(player, level, blockPosition(), getRiftKey());
+    }
 
     private InteractionResult tpToRift(ServerPlayer player, ServerLevel level, BlockPos pos, ItemStack riftKey) {
         ResourceLocation riftId = this.getRiftDimensionID();
@@ -121,15 +122,8 @@ public class RiftPortalEntranceEntity extends Entity {
     }
 
     @Override
-    public boolean hurtServer(@NotNull ServerLevel level, @NotNull DamageSource damageSource, float amount) {
-        return false;
-    }
-
-    @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        if (tag.contains(BILLBOARD)) {
-            setBillboard(tag.getBoolean(BILLBOARD));
-        }
+        super.readAdditionalSaveData(tag);
         if (tag.contains("riftKey")) {
             setRiftkey(ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("riftKey")));
         }
@@ -143,18 +137,10 @@ public class RiftPortalEntranceEntity extends Entity {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putBoolean(BILLBOARD, isBillboard());
+        super.addAdditionalSaveData(tag);
         tag.put("riftKey", getRiftKey().save(this.level().registryAccess(), new CompoundTag()));
         tag.putString("riftDimensionID", getRiftDimensionID().toString());
         tag.putBoolean("generated", generated);
-    }
-
-    public void setBillboard(boolean billboard) {
-        this.entityData.set(DATA_BILLBOARD, billboard);
-    }
-
-    public boolean isBillboard() {
-        return entityData.get(DATA_BILLBOARD);
     }
 
     public void setRiftkey(ItemStack key) {

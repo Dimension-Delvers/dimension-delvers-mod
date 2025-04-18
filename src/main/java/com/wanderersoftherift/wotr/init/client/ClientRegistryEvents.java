@@ -10,8 +10,7 @@ import com.wanderersoftherift.wotr.client.map.MapData;
 import com.wanderersoftherift.wotr.client.map.MapRoom;
 import com.wanderersoftherift.wotr.client.render.blockentity.JigsawBlockEntityRenderer;
 import com.wanderersoftherift.wotr.client.render.entity.AltSpiderRenderer;
-import com.wanderersoftherift.wotr.client.render.entity.RiftEntranceRenderer;
-import com.wanderersoftherift.wotr.client.render.entity.RiftExitRenderer;
+import com.wanderersoftherift.wotr.client.render.entity.RiftPortalRenderer;
 import com.wanderersoftherift.wotr.client.render.item.properties.select.SelectRuneGemShape;
 import com.wanderersoftherift.wotr.client.tooltip.GearSocketTooltipRenderer;
 import com.wanderersoftherift.wotr.client.tooltip.ImageComponent;
@@ -89,8 +88,8 @@ public final class ClientRegistryEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.RIFT_ENTRANCE.get(), RiftEntranceRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.RIFT_EXIT.get(), RiftExitRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.RIFT_ENTRANCE.get(), RiftPortalRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.RIFT_EXIT.get(), RiftPortalRenderer::new);
         event.registerEntityRenderer(EntityType.SPIDER, (context) -> new AltSpiderRenderer<>(context, WanderersOfTheRift.id("textures/entity/alt_spider.png"), 1.0f));
         event.registerEntityRenderer(EntityType.CAVE_SPIDER, (context) -> new AltSpiderRenderer<>(context, WanderersOfTheRift.id("textures/entity/alt_cave_spider.png"), 0.75f));
         event.registerBlockEntityRenderer(
