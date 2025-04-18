@@ -12,20 +12,17 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.wanderersoftherift.wotr.core.rift.RiftLevelManager.isRiftExists;
+import static com.wanderersoftherift.wotr.core.rift.RiftLevelManager.levelExists;
 
 /**
  * This entity provides the entrance into a rift.
@@ -73,7 +70,7 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
                 }
             }
             if(generated){
-                if(!isRiftExists(getRiftDimensionID())){
+                if(!levelExists(getRiftDimensionID())){
                     this.remove(RemovalReason.DISCARDED);
                 }
             }
@@ -82,10 +79,8 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
 
     @Override
     protected void onPlayerInPortal(ServerPlayer player, ServerLevel level) {
-        tpToRift(player, level, blockPosition(), getRiftKey());
-    }
-
-    private InteractionResult tpToRift(ServerPlayer player, ServerLevel level, BlockPos pos, ItemStack riftKey) {
+        BlockPos pos = blockPosition();
+        ItemStack riftKey = getRiftKey();
         ResourceLocation riftId = this.getRiftDimensionID();
         var plDir = player.getDirection().getOpposite();
         var axis = plDir.getAxis();
@@ -94,7 +89,7 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
         ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos.relative(axis, 3 * axisDir), riftKey);
         if (lvl == null) {
             player.displayClientMessage(Component.translatable(WanderersOfTheRift.MODID +".rift.create.failed"), true);
-            return InteractionResult.FAIL;
+            return;
         }
         this.setGenerated(true);
         RiftData.get(lvl).addPlayer(player.getUUID());
@@ -102,8 +97,6 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
         var riftSpawnCoords = getRiftSpawnCoords();
 
         player.teleportTo(lvl, riftSpawnCoords.x, riftSpawnCoords.y, riftSpawnCoords.z, Set.of(), player.getYRot(), 0, false);
-        NeoForge.EVENT_BUS.post(new PlayerEvent.PlayerChangedDimensionEvent(player, level.dimension(), lvl.dimension()));
-        return InteractionResult.SUCCESS;
     }
 
     private static Vec3 getRiftSpawnCoords(){

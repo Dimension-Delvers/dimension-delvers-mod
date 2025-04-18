@@ -46,7 +46,11 @@ import java.util.Random;
 
 public class RiftLevelManager {
 
-    public static boolean isRiftExists(ResourceLocation id){
+    /**
+     * @param id
+     * @return Whether a level with the given id exists
+     */
+    public static boolean levelExists(ResourceLocation id){
         var server = ServerLifecycleHooks.getCurrentServer();
         var existingRift = server.forgeGetWorldMap().get(ResourceKey.create(Registries.DIMENSION, id));
         return existingRift != null;
