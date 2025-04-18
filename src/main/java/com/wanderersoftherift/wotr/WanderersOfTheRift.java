@@ -23,14 +23,12 @@ import com.wanderersoftherift.wotr.init.ModModifierEffects;
 import com.wanderersoftherift.wotr.init.ModOngoingObjectiveTypes;
 import com.wanderersoftherift.wotr.init.ModOutputBlockStateTypes;
 import com.wanderersoftherift.wotr.init.ModProcessors;
-import com.wanderersoftherift.wotr.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import com.wanderersoftherift.wotr.init.ModSoundEvents;
-import com.wanderersoftherift.wotr.server.inventorySnapshot.InventorySnapshotSystem;
+import com.wanderersoftherift.wotr.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
@@ -44,9 +42,8 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
 @Mod(WanderersOfTheRift.MODID)
@@ -82,7 +79,8 @@ public class WanderersOfTheRift {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative); // Register the item to a creative tab
-        modEventBus.addListener(this::modInterop);
+        modEventBus.addListener(this::loadInterop);
+        modEventBus.addListener(this::registerInterop);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
@@ -120,8 +118,12 @@ public class WanderersOfTheRift {
         // Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
-    private void modInterop(final FMLCommonSetupEvent event) {
+    private void loadInterop(final FMLCommonSetupEvent event) {
         ModList.get().getModContainerById("sophisticatedbackpacks").ifPresent(x -> SophisticatedBackpackInterop.load());
+    }
+
+    public void registerInterop(RegisterEvent event) {
+        ModList.get().getModContainerById("sophisticatedbackpacks").ifPresent(x -> SophisticatedBackpackInterop.register(event));
     }
 
     @SubscribeEvent
@@ -133,20 +135,6 @@ public class WanderersOfTheRift {
         }
         new DebugCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
         new RiftKeyCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
-    }
-
-    @SubscribeEvent
-    private void onDropsFromDeath(LivingDropsEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            InventorySnapshotSystem.getInstance().retainSnapshotItemsOnDeath(player, event);
-        }
-    }
-
-    @SubscribeEvent
-    private void onPlayerDeath(PlayerEvent.PlayerRespawnEvent event) {
-        if (!event.isEndConquered() && event.getEntity() instanceof ServerPlayer player) {
-            InventorySnapshotSystem.getInstance().restoreItemsOnRespawn(player);
-        }
     }
 
     // Add the example block item to the building blocks tab

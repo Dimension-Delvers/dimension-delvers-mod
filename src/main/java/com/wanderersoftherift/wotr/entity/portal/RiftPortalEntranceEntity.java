@@ -12,42 +12,35 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.wanderersoftherift.wotr.core.rift.RiftLevelManager.isRiftExists;
+import static com.wanderersoftherift.wotr.core.rift.RiftLevelManager.levelExists;
 
 /**
  * This entity provides the entrance into a rift.
  */
-public class RiftPortalEntranceEntity extends Entity {
-    private static final String BILLBOARD = "billboard";
-    private static final EntityDataAccessor<Boolean> DATA_BILLBOARD = SynchedEntityData.defineId(RiftPortalEntranceEntity.class, EntityDataSerializers.BOOLEAN);
+public class RiftPortalEntranceEntity extends RiftPortalEntity {
     private static final EntityDataAccessor<ItemStack> DATA_RIFTKEY = SynchedEntityData.defineId(RiftPortalEntranceEntity.class, EntityDataSerializers.ITEM_STACK);
 
     private boolean generated = false;
     private ResourceLocation riftDimensionID = WanderersOfTheRift.id("rift_" + UUID.randomUUID());
 
-    public RiftPortalEntranceEntity(EntityType<?> entityType, Level level) {
+    public RiftPortalEntranceEntity(EntityType<? extends RiftPortalEntranceEntity> entityType, Level level) {
         super(entityType, level);
         blocksBuilding = true;
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_BILLBOARD, true).define(DATA_RIFTKEY, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(DATA_RIFTKEY, ItemStack.EMPTY);
     }
 
     public ResourceLocation getRiftDimensionID() {
@@ -68,23 +61,19 @@ public class RiftPortalEntranceEntity extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
-        if (level() instanceof ServerLevel serverLevel) {
-            for (Entity player : serverLevel.getEntities(this, makeBoundingBox(), x -> x instanceof ServerPlayer)) {
-                if (player instanceof ServerPlayer serverPlayer) {
-                        tpToRift(serverPlayer, serverLevel, blockPosition(), getRiftKey());
-                }
-            }
-            if(generated){
-                if(!isRiftExists(getRiftDimensionID())){
-                    this.remove(RemovalReason.DISCARDED);
-                }
+        if (generated) {
+            if (!levelExists(getRiftDimensionID())) {
+                this.remove(RemovalReason.DISCARDED);
+                return;
             }
         }
+        super.tick();
     }
 
-
-    private InteractionResult tpToRift(ServerPlayer player, ServerLevel level, BlockPos pos, ItemStack riftKey) {
+    @Override
+    protected void onPlayerInPortal(ServerPlayer player, ServerLevel level) {
+        BlockPos pos = blockPosition();
+        ItemStack riftKey = getRiftKey();
         ResourceLocation riftId = this.getRiftDimensionID();
         var plDir = player.getDirection().getOpposite();
         var axis = plDir.getAxis();
@@ -92,8 +81,8 @@ public class RiftPortalEntranceEntity extends Entity {
 
         ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos.relative(axis, 3 * axisDir), riftKey);
         if (lvl == null) {
-            player.displayClientMessage(Component.translatable(WanderersOfTheRift.MODID +".rift.create.failed"), true);
-            return InteractionResult.FAIL;
+            player.displayClientMessage(Component.translatable(WanderersOfTheRift.MODID + ".rift.create.failed"), true);
+            return;
         }
         this.setGenerated(true);
         RiftData.get(lvl).addPlayer(player.getUUID());
@@ -101,15 +90,13 @@ public class RiftPortalEntranceEntity extends Entity {
         var riftSpawnCoords = getRiftSpawnCoords();
 
         player.teleportTo(lvl, riftSpawnCoords.x, riftSpawnCoords.y, riftSpawnCoords.z, Set.of(), player.getYRot(), 0, false);
-        NeoForge.EVENT_BUS.post(new PlayerEvent.PlayerChangedDimensionEvent(player, level.dimension(), lvl.dimension()));
-        return InteractionResult.SUCCESS;
     }
 
-    private static Vec3 getRiftSpawnCoords(){
+    private static Vec3 getRiftSpawnCoords() {
         var random = new Random();
-        double x = random.nextDouble(2,4);
+        double x = random.nextDouble(2, 4);
         double y = 0;
-        double z = random.nextDouble(2,4);
+        double z = random.nextDouble(2, 4);
         if (random.nextBoolean()) {
             x = -x;
         }
@@ -121,40 +108,25 @@ public class RiftPortalEntranceEntity extends Entity {
     }
 
     @Override
-    public boolean hurtServer(@NotNull ServerLevel level, @NotNull DamageSource damageSource, float amount) {
-        return false;
-    }
-
-    @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        if (tag.contains(BILLBOARD)) {
-            setBillboard(tag.getBoolean(BILLBOARD));
-        }
+        super.readAdditionalSaveData(tag);
         if (tag.contains("riftKey")) {
             setRiftkey(ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("riftKey")));
         }
         if (tag.contains("riftDimensionID")) {
             setRiftDimensionID(ResourceLocation.parse(tag.getString("riftDimensionID")));
         }
-        if(tag.contains("generated")){
+        if (tag.contains("generated")) {
             generated = tag.getBoolean("generated");
         }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putBoolean(BILLBOARD, isBillboard());
+        super.addAdditionalSaveData(tag);
         tag.put("riftKey", getRiftKey().save(this.level().registryAccess(), new CompoundTag()));
         tag.putString("riftDimensionID", getRiftDimensionID().toString());
         tag.putBoolean("generated", generated);
-    }
-
-    public void setBillboard(boolean billboard) {
-        this.entityData.set(DATA_BILLBOARD, billboard);
-    }
-
-    public boolean isBillboard() {
-        return entityData.get(DATA_BILLBOARD);
     }
 
     public void setRiftkey(ItemStack key) {

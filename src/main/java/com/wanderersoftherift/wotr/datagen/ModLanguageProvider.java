@@ -48,6 +48,7 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(ModItems.RUNEGEM_GEODE, "Runegem Geode");
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
+        addEntityType(ModEntityTypes.RIFT_EXIT, "Rift Egress");
 
         addEssenceType("earth", "Earth");
         addEssenceType("life", "Life");
