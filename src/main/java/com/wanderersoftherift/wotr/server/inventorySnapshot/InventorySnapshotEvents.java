@@ -14,14 +14,14 @@ public class InventorySnapshotEvents {
     @SubscribeEvent
     private static void onDropsFromDeath(LivingDropsEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            InventorySnapshotSystem.getInstance().retainSnapshotItemsOnDeath(player, event);
+            InventorySnapshotSystem.retainSnapshotItemsOnDeath(player, event);
         }
     }
 
     @SubscribeEvent
     private static void onPlayerDeath(PlayerEvent.PlayerRespawnEvent event) {
         if (!event.isEndConquered() && event.getEntity() instanceof ServerPlayer player) {
-            InventorySnapshotSystem.getInstance().restoreItemsOnRespawn(player);
+            InventorySnapshotSystem.restoreItemsOnRespawn(player);
         }
     }
 
@@ -33,9 +33,9 @@ public class InventorySnapshotEvents {
         boolean fromRift = RiftData.isRift(level.getServer().getLevel(event.getFrom()));
         boolean toRift = RiftData.isRift(level.getServer().getLevel(event.getTo()));
         if (!fromRift && toRift) {
-            InventorySnapshotSystem.getInstance().captureSnapshot(serverPlayer);
+            InventorySnapshotSystem.captureSnapshot(serverPlayer);
         } else if (fromRift && !toRift) {
-            InventorySnapshotSystem.getInstance().clearSnapshot(serverPlayer);
+            InventorySnapshotSystem.clearSnapshot(serverPlayer);
         }
     }
 }

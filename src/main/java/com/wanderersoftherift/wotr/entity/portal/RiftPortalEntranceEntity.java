@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -62,19 +61,13 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
 
     @Override
     public void tick() {
-        super.tick();
-        if (level() instanceof ServerLevel serverLevel) {
-            for (Entity player : serverLevel.getEntities(this, makeBoundingBox(), x -> x instanceof ServerPlayer)) {
-                if (player instanceof ServerPlayer serverPlayer) {
-
-                }
-            }
-            if(generated){
-                if(!levelExists(getRiftDimensionID())){
-                    this.remove(RemovalReason.DISCARDED);
-                }
+        if (generated) {
+            if (!levelExists(getRiftDimensionID())) {
+                this.remove(RemovalReason.DISCARDED);
+                return;
             }
         }
+        super.tick();
     }
 
     @Override
@@ -88,7 +81,7 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
 
         ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos.relative(axis, 3 * axisDir), riftKey);
         if (lvl == null) {
-            player.displayClientMessage(Component.translatable(WanderersOfTheRift.MODID +".rift.create.failed"), true);
+            player.displayClientMessage(Component.translatable(WanderersOfTheRift.MODID + ".rift.create.failed"), true);
             return;
         }
         this.setGenerated(true);
@@ -99,11 +92,11 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
         player.teleportTo(lvl, riftSpawnCoords.x, riftSpawnCoords.y, riftSpawnCoords.z, Set.of(), player.getYRot(), 0, false);
     }
 
-    private static Vec3 getRiftSpawnCoords(){
+    private static Vec3 getRiftSpawnCoords() {
         var random = new Random();
-        double x = random.nextDouble(2,4);
+        double x = random.nextDouble(2, 4);
         double y = 0;
-        double z = random.nextDouble(2,4);
+        double z = random.nextDouble(2, 4);
         if (random.nextBoolean()) {
             x = -x;
         }
@@ -123,7 +116,7 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
         if (tag.contains("riftDimensionID")) {
             setRiftDimensionID(ResourceLocation.parse(tag.getString("riftDimensionID")));
         }
-        if(tag.contains("generated")){
+        if (tag.contains("generated")) {
             generated = tag.getBoolean("generated");
         }
     }
