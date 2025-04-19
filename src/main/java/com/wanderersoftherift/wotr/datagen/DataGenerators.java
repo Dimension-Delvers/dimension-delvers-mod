@@ -35,5 +35,6 @@ public class DataGenerators {
 
         event.createProvider(ModDataMapProvider::new);
         event.createProvider(ModSoundsProvider::new);
+        event.createProvider(ModRiftThemeRecipeProvider::new);
     }
 }

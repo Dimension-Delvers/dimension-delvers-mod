@@ -2,10 +2,13 @@ package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.item.implicit.ImplicitConfig;
+import com.wanderersoftherift.wotr.item.riftkey.ThemeRecipe;
 import com.wanderersoftherift.wotr.item.runegem.RunegemData;
 import com.wanderersoftherift.wotr.modifier.Modifier;
 import com.wanderersoftherift.wotr.modifier.effect.AbstractModifierEffect;
 import com.wanderersoftherift.wotr.world.level.levelgen.theme.RiftTheme;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
@@ -13,12 +16,17 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 @EventBusSubscriber(modid = WanderersOfTheRift.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class RegistryEvents {
+
+    public static final ResourceKey<Registry<ThemeRecipe>> RIFT_THEME_RECIPE = ResourceKey.createRegistryKey(WanderersOfTheRift.id("rift_theme_recipe"));
+
+
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
         event.register(ModModifierEffects.MODIFIER_TYPE_REGISTRY);
         event.register(ModInputBlockStateTypes.INPUT_BLOCKSTATE_TYPE_REGISTRY);
         event.register(ModOutputBlockStateTypes.OUTPUT_BLOCKSTATE_TYPE_REGISTRY);
         event.register(ModOngoingObjectiveTypes.ONGOING_OBJECTIVE_TYPE_REGISTRY);
+        event.register(ModContainerTypes.CONTAINER_TYPE_REGISTRY);
     }
 
     @SubscribeEvent
@@ -47,6 +55,11 @@ public class RegistryEvents {
                 ModDatapackRegistries.GEAR_IMPLICITS_CONFIG,
                 ImplicitConfig.CODEC,
                 ImplicitConfig.CODEC
+        );
+        event.dataPackRegistry(
+                RIFT_THEME_RECIPE,
+                ThemeRecipe.CODEC,
+                ThemeRecipe.CODEC
         );
     }
 }

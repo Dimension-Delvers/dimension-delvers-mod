@@ -48,11 +48,15 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(ModItems.RUNEGEM_GEODE, "Runegem Geode");
 
         addEntityType(ModEntityTypes.RIFT_ENTRANCE, "Rift Entrance");
+        addEntityType(ModEntityTypes.RIFT_EXIT, "Rift Egress");
 
         addEssenceType("earth", "Earth");
         addEssenceType("life", "Life");
         addEssenceType("water", "Water");
         addEssenceType("meat", "Meat");
+
+        addTheme("cave", "Cave");
+        addTheme("forest", "Forest");
 
         ModBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             //addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
@@ -90,9 +94,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("command." + WanderersOfTheRift.MODID + ".invalid_item", "Held item is empty!");
         add("command." + WanderersOfTheRift.MODID + ".invalid_player", "Player is null!");
         add("command." + WanderersOfTheRift.MODID + ".get_item_stack_components.success", "Item Components available for '%1$s'");
-        add("command." + WanderersOfTheRift.MODID + ".rift_key.theme.success", "Rift key theme set to '%1$s'");
-        add("command." + WanderersOfTheRift.MODID + ".rift_key.tier.success", "Rift key tier set to '%1$s'");
-        add("command." + WanderersOfTheRift.MODID + ".rift_key.seed.success", "Rift key seed set to '%1$s'");
+        add("command." + WanderersOfTheRift.MODID + ".rift_key.success", "Rift key configured");
+        add("command." + WanderersOfTheRift.MODID + ".invalid_theme", "Invalid theme '%s'");
         add("command." + WanderersOfTheRift.MODID + ".rift_key.invalid_item", "You must hold a rift key in your hand!");
 
         add("accessibility." + WanderersOfTheRift.MODID + ".screen.title", "Dimension Delvers: Accessibility Settings");
@@ -115,6 +118,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("command." + WanderersOfTheRift.MODID + ".spawn_piece.generating", "Generating %s");
 
         add("tooltip." + WanderersOfTheRift.MODID + ".rift_key_tier", "Rift Tier: %s");
+        add("tooltip." + WanderersOfTheRift.MODID + ".rift_key_theme", "Rift Theme: %s");
         add("tooltip." + WanderersOfTheRift.MODID + ".essence_value", "Essence: %s %s");
         add("tooltip." + WanderersOfTheRift.MODID + ".essence_header", "Essence:");
         add("tooltip." + WanderersOfTheRift.MODID + ".socket", "Sockets: ");
@@ -133,6 +137,10 @@ public class ModLanguageProvider extends LanguageProvider {
 
     private void addEssenceType(String id, String value) {
         add(EssenceValue.ESSENCE_TYPE_PREFIX + "." + WanderersOfTheRift.MODID + "." + id, value);
+    }
+
+    private void addTheme(String id, String value) {
+        add("rift_theme." + WanderersOfTheRift.MODID + "." + id, value);
     }
 
     private static @NotNull String getTranslationString(Block block) {

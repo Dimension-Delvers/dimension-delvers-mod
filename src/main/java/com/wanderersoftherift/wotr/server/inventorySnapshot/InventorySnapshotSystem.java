@@ -1,8 +1,14 @@
 package com.wanderersoftherift.wotr.server.inventorySnapshot;
 
 import com.wanderersoftherift.wotr.init.ModAttachments;
+import com.wanderersoftherift.wotr.init.ModContainerTypes;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
-import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.*;
+import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.ContainerItemWrapper;
+import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.ContainerType;
+import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.ContainerWrapper;
+import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.DirectContainerItemWrapper;
+import com.wanderersoftherift.wotr.server.inventorySnapshot.containers.NonContainerWrapper;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -31,33 +37,19 @@ import java.util.UUID;
  * not vary in a non-comparable manner.
  * </p>
  */
-public class InventorySnapshotSystem {
+public final class InventorySnapshotSystem {
 
     private static final DataComponentPatch REMOVE_SNAPSHOT_ID_PATCH = DataComponentPatch.builder().remove(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get()).build();
 
-    private static final InventorySnapshotSystem instance = new InventorySnapshotSystem();
-
-    private final List<ContainerType> containerStrategies = new ArrayList<>();
-
-    public static InventorySnapshotSystem getInstance() {
-        return instance;
-    }
-
     private InventorySnapshotSystem() {
-        containerStrategies.add(new ComponentContainerType());
-        containerStrategies.add(new BundleContainerType());
-    }
-
-    public void registerContainerStrategy(ContainerType strategy) {
-        containerStrategies.add(strategy);
     }
 
     /**
      * Generates a snapshot for the given player
      *
-     * @param player
+     * @param player The player to generate a snapshot for
      */
-    public void captureSnapshot(ServerPlayer player) {
+    public static void captureSnapshot(ServerPlayer player) {
         clearItemIds(player);
         player.setData(ModAttachments.INVENTORY_SNAPSHOT, new InventorySnapshotBuilder(player).build());
     }
@@ -65,9 +57,9 @@ public class InventorySnapshotSystem {
     /**
      * Clears any snapshot on the player
      *
-     * @param player
+     * @param player The player to remove the snapshot from
      */
-    public void clearSnapshot(ServerPlayer player) {
+    public static void clearSnapshot(ServerPlayer player) {
         clearItemIds(player);
         player.setData(ModAttachments.INVENTORY_SNAPSHOT, new InventorySnapshot());
     }
@@ -79,7 +71,7 @@ public class InventorySnapshotSystem {
      * @param player
      * @param event
      */
-    public void retainSnapshotItemsOnDeath(ServerPlayer player, LivingDropsEvent event) {
+    public static void retainSnapshotItemsOnDeath(ServerPlayer player, LivingDropsEvent event) {
         InventorySnapshot snapshot = player.getData(ModAttachments.INVENTORY_SNAPSHOT);
         if (snapshot.isEmpty()) {
             return;
@@ -98,7 +90,7 @@ public class InventorySnapshotSystem {
      *
      * @param player
      */
-    public void restoreItemsOnRespawn(ServerPlayer player) {
+    public static void restoreItemsOnRespawn(ServerPlayer player) {
         for (ItemStack item : player.getData(ModAttachments.RESPAWN_ITEMS)) {
             if (!player.getInventory().add(item)) {
                 item.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
@@ -109,12 +101,12 @@ public class InventorySnapshotSystem {
         clearItemIds(player);
     }
 
-    public final class InventorySnapshotBuilder {
+    private static final class InventorySnapshotBuilder {
+        private final Registry<ContainerType> containerTypes;
+        private final UUID snapshotId = UUID.randomUUID();
+        private final List<ItemStack> items = new ArrayList<>();
 
-        private UUID snapshotId = UUID.randomUUID();
-        private List<ItemStack> items = new ArrayList<>();
-
-        private DataComponentPatch addSnapshotIdPatch = DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), snapshotId).build();
+        private final DataComponentPatch addSnapshotIdPatch = DataComponentPatch.builder().set(ModDataComponentType.INVENTORY_SNAPSHOT_ID.get(), snapshotId).build();
 
         /**
          * Generates an InventorySnapshot for a player's inventory
@@ -123,6 +115,7 @@ public class InventorySnapshotSystem {
          * @return A new InventorySnapshot
          */
         public InventorySnapshotBuilder(ServerPlayer player) {
+            containerTypes = player.level().registryAccess().lookupOrThrow(ModContainerTypes.CONTAINER_TYPE_KEY);
             for (ItemStack item : player.getInventory().items) {
                 captureItem(new DirectContainerItemWrapper(item));
             }
@@ -146,7 +139,7 @@ public class InventorySnapshotSystem {
             } else {
                 containerItem.applyComponents(addSnapshotIdPatch);
 
-                for (ContainerItemWrapper content : getContents(item)) {
+                for (ContainerItemWrapper content : getContents(containerTypes, item)) {
                     captureItem(content);
                 }
             }
@@ -154,7 +147,9 @@ public class InventorySnapshotSystem {
 
     }
 
-    private final class RespawnItemsCalculator {
+    private static final class RespawnItemsCalculator {
+        private final Registry<ContainerType> containerTypes;
+
         private final List<ItemStack> retainItems = new ArrayList<>();
         private final List<ItemEntity> dropItems = new ArrayList<>();
 
@@ -164,6 +159,7 @@ public class InventorySnapshotSystem {
 
         public RespawnItemsCalculator(ServerPlayer player, InventorySnapshot snapshot, Collection<ItemEntity> heldItems) {
             this.player = player;
+            this.containerTypes = player.level().registryAccess().lookupOrThrow(ModContainerTypes.CONTAINER_TYPE_KEY);
             this.snapshotItems = new ArrayList<>(snapshot.items());
             this.snapshotId = snapshot.id();
             processInventoryItems(heldItems);
@@ -184,7 +180,7 @@ public class InventorySnapshotSystem {
                 } else {
                     boolean retainItem = shouldRetainNonStackable(item);
 
-                    ContainerWrapper contents = getContents(item);
+                    ContainerWrapper contents = getContents(containerTypes, item);
                     for (ContainerItemWrapper content : contents) {
                         processContainerItem(content, retainItem);
                     }
@@ -223,7 +219,7 @@ public class InventorySnapshotSystem {
             } else {
                 boolean retainItem = shouldRetainNonStackable(item);
 
-                ContainerWrapper contents = getContents(item);
+                ContainerWrapper contents = getContents(containerTypes, item);
                 for (ContainerItemWrapper content : contents) {
                     processContainerItem(content, retainItem);
                 }
@@ -274,23 +270,24 @@ public class InventorySnapshotSystem {
      *
      * @param player
      */
-    private void clearItemIds(ServerPlayer player) {
+    private static void clearItemIds(ServerPlayer player) {
+        Registry<ContainerType> containerTypes = player.getServer().registryAccess().lookupOrThrow(ModContainerTypes.CONTAINER_TYPE_KEY);
         for (ItemStack item : player.getInventory().items) {
-            clearItemIds(new DirectContainerItemWrapper(item));
+            clearItemIds(containerTypes, new DirectContainerItemWrapper(item));
         }
         for (ItemStack item : player.getInventory().armor) {
-            clearItemIds(new DirectContainerItemWrapper(item));
+            clearItemIds(containerTypes, new DirectContainerItemWrapper(item));
         }
         for (ItemStack item : player.getInventory().offhand) {
-            clearItemIds(new DirectContainerItemWrapper(item));
+            clearItemIds(containerTypes, new DirectContainerItemWrapper(item));
         }
     }
 
-    private void clearItemIds(ContainerItemWrapper item) {
+    private static void clearItemIds(Registry<ContainerType> containerTypes, ContainerItemWrapper item) {
         item.applyComponents(REMOVE_SNAPSHOT_ID_PATCH);
-        ContainerWrapper contents = getContents(item.getReadOnlyItemStack());
+        ContainerWrapper contents = getContents(containerTypes, item.getReadOnlyItemStack());
         for (ContainerItemWrapper content : contents) {
-            clearItemIds(content);
+            clearItemIds(containerTypes, content);
         }
         contents.recordChanges();
     }
@@ -299,13 +296,12 @@ public class InventorySnapshotSystem {
      * @param itemStack An item stack (that may or may not be a container)
      * @return An iterable over the contents of the given itemStack, if any
      */
-    private ContainerWrapper getContents(ItemStack itemStack) {
-        for (ContainerType strategy : containerStrategies) {
-            if (strategy.isContainer(itemStack)) {
-                return strategy.getWrapper(itemStack);
-            }
-        }
-        return NonContainerWrapper.INSTANCE;
+    private static ContainerWrapper getContents(Registry<ContainerType> containerTypes, ItemStack itemStack) {
+        return containerTypes.stream()
+                .filter(type -> type.isContainer(itemStack))
+                .findAny()
+                .map(strategy -> strategy.getWrapper(itemStack))
+                .orElse(NonContainerWrapper.INSTANCE);
     }
 
 }
