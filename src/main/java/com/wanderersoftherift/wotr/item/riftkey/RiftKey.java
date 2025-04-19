@@ -82,7 +82,9 @@ public class RiftKey extends Item {
         rift.setPos(pos);
         rift.setYRot(dir.toYRot());
         rift.setBillboard(dir.getAxis().isVertical());
-        rift.setRiftkey(riftKey);
+        if (riftKey.has(ModDataComponentType.RIFT_CONFIG)) {
+            rift.setRiftConfig(riftKey.get(ModDataComponentType.RIFT_CONFIG));
+        }
         level.addFreshEntity(rift);
         rift.playSound(ModSoundEvents.RIFT_OPEN.value());
     }

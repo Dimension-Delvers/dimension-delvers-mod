@@ -35,16 +35,16 @@ public class RiftKeyCommands extends BaseCommand {
         String themeArg = "theme";
         String tierArg = "tier";
         String seedArg = "seed";
-        builder.then(Commands.literal("theme").then(Commands.argument(themeArg, ResourceKeyArgument.key(ModRiftThemes.RIFT_THEME_KEY))
-                .executes(ctx -> configKey(ctx, ResourceKeyArgument.resolveKey(ctx, themeArg, ModRiftThemes.RIFT_THEME_KEY, ERROR_INVALID_THEME), 1, null))
-                .then(Commands.literal("tier").then(Commands.argument(tierArg, IntegerArgumentType.integer(0, 7))
-                        .executes(ctx -> configKey(ctx, ResourceKeyArgument.resolveKey(ctx, themeArg, ModRiftThemes.RIFT_THEME_KEY, ERROR_INVALID_THEME), IntegerArgumentType.getInteger(ctx, tierArg), null))
+        builder.then(Commands.literal("tier").then(Commands.argument(tierArg, IntegerArgumentType.integer(0, 7))
+                .executes(ctx -> configKey(ctx, IntegerArgumentType.getInteger(ctx, tierArg), null, null))
+                .then(Commands.literal("theme").then(Commands.argument(themeArg, ResourceKeyArgument.key(ModRiftThemes.RIFT_THEME_KEY))
+                        .executes(ctx -> configKey(ctx, IntegerArgumentType.getInteger(ctx, tierArg), ResourceKeyArgument.resolveKey(ctx, themeArg, ModRiftThemes.RIFT_THEME_KEY, ERROR_INVALID_THEME), null))
                         .then(Commands.literal("seed").then(Commands.argument(seedArg, IntegerArgumentType.integer())
-                                .executes(ctx -> configKey(ctx, ResourceKeyArgument.resolveKey(ctx, themeArg, ModRiftThemes.RIFT_THEME_KEY, ERROR_INVALID_THEME), IntegerArgumentType.getInteger(ctx, tierArg), IntegerArgumentType.getInteger(ctx, seedArg)))
+                                .executes(ctx -> configKey(ctx, IntegerArgumentType.getInteger(ctx, tierArg), ResourceKeyArgument.resolveKey(ctx, themeArg, ModRiftThemes.RIFT_THEME_KEY, ERROR_INVALID_THEME), IntegerArgumentType.getInteger(ctx, seedArg)))
                         ))))));
     }
 
-    private int configKey(CommandContext<CommandSourceStack> context, Holder<RiftTheme> theme, int tier, Integer seed) {
+    private int configKey(CommandContext<CommandSourceStack> context, int tier, Holder<RiftTheme> theme, Integer seed) {
         ServerPlayer player = context.getSource().getPlayer();
         if (player != null) {
             ItemStack heldItem = player.getMainHandItem();
@@ -54,7 +54,7 @@ public class RiftKeyCommands extends BaseCommand {
                 return 0;
             }
 
-            RiftConfig config = new RiftConfig(tier, theme, Optional.ofNullable(seed));
+            RiftConfig config = new RiftConfig(tier, Optional.ofNullable(theme), Optional.ofNullable(seed));
 
             heldItem.set(ModDataComponentType.RIFT_CONFIG, config);
             context.getSource().sendSuccess(() -> Component.translatable("command.wotr.rift_key.success"), true);

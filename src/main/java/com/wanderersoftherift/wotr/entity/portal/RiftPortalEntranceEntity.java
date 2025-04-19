@@ -3,18 +3,18 @@ package com.wanderersoftherift.wotr.entity.portal;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.core.rift.RiftData;
 import com.wanderersoftherift.wotr.core.rift.RiftLevelManager;
-import com.wanderersoftherift.wotr.init.ModDataComponentType;
+import com.wanderersoftherift.wotr.init.ModEntityDataSerializers;
+import com.wanderersoftherift.wotr.item.riftkey.RiftConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -28,7 +28,7 @@ import static com.wanderersoftherift.wotr.core.rift.RiftLevelManager.levelExists
  * This entity provides the entrance into a rift.
  */
 public class RiftPortalEntranceEntity extends RiftPortalEntity {
-    private static final EntityDataAccessor<ItemStack> DATA_RIFTKEY = SynchedEntityData.defineId(RiftPortalEntranceEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<RiftConfig> DATA_RIFT_CONFIG = SynchedEntityData.defineId(RiftPortalEntranceEntity.class, ModEntityDataSerializers.RIFT_CONFIG_SERIALIZER.get());
 
     private boolean generated = false;
     private ResourceLocation riftDimensionID = WanderersOfTheRift.id("rift_" + UUID.randomUUID());
@@ -41,7 +41,7 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_RIFTKEY, ItemStack.EMPTY);
+        builder.define(DATA_RIFT_CONFIG, new RiftConfig(0));
     }
 
     public ResourceLocation getRiftDimensionID() {
@@ -74,13 +74,12 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
     @Override
     protected void onPlayerInPortal(ServerPlayer player, ServerLevel level) {
         BlockPos pos = blockPosition();
-        ItemStack riftKey = getRiftKey();
         ResourceLocation riftId = this.getRiftDimensionID();
         var plDir = player.getDirection().getOpposite();
         var axis = plDir.getAxis();
         var axisDir = plDir.getAxisDirection().getStep();
 
-        ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos.relative(axis, 3 * axisDir), riftKey.get(ModDataComponentType.RIFT_CONFIG));
+        ServerLevel lvl = RiftLevelManager.getOrCreateRiftLevel(riftId, level.dimension(), pos.relative(axis, 3 * axisDir), getRiftConfig());
         if (lvl == null) {
             player.displayClientMessage(Component.translatable(WanderersOfTheRift.MODID + ".rift.create.failed"), true);
             return;
@@ -111,8 +110,9 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("riftKey")) {
-            setRiftkey(ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("riftKey")));
+        if (tag.contains("riftConfig")) {
+            setRiftConfig(RiftConfig.CODEC.parse(this.level().registryAccess().createSerializationContext(NbtOps.INSTANCE), tag.getCompound("riftConfig"))
+                    .resultOrPartial(x -> WanderersOfTheRift.LOGGER.error("Tried to load invalid rift config: '{}'", x)).orElse(new RiftConfig(0)));
         }
         if (tag.contains("riftDimensionID")) {
             setRiftDimensionID(ResourceLocation.parse(tag.getString("riftDimensionID")));
@@ -125,17 +125,17 @@ public class RiftPortalEntranceEntity extends RiftPortalEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("riftKey", getRiftKey().save(this.level().registryAccess(), new CompoundTag()));
+        tag.put("riftConfig", RiftConfig.CODEC.encode(getRiftConfig(), this.level().registryAccess().createSerializationContext(NbtOps.INSTANCE), tag).getOrThrow());
         tag.putString("riftDimensionID", getRiftDimensionID().toString());
         tag.putBoolean("generated", generated);
     }
 
-    public void setRiftkey(ItemStack key) {
-        this.entityData.set(DATA_RIFTKEY, key.copy());
+    public void setRiftConfig(RiftConfig config) {
+        this.entityData.set(DATA_RIFT_CONFIG, config);
     }
 
-    public ItemStack getRiftKey() {
-        return entityData.get(DATA_RIFTKEY);
+    public RiftConfig getRiftConfig() {
+        return entityData.get(DATA_RIFT_CONFIG);
     }
 
 }

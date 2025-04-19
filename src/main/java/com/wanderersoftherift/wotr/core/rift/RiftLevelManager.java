@@ -240,7 +240,7 @@ public class RiftLevelManager {
         Holder<RiftTheme> riftTheme;
         int maxDepth;
         if (config != null) {
-            riftTheme = config.theme();
+            riftTheme = config.theme().orElse(LevelRiftThemeData.getRandomTheme(riftLevel));
             maxDepth = getRiftSize(config.tier());
         } else {
             riftTheme = LevelRiftThemeData.getRandomTheme(riftLevel);
