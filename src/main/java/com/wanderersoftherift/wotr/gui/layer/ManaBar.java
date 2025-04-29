@@ -2,6 +2,7 @@ package com.wanderersoftherift.wotr.gui.layer;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.attachment.ManaData;
+import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.ModAttributes;
 import com.wanderersoftherift.wotr.util.GuiUtil;
@@ -31,8 +32,6 @@ public class ManaBar implements LayeredDraw.Layer {
     private static final int MANA_PER_SECTION = 10;
     private static final int SECTION_HEIGHT = 7;
 
-    private static final int BAR_OFFSET_X = 21;
-    private static final int BAR_OFFSET_Y = 0;
     private static final int BAR_WIDTH = 5;
     private static final int FILL_WIDTH = 3;
     private static final int TOP_HEIGHT = 1;
@@ -57,6 +56,8 @@ public class ManaBar implements LayeredDraw.Layer {
             return;
         }
 
+        Vector2i pos = getPosition(maxMana, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+
         animCounter += deltaTracker.getGameTimeDeltaPartialTick(true);
         while (animCounter > TICKS_PER_FRAME * NUM_FRAMES) {
             animCounter -= TICKS_PER_FRAME * NUM_FRAMES;
@@ -65,15 +66,22 @@ public class ManaBar implements LayeredDraw.Layer {
 
         ManaData mana = player.getData(ModAttachments.MANA);
 
-        int height = renderBar(guiGraphics, mana.getAmount(), maxMana, frame);
+        int height = renderBar(guiGraphics, pos, mana.getAmount(), maxMana, frame);
         if (!minecraft.mouseHandler.isMouseGrabbed()) {
             Vector2i mousePos = GuiUtil.getMouseScreenPosition();
-            renderTooltips(guiGraphics, mana.getAmount(), maxMana, height, mousePos.x, mousePos.y);
+            renderTooltips(guiGraphics, pos, mana.getAmount(), maxMana, height, mousePos.x, mousePos.y);
         }
     }
 
-    private void renderTooltips(@NotNull GuiGraphics graphics, int amount, int maxMana, int barHeight, int x, int y) {
-        if (x < BAR_OFFSET_X || x >= BAR_OFFSET_X + BAR_WIDTH || y < BAR_OFFSET_Y || y >= BAR_OFFSET_Y + barHeight) {
+    private void renderTooltips(
+            @NotNull GuiGraphics graphics,
+            Vector2i pos,
+            int amount,
+            int maxMana,
+            int barHeight,
+            int x,
+            int y) {
+        if (x < pos.x || x >= pos.x + BAR_WIDTH || y < pos.y || y >= pos.y + barHeight) {
             return;
         }
         graphics.renderComponentTooltip(
@@ -82,11 +90,11 @@ public class ManaBar implements LayeredDraw.Layer {
                 x, y + 8);
     }
 
-    private int renderBar(GuiGraphics graphics, int amount, int maxMana, int frame) {
+    private int renderBar(GuiGraphics graphics, Vector2i pos, int amount, int maxMana, int frame) {
         float rawSectionCount = (float) maxMana / MANA_PER_SECTION;
         int sectionCount = (int) rawSectionCount;
 
-        int yOffset = BAR_OFFSET_Y;
+        int yOffset = pos.y;
         int topSectionSize;
         if (maxMana == sectionCount * MANA_PER_SECTION) {
             sectionCount -= 1;
@@ -97,40 +105,62 @@ public class ManaBar implements LayeredDraw.Layer {
 
         int topSectionFill = topSectionSize * Math.max(0, amount - (sectionCount * MANA_PER_SECTION))
                 / (maxMana - sectionCount * MANA_PER_SECTION);
-        yOffset += renderTopSection(graphics, frame, sectionCount % FILL_VARIANTS, yOffset, topSectionSize,
+        yOffset += renderTopSection(graphics, frame, sectionCount % FILL_VARIANTS, pos.x, yOffset, topSectionSize,
                 topSectionFill);
 
         for (int i = 0; i < sectionCount; i++) {
             int fill = SECTION_HEIGHT
                     * Math.clamp(0, MANA_PER_SECTION, amount - (sectionCount - i - 1) * MANA_PER_SECTION)
                     / MANA_PER_SECTION;
-            yOffset += renderSection(graphics, frame, (sectionCount - 1 - i) % FILL_VARIANTS, yOffset, fill);
+            yOffset += renderSection(graphics, frame, (sectionCount - 1 - i) % FILL_VARIANTS, pos.x, yOffset, fill);
         }
-        graphics.blit(RenderType::guiTextured, TEXTURE, BAR_OFFSET_X, yOffset, 0, TEXTURE_HEIGHT - BOTTOM_HEIGHT,
-                BAR_WIDTH, BOTTOM_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        return yOffset - BAR_OFFSET_Y;
+        graphics.blit(RenderType::guiTextured, TEXTURE, pos.x, yOffset, 0, TEXTURE_HEIGHT - BOTTOM_HEIGHT, BAR_WIDTH,
+                BOTTOM_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        return yOffset - pos.y;
     }
 
-    private int renderSection(GuiGraphics graphics, int frame, int variant, int yOffset, int fill) {
-        graphics.blit(RenderType::guiTextured, TEXTURE, BAR_OFFSET_X, yOffset, 0, SECTION_HEIGHT, BAR_WIDTH,
-                SECTION_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    private int renderSection(GuiGraphics graphics, int frame, int variant, int xOffset, int yOffset, int fill) {
+        graphics.blit(RenderType::guiTextured, TEXTURE, xOffset, yOffset, 0, SECTION_HEIGHT, BAR_WIDTH, SECTION_HEIGHT,
+                TEXTURE_WIDTH, TEXTURE_HEIGHT);
         if (fill > 0) {
-            graphics.blit(RenderType::guiTextured, TEXTURE, BAR_OFFSET_X + FILL_X_OFFSET,
-                    yOffset + SECTION_HEIGHT - fill, BAR_WIDTH + frame * FILL_WIDTH,
-                    SECTION_HEIGHT - fill + SECTION_HEIGHT * variant, FILL_WIDTH, fill, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            graphics.blit(RenderType::guiTextured, TEXTURE, xOffset + FILL_X_OFFSET, yOffset + SECTION_HEIGHT - fill,
+                    BAR_WIDTH + frame * FILL_WIDTH, SECTION_HEIGHT - fill + SECTION_HEIGHT * variant, FILL_WIDTH, fill,
+                    TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
         return SECTION_HEIGHT;
     }
 
-    private int renderTopSection(GuiGraphics graphics, int frame, int variant, int yOffset, int size, int fill) {
-        graphics.blit(RenderType::guiTextured, TEXTURE, BAR_OFFSET_X, yOffset, 0, 0, BAR_WIDTH, 1 + size, TEXTURE_WIDTH,
+    private int renderTopSection(
+            GuiGraphics graphics,
+            int frame,
+            int variant,
+            int xOffset,
+            int yOffset,
+            int size,
+            int fill) {
+        graphics.blit(RenderType::guiTextured, TEXTURE, xOffset, yOffset, 0, 0, BAR_WIDTH, 1 + size, TEXTURE_WIDTH,
                 TEXTURE_HEIGHT);
         if (fill > 0) {
-            graphics.blit(RenderType::guiTextured, TEXTURE, BAR_OFFSET_X + FILL_X_OFFSET,
-                    yOffset + TOP_HEIGHT + size - fill, BAR_WIDTH + frame * FILL_WIDTH,
-                    TOP_HEIGHT + size - fill + SECTION_HEIGHT * variant, FILL_WIDTH, fill, TEXTURE_WIDTH,
-                    TEXTURE_HEIGHT);
+            graphics.blit(RenderType::guiTextured, TEXTURE, xOffset + FILL_X_OFFSET, yOffset + TOP_HEIGHT + size - fill,
+                    BAR_WIDTH + frame * FILL_WIDTH, TOP_HEIGHT + size - fill + SECTION_HEIGHT * variant, FILL_WIDTH,
+                    fill, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
         return size + TOP_HEIGHT;
+    }
+
+    private Vector2i getPosition(int maxMana, int screenWidth, int screenHeight) {
+        float rawSectionCount = (float) maxMana / MANA_PER_SECTION;
+        int sectionCount = (int) rawSectionCount;
+
+        int topSectionSize;
+        if (maxMana == sectionCount * MANA_PER_SECTION) {
+            topSectionSize = SECTION_HEIGHT - 1;
+        } else {
+            topSectionSize = (int) ((rawSectionCount - Math.floor(rawSectionCount)) * (SECTION_HEIGHT - 1));
+        }
+
+        return ClientConfig.MANA_BAR_POSITION.get()
+                .getPos(ClientConfig.MANA_BAR_X.get().intValue(), ClientConfig.MANA_BAR_Y.get().intValue(), BAR_WIDTH,
+                        topSectionSize + sectionCount * SECTION_HEIGHT + BOTTOM_HEIGHT, screenWidth, screenHeight);
     }
 }

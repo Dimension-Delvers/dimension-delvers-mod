@@ -5,6 +5,7 @@ import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.abilities.attachment.AbilitySlots;
 import com.wanderersoftherift.wotr.abilities.attachment.PlayerCooldownData;
+import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.client.ModKeybinds;
 import com.wanderersoftherift.wotr.util.GuiUtil;
@@ -41,8 +42,6 @@ public final class AbilityBar implements LayeredDraw.Layer {
     private static final int BACKGROUND_WIDTH = 24;
     private static final int BACKGROUND_HEIGHT = 60;
 
-    private static final int BAR_OFFSET_X = -4;
-    private static final int BAR_OFFSET_Y = -4;
     private static final int ABILITY_OFFSET_X = 4;
     private static final int ABILITY_START_OFFSET_Y = 4;
     private static final int ABILITY_OFFSET_Y = 2;
@@ -63,26 +62,30 @@ public final class AbilityBar implements LayeredDraw.Layer {
         }
         PlayerCooldownData cooldowns = player.getData(ABILITY_COOLDOWNS);
 
-        renderBackground(graphics, abilitySlots);
-        renderAbilities(graphics, abilitySlots, cooldowns);
-        renderAbilityKeyBinds(graphics);
+        Vector2i pos = getPosition(abilitySlots.getSlots(), graphics.guiWidth(), graphics.guiHeight());
+
+        renderBackground(graphics, pos, abilitySlots);
+        renderAbilities(graphics, pos, abilitySlots, cooldowns);
+        renderAbilityKeyBinds(graphics, pos, abilitySlots);
 
         if (!minecraft.mouseHandler.isMouseGrabbed()) {
             Vector2i mouseScreenPos = GuiUtil.getMouseScreenPosition();
-            renderTooltips(graphics, deltaTracker, abilitySlots, mouseScreenPos.x, mouseScreenPos.y);
+            renderTooltips(graphics, pos, deltaTracker, abilitySlots, mouseScreenPos.x, mouseScreenPos.y);
         }
     }
 
     private void renderTooltips(
             @NotNull GuiGraphics graphics,
+            Vector2i pos,
             @NotNull DeltaTracker deltaTracker,
             AbilitySlots abilitySlots,
             int x,
             int y) {
-        if (x < BAR_OFFSET_X + ABILITY_OFFSET_X || x >= BAR_OFFSET_X + ABILITY_OFFSET_X + ICON_SIZE) {
+
+        if (x < pos.x + ABILITY_OFFSET_X || x >= pos.x + ABILITY_OFFSET_X + ICON_SIZE) {
             return;
         }
-        int yOffset = BAR_OFFSET_Y + ABILITY_START_OFFSET_Y;
+        int yOffset = pos.y + ABILITY_START_OFFSET_Y;
 
         int slot = (y - yOffset) / SLOT_HEIGHT;
         if (slot >= abilitySlots.getSlots()) {
@@ -98,34 +101,39 @@ public final class AbilityBar implements LayeredDraw.Layer {
         graphics.renderComponentTooltip(Minecraft.getInstance().font, List.of(ability.getDisplayName()), x, y + 8);
     }
 
-    private void renderAbilities(GuiGraphics graphics, AbilitySlots abilitySlots, PlayerCooldownData cooldowns) {
-        int yOffset = BAR_OFFSET_Y + ABILITY_START_OFFSET_Y;
+    private void renderAbilities(
+            GuiGraphics graphics,
+            Vector2i pos,
+            AbilitySlots abilitySlots,
+            PlayerCooldownData cooldowns) {
+
+        int yOffset = pos.y + ABILITY_START_OFFSET_Y;
         for (int slot = 0; slot < abilitySlots.getSlots(); slot++) {
             AbstractAbility ability = abilitySlots.getAbilityInSlot(slot);
             if (ability != null) {
-                graphics.blit(RenderType::guiTextured, ability.getIcon(), BAR_OFFSET_X + ABILITY_OFFSET_X,
+                graphics.blit(RenderType::guiTextured, ability.getIcon(), pos.x + ABILITY_OFFSET_X,
                         yOffset + slot * SLOT_HEIGHT, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
             }
 
             if (cooldowns.isOnCooldown(slot) && cooldowns.getLastCooldownValue(slot) > 0) {
                 int overlayHeight = Math.clamp((int) (Math.ceil((float) ICON_SIZE * cooldowns.getCooldownRemaining(slot)
                         / cooldowns.getLastCooldownValue(slot))), 1, ICON_SIZE);
-                graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, BAR_OFFSET_X + ABILITY_OFFSET_X,
+                graphics.blit(RenderType::guiTextured, COOLDOWN_OVERLAY, pos.x + ABILITY_OFFSET_X,
                         yOffset + slot * SLOT_HEIGHT + ICON_SIZE - overlayHeight, 0, 0, ICON_SIZE, overlayHeight,
                         ICON_SIZE, ICON_SIZE);
             }
         }
         int selected = abilitySlots.getSelectedSlot();
-        graphics.blit(RenderType::guiTextured, SELECTED_OVERLAY, BAR_OFFSET_X + ABILITY_OFFSET_X - 6,
+        graphics.blit(RenderType::guiTextured, SELECTED_OVERLAY, pos.x + ABILITY_OFFSET_X - 6,
                 yOffset + selected * SLOT_HEIGHT - 3, 0, 0, 28, 22, 28, 22);
     }
 
-    private void renderAbilityKeyBinds(GuiGraphics graphics) {
+    private void renderAbilityKeyBinds(GuiGraphics graphics, Vector2i pos, AbilitySlots slots) {
         Font font = Minecraft.getInstance().font;
-        int yOffset = BAR_OFFSET_Y + ABILITY_START_OFFSET_Y;
+        int yOffset = pos.y + ABILITY_START_OFFSET_Y;
         graphics.pose().pushPose();
         float inverseScale = 1.0f;
-        for (int slot = 0; slot < ModKeybinds.ABILITY_SLOT_KEYS.size(); slot++) {
+        for (int slot = 0; slot < ModKeybinds.ABILITY_SLOT_KEYS.size() && slot < slots.getSlots(); slot++) {
             if (ModKeybinds.ABILITY_SLOT_KEYS.get(slot).isUnbound()) {
                 continue;
             }
@@ -136,7 +144,7 @@ public final class AbilityBar implements LayeredDraw.Layer {
                 keyTextWidth = font.width(keyText);
             }
             graphics.drawString(font, keyText,
-                    (int) (inverseScale * (BAR_OFFSET_X + ABILITY_OFFSET_X + ICON_SIZE)) - keyTextWidth,
+                    (int) (inverseScale * (pos.x + ABILITY_OFFSET_X + ICON_SIZE)) - keyTextWidth,
                     (int) (inverseScale * (yOffset + (slot + 1) * SLOT_HEIGHT - 1)) - font.lineHeight,
                     ChatFormatting.WHITE.getColor());
         }
@@ -175,21 +183,27 @@ public final class AbilityBar implements LayeredDraw.Layer {
         return keyMapping.getKey().getDisplayName();
     }
 
-    private void renderBackground(GuiGraphics graphics, AbilitySlots abilitySlots) {
-        int yOffset = BAR_OFFSET_Y;
+    private void renderBackground(GuiGraphics graphics, Vector2i pos, AbilitySlots abilitySlots) {
+        int yOffset = pos.y;
         for (int i = 0; i < abilitySlots.getSlots(); i++) {
             if (i == 0) {
-                graphics.blit(RenderType::guiTextured, BACKGROUND, BAR_OFFSET_X, yOffset, 0, 0, 24, 20,
-                        BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+                graphics.blit(RenderType::guiTextured, BACKGROUND, pos.x, yOffset, 0, 0, 24, 20, BACKGROUND_WIDTH,
+                        BACKGROUND_HEIGHT);
                 yOffset += 20;
             } else {
-                graphics.blit(RenderType::guiTextured, BACKGROUND, BAR_OFFSET_X, yOffset, 0, 20, 24, 18,
-                        BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+                graphics.blit(RenderType::guiTextured, BACKGROUND, pos.x, yOffset, 0, 20, 24, 18, BACKGROUND_WIDTH,
+                        BACKGROUND_HEIGHT);
                 yOffset += 18;
             }
         }
-        graphics.blit(RenderType::guiTextured, BACKGROUND, BAR_OFFSET_X, yOffset, 0, 56, 24, 4, BACKGROUND_WIDTH,
+        graphics.blit(RenderType::guiTextured, BACKGROUND, pos.x, yOffset, 0, 56, 24, 4, BACKGROUND_WIDTH,
                 BACKGROUND_HEIGHT);
+    }
+
+    private Vector2i getPosition(int slots, int screenWidth, int screenHeight) {
+        return ClientConfig.ABILITY_BAR_POSITION.get()
+                .getPos(ClientConfig.ABILITY_BAR_X.get().intValue(), ClientConfig.ABILITY_BAR_Y.get().intValue(),
+                        BACKGROUND_WIDTH, 6 + slots * 18, screenWidth, screenHeight);
     }
 
 }

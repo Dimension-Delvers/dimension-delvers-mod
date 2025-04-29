@@ -2,6 +2,7 @@ package com.wanderersoftherift.wotr.gui.layer;
 
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectDisplayData;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectMarker;
+import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.util.GuiUtil;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
@@ -25,7 +26,6 @@ public final class EffectBar implements LayeredDraw.Layer {
 
     public static final float FAST_PULSE_THRESHOLD = 40.0f;
     public static final float SLOW_PULSE_THRESHOLD = 100.0f;
-    private static final int BAR_OFFSET_X = 27;
     private static final int ICON_SIZE = 16;
 
     @Override
@@ -37,15 +37,17 @@ public final class EffectBar implements LayeredDraw.Layer {
         LocalPlayer player = Minecraft.getInstance().player;
         EffectDisplayData data = player.getData(ModAttachments.EFFECT_DISPLAY);
 
-        renderEffects(graphics, data);
+        Vector2i pos = getPosition(data.size(), graphics.guiWidth(), graphics.guiHeight());
+
+        renderEffects(graphics, pos, data);
         if (!minecraft.mouseHandler.isMouseGrabbed()) {
             Vector2i mousePos = GuiUtil.getMouseScreenPosition();
-            renderTooltips(graphics, data, mousePos.x, mousePos.y);
+            renderTooltips(graphics, pos, data, mousePos.x, mousePos.y);
         }
     }
 
-    private void renderTooltips(@NotNull GuiGraphics graphics, EffectDisplayData data, int x, int y) {
-        if (x < BAR_OFFSET_X || x >= BAR_OFFSET_X + ICON_SIZE) {
+    private void renderTooltips(@NotNull GuiGraphics graphics, Vector2i pos, EffectDisplayData data, int x, int y) {
+        if (x < pos.x || x >= pos.x + ICON_SIZE) {
             return;
         }
 
@@ -53,7 +55,7 @@ public final class EffectBar implements LayeredDraw.Layer {
         var iterator = data.iterate();
         while (iterator.hasNext()) {
             var entry = iterator.next();
-            if (y < index * ICON_SIZE || y >= (index + 1) * ICON_SIZE) {
+            if (y < pos.y + index * ICON_SIZE || y >= pos.y + (index + 1) * ICON_SIZE) {
                 index++;
                 continue;
             }
@@ -63,7 +65,7 @@ public final class EffectBar implements LayeredDraw.Layer {
         }
     }
 
-    private void renderEffects(GuiGraphics graphics, EffectDisplayData data) {
+    private void renderEffects(GuiGraphics graphics, Vector2i pos, EffectDisplayData data) {
         int effectCount = 0;
         ObjectIterator<Object2FloatMap.Entry<Holder<EffectMarker>>> iterator = data.iterate();
         while (iterator.hasNext()) {
@@ -76,12 +78,18 @@ public final class EffectBar implements LayeredDraw.Layer {
                 show = ((int) entry.getFloatValue()) % 16 != 0;
             }
             if (show) {
-                graphics.blit(RenderType::guiTextured, marker.icon(), BAR_OFFSET_X, effectCount * ICON_SIZE, 0, 0,
+                graphics.blit(RenderType::guiTextured, marker.icon(), pos.x, pos.y + effectCount * ICON_SIZE, 0, 0,
                         ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
             }
 
             effectCount++;
         }
+    }
+
+    private Vector2i getPosition(int effects, int screenWidth, int screenHeight) {
+        return ClientConfig.EFFECT_DISPLAY_POSITION.get()
+                .getPos(ClientConfig.EFFECT_DISPLAY_X.get().intValue(), ClientConfig.EFFECT_DISPLAY_Y.get().intValue(),
+                        ICON_SIZE, ICON_SIZE * effects, screenWidth, screenHeight);
     }
 
 }

@@ -32,6 +32,10 @@ public class EffectDisplayData {
         return markers.object2FloatEntrySet().fastIterator();
     }
 
+    public int size() {
+        return markers.size();
+    }
+
     public void tick(float delta) {
         var iterator = markers.object2FloatEntrySet().fastIterator();
         while (iterator.hasNext()) {

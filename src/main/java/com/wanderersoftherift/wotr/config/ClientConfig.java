@@ -1,5 +1,6 @@
 package com.wanderersoftherift.wotr.config;
 
+import com.wanderersoftherift.wotr.gui.configuration.UIPosition;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientConfig {
@@ -19,6 +20,17 @@ public class ClientConfig {
     // Rift Map Settings
     public static final ModConfigSpec.BooleanValue MOUSE_MODE;
     public static final ModConfigSpec.DoubleValue LERP_SPEED;
+
+    // UI Positioning
+    public static final ModConfigSpec.EnumValue<UIPosition> ABILITY_BAR_POSITION;
+    public static final ModConfigSpec.IntValue ABILITY_BAR_X;
+    public static final ModConfigSpec.IntValue ABILITY_BAR_Y;
+    public static final ModConfigSpec.EnumValue<UIPosition> MANA_BAR_POSITION;
+    public static final ModConfigSpec.IntValue MANA_BAR_X;
+    public static final ModConfigSpec.IntValue MANA_BAR_Y;
+    public static final ModConfigSpec.EnumValue<UIPosition> EFFECT_DISPLAY_POSITION;
+    public static final ModConfigSpec.IntValue EFFECT_DISPLAY_X;
+    public static final ModConfigSpec.IntValue EFFECT_DISPLAY_Y;
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
@@ -48,6 +60,28 @@ public class ClientConfig {
         MOUSE_MODE = BUILDER.comment(" Whether to use the Whale mouse mode").define("mouseMode", false);
         LERP_SPEED = BUILDER.comment(" What speed the map should lerp at. 0 = Off")
                 .defineInRange("lerpSpeed", 1.0, 0.0, 2.0);
+        BUILDER.pop();
+
+        BUILDER.push(" == Ability Bar Location == ");
+        ABILITY_BAR_POSITION = BUILDER.comment(" Where to position the ability bar relative to")
+                .defineEnum("abilityBarPosition", UIPosition.TOP_LEFT);
+        ABILITY_BAR_X = BUILDER.comment(" Relative horizontal position of the ability bar")
+                .defineInRange("abilityBarX", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        ABILITY_BAR_Y = BUILDER.comment(" Relative vertical position of the ability bar")
+                .defineInRange("abilityBarY", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        MANA_BAR_POSITION = BUILDER.comment(" Where to position the mana bar relative to")
+                .defineEnum("manaBarPosition", UIPosition.TOP_LEFT);
+        MANA_BAR_X = BUILDER.comment(" Relative horizontal position of the mana bar")
+                .defineInRange("manaBarX", 25, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        MANA_BAR_Y = BUILDER.comment(" Relative vertical position of the mana bar")
+                .defineInRange("manaBarY", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        EFFECT_DISPLAY_POSITION = BUILDER.comment(" Where to position effects are displayed relative to")
+                .defineEnum("effectDisplayPosition", UIPosition.TOP_LEFT);
+        EFFECT_DISPLAY_X = BUILDER.comment(" Relative horizontal position of the effects display")
+                .defineInRange("effectDisplayX", 31, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        EFFECT_DISPLAY_Y = BUILDER.comment(" Relative vertical position of the effects display")
+                .defineInRange("effectDisplayY", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        BUILDER.pop();
 
         SPEC = BUILDER.build();
     }
