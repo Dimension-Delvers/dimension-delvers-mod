@@ -1,6 +1,6 @@
 package com.wanderersoftherift.wotr.config;
 
-import com.wanderersoftherift.wotr.gui.configuration.UIPosition;
+import com.wanderersoftherift.wotr.gui.configuration.ScreenAnchor;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientConfig {
@@ -22,67 +22,44 @@ public class ClientConfig {
     public static final ModConfigSpec.DoubleValue LERP_SPEED;
 
     // UI Positioning
-    public static final ModConfigSpec.EnumValue<UIPosition> ABILITY_BAR_POSITION;
-    public static final ModConfigSpec.IntValue ABILITY_BAR_X;
-    public static final ModConfigSpec.IntValue ABILITY_BAR_Y;
-    public static final ModConfigSpec.EnumValue<UIPosition> MANA_BAR_POSITION;
-    public static final ModConfigSpec.IntValue MANA_BAR_X;
-    public static final ModConfigSpec.IntValue MANA_BAR_Y;
-    public static final ModConfigSpec.EnumValue<UIPosition> EFFECT_DISPLAY_POSITION;
-    public static final ModConfigSpec.IntValue EFFECT_DISPLAY_X;
-    public static final ModConfigSpec.IntValue EFFECT_DISPLAY_Y;
-
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final HudElementConfig ABILITY_BAR;
+    public static final HudElementConfig MANA_BAR;
+    public static final HudElementConfig EFFECT_DISPLAY;
 
     static {
-        BUILDER.comment(" == Wotr Client Configs ==");
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
+
+        builder.comment(" == Wotr Client Configs ==");
 
         // Pushing Client configs related to accessibility
-        BUILDER.push(" == Accessibility == ");
-        ACCESSIBILITY_FLASHING_LIGHTS = BUILDER.comment(" Whether flashing-light effects should be disabled")
+        builder.push(" == Accessibility == ");
+        ACCESSIBILITY_FLASHING_LIGHTS = builder.comment(" Whether flashing-light effects should be disabled")
                 .define("accessibilityFlashingLights", false);
-        ACCESSIBILITY_ARACHNOPHOBIA = BUILDER.comment(" Whether Spiders should be replaced with something else")
+        ACCESSIBILITY_ARACHNOPHOBIA = builder.comment(" Whether Spiders should be replaced with something else")
                 .define("accessibilityArachnophobia", false);
-        ACCESSIBILITY_MISOPHONIA = BUILDER.comment(" Whether certain sounds should be replaced with something else")
+        ACCESSIBILITY_MISOPHONIA = builder.comment(" Whether certain sounds should be replaced with something else")
                 .define("accessibilityMisophonia", false);
-        ACCESSIBILITY_TRYPOPHOBIA = BUILDER.comment(" Whether certain textures should be replaced with something else")
+        ACCESSIBILITY_TRYPOPHOBIA = builder.comment(" Whether certain textures should be replaced with something else")
                 .define("accessibilityTrypophobia", false);
-        ACCESSIBILITY_HIGH_CONTRAST = BUILDER
+        ACCESSIBILITY_HIGH_CONTRAST = builder
                 .comment(" Whether GUI & HUD elements should be replaced with higher contrast for better visibility")
                 .define("accessibilityHighContrast", false);
-        ACCESSIBILITY_REDUCED_MOTION = BUILDER.comment(" Whether motion should be reduced")
+        ACCESSIBILITY_REDUCED_MOTION = builder.comment(" Whether motion should be reduced")
                 .define("accessibilityReducedMotion", false);
-        ACCESSIBILITY_HARD_OF_HEARING = BUILDER.comment(" Whether certain sounds should be upped")
+        ACCESSIBILITY_HARD_OF_HEARING = builder.comment(" Whether certain sounds should be upped")
                 .define("accessibilityHardOfHearing", false);
-        BUILDER.pop();
+        builder.pop();
 
-        BUILDER.push(" == Rift Map == ");
-        MOUSE_MODE = BUILDER.comment(" Whether to use the Whale mouse mode").define("mouseMode", false);
-        LERP_SPEED = BUILDER.comment(" What speed the map should lerp at. 0 = Off")
+        builder.push(" == Rift Map == ");
+        MOUSE_MODE = builder.comment(" Whether to use the Whale mouse mode").define("mouseMode", false);
+        LERP_SPEED = builder.comment(" What speed the map should lerp at. 0 = Off")
                 .defineInRange("lerpSpeed", 1.0, 0.0, 2.0);
-        BUILDER.pop();
+        builder.pop();
 
-        BUILDER.push(" == Ability Bar Location == ");
-        ABILITY_BAR_POSITION = BUILDER.comment(" Where to position the ability bar relative to")
-                .defineEnum("abilityBarPosition", UIPosition.TOP_LEFT);
-        ABILITY_BAR_X = BUILDER.comment(" Relative horizontal position of the ability bar")
-                .defineInRange("abilityBarX", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        ABILITY_BAR_Y = BUILDER.comment(" Relative vertical position of the ability bar")
-                .defineInRange("abilityBarY", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        MANA_BAR_POSITION = BUILDER.comment(" Where to position the mana bar relative to")
-                .defineEnum("manaBarPosition", UIPosition.TOP_LEFT);
-        MANA_BAR_X = BUILDER.comment(" Relative horizontal position of the mana bar")
-                .defineInRange("manaBarX", 25, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        MANA_BAR_Y = BUILDER.comment(" Relative vertical position of the mana bar")
-                .defineInRange("manaBarY", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        EFFECT_DISPLAY_POSITION = BUILDER.comment(" Where to position effects are displayed relative to")
-                .defineEnum("effectDisplayPosition", UIPosition.TOP_LEFT);
-        EFFECT_DISPLAY_X = BUILDER.comment(" Relative horizontal position of the effects display")
-                .defineInRange("effectDisplayX", 31, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        EFFECT_DISPLAY_Y = BUILDER.comment(" Relative vertical position of the effects display")
-                .defineInRange("effectDisplayY", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        BUILDER.pop();
+        ABILITY_BAR = new HudElementConfig(builder, "Ability Bar", "abilityBar", ScreenAnchor.TOP_LEFT, 0, 0);
+        MANA_BAR = new HudElementConfig(builder, "Mana Bar", "manaBar", ScreenAnchor.TOP_LEFT, 25, 0);
+        EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", ScreenAnchor.TOP_LEFT, 31, 0);
 
-        SPEC = BUILDER.build();
+        SPEC = builder.build();
     }
 }

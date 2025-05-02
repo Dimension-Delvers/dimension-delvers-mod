@@ -60,6 +60,10 @@ public class ModKeybinds {
             WanderersOfTheRift.translationId("key", "ability.use_selected"), KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, ABILITY_CATEGORY);
 
+    public static final KeyMapping CONFIG_HUD = new KeyMapping(
+            WanderersOfTheRift.translationId("key", "hud.configure"), KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O,  "key.categories.misc");
+
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         for (KeyMapping key : ABILITY_SLOT_KEYS) {
@@ -68,6 +72,8 @@ public class ModKeybinds {
         event.register(PREV_ABILITY_KEY);
         event.register(NEXT_ABILITY_KEY);
         event.register(USE_ABILITY_KEY);
+
+        event.register(CONFIG_HUD);
     }
 
 }

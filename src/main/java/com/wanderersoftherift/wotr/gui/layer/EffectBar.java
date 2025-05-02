@@ -10,7 +10,6 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
@@ -22,11 +21,15 @@ import java.util.List;
 /**
  * Displays effect markers attached to the player
  */
-public final class EffectBar implements LayeredDraw.Layer {
+public final class EffectBar extends ConfigurableLayer {
 
     public static final float FAST_PULSE_THRESHOLD = 40.0f;
     public static final float SLOW_PULSE_THRESHOLD = 100.0f;
     private static final int ICON_SIZE = 16;
+
+    public EffectBar() {
+        super(ClientConfig.EFFECT_DISPLAY);
+    }
 
     @Override
     public void render(@NotNull GuiGraphics graphics, @NotNull DeltaTracker deltaTracker) {
@@ -87,9 +90,16 @@ public final class EffectBar implements LayeredDraw.Layer {
     }
 
     private Vector2i getPosition(int effects, int screenWidth, int screenHeight) {
-        return ClientConfig.EFFECT_DISPLAY_POSITION.get()
-                .getPos(ClientConfig.EFFECT_DISPLAY_X.get().intValue(), ClientConfig.EFFECT_DISPLAY_Y.get().intValue(),
-                        ICON_SIZE, ICON_SIZE * effects, screenWidth, screenHeight);
+        return ClientConfig.EFFECT_DISPLAY.getPosition(ICON_SIZE, ICON_SIZE * effects, screenWidth, screenHeight);
     }
 
+    @Override
+    public int getWidthForConfiguration() {
+        return ICON_SIZE;
+    }
+
+    @Override
+    public int getHeightForConfiguration() {
+        return ICON_SIZE * 5;
+    }
 }

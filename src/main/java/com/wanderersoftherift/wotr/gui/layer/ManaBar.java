@@ -9,7 +9,6 @@ import com.wanderersoftherift.wotr.util.GuiUtil;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -24,7 +23,7 @@ import java.util.List;
 /**
  * Displays the player's mana. The bar extends based on max capacity, has an animation to its fill
  */
-public class ManaBar implements LayeredDraw.Layer {
+public class ManaBar extends ConfigurableLayer {
     private static final ResourceLocation TEXTURE = WanderersOfTheRift.id("textures/gui/hud/mana_bar.png");
     private static final int TEXTURE_WIDTH = 29;
     private static final int TEXTURE_HEIGHT = 22;
@@ -43,6 +42,10 @@ public class ManaBar implements LayeredDraw.Layer {
     private static final int FILL_VARIANTS = 3;
 
     private float animCounter = 0.f;
+
+    public ManaBar() {
+        super(ClientConfig.MANA_BAR);
+    }
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
@@ -148,7 +151,7 @@ public class ManaBar implements LayeredDraw.Layer {
         return size + TOP_HEIGHT;
     }
 
-    private Vector2i getPosition(int maxMana, int screenWidth, int screenHeight) {
+    private int height(int maxMana) {
         float rawSectionCount = (float) maxMana / MANA_PER_SECTION;
         int sectionCount = (int) rawSectionCount;
 
@@ -158,9 +161,23 @@ public class ManaBar implements LayeredDraw.Layer {
         } else {
             topSectionSize = (int) ((rawSectionCount - Math.floor(rawSectionCount)) * (SECTION_HEIGHT - 1));
         }
+        return topSectionSize + sectionCount * SECTION_HEIGHT + BOTTOM_HEIGHT;
+    }
 
-        return ClientConfig.MANA_BAR_POSITION.get()
-                .getPos(ClientConfig.MANA_BAR_X.get().intValue(), ClientConfig.MANA_BAR_Y.get().intValue(), BAR_WIDTH,
-                        topSectionSize + sectionCount * SECTION_HEIGHT + BOTTOM_HEIGHT, screenWidth, screenHeight);
+    private Vector2i getPosition(int maxMana, int screenWidth, int screenHeight) {
+
+
+        return ClientConfig.MANA_BAR.getPosition(BAR_WIDTH,
+                height(maxMana), screenWidth, screenHeight);
+    }
+
+    @Override
+    public int getWidthForConfiguration() {
+        return BAR_WIDTH;
+    }
+
+    @Override
+    public int getHeightForConfiguration() {
+        return height(100);
     }
 }

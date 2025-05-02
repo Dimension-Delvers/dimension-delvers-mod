@@ -5,7 +5,7 @@ import org.joml.Vector2i;
 /**
  * Provides anchors for UI element positioning
  */
-public enum UIPosition {
+public enum ScreenAnchor {
     ABSOLUTE {
         @Override
         public Vector2i getPos(int x, int y, int width, int height, int screenWidth, int screenHeight) {

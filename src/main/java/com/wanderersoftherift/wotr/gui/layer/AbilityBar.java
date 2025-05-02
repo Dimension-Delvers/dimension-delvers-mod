@@ -15,7 +15,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -30,7 +29,7 @@ import static com.wanderersoftherift.wotr.init.ModAttachments.ABILITY_COOLDOWNS;
 /**
  * Bar displaying a players selected abilities and their state.
  */
-public final class AbilityBar implements LayeredDraw.Layer {
+public final class AbilityBar extends ConfigurableLayer {
 
     private static final ResourceLocation BACKGROUND = WanderersOfTheRift
             .id("textures/gui/hud/ability_bar/background.png");
@@ -48,6 +47,10 @@ public final class AbilityBar implements LayeredDraw.Layer {
 
     private static final int SLOT_HEIGHT = 18;
     private static final int ICON_SIZE = 16;
+
+    public AbilityBar() {
+        super(ClientConfig.ABILITY_BAR);
+    }
 
     @Override
     public void render(@NotNull GuiGraphics graphics, @NotNull DeltaTracker deltaTracker) {
@@ -201,9 +204,20 @@ public final class AbilityBar implements LayeredDraw.Layer {
     }
 
     private Vector2i getPosition(int slots, int screenWidth, int screenHeight) {
-        return ClientConfig.ABILITY_BAR_POSITION.get()
-                .getPos(ClientConfig.ABILITY_BAR_X.get().intValue(), ClientConfig.ABILITY_BAR_Y.get().intValue(),
-                        BACKGROUND_WIDTH, 6 + slots * 18, screenWidth, screenHeight);
+        return ClientConfig.ABILITY_BAR.getPosition(BACKGROUND_WIDTH, getHeight(slots), screenWidth, screenHeight);
     }
 
+    private int getHeight(int slots) {
+        return 6 + slots * SLOT_HEIGHT;
+    }
+
+    @Override
+    public int getWidthForConfiguration() {
+        return BACKGROUND_WIDTH;
+    }
+
+    @Override
+    public int getHeightForConfiguration() {
+        return getHeight(AbilitySlots.ABILITY_BAR_SIZE);
+    }
 }
