@@ -1,8 +1,11 @@
 package com.wanderersoftherift.wotr.datagen;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
+import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.init.ModItems;
 import com.wanderersoftherift.wotr.init.ModTags;
+import com.wanderersoftherift.wotr.init.RegistryEvents;
+import com.wanderersoftherift.wotr.loot.functions.AbilityHolderFunction;
 import com.wanderersoftherift.wotr.loot.functions.GearSocketsFunction;
 import com.wanderersoftherift.wotr.loot.functions.RollGearFunction;
 import net.minecraft.core.HolderLookup;
@@ -30,6 +33,7 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
 
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
         generateRunegemLootTable(consumer);
+        generateAbilityLootTable(consumer);
         generateSocketedVanillaArmorLootTable(consumer);
         generateSocketedVanillaWeaponLootTable(consumer);
         generateSocketedVanillaToolLootTable(consumer);
@@ -41,6 +45,7 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
                                         .setWeight(40)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .add(NestedLootTable.lootTableReference(getResourceKey("rift/runegem")).setWeight(20))
+                                .add(NestedLootTable.lootTableReference(getResourceKey("rift/ability")).setWeight(80))
                                 .add(NestedLootTable.lootTableReference(getResourceKey("rift/socketed_vanilla_armor"))
                                         .setWeight(20))
                                 .add(NestedLootTable.lootTableReference(getResourceKey("rift/socketed_vanilla_weapons"))
@@ -78,6 +83,40 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
                         .add(LootItem.lootTableItem(ModItems.CUT_RUNEGEM_GEODE).when(riftTier(2, 5)).setWeight(4))
                         .add(LootItem.lootTableItem(ModItems.POLISHED_RUNEGEM_GEODE).when(riftTier(3, 7)).setWeight(2))
                         .add(LootItem.lootTableItem(ModItems.FRAMED_RUNEGEM_GEODE).when(riftTier(4, 7)).setWeight(1))));
+    }
+
+    private void generateAbilityLootTable(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
+        HolderLookup.RegistryLookup<AbstractAbility> reg = registries.lookupOrThrow(RegistryEvents.ABILITY_REGISTRY);
+        consumer.accept(getResourceKey("rift/ability"), LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(ModItems.ABILITY_HOLDER)
+                                        .when(riftTier(0, 2))
+                                        .setWeight(16)
+                                        .apply(AbilityHolderFunction.setAbilityOptions(1, 1,
+                                                reg.getOrThrow(ModTags.Abilities.RIFT_DROPS))))
+                                .add(LootItem.lootTableItem(ModItems.ABILITY_HOLDER)
+                                        .when(riftTier(1, 3))
+                                        .setWeight(8)
+                                        .apply(AbilityHolderFunction.setAbilityOptions(1, 3,
+                                                reg.getOrThrow(ModTags.Abilities.RIFT_DROPS))))
+                                .add(LootItem.lootTableItem(ModItems.ABILITY_HOLDER)
+                                        .when(riftTier(3, 5))
+                                        .setWeight(4)
+                                        .apply(AbilityHolderFunction.setAbilityOptions(3, 6,
+                                                reg.getOrThrow(ModTags.Abilities.RIFT_DROPS))))
+                                .add(LootItem.lootTableItem(ModItems.ABILITY_HOLDER)
+                                        .when(riftTier(4, 7))
+                                        .setWeight(2)
+                                        .apply(AbilityHolderFunction.setAbilityOptions(5, 7,
+                                                reg.getOrThrow(ModTags.Abilities.RIFT_DROPS))))
+                                .add(LootItem.lootTableItem(ModItems.ABILITY_HOLDER)
+                                        .when(riftTier(5, 7))
+                                        .setWeight(1)
+                                        .apply(AbilityHolderFunction.setAbilityOptions(7, 10,
+                                                reg.getOrThrow(ModTags.Abilities.RIFT_DROPS))))
+                ));
     }
 
     /**

@@ -56,8 +56,7 @@ public class GearSocketsFunction extends LootItemConditionalFunction {
     }
 
     public static LootItemConditionalFunction.Builder<?> setGearSockets(int minSockets, int maxSockets) {
-        return simpleBuilder((lootItemConditions) -> {
-            return new GearSocketsFunction(lootItemConditions, minSockets, maxSockets);
-        });
+        return simpleBuilder(
+                (lootItemConditions) -> new GearSocketsFunction(lootItemConditions, minSockets, maxSockets));
     }
 }

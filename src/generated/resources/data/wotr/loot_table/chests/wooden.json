@@ -27,6 +27,11 @@
         },
         {
           "type": "minecraft:loot_table",
+          "value": "wotr:rift/ability",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:loot_table",
           "value": "wotr:rift/socketed_vanilla_armor",
           "weight": 20
         },
