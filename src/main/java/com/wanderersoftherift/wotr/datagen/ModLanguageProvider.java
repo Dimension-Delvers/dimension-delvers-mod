@@ -259,6 +259,13 @@ public class ModLanguageProvider extends LanguageProvider {
         add(WanderersOfTheRift.translationId("objective", "kill.description"), "Defeat %s monsters");
         add(WanderersOfTheRift.translationId("objective", "stealth.description"), "Defeat monsters stealthily");
         add(WanderersOfTheRift.translationId("gui", "objective_status.complete"), "Objective Complete");
+
+        add(WanderersOfTheRift.translationId("button", "reset"), "Reset");
+        add(WanderersOfTheRift.translationId("button", "close"), "Close");
+        add("hud.minecraft.hotbar", "Hot Bar");
+        add(WanderersOfTheRift.translationId("hud", "ability_bar"), "Ability Bar");
+        add(WanderersOfTheRift.translationId("hud", "mana_bar"), "Mana Bar");
+        add(WanderersOfTheRift.translationId("hud", "effect_bar"), "Effect Bar");
     }
 
     private void addEssenceType(String id, String value) {

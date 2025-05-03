@@ -3,12 +3,14 @@ package com.wanderersoftherift.wotr.gui.layer;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.attachment.ManaData;
 import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.ModAttributes;
 import com.wanderersoftherift.wotr.util.GuiUtil;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -23,7 +25,8 @@ import java.util.List;
 /**
  * Displays the player's mana. The bar extends based on max capacity, has an animation to its fill
  */
-public class ManaBar extends ConfigurableLayer {
+public class ManaBar implements ConfigurableLayer, LayeredDraw.Layer {
+    private static final Component NAME = Component.translatable(WanderersOfTheRift.translationId("hud", "mana_bar"));
     private static final ResourceLocation TEXTURE = WanderersOfTheRift.id("textures/gui/hud/mana_bar.png");
     private static final int TEXTURE_WIDTH = 29;
     private static final int TEXTURE_HEIGHT = 22;
@@ -43,8 +46,14 @@ public class ManaBar extends ConfigurableLayer {
 
     private float animCounter = 0.f;
 
-    public ManaBar() {
-        super(ClientConfig.MANA_BAR);
+    @Override
+    public Component getName() {
+        return NAME;
+    }
+
+    @Override
+    public HudElementConfig getConfig() {
+        return ClientConfig.MANA_BAR;
     }
 
     @Override
@@ -166,18 +175,16 @@ public class ManaBar extends ConfigurableLayer {
 
     private Vector2i getPosition(int maxMana, int screenWidth, int screenHeight) {
 
-
-        return ClientConfig.MANA_BAR.getPosition(BAR_WIDTH,
-                height(maxMana), screenWidth, screenHeight);
+        return ClientConfig.MANA_BAR.getPosition(BAR_WIDTH, height(maxMana), screenWidth, screenHeight);
     }
 
     @Override
-    public int getWidthForConfiguration() {
+    public int getWidth() {
         return BAR_WIDTH;
     }
 
     @Override
-    public int getHeightForConfiguration() {
+    public int getHeight() {
         return height(100);
     }
 }

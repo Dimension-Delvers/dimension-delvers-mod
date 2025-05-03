@@ -1,6 +1,8 @@
 package com.wanderersoftherift.wotr.config;
 
+import com.wanderersoftherift.wotr.gui.configuration.HorizontalAnchor;
 import com.wanderersoftherift.wotr.gui.configuration.ScreenAnchor;
+import com.wanderersoftherift.wotr.gui.configuration.VerticalAnchor;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.joml.Vector2i;
 
@@ -9,22 +11,29 @@ public class HudElementConfig {
     private final ModConfigSpec.IntValue x;
     private final ModConfigSpec.IntValue y;
 
-    public HudElementConfig(ModConfigSpec.Builder builder, String elementName, String elementPrefix, ScreenAnchor defaultAnchor, int defaultX, int defaultY) {
+    public HudElementConfig(ModConfigSpec.Builder builder, String elementName, String elementPrefix,
+            ScreenAnchor defaultAnchor, int defaultX, int defaultY) {
         builder.push(" == " + elementName + " Location == ");
         anchor = builder.comment(" Where to position the " + elementName + " relative to")
                 .defineEnum(elementPrefix + "Anchor", defaultAnchor);
         x = builder.comment(" Relative horizontal position of the " + elementName)
                 .defineInRange(elementPrefix + "X", defaultX, Integer.MIN_VALUE, Integer.MAX_VALUE);
         y = builder.comment(" Relative vertical position of the " + elementName)
-                .defineInRange(elementPrefix + "Y", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                .defineInRange(elementPrefix + "Y", defaultY, Integer.MIN_VALUE, Integer.MAX_VALUE);
         builder.pop();
     }
 
+    public void reset() {
+        anchor.set(anchor.getDefault());
+        x.set(x.getDefault());
+        y.set(y.getDefault());
+    }
+
     /**
-     * @param width
-     * @param height
-     * @param screenWidth
-     * @param screenHeight
+     * @param width        Current width of the element
+     * @param height       Current height of the element
+     * @param screenWidth  Width of the screen
+     * @param screenHeight Height of the screen
      * @return The upper-left corner to render the element, given its current width/height and the screen width/height
      */
     public Vector2i getPosition(int width, int height, int screenWidth, int screenHeight) {
@@ -54,4 +63,15 @@ public class HudElementConfig {
     public void setY(int y) {
         this.y.set(y);
     }
+
+    public void reanchor(int width, int height, int screenWidth, int screenHeight) {
+        Vector2i pos = getPosition(width, height, screenWidth, screenHeight);
+        HorizontalAnchor newHorizontalAnchor = HorizontalAnchor.getClosest(pos.x(), width, screenWidth);
+        VerticalAnchor newVerticalAnchor = VerticalAnchor.getClosest(pos.y(), height, screenHeight);
+        this.anchor.set(ScreenAnchor.get(newHorizontalAnchor, newVerticalAnchor));
+        pos.sub(anchor.get().getPos(0, 0, width, height, screenWidth, screenHeight));
+        setX(pos.x);
+        setY(pos.y);
+    }
+
 }

@@ -6,6 +6,7 @@ import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.abilities.attachment.AbilitySlots;
 import com.wanderersoftherift.wotr.abilities.attachment.PlayerCooldownData;
 import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.client.ModKeybinds;
 import com.wanderersoftherift.wotr.util.GuiUtil;
@@ -15,6 +16,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -29,7 +31,10 @@ import static com.wanderersoftherift.wotr.init.ModAttachments.ABILITY_COOLDOWNS;
 /**
  * Bar displaying a players selected abilities and their state.
  */
-public final class AbilityBar extends ConfigurableLayer {
+public final class AbilityBar implements ConfigurableLayer, LayeredDraw.Layer {
+
+    private static final Component NAME = Component
+            .translatable(WanderersOfTheRift.translationId("hud", "ability_bar"));
 
     private static final ResourceLocation BACKGROUND = WanderersOfTheRift
             .id("textures/gui/hud/ability_bar/background.png");
@@ -48,8 +53,14 @@ public final class AbilityBar extends ConfigurableLayer {
     private static final int SLOT_HEIGHT = 18;
     private static final int ICON_SIZE = 16;
 
-    public AbilityBar() {
-        super(ClientConfig.ABILITY_BAR);
+    @Override
+    public HudElementConfig getConfig() {
+        return ClientConfig.ABILITY_BAR;
+    }
+
+    @Override
+    public Component getName() {
+        return NAME;
     }
 
     @Override
@@ -212,12 +223,12 @@ public final class AbilityBar extends ConfigurableLayer {
     }
 
     @Override
-    public int getWidthForConfiguration() {
+    public int getWidth() {
         return BACKGROUND_WIDTH;
     }
 
     @Override
-    public int getHeightForConfiguration() {
+    public int getHeight() {
         return getHeight(AbilitySlots.ABILITY_BAR_SIZE);
     }
 }

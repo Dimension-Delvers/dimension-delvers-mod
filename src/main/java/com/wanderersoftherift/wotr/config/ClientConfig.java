@@ -25,6 +25,7 @@ public class ClientConfig {
     public static final HudElementConfig ABILITY_BAR;
     public static final HudElementConfig MANA_BAR;
     public static final HudElementConfig EFFECT_DISPLAY;
+    public static final HudElementConfig HOT_BAR;
 
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -59,6 +60,7 @@ public class ClientConfig {
         ABILITY_BAR = new HudElementConfig(builder, "Ability Bar", "abilityBar", ScreenAnchor.TOP_LEFT, 0, 0);
         MANA_BAR = new HudElementConfig(builder, "Mana Bar", "manaBar", ScreenAnchor.TOP_LEFT, 25, 0);
         EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", ScreenAnchor.TOP_LEFT, 31, 0);
+        HOT_BAR = new HudElementConfig(builder, "Vanilla Hot Bar", "hotBar", ScreenAnchor.BOTTOM_CENTER, 0, 0);
 
         SPEC = builder.build();
     }

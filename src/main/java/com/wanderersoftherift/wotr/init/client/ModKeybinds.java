@@ -62,7 +62,7 @@ public class ModKeybinds {
 
     public static final KeyMapping CONFIG_HUD = new KeyMapping(
             WanderersOfTheRift.translationId("key", "hud.configure"), KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O,  "key.categories.misc");
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, "key.categories.misc");
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {

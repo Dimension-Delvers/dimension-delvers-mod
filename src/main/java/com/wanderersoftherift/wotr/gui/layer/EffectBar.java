@@ -1,8 +1,10 @@
 package com.wanderersoftherift.wotr.gui.layer;
 
+import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectDisplayData;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectMarker;
 import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.util.GuiUtil;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
@@ -10,9 +12,11 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
@@ -21,14 +25,21 @@ import java.util.List;
 /**
  * Displays effect markers attached to the player
  */
-public final class EffectBar extends ConfigurableLayer {
+public final class EffectBar implements ConfigurableLayer, LayeredDraw.Layer {
+    private static final Component NAME = Component.translatable(WanderersOfTheRift.translationId("hud", "effect_bar"));
 
-    public static final float FAST_PULSE_THRESHOLD = 40.0f;
-    public static final float SLOW_PULSE_THRESHOLD = 100.0f;
+    private static final float FAST_PULSE_THRESHOLD = 40.0f;
+    private static final float SLOW_PULSE_THRESHOLD = 100.0f;
     private static final int ICON_SIZE = 16;
 
-    public EffectBar() {
-        super(ClientConfig.EFFECT_DISPLAY);
+    @Override
+    public Component getName() {
+        return NAME;
+    }
+
+    @Override
+    public HudElementConfig getConfig() {
+        return ClientConfig.EFFECT_DISPLAY;
     }
 
     @Override
@@ -94,12 +105,12 @@ public final class EffectBar extends ConfigurableLayer {
     }
 
     @Override
-    public int getWidthForConfiguration() {
+    public int getWidth() {
         return ICON_SIZE;
     }
 
     @Override
-    public int getHeightForConfiguration() {
+    public int getHeight() {
         return ICON_SIZE * 5;
     }
 }

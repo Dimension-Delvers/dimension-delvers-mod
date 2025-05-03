@@ -1,21 +1,15 @@
 package com.wanderersoftherift.wotr.gui.layer;
 
 import com.wanderersoftherift.wotr.config.HudElementConfig;
-import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.network.chat.Component;
 
-public abstract class ConfigurableLayer implements LayeredDraw.Layer {
+public interface ConfigurableLayer {
 
-    private final HudElementConfig config;
+    Component getName();
 
-    public ConfigurableLayer(HudElementConfig config) {
-        this.config = config;
-    }
+    HudElementConfig getConfig();
 
-    public HudElementConfig getConfig() {
-        return config;
-    }
+    int getWidth();
 
-    public abstract int getWidthForConfiguration();
-
-    public abstract int getHeightForConfiguration();
+    int getHeight();
 }
