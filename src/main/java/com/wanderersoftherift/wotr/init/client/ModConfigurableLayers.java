@@ -1,0 +1,59 @@
+package com.wanderersoftherift.wotr.init.client;
+
+import com.wanderersoftherift.wotr.WanderersOfTheRift;
+import com.wanderersoftherift.wotr.config.ClientConfig;
+import com.wanderersoftherift.wotr.config.HudElementConfig;
+import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayerProxy;
+import com.wanderersoftherift.wotr.gui.layer.AbilityBar;
+import com.wanderersoftherift.wotr.gui.layer.EffectBar;
+import com.wanderersoftherift.wotr.gui.layer.ManaBar;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegistryBuilder;
+
+import java.util.function.Supplier;
+
+public class ModConfigurableLayers {
+
+    // Registry and key for Abstract Modifiers
+    public static final ResourceKey<Registry<ConfigurableLayer>> CONFIGURABLE_LAYER_KEY = ResourceKey
+            .createRegistryKey(WanderersOfTheRift.id("configurable_layer"));
+
+    public static final Registry<ConfigurableLayer> CONFIGURABLE_LAYER_REGISTRY = new RegistryBuilder<>(
+            CONFIGURABLE_LAYER_KEY).create();
+
+    // Register our layers
+    public static final DeferredRegister<ConfigurableLayer> CONFIGURABLE_LAYERS = DeferredRegister
+            .create(CONFIGURABLE_LAYER_KEY, WanderersOfTheRift.MODID);
+
+    public static final Supplier<ConfigurableLayer> ABILITY_BAR = CONFIGURABLE_LAYERS.register("ability_bar",
+            AbilityBar::new);
+    public static final Supplier<ConfigurableLayer> MANA_BAR = CONFIGURABLE_LAYERS.register("mana_bar", ManaBar::new);
+    public static final Supplier<ConfigurableLayer> EFFECT_BAR = CONFIGURABLE_LAYERS.register("effect_bar",
+            EffectBar::new);
+
+    // Register vanilla layers
+    public static final DeferredRegister<ConfigurableLayer> VANILLA_CONFIGURABLE_LAYERS = DeferredRegister
+            .create(CONFIGURABLE_LAYER_KEY, "minecraft");
+
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_HOT_BAR = VANILLA_CONFIGURABLE_LAYERS.register(
+            VanillaGuiLayers.HOTBAR.getPath(), () -> newProxy(VanillaGuiLayers.HOTBAR, ClientConfig.HOT_BAR, 182, 22));
+
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_XP_BAR = VANILLA_CONFIGURABLE_LAYERS.register(
+            VanillaGuiLayers.EXPERIENCE_BAR.getPath(),
+            () -> newProxy(VanillaGuiLayers.EXPERIENCE_BAR, ClientConfig.EXPERIENCE_BAR, 182, 5));
+
+    private static ConfigurableLayerProxy newProxy(
+            ResourceLocation id,
+            HudElementConfig config,
+            int width,
+            int height) {
+        return new ConfigurableLayerProxy(
+                Component.translatable("hud." + id.getNamespace() + "." + id.getPath()), config, width, height);
+    }
+}

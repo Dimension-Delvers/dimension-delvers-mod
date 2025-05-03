@@ -35,6 +35,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
@@ -121,5 +122,10 @@ public final class ClientRegistryEvents {
     @SubscribeEvent
     private static void registerClientDimensionEffects(RegisterDimensionSpecialEffectsEvent event) {
         event.register(RiftDimensionType.RIFT_DIMENSION_RENDERER_KEY, new RiftDimensionSpecialEffects());
+    }
+
+    @SubscribeEvent
+    static void registerRegistries(NewRegistryEvent event) {
+        event.register(ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY);
     }
 }

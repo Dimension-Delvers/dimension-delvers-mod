@@ -5,6 +5,7 @@ import com.wanderersoftherift.wotr.abilities.effects.marker.EffectDisplayData;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectMarker;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.config.HudElementConfig;
+import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.util.GuiUtil;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
@@ -12,7 +13,6 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Displays effect markers attached to the player
  */
-public final class EffectBar implements ConfigurableLayer, LayeredDraw.Layer {
+public final class EffectBar implements ConfigurableLayer {
     private static final Component NAME = Component.translatable(WanderersOfTheRift.translationId("hud", "effect_bar"));
 
     private static final float FAST_PULSE_THRESHOLD = 40.0f;

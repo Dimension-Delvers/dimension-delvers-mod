@@ -1,9 +1,9 @@
 package com.wanderersoftherift.wotr.client;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.gui.layer.ConfigurableLayerProxy;
-import com.wanderersoftherift.wotr.gui.screen.ConfigureHUDScreen;
-import com.wanderersoftherift.wotr.init.client.ModGuiLayers;
+import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.configuration.ConfigureHUDScreen;
+import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import com.wanderersoftherift.wotr.init.client.ModKeybinds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
-import org.joml.Vector2i;
 
 /**
  * Events related to abilities - key activation detection and mana ticking.
@@ -39,19 +38,18 @@ public final class ConfigureHUDEvents {
     }
 
     @SubscribeEvent
-    public static void moveLayers(RenderGuiLayerEvent.Pre event) {
-        ConfigurableLayerProxy proxy = ModGuiLayers.PROXY_HOOK.get(event.getName());
-        if (proxy != null) {
-            Vector2i pos = proxy.getTranslation(event.getGuiGraphics().guiWidth(), event.getGuiGraphics().guiHeight());
-            event.getGuiGraphics().pose().pushPose();
-            event.getGuiGraphics().pose().translate(pos.x, pos.y, 0);
+    public static void preRenderLayers(RenderGuiLayerEvent.Pre event) {
+        ConfigurableLayer layer = ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.getValue(event.getName());
+        if (layer != null) {
+            layer.preRender(event.getGuiGraphics());
         }
     }
 
     @SubscribeEvent
-    public static void moveLayers(RenderGuiLayerEvent.Post event) {
-        if (ModGuiLayers.PROXY_HOOK.containsKey(event.getName())) {
-            event.getGuiGraphics().pose().popPose();
+    public static void postRenderLayers(RenderGuiLayerEvent.Post event) {
+        ConfigurableLayer layer = ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.getValue(event.getName());
+        if (layer != null) {
+            layer.postRender(event.getGuiGraphics());
         }
     }
 }

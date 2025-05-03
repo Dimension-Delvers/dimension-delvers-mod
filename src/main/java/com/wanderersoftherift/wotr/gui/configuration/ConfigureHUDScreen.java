@@ -1,10 +1,9 @@
-package com.wanderersoftherift.wotr.gui.screen;
+package com.wanderersoftherift.wotr.gui.configuration;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.config.HudElementConfig;
-import com.wanderersoftherift.wotr.gui.layer.ConfigurableLayer;
-import com.wanderersoftherift.wotr.init.client.ModGuiLayers;
+import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -14,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Optional;
 
 public class ConfigureHUDScreen extends Screen {
 
@@ -41,9 +42,7 @@ public class ConfigureHUDScreen extends Screen {
 
             @Override
             public void onPress() {
-                for (ConfigurableLayer configurableLayer : ModGuiLayers.CONFIGURABLE_LAYER_LIST) {
-                    configurableLayer.getConfig().reset();
-                }
+                ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> layer.getConfig().reset());
             }
         };
         closeButton = new AbstractButton(0, 0, 40, 20,
@@ -58,6 +57,11 @@ public class ConfigureHUDScreen extends Screen {
 
             }
         };
+    }
+
+    @Override
+    protected void init() {
+        super.init();
         addRenderableWidget(resetButton);
         addRenderableWidget(closeButton);
     }
@@ -84,30 +88,32 @@ public class ConfigureHUDScreen extends Screen {
         if (isDragging()) {
             return;
         }
-        for (ConfigurableLayer configurableLayer : ModGuiLayers.CONFIGURABLE_LAYER_LIST) {
-            int width = configurableLayer.getWidth();
-            int height = configurableLayer.getHeight();
-            Vector2i pos = configurableLayer.getConfig().getPosition(width, height, screenWidth, screenHeight);
-            if (mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height) {
-                guiGraphics.renderTooltip(minecraft.font, configurableLayer.getName(), mouseX, mouseY);
-                return;
-            }
-        }
+        findMouseOver(mouseX, mouseY)
+                .ifPresent(layer -> guiGraphics.renderTooltip(minecraft.font, layer.getName(), mouseX, mouseY));
+    }
+
+    private Optional<ConfigurableLayer> findMouseOver(int mouseX, int mouseY) {
+        return ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().filter(layer -> {
+            int width = layer.getWidth();
+            int height = layer.getHeight();
+            Vector2i pos = layer.getConfig().getPosition(width, height, screenWidth, screenHeight);
+            return mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height;
+        }).findFirst();
     }
 
     private void renderConfigurableElements(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         screenWidth = guiGraphics.guiWidth();
         screenHeight = guiGraphics.guiHeight();
-        for (ConfigurableLayer configurableLayer : ModGuiLayers.CONFIGURABLE_LAYER_LIST) {
-            int width = configurableLayer.getWidth();
-            int height = configurableLayer.getHeight();
-            Vector2i pos = configurableLayer.getConfig()
+        ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> {
+            int width = layer.getWidth();
+            int height = layer.getHeight();
+            Vector2i pos = layer.getConfig()
                     .getPosition(width, height, guiGraphics.guiWidth(), guiGraphics.guiHeight());
-            boolean focused = focusedLayer == configurableLayer;
+            boolean focused = focusedLayer == layer;
             guiGraphics.fill(RenderType.gui(), pos.x + 1, pos.y + 1, pos.x + width - 1, pos.y + height - 1,
                     focused ? 0x66FFFFFF : 0x66999999);
             guiGraphics.renderOutline(pos.x, pos.y, width, height, focused ? 0xFFFFFFFF : 0xFFBBBBBB);
-        }
+        });
     }
 
     @Override
@@ -115,17 +121,13 @@ public class ConfigureHUDScreen extends Screen {
         if (super.mouseClicked(mouseX, mouseY, button)) {
             return true;
         }
-        for (ConfigurableLayer configurableLayer : ModGuiLayers.CONFIGURABLE_LAYER_LIST) {
-            int width = configurableLayer.getWidth();
-            int height = configurableLayer.getHeight();
-            Vector2i pos = configurableLayer.getConfig().getPosition(width, height, screenWidth, screenHeight);
-            if (mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height) {
-                focusedLayer = configurableLayer;
-                setDragging(true);
-                residualDragX = 0;
-                residualDragY = 0;
-                return true;
-            }
+        Optional<ConfigurableLayer> overLayer = findMouseOver((int) mouseX, (int) mouseY);
+        if (overLayer.isPresent()) {
+            focusedLayer = overLayer.get();
+            setDragging(true);
+            residualDragX = 0;
+            residualDragY = 0;
+            return true;
         }
         focusedLayer = null;
         return false;

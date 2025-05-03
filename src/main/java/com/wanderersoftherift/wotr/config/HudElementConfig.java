@@ -74,4 +74,15 @@ public class HudElementConfig {
         setY(pos.y);
     }
 
+    public ScreenAnchor getDefaultAnchor() {
+        return anchor.getDefault();
+    }
+
+    public int getDefaultX() {
+        return x.getDefault();
+    }
+
+    public int getDefaultY() {
+        return y.getDefault();
+    }
 }

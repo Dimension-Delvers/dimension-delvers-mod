@@ -7,6 +7,7 @@ import com.wanderersoftherift.wotr.abilities.attachment.AbilitySlots;
 import com.wanderersoftherift.wotr.abilities.attachment.PlayerCooldownData;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.config.HudElementConfig;
+import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.client.ModKeybinds;
 import com.wanderersoftherift.wotr.util.GuiUtil;
@@ -16,7 +17,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,7 @@ import static com.wanderersoftherift.wotr.init.ModAttachments.ABILITY_COOLDOWNS;
 /**
  * Bar displaying a players selected abilities and their state.
  */
-public final class AbilityBar implements ConfigurableLayer, LayeredDraw.Layer {
+public final class AbilityBar implements ConfigurableLayer {
 
     private static final Component NAME = Component
             .translatable(WanderersOfTheRift.translationId("hud", "ability_bar"));
