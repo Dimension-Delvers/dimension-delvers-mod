@@ -2,6 +2,7 @@ package com.wanderersoftherift.wotr.config;
 
 import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.gui.config.ScreenAnchor;
+import com.wanderersoftherift.wotr.gui.config.UIOrientation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientConfig {
@@ -59,9 +60,12 @@ public class ClientConfig {
                 .defineInRange("lerpSpeed", 1.0, 0.0, 2.0);
         builder.pop();
 
-        ABILITY_BAR = new HudElementConfig(builder, "Ability Bar", "abilityBar", ScreenAnchor.TOP_LEFT, 0, 0);
-        MANA_BAR = new HudElementConfig(builder, "Mana Bar", "manaBar", ScreenAnchor.TOP_LEFT, 25, 0);
-        EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", ScreenAnchor.TOP_LEFT, 31, 0);
+        ABILITY_BAR = new HudElementConfig(builder, "Ability Bar", "abilityBar", ScreenAnchor.TOP_LEFT, 0, 0,
+                UIOrientation.VERTICAL);
+        MANA_BAR = new HudElementConfig(builder, "Mana Bar", "manaBar", ScreenAnchor.TOP_LEFT, 25, 0,
+                UIOrientation.VERTICAL);
+        EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", ScreenAnchor.TOP_LEFT, 31, 0,
+                UIOrientation.VERTICAL);
         HOT_BAR = new HudElementConfig(builder, "Vanilla Hot Bar", "hotBar", ScreenAnchor.BOTTOM_CENTER, 0, 0);
         EXPERIENCE_BAR = new HudElementConfig(builder, "Vanilla Expereince Bar", "xpBar", ScreenAnchor.BOTTOM_CENTER, 0,
                 -24);

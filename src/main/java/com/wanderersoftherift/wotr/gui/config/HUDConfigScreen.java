@@ -30,6 +30,7 @@ public class HUDConfigScreen extends Screen {
 
     private final Button resetButton;
     private final Button closeButton;
+    private final Button reorientateButton;
 
     public HUDConfigScreen(Component title) {
         super(title);
@@ -44,12 +45,18 @@ public class HUDConfigScreen extends Screen {
                         button -> onClose())
                 .size(40, 20)
                 .build();
+        reorientateButton = Button.builder(Component.literal("O"), button -> {
+            if (focusedLayer != null) {
+                focusedLayer.getConfig().reorientate();
+            }
+        }).size(10, 10).build();
     }
 
     @Override
     protected void init() {
         addRenderableWidget(resetButton);
         addRenderableWidget(closeButton);
+        addRenderableWidget(reorientateButton);
     }
 
     @Override
@@ -64,6 +71,18 @@ public class HUDConfigScreen extends Screen {
                 (guiGraphics.guiHeight() - resetButton.getHeight()) / 2);
         closeButton.setPosition(guiGraphics.guiWidth() / 2 + 2,
                 (guiGraphics.guiHeight() - closeButton.getHeight()) / 2);
+        if (focusedLayer != null && focusedLayer.getConfig().hasOrientation() && !isDragging()) {
+            Vector2i pos = focusedLayer.getConfig()
+                    .getPosition(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), guiGraphics.guiWidth(),
+                            guiGraphics.guiHeight())
+                    .add(focusedLayer.getConfigWidth() / 2, focusedLayer.getConfigHeight() / 2)
+                    .sub(reorientateButton.getWidth() / 2, reorientateButton.getHeight() / 2);
+            reorientateButton.setPosition(pos.x, pos.y);
+            reorientateButton.visible = true;
+        } else {
+            reorientateButton.visible = false;
+        }
+
         renderConfigurableElements(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY, partialTick);

@@ -10,9 +10,36 @@ public class HudElementConfig {
     private final ModConfigSpec.EnumValue<ScreenAnchor> anchor;
     private final ModConfigSpec.IntValue x;
     private final ModConfigSpec.IntValue y;
+    private final ModConfigSpec.EnumValue<UIOrientation> orientation;
 
+    /**
+     * Creates a HudElementConfig that doesn't support orientation
+     * 
+     * @param builder
+     * @param elementName
+     * @param elementPrefix
+     * @param defaultAnchor
+     * @param defaultX
+     * @param defaultY
+     */
     public HudElementConfig(ModConfigSpec.Builder builder, String elementName, String elementPrefix,
             ScreenAnchor defaultAnchor, int defaultX, int defaultY) {
+        this(builder, elementName, elementPrefix, defaultAnchor, defaultX, defaultY, null);
+    }
+
+    /**
+     * Creates a HudElementConfig that supports orientation
+     * 
+     * @param builder
+     * @param elementName
+     * @param elementPrefix
+     * @param defaultAnchor
+     * @param defaultX
+     * @param defaultY
+     * @param defaultOrientation
+     */
+    public HudElementConfig(ModConfigSpec.Builder builder, String elementName, String elementPrefix,
+            ScreenAnchor defaultAnchor, int defaultX, int defaultY, UIOrientation defaultOrientation) {
         builder.push(" == " + elementName + " Location == ");
         anchor = builder.comment(" Where to position the " + elementName + " relative to")
                 .defineEnum(elementPrefix + "Anchor", defaultAnchor);
@@ -20,6 +47,12 @@ public class HudElementConfig {
                 .defineInRange(elementPrefix + "X", defaultX, Integer.MIN_VALUE, Integer.MAX_VALUE);
         y = builder.comment(" Relative vertical position of the " + elementName)
                 .defineInRange(elementPrefix + "Y", defaultY, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        if (defaultOrientation != null) {
+            orientation = builder.comment(" Orientation of the " + elementName)
+                    .defineEnum(elementPrefix + "Orientation", defaultOrientation);
+        } else {
+            orientation = null;
+        }
         builder.pop();
     }
 
@@ -30,6 +63,9 @@ public class HudElementConfig {
         anchor.set(anchor.getDefault());
         x.set(x.getDefault());
         y.set(y.getDefault());
+        if (orientation != null) {
+            orientation.set(orientation.getDefault());
+        }
     }
 
     /**
@@ -67,6 +103,23 @@ public class HudElementConfig {
         this.y.set(y);
     }
 
+    public boolean hasOrientation() {
+        return orientation != null;
+    }
+
+    public UIOrientation getOrientation() {
+        if (orientation != null) {
+            return orientation.get();
+        }
+        return UIOrientation.HORIZONTAL;
+    }
+
+    public void setOrientation(UIOrientation newValue) {
+        if (orientation != null) {
+            orientation.set(newValue);
+        }
+    }
+
     /**
      * Shifts anchor to the nearest one to the element, and adjusts the relative positioning such that the element
      * maintains the same position
@@ -96,5 +149,9 @@ public class HudElementConfig {
 
     public int getDefaultY() {
         return y.getDefault();
+    }
+
+    public void reorientate() {
+        orientation.set(orientation.get().next());
     }
 }
