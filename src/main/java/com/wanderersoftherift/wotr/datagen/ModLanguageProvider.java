@@ -129,6 +129,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add(WanderersOfTheRift.translationId("stat", "mobs_killed"), "Mobs killed: ");
         add(WanderersOfTheRift.translationId("stat", "chests_opened"), "Chests opened: ");
 
+        add(WanderersOfTheRift.translationId("screen", "configure_hud"), "Configure HUD");
+
         add("command." + WanderersOfTheRift.MODID + ".dev_world_set",
                 "Dev World settings applied:\n - %1$s: Disabled\n - %2$s: Disabled\n - %3$s: Disabled\n - %4$s: Disabled\n - %5$s: Disabled\n - %6$s: Disabled");
         add("command." + WanderersOfTheRift.MODID + ".invalid_item", "Held item is empty!");

@@ -6,8 +6,8 @@ import com.wanderersoftherift.wotr.abilities.AbstractAbility;
 import com.wanderersoftherift.wotr.abilities.attachment.AbilitySlots;
 import com.wanderersoftherift.wotr.abilities.attachment.PlayerCooldownData;
 import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.config.HudElementConfig;
-import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.client.ModKeybinds;
 import com.wanderersoftherift.wotr.util.GuiUtil;
@@ -17,6 +17,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -82,7 +83,7 @@ public final class AbilityBar implements ConfigurableLayer {
         renderAbilities(graphics, pos, abilitySlots, cooldowns);
         renderAbilityKeyBinds(graphics, pos, abilitySlots);
 
-        if (!minecraft.mouseHandler.isMouseGrabbed()) {
+        if (!minecraft.mouseHandler.isMouseGrabbed() && minecraft.screen instanceof ChatScreen) {
             Vector2i mouseScreenPos = GuiUtil.getMouseScreenPosition();
             renderTooltips(graphics, pos, deltaTracker, abilitySlots, mouseScreenPos.x, mouseScreenPos.y);
         }
@@ -223,12 +224,12 @@ public final class AbilityBar implements ConfigurableLayer {
     }
 
     @Override
-    public int getWidth() {
+    public int getConfigWidth() {
         return BACKGROUND_WIDTH;
     }
 
     @Override
-    public int getHeight() {
+    public int getConfigHeight() {
         return getHeight(AbilitySlots.ABILITY_BAR_SIZE);
     }
 }

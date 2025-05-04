@@ -1,11 +1,11 @@
-package com.wanderersoftherift.wotr.gui.configuration;
+package com.wanderersoftherift.wotr.gui.config;
 
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import org.joml.Vector2i;
 
 /**
- * Provides anchors for UI element positioning
+ * Provides anchors for UI element positioning.
  */
 public enum ScreenAnchor {
     TOP_LEFT(HorizontalAnchor.LEFT, VerticalAnchor.TOP),
@@ -36,20 +36,44 @@ public enum ScreenAnchor {
         this.verticalAnchor = vAnchor;
     }
 
+    /**
+     * @param horizontalAnchor
+     * @param verticalAnchor
+     * @return The screen anchor that combines the given horizontal and vertical anchors
+     */
+    public static ScreenAnchor get(HorizontalAnchor horizontalAnchor, VerticalAnchor verticalAnchor) {
+        return lookup.get(horizontalAnchor, verticalAnchor);
+    }
+
+    /**
+     * @return The horizontal portion of the anchoring
+     */
     public HorizontalAnchor getHorizontal() {
         return horizontalAnchor;
     }
 
+    /**
+     * @return The vertical portion of the anchoring
+     */
     public VerticalAnchor getVertical() {
         return verticalAnchor;
     }
 
-    public Vector2i getPos(int x, int y, int width, int height, int screenWidth, int screenHeight) {
-        return new Vector2i(horizontalAnchor.getPos(x, width, screenWidth),
-                verticalAnchor.getPos(y, height, screenHeight));
+    /**
+     * Given the relative coordinates of the element, its dimensions and the screen dimensions, determines the position
+     * of the top-left corner of the element
+     * 
+     * @param relativeX
+     * @param relativeY
+     * @param width
+     * @param height
+     * @param screenWidth
+     * @param screenHeight
+     * @return The top-left position of the element
+     */
+    public Vector2i getPos(int relativeX, int relativeY, int width, int height, int screenWidth, int screenHeight) {
+        return new Vector2i(horizontalAnchor.getPos(relativeX, width, screenWidth),
+                verticalAnchor.getPos(relativeY, height, screenHeight));
     }
 
-    public static ScreenAnchor get(HorizontalAnchor horizontalAnchor, VerticalAnchor verticalAnchor) {
-        return lookup.get(horizontalAnchor, verticalAnchor);
-    }
 }

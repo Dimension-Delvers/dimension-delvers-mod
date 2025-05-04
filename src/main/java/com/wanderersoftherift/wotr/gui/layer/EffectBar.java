@@ -4,8 +4,8 @@ import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectDisplayData;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectMarker;
 import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.config.HudElementConfig;
-import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.util.GuiUtil;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
@@ -54,7 +55,7 @@ public final class EffectBar implements ConfigurableLayer {
         Vector2i pos = getPosition(data.size(), graphics.guiWidth(), graphics.guiHeight());
 
         renderEffects(graphics, pos, data);
-        if (!minecraft.mouseHandler.isMouseGrabbed()) {
+        if (!minecraft.mouseHandler.isMouseGrabbed() && minecraft.screen instanceof ChatScreen) {
             Vector2i mousePos = GuiUtil.getMouseScreenPosition();
             renderTooltips(graphics, pos, data, mousePos.x, mousePos.y);
         }
@@ -105,12 +106,12 @@ public final class EffectBar implements ConfigurableLayer {
     }
 
     @Override
-    public int getWidth() {
+    public int getConfigWidth() {
         return ICON_SIZE;
     }
 
     @Override
-    public int getHeight() {
+    public int getConfigHeight() {
         return ICON_SIZE * 5;
     }
 }

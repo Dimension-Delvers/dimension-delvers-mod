@@ -1,6 +1,7 @@
 package com.wanderersoftherift.wotr.config;
 
-import com.wanderersoftherift.wotr.gui.configuration.ScreenAnchor;
+import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
+import com.wanderersoftherift.wotr.gui.config.ScreenAnchor;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientConfig {

@@ -1,7 +1,7 @@
-package com.wanderersoftherift.wotr.gui.configuration;
+package com.wanderersoftherift.wotr.gui.config;
 
 /**
- * Provides anchors for UI element positioning
+ * Horizontal anchors for UI element positioning
  */
 public enum HorizontalAnchor {
     LEFT {
@@ -25,6 +25,12 @@ public enum HorizontalAnchor {
 
     public abstract int getPos(int x, int width, int screenWidth);
 
+    /**
+     * @param pos
+     * @param width
+     * @param screenWidth
+     * @return The closest anchor to the ui element
+     */
     public static HorizontalAnchor getClosest(int pos, int width, int screenWidth) {
         HorizontalAnchor result = LEFT;
         int dist = pos;

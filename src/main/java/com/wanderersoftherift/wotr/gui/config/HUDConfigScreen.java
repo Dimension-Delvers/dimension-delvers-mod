@@ -1,12 +1,10 @@
-package com.wanderersoftherift.wotr.gui.configuration;
+package com.wanderersoftherift.wotr.gui.config;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -16,7 +14,10 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
 
-public class ConfigureHUDScreen extends Screen {
+/**
+ * A screen to enable configuration of HUD element positioning
+ */
+public class HUDConfigScreen extends Screen {
 
     private static final int SNAP_DIST = 10;
 
@@ -27,60 +28,44 @@ public class ConfigureHUDScreen extends Screen {
     private double residualDragX;
     private double residualDragY;
 
-    private AbstractButton resetButton;
-    private AbstractButton closeButton;
+    private final Button resetButton;
+    private final Button closeButton;
 
-    public ConfigureHUDScreen(Component title) {
+    public HUDConfigScreen(Component title) {
         super(title);
-        resetButton = new AbstractButton(0, 0, 40, 20,
-                Component.translatable(WanderersOfTheRift.translationId("button", "reset"))) {
-
-            @Override
-            protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-
-            }
-
-            @Override
-            public void onPress() {
-                ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> layer.getConfig().reset());
-            }
-        };
-        closeButton = new AbstractButton(0, 0, 40, 20,
-                Component.translatable(WanderersOfTheRift.translationId("button", "close"))) {
-            @Override
-            public void onPress() {
-                onClose();
-            }
-
-            @Override
-            protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-
-            }
-        };
+        resetButton = Button
+                .builder(Component.translatable(WanderersOfTheRift.translationId("button", "reset")),
+                        button -> ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream()
+                                .forEach(layer -> layer.getConfig().reset()))
+                .size(40, 20)
+                .build();
+        closeButton = Button
+                .builder(Component.translatable(WanderersOfTheRift.translationId("button", "close")),
+                        button -> onClose())
+                .size(40, 20)
+                .build();
     }
 
     @Override
     protected void init() {
-        super.init();
         addRenderableWidget(resetButton);
         addRenderableWidget(closeButton);
     }
 
     @Override
     public void onClose() {
-        super.onClose();
         ClientConfig.SPEC.save();
+        super.onClose();
     }
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        resetButton.setX(guiGraphics.guiWidth() / 2 - resetButton.getWidth() - 2);
-        closeButton.setX(guiGraphics.guiWidth() / 2 + 2);
-        resetButton.setY((guiGraphics.guiHeight() - resetButton.getHeight()) / 2);
-        closeButton.setY((guiGraphics.guiHeight() - closeButton.getHeight()) / 2);
-
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        resetButton.setPosition(guiGraphics.guiWidth() / 2 - resetButton.getWidth() - 2,
+                (guiGraphics.guiHeight() - resetButton.getHeight()) / 2);
+        closeButton.setPosition(guiGraphics.guiWidth() / 2 + 2,
+                (guiGraphics.guiHeight() - closeButton.getHeight()) / 2);
         renderConfigurableElements(guiGraphics, mouseX, mouseY, partialTick);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY, partialTick);
     }
 
@@ -94,8 +79,8 @@ public class ConfigureHUDScreen extends Screen {
 
     private Optional<ConfigurableLayer> findMouseOver(int mouseX, int mouseY) {
         return ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().filter(layer -> {
-            int width = layer.getWidth();
-            int height = layer.getHeight();
+            int width = layer.getConfigWidth();
+            int height = layer.getConfigHeight();
             Vector2i pos = layer.getConfig().getPosition(width, height, screenWidth, screenHeight);
             return mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height;
         }).findFirst();
@@ -105,8 +90,8 @@ public class ConfigureHUDScreen extends Screen {
         screenWidth = guiGraphics.guiWidth();
         screenHeight = guiGraphics.guiHeight();
         ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> {
-            int width = layer.getWidth();
-            int height = layer.getHeight();
+            int width = layer.getConfigWidth();
+            int height = layer.getConfigHeight();
             Vector2i pos = layer.getConfig()
                     .getPosition(width, height, guiGraphics.guiWidth(), guiGraphics.guiHeight());
             boolean focused = focusedLayer == layer;
@@ -159,7 +144,8 @@ public class ConfigureHUDScreen extends Screen {
             }
 
             if (changed) {
-                config.reanchor(focusedLayer.getWidth(), focusedLayer.getHeight(), screenWidth, screenHeight);
+                config.reanchor(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), screenWidth,
+                        screenHeight);
             }
             return true;
         }

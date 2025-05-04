@@ -1,4 +1,4 @@
-package com.wanderersoftherift.wotr.gui.configuration;
+package com.wanderersoftherift.wotr.gui.config;
 
 /**
  * Provides anchors for UI element positioning

@@ -2,9 +2,9 @@ package com.wanderersoftherift.wotr.init.client;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.config.HudElementConfig;
-import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
-import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayerProxy;
+import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.ConfigurableLayerProxy;
+import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.gui.layer.AbilityBar;
 import com.wanderersoftherift.wotr.gui.layer.EffectBar;
 import com.wanderersoftherift.wotr.gui.layer.ManaBar;
@@ -48,6 +48,16 @@ public class ModConfigurableLayers {
             VanillaGuiLayers.EXPERIENCE_BAR.getPath(),
             () -> newProxy(VanillaGuiLayers.EXPERIENCE_BAR, ClientConfig.EXPERIENCE_BAR, 182, 5));
 
+    /**
+     * Creates a proxy configuration layer for an existing layer. You will need a {@link HudElementConfig} to link it
+     * to, that should default to the standard positioning of the layer
+     *
+     * @param id     The id of the layer
+     * @param config The config to link it to
+     * @param width  The width of the layer
+     * @param height The height of the layer
+     * @return A proxy configurable layer
+     */
     private static ConfigurableLayerProxy newProxy(
             ResourceLocation id,
             HudElementConfig config,

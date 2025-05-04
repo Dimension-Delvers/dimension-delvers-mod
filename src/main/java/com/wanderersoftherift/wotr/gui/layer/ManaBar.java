@@ -3,14 +3,15 @@ package com.wanderersoftherift.wotr.gui.layer;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.attachment.ManaData;
 import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.config.HudElementConfig;
-import com.wanderersoftherift.wotr.gui.configuration.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.ModAttributes;
 import com.wanderersoftherift.wotr.util.GuiUtil;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -79,7 +80,7 @@ public class ManaBar implements ConfigurableLayer {
         ManaData mana = player.getData(ModAttachments.MANA);
 
         int height = renderBar(guiGraphics, pos, mana.getAmount(), maxMana, frame);
-        if (!minecraft.mouseHandler.isMouseGrabbed()) {
+        if (!minecraft.mouseHandler.isMouseGrabbed() && minecraft.screen instanceof ChatScreen) {
             Vector2i mousePos = GuiUtil.getMouseScreenPosition();
             renderTooltips(guiGraphics, pos, mana.getAmount(), maxMana, height, mousePos.x, mousePos.y);
         }
@@ -167,24 +168,24 @@ public class ManaBar implements ConfigurableLayer {
         int topSectionSize;
         if (maxMana == sectionCount * MANA_PER_SECTION) {
             topSectionSize = SECTION_HEIGHT - 1;
+            sectionCount -= 1;
         } else {
             topSectionSize = (int) ((rawSectionCount - Math.floor(rawSectionCount)) * (SECTION_HEIGHT - 1));
         }
-        return topSectionSize + sectionCount * SECTION_HEIGHT + BOTTOM_HEIGHT;
+        return topSectionSize + sectionCount * SECTION_HEIGHT + BOTTOM_HEIGHT + TOP_HEIGHT;
     }
 
     private Vector2i getPosition(int maxMana, int screenWidth, int screenHeight) {
-
         return ClientConfig.MANA_BAR.getPosition(BAR_WIDTH, height(maxMana), screenWidth, screenHeight);
     }
 
     @Override
-    public int getWidth() {
+    public int getConfigWidth() {
         return BAR_WIDTH;
     }
 
     @Override
-    public int getHeight() {
+    public int getConfigHeight() {
         return height(100);
     }
 }

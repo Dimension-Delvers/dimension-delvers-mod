@@ -1,11 +1,11 @@
-package com.wanderersoftherift.wotr.config;
+package com.wanderersoftherift.wotr.gui.config;
 
-import com.wanderersoftherift.wotr.gui.configuration.HorizontalAnchor;
-import com.wanderersoftherift.wotr.gui.configuration.ScreenAnchor;
-import com.wanderersoftherift.wotr.gui.configuration.VerticalAnchor;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.joml.Vector2i;
 
+/**
+ * Configuration data for HUD element positioning
+ */
 public class HudElementConfig {
     private final ModConfigSpec.EnumValue<ScreenAnchor> anchor;
     private final ModConfigSpec.IntValue x;
@@ -23,6 +23,9 @@ public class HudElementConfig {
         builder.pop();
     }
 
+    /**
+     * Restore the config to its default settings
+     */
     public void reset() {
         anchor.set(anchor.getDefault());
         x.set(x.getDefault());
@@ -64,6 +67,15 @@ public class HudElementConfig {
         this.y.set(y);
     }
 
+    /**
+     * Shifts anchor to the nearest one to the element, and adjusts the relative positioning such that the element
+     * maintains the same position
+     * 
+     * @param width
+     * @param height
+     * @param screenWidth
+     * @param screenHeight
+     */
     public void reanchor(int width, int height, int screenWidth, int screenHeight) {
         Vector2i pos = getPosition(width, height, screenWidth, screenHeight);
         HorizontalAnchor newHorizontalAnchor = HorizontalAnchor.getClosest(pos.x(), width, screenWidth);
