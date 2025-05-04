@@ -11,6 +11,7 @@ import java.util.Map;
  * Data tracking the display markers for effects. Used as an Attachment
  */
 public class EffectDisplayData {
+    // TODO change to int (for number of ticks)
     private final Object2FloatArrayMap<Holder<EffectMarker>> markers = new Object2FloatArrayMap<>();
 
     public EffectDisplayData() {
