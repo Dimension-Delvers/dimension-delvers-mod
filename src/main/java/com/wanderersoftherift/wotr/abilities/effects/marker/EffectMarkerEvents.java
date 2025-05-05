@@ -16,9 +16,9 @@ public class EffectMarkerEvents {
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Pre event) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
+        if (player != null && !Minecraft.getInstance().isPaused()) {
             EffectDisplayData data = player.getData(ModAttachments.EFFECT_DISPLAY);
-            data.tick(0.05f);
+            data.tick();
         }
     }
 }

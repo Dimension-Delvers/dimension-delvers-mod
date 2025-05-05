@@ -268,7 +268,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("hud.minecraft.experience_bar", "Experience Bar");
         add(WanderersOfTheRift.translationId("hud", "ability_bar"), "Ability Bar");
         add(WanderersOfTheRift.translationId("hud", "mana_bar"), "Mana Bar");
-        add(WanderersOfTheRift.translationId("hud", "effect_bar"), "Effect Bar");
+        add(WanderersOfTheRift.translationId("hud", "effect_bar"), "Ability Effect Bar");
     }
 
     private void addEssenceType(String id, String value) {
