@@ -1,9 +1,13 @@
 package com.wanderersoftherift.wotr.gui.config;
 
+import com.mojang.math.Transformation;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import org.joml.Math;
+import org.joml.Quaternionf;
 import org.joml.Vector2i;
+import org.joml.Vector3f;
 
 /**
  * A proxy layer for adding configuration support for existing, non-configurable layers (e.g. vanilla or other mod
@@ -44,19 +48,41 @@ public class ConfigurableLayerProxy implements ConfigurableLayer {
 
     @Override
     public int getConfigWidth() {
+        if (config.hasOrientation() && config.getOrientation() != config.getDefaultOrientation()) {
+            return height;
+        }
         return width;
     }
 
     @Override
     public int getConfigHeight() {
+        if (config.hasOrientation() && config.getOrientation() != config.getDefaultOrientation()) {
+            return width;
+        }
         return height;
     }
 
     @Override
     public void preRender(GuiGraphics guiGraphics) {
-        Vector2i pos = getTranslation(guiGraphics.guiWidth(), guiGraphics.guiHeight());
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(pos.x, pos.y, 0);
+        Vector2i defaultPos = config.getDefaultAnchor()
+                .getPos(config.getDefaultX(), config.getDefaultY(), width, height, guiGraphics.guiWidth(),
+                        guiGraphics.guiHeight());
+        Vector2i targetPos = config.getPosition(getConfigWidth(), getConfigHeight(), guiGraphics.guiWidth(),
+                guiGraphics.guiHeight());
+
+        if (config.hasOrientation() && config.getOrientation() != config.getDefaultOrientation()) {
+            Quaternionf quaternionf = new Quaternionf();
+            quaternionf.rotateAxis(0.5f * Math.PI_f, new Vector3f(0, 0, 1));
+            guiGraphics.pose()
+                    .pushTransformation(new Transformation(new Vector3f(targetPos.x + height, targetPos.y, 0),
+                            new Quaternionf(), new Vector3f(1, 1, 1), quaternionf).compose(
+                                    new Transformation(new Vector3f(-defaultPos.x, -defaultPos.y, 0), new Quaternionf(),
+                                            new Vector3f(1, 1, 1), new Quaternionf())
+                            ));
+        } else {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(targetPos.x - defaultPos.x, targetPos.y - defaultPos.y, 0);
+        }
     }
 
     @Override
@@ -68,15 +94,4 @@ public class ConfigurableLayerProxy implements ConfigurableLayer {
         guiGraphics.pose().popPose();
     }
 
-    /**
-     * @param screenWidth
-     * @param screenHeight
-     * @return The translation to move the layer from its default location to its configured location
-     */
-    private Vector2i getTranslation(int screenWidth, int screenHeight) {
-        Vector2i defaultPos = config.getDefaultAnchor()
-                .getPos(config.getDefaultX(), config.getDefaultY(), width, height, screenWidth, screenHeight);
-        Vector2i targetPos = config.getPosition(width, height, screenWidth, screenHeight);
-        return targetPos.sub(defaultPos);
-    }
 }

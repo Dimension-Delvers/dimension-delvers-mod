@@ -179,7 +179,7 @@ public class ManaBar implements ConfigurableLayer {
                     (sectionCount - i) * MANA_PER_SECTION, SECTION_SIZE);
             if (sectionFill > 0) {
                 graphics.blit(RenderType::guiTextured, TEXTURE_H, xOffset + SECTION_SIZE - sectionFill,
-                        pos.y + FILL_OFFSET, SECTION_SIZE - sectionFill + (i % FILL_VARIANTS) * SECTION_SIZE,
+                        pos.y + FILL_OFFSET, SECTION_SIZE - sectionFill + ((i + 1) % FILL_VARIANTS) * SECTION_SIZE,
                         BAR_THICKNESS + frame * FILL_THICKNESS, sectionFill, FILL_THICKNESS, TEXTURE_H_WIDTH,
                         TEXTURE_H_HEIGHT);
             }
@@ -210,8 +210,8 @@ public class ManaBar implements ConfigurableLayer {
             if (sectionFill > 0) {
                 graphics.blit(RenderType::guiTextured, TEXTURE_V, pos.x + FILL_OFFSET,
                         yOffset + SECTION_SIZE - sectionFill, BAR_THICKNESS + frame * FILL_THICKNESS,
-                        SECTION_SIZE - sectionFill + (i % FILL_VARIANTS) * SECTION_SIZE, FILL_THICKNESS, sectionFill,
-                        TEXTURE_V_WIDTH, TEXTURE_V_HEIGHT);
+                        SECTION_SIZE - sectionFill + ((i + 1) % FILL_VARIANTS) * SECTION_SIZE, FILL_THICKNESS,
+                        sectionFill, TEXTURE_V_WIDTH, TEXTURE_V_HEIGHT);
             }
             yOffset += SECTION_SIZE;
         }

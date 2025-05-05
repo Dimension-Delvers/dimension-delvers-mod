@@ -68,7 +68,7 @@ public class ClientConfig {
                 UIOrientation.VERTICAL);
         HOT_BAR = new HudElementConfig(builder, "Vanilla Hot Bar", "hotBar", ScreenAnchor.BOTTOM_CENTER, 0, 0);
         EXPERIENCE_BAR = new HudElementConfig(builder, "Vanilla Expereince Bar", "xpBar", ScreenAnchor.BOTTOM_CENTER, 0,
-                -24);
+                -24, UIOrientation.HORIZONTAL);
 
         SPEC = builder.build();
     }

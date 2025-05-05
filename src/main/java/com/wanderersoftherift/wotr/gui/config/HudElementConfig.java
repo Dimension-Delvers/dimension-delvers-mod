@@ -114,6 +114,13 @@ public class HudElementConfig {
         return UIOrientation.HORIZONTAL;
     }
 
+    public UIOrientation getDefaultOrientation() {
+        if (orientation != null) {
+            return orientation.getDefault();
+        }
+        return UIOrientation.HORIZONTAL;
+    }
+
     public void setOrientation(UIOrientation newValue) {
         if (orientation != null) {
             orientation.set(newValue);
