@@ -1,5 +1,6 @@
 package com.wanderersoftherift.wotr.init.client;
 
+import com.google.common.collect.ImmutableList;
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModConfigurableLayers {
@@ -48,6 +50,12 @@ public class ModConfigurableLayers {
             VanillaGuiLayers.EXPERIENCE_BAR.getPath(),
             () -> newProxy(VanillaGuiLayers.EXPERIENCE_BAR, ClientConfig.EXPERIENCE_BAR, 182, 5));
 
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_HEALTH_AND_ARMOR = VANILLA_CONFIGURABLE_LAYERS
+            .register(
+                    VanillaGuiLayers.PLAYER_HEALTH.getPath(),
+                    () -> newProxy("hud.minecraft.health_armor", ClientConfig.HEALTH_ARMOR, 81, 29,
+                            VanillaGuiLayers.PLAYER_HEALTH, VanillaGuiLayers.ARMOR_LEVEL));
+
     /**
      * Creates a proxy configuration layer for an existing layer. You will need a {@link HudElementConfig} to link it
      * to, that should default to the standard positioning of the layer
@@ -64,6 +72,32 @@ public class ModConfigurableLayers {
             int width,
             int height) {
         return new ConfigurableLayerProxy(
-                Component.translatable("hud." + id.getNamespace() + "." + id.getPath()), config, width, height);
+                Component.translatable("hud." + id.getNamespace() + "." + id.getPath()), config, width, height,
+                List.of(id));
     }
+
+    /**
+     * Creates a proxy configuration layer for an existing layer. You will need a {@link HudElementConfig} to link it
+     * to, that should default to the standard positioning of the layer
+     *
+     * @param name   The id of the layer
+     * @param config The config to link it to
+     * @param width  The width of the layer
+     * @param height The height of the layer
+     * @param id     The first id of a layer to proxy
+     * @param ids    Any additional ids to proxy
+     * @return A proxy configurable layer
+     */
+    private static ConfigurableLayerProxy newProxy(
+            String name,
+            HudElementConfig config,
+            int width,
+            int height,
+            ResourceLocation id,
+            ResourceLocation... ids) {
+        return new ConfigurableLayerProxy(
+                Component.translatable(name), config, width, height,
+                ImmutableList.<ResourceLocation>builder().add(id).add(ids).build());
+    }
+
 }

@@ -281,6 +281,7 @@
   "essence_type.wotr.water": "Water",
   "gui.wotr.objective_status.complete": "Objective Complete",
   "hud.minecraft.experience_bar": "Experience Bar",
+  "hud.minecraft.health_armor": "Health and Armor",
   "hud.minecraft.hotbar": "Hot Bar",
   "hud.wotr.ability_bar": "Ability Bar",
   "hud.wotr.effect_bar": "Ability Effect Bar",

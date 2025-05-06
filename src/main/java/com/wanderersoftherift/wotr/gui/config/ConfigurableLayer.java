@@ -1,6 +1,5 @@
 package com.wanderersoftherift.wotr.gui.config;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 
@@ -30,21 +29,5 @@ public interface ConfigurableLayer extends LayeredDraw.Layer {
      *         element, but may be representative of its potential width instead. Should not be zero.
      */
     int getConfigHeight();
-
-    /**
-     * Called before rendering the element
-     * 
-     * @param guiGraphics
-     */
-    default void preRender(GuiGraphics guiGraphics) {
-    }
-
-    /**
-     * Called after rendering the element
-     * 
-     * @param guiGraphics
-     */
-    default void postRender(GuiGraphics guiGraphics) {
-    }
 
 }

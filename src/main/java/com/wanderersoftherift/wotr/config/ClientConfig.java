@@ -12,12 +12,12 @@ public class ClientConfig {
     public static final ModConfigSpec.BooleanValue ACCESSIBILITY_FLASHING_LIGHTS;
     public static final ModConfigSpec.BooleanValue ACCESSIBILITY_ARACHNOPHOBIA;
     public static final ModConfigSpec.BooleanValue ACCESSIBILITY_MISOPHONIA;
-    public static final ModConfigSpec.BooleanValue ACCESSIBILITY_TRYPOPHOBIA; // To-be-determined if this will be used
-                                                                              // at all
+    // To-be-determined if this will be used at all
+    public static final ModConfigSpec.BooleanValue ACCESSIBILITY_TRYPOPHOBIA;
     public static final ModConfigSpec.BooleanValue ACCESSIBILITY_HIGH_CONTRAST;
     public static final ModConfigSpec.BooleanValue ACCESSIBILITY_REDUCED_MOTION;
-    public static final ModConfigSpec.BooleanValue ACCESSIBILITY_HARD_OF_HEARING; // I am unsure what this should change
-                                                                                  // currently
+    // I am unsure what this should change currently
+    public static final ModConfigSpec.BooleanValue ACCESSIBILITY_HARD_OF_HEARING;
 
     // Rift Map Settings
     public static final ModConfigSpec.BooleanValue MOUSE_MODE;
@@ -32,6 +32,11 @@ public class ClientConfig {
     // Vanilla HUD
     public static final HudElementConfig HOT_BAR;
     public static final HudElementConfig EXPERIENCE_BAR;
+    public static final HudElementConfig HEALTH_ARMOR;
+    public static final HudElementConfig FOOD_LEVEL;
+    public static final HudElementConfig AIR_LEVEL;
+    public static final HudElementConfig EXPERIENCE_LEVEL;
+    public static final HudElementConfig VANILLA_EFFECTS;
 
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -70,9 +75,18 @@ public class ClientConfig {
         EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", ScreenAnchor.TOP_LEFT, 31, 0,
                 UIOrientation.VERTICAL);
         OBJECTIVE = new HudElementConfig(builder, "Objective", "objective", ScreenAnchor.TOP_CENTER, 0, 25);
+
         HOT_BAR = new HudElementConfig(builder, "Vanilla Hot Bar", "hotBar", ScreenAnchor.BOTTOM_CENTER, 0, 0);
-        EXPERIENCE_BAR = new HudElementConfig(builder, "Vanilla Expereince Bar", "xpBar", ScreenAnchor.BOTTOM_CENTER, 0,
+        EXPERIENCE_BAR = new HudElementConfig(builder, "Vanilla Experience Bar", "xpBar", ScreenAnchor.BOTTOM_CENTER, 0,
                 -24, UIOrientation.HORIZONTAL);
+        HEALTH_ARMOR = new HudElementConfig(builder, "Vanilla Health and Armor", "healthArmor",
+                ScreenAnchor.BOTTOM_CENTER, -51, -30);
+        FOOD_LEVEL = new HudElementConfig(builder, "Vanilla Food", "food", ScreenAnchor.BOTTOM_CENTER, 0, -24);
+        AIR_LEVEL = new HudElementConfig(builder, "Vanilla Air", "air", ScreenAnchor.BOTTOM_CENTER, 0, -24);
+        EXPERIENCE_LEVEL = new HudElementConfig(builder, "Vanilla Experience Level", "xpLevel",
+                ScreenAnchor.BOTTOM_CENTER, 0, -24);
+        VANILLA_EFFECTS = new HudElementConfig(builder, "Vanilla Effects", "effects", ScreenAnchor.BOTTOM_CENTER, 0,
+                -24);
 
         SPEC = builder.build();
     }

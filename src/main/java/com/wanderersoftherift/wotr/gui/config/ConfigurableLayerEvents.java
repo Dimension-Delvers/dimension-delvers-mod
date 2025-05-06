@@ -6,17 +6,28 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Events related to configurable layers
  */
 @EventBusSubscriber(modid = WanderersOfTheRift.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public final class ConfigurableLayerEvents {
+
+    private static final Map<ResourceLocation, ConfigurableLayerProxy> layerProxies = new HashMap<>();
+    private static boolean proxiesMapped = false;
+
+    private ConfigurableLayerEvents() {
+
+    }
 
     @SubscribeEvent
     public static void postInitPauseScreen(ScreenEvent.Init.Post event) {
@@ -35,19 +46,30 @@ public final class ConfigurableLayerEvents {
 
     @SubscribeEvent
     public static void preRenderLayers(RenderGuiLayerEvent.Pre event) {
-        // TODO: If the layer event gets cancelled the pose stack will be ruined, so probably need to add a different
-        // hook for this
-        ConfigurableLayer layer = ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.getValue(event.getName());
-        if (layer != null) {
-            layer.preRender(event.getGuiGraphics());
+        if (!proxiesMapped) {
+            mapProxies();
+        }
+        ConfigurableLayerProxy proxy = layerProxies.get(event.getName());
+        if (proxy != null) {
+            proxy.preRender(event.getGuiGraphics());
         }
     }
 
     @SubscribeEvent
     public static void postRenderLayers(RenderGuiLayerEvent.Post event) {
-        ConfigurableLayer layer = ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.getValue(event.getName());
-        if (layer != null) {
-            layer.postRender(event.getGuiGraphics());
+        ConfigurableLayerProxy proxy = layerProxies.get(event.getName());
+        if (proxy != null) {
+            proxy.postRender(event.getGuiGraphics());
         }
+    }
+
+    private static void mapProxies() {
+        ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream()
+                .filter(x -> x instanceof ConfigurableLayerProxy)
+                .map(ConfigurableLayerProxy.class::cast)
+                .forEach(x -> {
+                    x.targetLayers().forEach(id -> layerProxies.put(id, x));
+                });
+        proxiesMapped = true;
     }
 }
