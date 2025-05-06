@@ -2,7 +2,7 @@ package com.wanderersoftherift.wotr.item.riftkey;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.wanderersoftherift.wotr.codec.DeferrableRegistryCodec;
+import com.wanderersoftherift.wotr.codec.LaxRegistryCodec;
 import com.wanderersoftherift.wotr.init.ModRiftThemes;
 import com.wanderersoftherift.wotr.world.level.levelgen.theme.RiftTheme;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -20,9 +20,7 @@ import java.util.List;
  */
 public class ThemeRecipe {
     public static final Codec<ThemeRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            DeferrableRegistryCodec.create(ModRiftThemes.RIFT_THEME_KEY)
-                    .fieldOf("theme")
-                    .forGetter(ThemeRecipe::getTheme),
+            LaxRegistryCodec.create(ModRiftThemes.RIFT_THEME_KEY).fieldOf("theme").forGetter(ThemeRecipe::getTheme),
             Codec.INT.fieldOf("priority").forGetter(ThemeRecipe::getPriority),
             EssencePredicate.CODEC.listOf()
                     .optionalFieldOf("essence_reqs", List.of())

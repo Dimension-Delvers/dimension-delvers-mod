@@ -1,7 +1,16 @@
 {
   "values": [
-    "wotr:dash",
-    "wotr:fireball",
-    "wotr:heal"
+    {
+      "id": "wotr:dash",
+      "required": false
+    },
+    {
+      "id": "wotr:fireball",
+      "required": false
+    },
+    {
+      "id": "wotr:heal",
+      "required": false
+    }
   ]
 }
