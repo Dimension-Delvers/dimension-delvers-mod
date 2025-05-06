@@ -13,7 +13,7 @@ public enum VerticalAnchor {
     CENTER {
         @Override
         public int getPos(int y, int height, int screenHeight) {
-            return (screenHeight - height) / 2 + y;
+            return screenHeight / 2 - height / 2 + y;
         }
     },
     BOTTOM {
@@ -28,7 +28,7 @@ public enum VerticalAnchor {
     public static VerticalAnchor getClosest(int pos, int height, int screenHeight) {
         VerticalAnchor result = TOP;
         int dist = pos;
-        int centerDist = Math.abs(pos + (height - screenHeight) / 2);
+        int centerDist = Math.abs(pos + height / 2 - screenHeight / 2);
         if (centerDist < dist) {
             dist = centerDist;
             result = CENTER;

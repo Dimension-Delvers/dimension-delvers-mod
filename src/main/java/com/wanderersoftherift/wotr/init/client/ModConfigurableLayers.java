@@ -56,6 +56,11 @@ public class ModConfigurableLayers {
                     () -> newProxy("hud.minecraft.health_armor", ClientConfig.HEALTH_ARMOR, 81, 29,
                             VanillaGuiLayers.PLAYER_HEALTH, VanillaGuiLayers.ARMOR_LEVEL));
 
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_FOOD = VANILLA_CONFIGURABLE_LAYERS
+            .register(
+                    VanillaGuiLayers.FOOD_LEVEL.getPath(),
+                    () -> newProxy(VanillaGuiLayers.FOOD_LEVEL, ClientConfig.FOOD_LEVEL, 81, 9));
+
     /**
      * Creates a proxy configuration layer for an existing layer. You will need a {@link HudElementConfig} to link it
      * to, that should default to the standard positioning of the layer

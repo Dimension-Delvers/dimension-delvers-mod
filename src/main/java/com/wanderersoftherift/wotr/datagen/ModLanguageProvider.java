@@ -267,6 +267,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("hud.minecraft.hotbar", "Hot Bar");
         add("hud.minecraft.experience_bar", "Experience Bar");
         add("hud.minecraft.health_armor", "Health and Armor");
+        add("hud.minecraft.food_level", "Food Level");
         add(WanderersOfTheRift.translationId("hud", "ability_bar"), "Ability Bar");
         add(WanderersOfTheRift.translationId("hud", "mana_bar"), "Mana Bar");
         add(WanderersOfTheRift.translationId("hud", "effect_bar"), "Ability Effect Bar");

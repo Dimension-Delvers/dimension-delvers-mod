@@ -13,7 +13,7 @@ public enum HorizontalAnchor {
     CENTER {
         @Override
         public int getPos(int x, int width, int screenWidth) {
-            return (screenWidth - width) / 2 + x;
+            return screenWidth / 2 - width / 2 + x;
         }
     },
     RIGHT {
@@ -34,7 +34,7 @@ public enum HorizontalAnchor {
     public static HorizontalAnchor getClosest(int pos, int width, int screenWidth) {
         HorizontalAnchor result = LEFT;
         int dist = pos;
-        int centerDist = Math.abs(pos + (width - screenWidth) / 2);
+        int centerDist = Math.abs(pos + width / 2 - screenWidth / 2);
         if (centerDist < dist) {
             dist = centerDist;
             result = CENTER;
