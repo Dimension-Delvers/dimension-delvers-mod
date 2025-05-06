@@ -45,7 +45,7 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
                                         .setWeight(40)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .add(NestedLootTable.lootTableReference(getResourceKey("rift/runegem")).setWeight(20))
-                                .add(NestedLootTable.lootTableReference(getResourceKey("rift/ability")).setWeight(80))
+                                .add(NestedLootTable.lootTableReference(getResourceKey("rift/ability")).setWeight(5))
                                 .add(NestedLootTable.lootTableReference(getResourceKey("rift/socketed_vanilla_armor"))
                                         .setWeight(20))
                                 .add(NestedLootTable.lootTableReference(getResourceKey("rift/socketed_vanilla_weapons"))
