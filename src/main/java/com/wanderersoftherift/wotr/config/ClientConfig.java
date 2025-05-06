@@ -23,10 +23,13 @@ public class ClientConfig {
     public static final ModConfigSpec.BooleanValue MOUSE_MODE;
     public static final ModConfigSpec.DoubleValue LERP_SPEED;
 
-    // UI Positioning
+    // WotR HUD
     public static final HudElementConfig ABILITY_BAR;
     public static final HudElementConfig MANA_BAR;
     public static final HudElementConfig EFFECT_DISPLAY;
+    public static final HudElementConfig OBJECTIVE;
+
+    // Vanilla HUD
     public static final HudElementConfig HOT_BAR;
     public static final HudElementConfig EXPERIENCE_BAR;
 
@@ -66,6 +69,7 @@ public class ClientConfig {
                 UIOrientation.VERTICAL);
         EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", ScreenAnchor.TOP_LEFT, 31, 0,
                 UIOrientation.VERTICAL);
+        OBJECTIVE = new HudElementConfig(builder, "Objective", "objective", ScreenAnchor.TOP_CENTER, 0, 25);
         HOT_BAR = new HudElementConfig(builder, "Vanilla Hot Bar", "hotBar", ScreenAnchor.BOTTOM_CENTER, 0, 0);
         EXPERIENCE_BAR = new HudElementConfig(builder, "Vanilla Expereince Bar", "xpBar", ScreenAnchor.BOTTOM_CENTER, 0,
                 -24, UIOrientation.HORIZONTAL);

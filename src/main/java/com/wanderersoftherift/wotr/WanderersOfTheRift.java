@@ -100,7 +100,7 @@ public class WanderersOfTheRift {
         ModChunkGenerators.CHUNK_GENERATORS.register(modEventBus);
 
         if (FMLEnvironment.dist.isClient()) {
-            ModConfigurableLayers.CONFIGURABLE_LAYERS.register(modEventBus);
+            ModConfigurableLayers.LAYERS.register(modEventBus);
             ModConfigurableLayers.VANILLA_CONFIGURABLE_LAYERS.register(modEventBus);
         }
 

@@ -8,6 +8,7 @@ import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.gui.layer.AbilityBar;
 import com.wanderersoftherift.wotr.gui.layer.EffectBar;
 import com.wanderersoftherift.wotr.gui.layer.ManaBar;
+import com.wanderersoftherift.wotr.gui.layer.objective.ObjectiveLayer;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -28,14 +29,13 @@ public class ModConfigurableLayers {
             CONFIGURABLE_LAYER_KEY).create();
 
     // Register our layers
-    public static final DeferredRegister<ConfigurableLayer> CONFIGURABLE_LAYERS = DeferredRegister
-            .create(CONFIGURABLE_LAYER_KEY, WanderersOfTheRift.MODID);
+    public static final DeferredRegister<ConfigurableLayer> LAYERS = DeferredRegister.create(CONFIGURABLE_LAYER_KEY,
+            WanderersOfTheRift.MODID);
 
-    public static final Supplier<ConfigurableLayer> ABILITY_BAR = CONFIGURABLE_LAYERS.register("ability_bar",
-            AbilityBar::new);
-    public static final Supplier<ConfigurableLayer> MANA_BAR = CONFIGURABLE_LAYERS.register("mana_bar", ManaBar::new);
-    public static final Supplier<ConfigurableLayer> EFFECT_BAR = CONFIGURABLE_LAYERS.register("effect_bar",
-            EffectBar::new);
+    public static final Supplier<ConfigurableLayer> ABILITY_BAR = LAYERS.register("ability_bar", AbilityBar::new);
+    public static final Supplier<ConfigurableLayer> MANA_BAR = LAYERS.register("mana_bar", ManaBar::new);
+    public static final Supplier<ConfigurableLayer> EFFECT_BAR = LAYERS.register("effect_bar", EffectBar::new);
+    public static final Supplier<ConfigurableLayer> OBJECTIVE = LAYERS.register("objective", ObjectiveLayer::new);
 
     // Register vanilla layers
     public static final DeferredRegister<ConfigurableLayer> VANILLA_CONFIGURABLE_LAYERS = DeferredRegister
