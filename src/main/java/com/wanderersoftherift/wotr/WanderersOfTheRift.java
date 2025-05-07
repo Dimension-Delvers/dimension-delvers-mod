@@ -101,7 +101,7 @@ public class WanderersOfTheRift {
 
         if (FMLEnvironment.dist.isClient()) {
             ModConfigurableLayers.LAYERS.register(modEventBus);
-            ModConfigurableLayers.VANILLA_CONFIGURABLE_LAYERS.register(modEventBus);
+            ModConfigurableLayers.VANILLA_LAYERS.register(modEventBus);
         }
 
         // Register ourselves for server and other game events we are interested in.

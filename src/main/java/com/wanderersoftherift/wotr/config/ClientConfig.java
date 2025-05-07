@@ -82,11 +82,11 @@ public class ClientConfig {
         HEALTH_ARMOR = new HudElementConfig(builder, "Vanilla Health and Armor", "healthArmor",
                 ScreenAnchor.BOTTOM_CENTER, -51, -30);
         FOOD_LEVEL = new HudElementConfig(builder, "Vanilla Food", "food", ScreenAnchor.BOTTOM_CENTER, 50, -30);
-        AIR_LEVEL = new HudElementConfig(builder, "Vanilla Air", "air", ScreenAnchor.BOTTOM_CENTER, 0, -24);
+        AIR_LEVEL = new HudElementConfig(builder, "Vanilla Air", "air", ScreenAnchor.BOTTOM_CENTER, 50, -40, UIOrientation.HORIZONTAL);
         EXPERIENCE_LEVEL = new HudElementConfig(builder, "Vanilla Experience Level", "xpLevel",
-                ScreenAnchor.BOTTOM_CENTER, 0, -24);
-        VANILLA_EFFECTS = new HudElementConfig(builder, "Vanilla Effects", "effects", ScreenAnchor.BOTTOM_CENTER, 0,
-                -24);
+                ScreenAnchor.BOTTOM_CENTER, 0, -26);
+        VANILLA_EFFECTS = new HudElementConfig(builder, "Vanilla Effects", "effects", ScreenAnchor.TOP_RIGHT, 0,
+                0);
 
         SPEC = builder.build();
     }
