@@ -68,26 +68,46 @@ public class ClientConfig {
                 .defineInRange("lerpSpeed", 1.0, 0.0, 2.0);
         builder.pop();
 
-        ABILITY_BAR = new HudElementConfig(builder, "Ability Bar", "abilityBar", true, ScreenAnchor.TOP_LEFT, 0, 0,
-                UIOrientation.VERTICAL);
-        MANA_BAR = new HudElementConfig(builder, "Mana Bar", "manaBar", true, ScreenAnchor.TOP_LEFT, 25, 0,
-                UIOrientation.VERTICAL);
-        EFFECT_DISPLAY = new HudElementConfig(builder, "Effect Display", "effectDisplay", true, ScreenAnchor.TOP_LEFT,
-                31, 0, UIOrientation.VERTICAL);
-        OBJECTIVE = new HudElementConfig(builder, "Objective", "objective", true, ScreenAnchor.TOP_CENTER, 0, 25);
+        ABILITY_BAR = new HudElementConfig.Builder("Ability Bar", "abilityBar").anchor(ScreenAnchor.TOP_LEFT)
+                .rotates(UIOrientation.VERTICAL)
+                .build(builder);
+        MANA_BAR = new HudElementConfig.Builder("Mana Bar", "manaBar").anchor(ScreenAnchor.TOP_LEFT)
+                .offset(25, 0)
+                .rotates(UIOrientation.VERTICAL)
+                .build(builder);
+        EFFECT_DISPLAY = new HudElementConfig.Builder("Effect Display", "effectDisplay").anchor(ScreenAnchor.TOP_LEFT)
+                .offset(31, 0)
+                .rotates(UIOrientation.VERTICAL)
+                .build(builder);
+        OBJECTIVE = new HudElementConfig.Builder("Objective", "objective").anchor(ScreenAnchor.TOP_CENTER)
+                .offset(0, 25)
+                .build(builder);
 
-        HOT_BAR = new HudElementConfig(builder, "Vanilla Hot Bar", "hotBar", true, ScreenAnchor.BOTTOM_CENTER, 0, 0);
-        EXPERIENCE_BAR = new HudElementConfig(builder, "Vanilla Experience Bar", "xpBar", true,
-                ScreenAnchor.BOTTOM_CENTER, 0, -24, UIOrientation.HORIZONTAL);
-        HEALTH_ARMOR = new HudElementConfig(builder, "Vanilla Health and Armor", "healthArmor", true,
-                ScreenAnchor.BOTTOM_CENTER, -51, -30);
-        FOOD_LEVEL = new HudElementConfig(builder, "Vanilla Food", "food", true, ScreenAnchor.BOTTOM_CENTER, 50, -30);
-        AIR_LEVEL = new HudElementConfig(builder, "Vanilla Air", "air", true, ScreenAnchor.BOTTOM_CENTER, 50, -40,
-                UIOrientation.HORIZONTAL);
-        EXPERIENCE_LEVEL = new HudElementConfig(builder, "Vanilla Experience Level", "xpLevel", true,
-                ScreenAnchor.BOTTOM_CENTER, 0, -26);
-        VANILLA_EFFECTS = new HudElementConfig(builder, "Vanilla Effects", "effects", true, ScreenAnchor.TOP_RIGHT, 0,
-                0);
+        HOT_BAR = new HudElementConfig.Builder("Vanilla Hot Bar", "hotBar").anchor(ScreenAnchor.BOTTOM_CENTER)
+                .offset(0, 0)
+                .build(builder);
+        EXPERIENCE_BAR = new HudElementConfig.Builder("Vanilla Experience Bar", "xpBar")
+                .anchor(ScreenAnchor.BOTTOM_CENTER)
+                .offset(0, -24)
+                .rotates(UIOrientation.HORIZONTAL)
+                .build(builder);
+        HEALTH_ARMOR = new HudElementConfig.Builder("Vanilla Health and Armor", "healthArmor")
+                .anchor(ScreenAnchor.BOTTOM_CENTER)
+                .offset(-51, -30)
+                .build(builder);
+        FOOD_LEVEL = new HudElementConfig.Builder("Vanilla Food", "food").anchor(ScreenAnchor.BOTTOM_CENTER)
+                .offset(50, -30)
+                .build(builder);
+        AIR_LEVEL = new HudElementConfig.Builder("Vanilla Air", "air").anchor(ScreenAnchor.BOTTOM_CENTER)
+                .offset(50, -40)
+                .rotates(UIOrientation.HORIZONTAL)
+                .build(builder);
+        EXPERIENCE_LEVEL = new HudElementConfig.Builder("Vanilla Experience Level", "xpLevel")
+                .anchor(ScreenAnchor.BOTTOM_CENTER)
+                .offset(0, -26)
+                .build(builder);
+        VANILLA_EFFECTS = new HudElementConfig.Builder("Vanilla Effects", "effects").anchor(ScreenAnchor.TOP_RIGHT)
+                .build(builder);
 
         SPEC = builder.build();
     }

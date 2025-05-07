@@ -176,4 +176,45 @@ public class HudElementConfig {
     public void reorientate() {
         orientation.set(orientation.get().next());
     }
+
+    public static class Builder {
+        private final String name;
+        private final String prefix;
+
+        private ScreenAnchor anchor = ScreenAnchor.TOP_LEFT;
+        private int x = 0;
+        private int y = 0;
+        private boolean visible = true;
+        private UIOrientation orientation = null;
+
+        public Builder(String name, String prefix) {
+            this.name = name;
+            this.prefix = prefix;
+        }
+
+        public Builder anchor(ScreenAnchor anchor) {
+            this.anchor = anchor;
+            return this;
+        }
+
+        public Builder offset(int x, int y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
+        public Builder visible(boolean value) {
+            this.visible = value;
+            return this;
+        }
+
+        public Builder rotates(UIOrientation defaultOrientation) {
+            this.orientation = defaultOrientation;
+            return this;
+        }
+
+        public HudElementConfig build(ModConfigSpec.Builder builder) {
+            return new HudElementConfig(builder, name, prefix, visible, anchor, x, y, orientation);
+        }
+    }
 }
