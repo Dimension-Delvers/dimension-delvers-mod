@@ -77,7 +77,7 @@ public class ManaBar implements ConfigurableLayer {
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui) {
+        if (minecraft.options.hideGui || !getConfig().isVisible()) {
             return;
         }
         LocalPlayer player = minecraft.player;

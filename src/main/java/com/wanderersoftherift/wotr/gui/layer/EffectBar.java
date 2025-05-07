@@ -54,7 +54,7 @@ public final class EffectBar implements ConfigurableLayer {
     @Override
     public void render(@NotNull GuiGraphics graphics, @NotNull DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui) {
+        if (minecraft.options.hideGui || !getConfig().isVisible()) {
             return;
         }
         LocalPlayer player = Minecraft.getInstance().player;

@@ -264,6 +264,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add(WanderersOfTheRift.translationId("button", "reset"), "Reset");
         add(WanderersOfTheRift.translationId("button", "close"), "Close");
+        add(WanderersOfTheRift.translationId("button", "rotate"), "Rotate");
+        add(WanderersOfTheRift.translationId("button", "show"), "Show");
+        add(WanderersOfTheRift.translationId("button", "hide"), "Hide");
         add("hud.minecraft.hotbar", "Hot Bar");
         add("hud.minecraft.experience_bar", "Experience Bar");
         add("hud.minecraft.health_armor", "Health and Armor");

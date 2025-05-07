@@ -54,26 +54,21 @@ public class ModConfigurableLayers {
             VanillaGuiLayers.EXPERIENCE_LEVEL.getPath(),
             () -> newProxy(VanillaGuiLayers.EXPERIENCE_LEVEL, ClientConfig.EXPERIENCE_LEVEL, 10, 10));
 
-    public static final Supplier<ConfigurableLayerProxy> VANILLA_HEALTH_AND_ARMOR = VANILLA_LAYERS
-            .register(
-                    VanillaGuiLayers.PLAYER_HEALTH.getPath(),
-                    () -> newProxy("hud.minecraft.health_armor", ClientConfig.HEALTH_ARMOR, 81, 29,
-                            VanillaGuiLayers.PLAYER_HEALTH, VanillaGuiLayers.ARMOR_LEVEL));
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_HEALTH_AND_ARMOR = VANILLA_LAYERS.register(
+            VanillaGuiLayers.PLAYER_HEALTH.getPath(), () -> newProxy("hud.minecraft.health_armor",
+                    ClientConfig.HEALTH_ARMOR, 81, 29, VanillaGuiLayers.PLAYER_HEALTH, VanillaGuiLayers.ARMOR_LEVEL));
 
-    public static final Supplier<ConfigurableLayerProxy> VANILLA_FOOD = VANILLA_LAYERS
-            .register(
-                    VanillaGuiLayers.FOOD_LEVEL.getPath(),
-                    () -> newProxy(VanillaGuiLayers.FOOD_LEVEL, ClientConfig.FOOD_LEVEL, 81, 9));
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_FOOD = VANILLA_LAYERS.register(
+            VanillaGuiLayers.FOOD_LEVEL.getPath(),
+            () -> newProxy(VanillaGuiLayers.FOOD_LEVEL, ClientConfig.FOOD_LEVEL, 81, 9));
 
-    public static final Supplier<ConfigurableLayerProxy> VANILLA_AIR = VANILLA_LAYERS
-            .register(
-                    VanillaGuiLayers.AIR_LEVEL.getPath(),
-                    () -> newProxy(VanillaGuiLayers.AIR_LEVEL, ClientConfig.AIR_LEVEL, 81, 9));
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_AIR = VANILLA_LAYERS.register(
+            VanillaGuiLayers.AIR_LEVEL.getPath(),
+            () -> newProxy(VanillaGuiLayers.AIR_LEVEL, ClientConfig.AIR_LEVEL, 81, 9));
 
-    public static final Supplier<ConfigurableLayerProxy> VANILLA_EFFECTS = VANILLA_LAYERS
-            .register(
-                    VanillaGuiLayers.EFFECTS.getPath(),
-                    () -> newProxy(VanillaGuiLayers.EFFECTS, ClientConfig.VANILLA_EFFECTS, 375, 50));
+    public static final Supplier<ConfigurableLayerProxy> VANILLA_EFFECTS = VANILLA_LAYERS.register(
+            VanillaGuiLayers.EFFECTS.getPath(),
+            () -> newProxy(VanillaGuiLayers.EFFECTS, ClientConfig.VANILLA_EFFECTS, 375, 50));
 
     /**
      * Creates a proxy configuration layer for an existing layer. You will need a {@link HudElementConfig} to link it

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 /**
@@ -19,7 +20,16 @@ import java.util.Optional;
  */
 public class HUDConfigScreen extends Screen {
 
+    private static final Component HIDE_LABEL = Component
+            .translatable(WanderersOfTheRift.translationId("button", "hide"));
+    private static final Component SHOW_LABEL = Component
+            .translatable(WanderersOfTheRift.translationId("button", "show"));
     private static final int SNAP_DIST = 10;
+
+    private static final int BACKGROUND_COLOR = 0x66999999;
+    private static final int SELECTED_BACKGROUND_COLOR = 0xAABBBBFF;
+    private static final int HIGHLIGHT_COLOR = 0xFFBBBBBB;
+    private static final int SELECTED_HIGHLIGHT_COLOR = 0xFFBBBBFF;
 
     private ConfigurableLayer focusedLayer = null;
     private int screenWidth = 0;
@@ -31,6 +41,7 @@ public class HUDConfigScreen extends Screen {
     private final Button resetButton;
     private final Button closeButton;
     private final Button reorientateButton;
+    private final Button visibleButton;
 
     public HUDConfigScreen(Component title) {
         super(title);
@@ -45,17 +56,37 @@ public class HUDConfigScreen extends Screen {
                         button -> onClose())
                 .size(40, 20)
                 .build();
-        reorientateButton = Button.builder(Component.literal("O"), button -> {
+        reorientateButton = Button
+                .builder(Component.translatable(WanderersOfTheRift.translationId("button", "rotate")), button -> {
+                    if (focusedLayer != null) {
+                        // Also adjust position to keep it centered after the move
+                        Vector2i pos = focusedLayer.getConfig()
+                                .getPosition(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), screenWidth,
+                                        screenHeight)
+                                .add(focusedLayer.getConfigWidth() / 2, focusedLayer.getConfigHeight() / 2);
+                        focusedLayer.getConfig().reorientate();
+                        Vector2i newPos = focusedLayer.getConfig()
+                                .getPosition(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), screenWidth,
+                                        screenHeight)
+                                .add(focusedLayer.getConfigWidth() / 2, focusedLayer.getConfigHeight() / 2);
+                        focusedLayer.getConfig().setX(focusedLayer.getConfig().getX() + pos.x - newPos.x);
+                        focusedLayer.getConfig().setY(focusedLayer.getConfig().getY() + pos.y - newPos.y);
+                    }
+                })
+                .size(35, 12)
+                .build();
+        visibleButton = Button.builder(HIDE_LABEL, button -> {
             if (focusedLayer != null) {
-                focusedLayer.getConfig().reorientate();
+                focusedLayer.getConfig().setVisible(!focusedLayer.getConfig().isVisible());
             }
-        }).size(10, 10).build();
+        }).size(35, 12).build();
     }
 
     @Override
     protected void init() {
         addRenderableWidget(resetButton);
         addRenderableWidget(closeButton);
+        addRenderableWidget(visibleButton);
         addRenderableWidget(reorientateButton);
     }
 
@@ -67,33 +98,83 @@ public class HUDConfigScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        resetButton.setPosition(guiGraphics.guiWidth() / 2 - resetButton.getWidth() - 2,
-                (guiGraphics.guiHeight() - resetButton.getHeight()) / 2);
-        closeButton.setPosition(guiGraphics.guiWidth() / 2 + 2,
-                (guiGraphics.guiHeight() - closeButton.getHeight()) / 2);
-        if (focusedLayer != null && focusedLayer.getConfig().hasOrientation() && !isDragging()) {
+        if (screenWidth != guiGraphics.guiWidth() || screenHeight != guiGraphics.guiHeight()) {
+            updateButtonPositions(guiGraphics);
+        }
+
+        updateVisibleButton(guiGraphics);
+        updateRotateButton(guiGraphics);
+
+        renderConfigurableElements(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    private void updateVisibleButton(@NotNull GuiGraphics guiGraphics) {
+        if (focusedLayer != null && !isDragging()) {
+            if (focusedLayer.getConfig().isVisible()) {
+                visibleButton.setMessage(HIDE_LABEL);
+            } else {
+                visibleButton.setMessage(SHOW_LABEL);
+            }
             Vector2i pos = focusedLayer.getConfig()
                     .getPosition(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), guiGraphics.guiWidth(),
                             guiGraphics.guiHeight())
                     .add(focusedLayer.getConfigWidth() / 2, focusedLayer.getConfigHeight() / 2)
-                    .sub(reorientateButton.getWidth() / 2, reorientateButton.getHeight() / 2);
+                    .sub(visibleButton.getWidth() / 2, visibleButton.getHeight() / 2);
+            if (focusedLayer.getConfig().hasOrientation()) {
+                pos.sub(0, visibleButton.getHeight() / 2 + 1);
+            }
+            if (pos.x + focusedLayer.getConfigWidth() / 2 + visibleButton.getWidth() < screenWidth) {
+                pos.x += focusedLayer.getConfigWidth() / 2 + visibleButton.getWidth() / 2 + 1;
+            } else {
+                pos.x -= focusedLayer.getConfigWidth() / 2 + visibleButton.getWidth() / 2 + 2;
+            }
+            visibleButton.setPosition(pos.x, pos.y);
+
+            visibleButton.visible = true;
+        } else {
+            visibleButton.visible = false;
+        }
+    }
+
+    private void updateRotateButton(@NotNull GuiGraphics guiGraphics) {
+        if (focusedLayer != null && focusedLayer.getConfig().hasOrientation() && !isDragging()) {
+            Vector2i pos = focusedLayer.getConfig()
+                    .getPosition(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), guiGraphics.guiWidth(),
+                            guiGraphics.guiHeight())
+                    .add(focusedLayer.getConfigWidth() / 2, focusedLayer.getConfigHeight() / 2 + 1)
+                    .sub(reorientateButton.getWidth() / 2, 0);
+
+            if (pos.x + focusedLayer.getConfigWidth() / 2 + reorientateButton.getWidth() < screenWidth) {
+                pos.x += focusedLayer.getConfigWidth() / 2 + reorientateButton.getWidth() / 2 + 1;
+            } else {
+                pos.x -= focusedLayer.getConfigWidth() / 2 + reorientateButton.getWidth() / 2 + 2;
+            }
+
             reorientateButton.setPosition(pos.x, pos.y);
             reorientateButton.visible = true;
         } else {
             reorientateButton.visible = false;
         }
-
-        renderConfigurableElements(guiGraphics, mouseX, mouseY, partialTick);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
-        renderTooltip(guiGraphics, mouseX, mouseY, partialTick);
     }
 
-    private void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    private void updateButtonPositions(GuiGraphics guiGraphics) {
+        screenWidth = guiGraphics.guiWidth();
+        screenHeight = guiGraphics.guiHeight();
+
+        resetButton.setPosition(guiGraphics.guiWidth() / 2 - resetButton.getWidth() - 2,
+                (guiGraphics.guiHeight() - resetButton.getHeight()) / 2);
+        closeButton.setPosition(guiGraphics.guiWidth() / 2 + 2,
+                (guiGraphics.guiHeight() - closeButton.getHeight()) / 2);
+    }
+
+    private void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (isDragging()) {
             return;
         }
         findMouseOver(mouseX, mouseY)
-                .ifPresent(layer -> guiGraphics.renderTooltip(minecraft.font, layer.getName(), mouseX, mouseY));
+                .ifPresent(layer -> guiGraphics.renderTooltip(minecraft.font, layer.getName(), mouseX, mouseY + 8));
     }
 
     private Optional<ConfigurableLayer> findMouseOver(int mouseX, int mouseY) {
@@ -102,27 +183,30 @@ public class HUDConfigScreen extends Screen {
             int height = layer.getConfigHeight();
             Vector2i pos = layer.getConfig().getPosition(width, height, screenWidth, screenHeight);
             return mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height;
-        }).findFirst();
+        }).min(Comparator.comparing(x -> x.getConfigHeight() * x.getConfigWidth()));
     }
 
-    private void renderConfigurableElements(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        screenWidth = guiGraphics.guiWidth();
-        screenHeight = guiGraphics.guiHeight();
+    private void renderConfigurableElements(GuiGraphics guiGraphics) {
         ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> {
             int width = layer.getConfigWidth();
             int height = layer.getConfigHeight();
             Vector2i pos = layer.getConfig()
                     .getPosition(width, height, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+
             boolean focused = focusedLayer == layer;
-            guiGraphics.fill(RenderType.gui(), pos.x + 1, pos.y + 1, pos.x + width - 1, pos.y + height - 1,
-                    focused ? 0x66FFFFFF : 0x66999999);
-            guiGraphics.renderOutline(pos.x, pos.y, width, height, focused ? 0xFFFFFFFF : 0xFFBBBBBB);
+            if (layer.getConfig().isVisible()) {
+                guiGraphics.fill(RenderType.gui(), pos.x + 1, pos.y + 1, pos.x + width - 1, pos.y + height - 1,
+                        focused ? SELECTED_BACKGROUND_COLOR : BACKGROUND_COLOR);
+            }
+            guiGraphics.renderOutline(pos.x, pos.y, width, height,
+                    focused ? SELECTED_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR);
+
         });
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (super.mouseClicked(mouseX, mouseY, button)) {
+        if (super.mouseClicked(mouseX, mouseY, button) || button != GLFW.GLFW_MOUSE_BUTTON_1) {
             return true;
         }
         Optional<ConfigurableLayer> overLayer = findMouseOver((int) mouseX, (int) mouseY);

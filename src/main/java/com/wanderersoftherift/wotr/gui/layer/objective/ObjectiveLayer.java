@@ -5,6 +5,7 @@ import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
 import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
@@ -14,9 +15,10 @@ public class ObjectiveLayer implements ConfigurableLayer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (ObjectiveRenderer.current != null) {
-            ObjectiveRenderer.current.render(guiGraphics, getConfig(), deltaTracker);
+        if (Minecraft.getInstance().options.hideGui || !getConfig().isVisible() || ObjectiveRenderer.current == null) {
+            return;
         }
+        ObjectiveRenderer.current.render(guiGraphics, getConfig(), deltaTracker);
     }
 
     @Override

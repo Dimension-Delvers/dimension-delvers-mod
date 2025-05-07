@@ -7,6 +7,7 @@ import org.joml.Vector2i;
  * Configuration data for HUD element positioning
  */
 public class HudElementConfig {
+    private final ModConfigSpec.BooleanValue visible;
     private final ModConfigSpec.EnumValue<ScreenAnchor> anchor;
     private final ModConfigSpec.IntValue x;
     private final ModConfigSpec.IntValue y;
@@ -18,13 +19,14 @@ public class HudElementConfig {
      * @param builder
      * @param elementName
      * @param elementPrefix
+     * @param defaultVisible
      * @param defaultAnchor
      * @param defaultX
      * @param defaultY
      */
     public HudElementConfig(ModConfigSpec.Builder builder, String elementName, String elementPrefix,
-            ScreenAnchor defaultAnchor, int defaultX, int defaultY) {
-        this(builder, elementName, elementPrefix, defaultAnchor, defaultX, defaultY, null);
+            boolean defaultVisible, ScreenAnchor defaultAnchor, int defaultX, int defaultY) {
+        this(builder, elementName, elementPrefix, defaultVisible, defaultAnchor, defaultX, defaultY, null);
     }
 
     /**
@@ -33,14 +35,18 @@ public class HudElementConfig {
      * @param builder
      * @param elementName
      * @param elementPrefix
+     * @param defaultVisible
      * @param defaultAnchor
      * @param defaultX
      * @param defaultY
      * @param defaultOrientation
      */
     public HudElementConfig(ModConfigSpec.Builder builder, String elementName, String elementPrefix,
-            ScreenAnchor defaultAnchor, int defaultX, int defaultY, UIOrientation defaultOrientation) {
+            boolean defaultVisible, ScreenAnchor defaultAnchor, int defaultX, int defaultY,
+            UIOrientation defaultOrientation) {
         builder.push(" == " + elementName + " Location == ");
+        visible = builder.comment("Whether to show the " + elementName + " at all")
+                .define(elementPrefix + "Visible", defaultVisible);
         anchor = builder.comment(" Where to position the " + elementName + " relative to")
                 .defineEnum(elementPrefix + "Anchor", defaultAnchor);
         x = builder.comment(" Relative horizontal position of the " + elementName)
@@ -60,6 +66,7 @@ public class HudElementConfig {
      * Restore the config to its default settings
      */
     public void reset() {
+        visible.set(visible.getDefault());
         anchor.set(anchor.getDefault());
         x.set(x.getDefault());
         y.set(y.getDefault());
@@ -77,6 +84,14 @@ public class HudElementConfig {
      */
     public Vector2i getPosition(int width, int height, int screenWidth, int screenHeight) {
         return getAnchor().getPos(getX(), getY(), width, height, screenWidth, screenHeight);
+    }
+
+    public boolean isVisible() {
+        return visible.get();
+    }
+
+    public void setVisible(boolean value) {
+        visible.set(value);
     }
 
     public ScreenAnchor getAnchor() {

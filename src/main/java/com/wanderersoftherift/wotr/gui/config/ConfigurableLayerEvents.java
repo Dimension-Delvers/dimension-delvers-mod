@@ -51,7 +51,11 @@ public final class ConfigurableLayerEvents {
         }
         ConfigurableLayerProxy proxy = layerProxies.get(event.getName());
         if (proxy != null) {
-            proxy.preRender(event.getGuiGraphics());
+            if (proxy.getConfig().isVisible()) {
+                proxy.preRender(event.getGuiGraphics());
+            } else {
+                event.setCanceled(true);
+            }
         }
     }
 
