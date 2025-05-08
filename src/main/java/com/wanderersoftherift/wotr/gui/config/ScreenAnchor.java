@@ -2,24 +2,30 @@ package com.wanderersoftherift.wotr.gui.config;
 
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
+import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 /**
  * Provides anchors for UI element positioning.
  */
-public enum ScreenAnchor {
-    TOP_LEFT(HorizontalAnchor.LEFT, VerticalAnchor.TOP),
-    TOP_CENTER(HorizontalAnchor.CENTER, VerticalAnchor.TOP),
-    TOP_RIGHT(HorizontalAnchor.RIGHT, VerticalAnchor.TOP),
-    CENTER_LEFT(HorizontalAnchor.LEFT, VerticalAnchor.CENTER),
-    CENTER(HorizontalAnchor.CENTER, VerticalAnchor.CENTER),
-    CENTER_RIGHT(HorizontalAnchor.RIGHT, VerticalAnchor.CENTER),
-    BOTTOM_LEFT(HorizontalAnchor.LEFT, VerticalAnchor.BOTTOM),
-    BOTTOM_CENTER(HorizontalAnchor.CENTER, VerticalAnchor.BOTTOM),
-    BOTTOM_RIGHT(HorizontalAnchor.RIGHT, VerticalAnchor.BOTTOM);
+public enum ScreenAnchor implements StringRepresentable {
+    TOP_LEFT("top_left", HorizontalAnchor.LEFT, VerticalAnchor.TOP),
+    TOP_CENTER("top_center", HorizontalAnchor.CENTER, VerticalAnchor.TOP),
+    TOP_RIGHT("top_right", HorizontalAnchor.RIGHT, VerticalAnchor.TOP),
+    CENTER_LEFT("center_left", HorizontalAnchor.LEFT, VerticalAnchor.CENTER),
+    CENTER("center", HorizontalAnchor.CENTER, VerticalAnchor.CENTER),
+    CENTER_RIGHT("center_right", HorizontalAnchor.RIGHT, VerticalAnchor.CENTER),
+    BOTTOM_LEFT("bottom_left", HorizontalAnchor.LEFT, VerticalAnchor.BOTTOM),
+    BOTTOM_CENTER("bottom_center", HorizontalAnchor.CENTER, VerticalAnchor.BOTTOM),
+    BOTTOM_RIGHT("bottom_right", HorizontalAnchor.RIGHT, VerticalAnchor.BOTTOM);
+
+    public static final StringRepresentable.StringRepresentableCodec<ScreenAnchor> CODEC = StringRepresentable
+            .fromEnum(ScreenAnchor::values);
 
     private static final Table<HorizontalAnchor, VerticalAnchor, ScreenAnchor> lookup;
 
+    private final String name;
     private final HorizontalAnchor horizontalAnchor;
     private final VerticalAnchor verticalAnchor;
 
@@ -31,7 +37,8 @@ public enum ScreenAnchor {
         lookup = builder.build();
     }
 
-    ScreenAnchor(HorizontalAnchor hAnchor, VerticalAnchor vAnchor) {
+    ScreenAnchor(String name, HorizontalAnchor hAnchor, VerticalAnchor vAnchor) {
+        this.name = name;
         this.horizontalAnchor = hAnchor;
         this.verticalAnchor = vAnchor;
     }
@@ -76,4 +83,8 @@ public enum ScreenAnchor {
                 verticalAnchor.getPos(relativeY, height, screenHeight));
     }
 
+    @Override
+    public @NotNull String getSerializedName() {
+        return name;
+    }
 }

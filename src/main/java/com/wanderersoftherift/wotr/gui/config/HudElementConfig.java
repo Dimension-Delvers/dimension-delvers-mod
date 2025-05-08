@@ -177,6 +177,12 @@ public class HudElementConfig {
         orientation.set(orientation.get().next());
     }
 
+    public boolean isDefault() {
+        return x.getDefault().equals(x.get()) && y.getDefault().equals(y.get())
+                && anchor.getDefault().equals(anchor.get()) && visible.getDefault().equals(visible.get())
+                && (!hasOrientation() || orientation.getDefault().equals(orientation.get()));
+    }
+
     public static class Builder {
         private final String name;
         private final String prefix;

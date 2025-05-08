@@ -1,10 +1,11 @@
 package com.wanderersoftherift.wotr.gui.config;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -18,7 +19,12 @@ import java.util.Optional;
 /**
  * A screen to enable configuration of HUD element positioning
  */
-public class HUDConfigScreen extends Screen {
+public class HudConfigCustomizeScreen extends Screen {
+
+    private static final int BACKGROUND_COLOR = 0x669999FF;
+    private static final int SELECTED_BACKGROUND_COLOR = 0xAAFFFFFF;
+    private static final int HIGHLIGHT_COLOR = 0xFF8888FF;
+    private static final int SELECTED_HIGHLIGHT_COLOR = 0xFFFFFFFF;
 
     private static final Component HIDE_LABEL = Component
             .translatable(WanderersOfTheRift.translationId("button", "hide"));
@@ -26,36 +32,19 @@ public class HUDConfigScreen extends Screen {
             .translatable(WanderersOfTheRift.translationId("button", "show"));
     private static final int SNAP_DIST = 10;
 
-    private static final int BACKGROUND_COLOR = 0x66999999;
-    private static final int SELECTED_BACKGROUND_COLOR = 0xAABBBBFF;
-    private static final int HIGHLIGHT_COLOR = 0xFFBBBBBB;
-    private static final int SELECTED_HIGHLIGHT_COLOR = 0xFFBBBBFF;
-
     private ConfigurableLayer focusedLayer = null;
+
     private int screenWidth = 0;
     private int screenHeight = 0;
 
     private double residualDragX;
     private double residualDragY;
 
-    private final Button resetButton;
-    private final Button closeButton;
     private final Button reorientateButton;
-    private final Button visibleButton;
+    private final CycleButton<Boolean> visibleButton;
 
-    public HUDConfigScreen(Component title) {
-        super(title);
-        resetButton = Button
-                .builder(Component.translatable(WanderersOfTheRift.translationId("button", "reset")),
-                        button -> ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream()
-                                .forEach(layer -> layer.getConfig().reset()))
-                .size(40, 20)
-                .build();
-        closeButton = Button
-                .builder(Component.translatable(WanderersOfTheRift.translationId("button", "close")),
-                        button -> onClose())
-                .size(40, 20)
-                .build();
+    public HudConfigCustomizeScreen() {
+        super(Component.translatable(WanderersOfTheRift.translationId("screen", "configure_hud")));
         reorientateButton = Button
                 .builder(Component.translatable(WanderersOfTheRift.translationId("button", "rotate")), button -> {
                     if (focusedLayer != null) {
@@ -75,32 +64,30 @@ public class HUDConfigScreen extends Screen {
                 })
                 .size(35, 12)
                 .build();
-        visibleButton = Button.builder(HIDE_LABEL, button -> {
-            if (focusedLayer != null) {
-                focusedLayer.getConfig().setVisible(!focusedLayer.getConfig().isVisible());
-            }
-        }).size(35, 12).build();
+        visibleButton = CycleButton.<Boolean>booleanBuilder(HIDE_LABEL, SHOW_LABEL)
+                .displayOnlyValue()
+                .create(0, 0, 35, 12, Component.empty(), ((cycleButton, value) -> {
+                    if (focusedLayer != null) {
+                        focusedLayer.getConfig().setVisible(value);
+                    }
+                }));
     }
 
     @Override
     protected void init() {
-        addRenderableWidget(resetButton);
-        addRenderableWidget(closeButton);
         addRenderableWidget(visibleButton);
         addRenderableWidget(reorientateButton);
     }
 
     @Override
     public void onClose() {
-        ClientConfig.SPEC.save();
-        super.onClose();
+        Minecraft.getInstance().setScreen(new HudConfigOptionsScreen());
     }
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if (screenWidth != guiGraphics.guiWidth() || screenHeight != guiGraphics.guiHeight()) {
-            updateButtonPositions(guiGraphics);
-        }
+        screenWidth = guiGraphics.guiWidth();
+        screenHeight = guiGraphics.guiHeight();
 
         updateVisibleButton(guiGraphics);
         updateRotateButton(guiGraphics);
@@ -112,11 +99,7 @@ public class HUDConfigScreen extends Screen {
 
     private void updateVisibleButton(@NotNull GuiGraphics guiGraphics) {
         if (focusedLayer != null && !isDragging()) {
-            if (focusedLayer.getConfig().isVisible()) {
-                visibleButton.setMessage(HIDE_LABEL);
-            } else {
-                visibleButton.setMessage(SHOW_LABEL);
-            }
+            visibleButton.setValue(focusedLayer.getConfig().isVisible());
             Vector2i pos = focusedLayer.getConfig()
                     .getPosition(focusedLayer.getConfigWidth(), focusedLayer.getConfigHeight(), guiGraphics.guiWidth(),
                             guiGraphics.guiHeight())
@@ -159,49 +142,12 @@ public class HUDConfigScreen extends Screen {
         }
     }
 
-    private void updateButtonPositions(GuiGraphics guiGraphics) {
-        screenWidth = guiGraphics.guiWidth();
-        screenHeight = guiGraphics.guiHeight();
-
-        resetButton.setPosition(guiGraphics.guiWidth() / 2 - resetButton.getWidth() - 2,
-                (guiGraphics.guiHeight() - resetButton.getHeight()) / 2);
-        closeButton.setPosition(guiGraphics.guiWidth() / 2 + 2,
-                (guiGraphics.guiHeight() - closeButton.getHeight()) / 2);
-    }
-
     private void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (isDragging()) {
             return;
         }
-        findMouseOver(mouseX, mouseY)
+        findMouseOver(mouseX, mouseY, screenWidth, screenHeight)
                 .ifPresent(layer -> guiGraphics.renderTooltip(minecraft.font, layer.getName(), mouseX, mouseY + 8));
-    }
-
-    private Optional<ConfigurableLayer> findMouseOver(int mouseX, int mouseY) {
-        return ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().filter(layer -> {
-            int width = layer.getConfigWidth();
-            int height = layer.getConfigHeight();
-            Vector2i pos = layer.getConfig().getPosition(width, height, screenWidth, screenHeight);
-            return mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height;
-        }).min(Comparator.comparing(x -> x.getConfigHeight() * x.getConfigWidth()));
-    }
-
-    private void renderConfigurableElements(GuiGraphics guiGraphics) {
-        ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> {
-            int width = layer.getConfigWidth();
-            int height = layer.getConfigHeight();
-            Vector2i pos = layer.getConfig()
-                    .getPosition(width, height, guiGraphics.guiWidth(), guiGraphics.guiHeight());
-
-            boolean focused = focusedLayer == layer;
-            if (layer.getConfig().isVisible()) {
-                guiGraphics.fill(RenderType.gui(), pos.x + 1, pos.y + 1, pos.x + width - 1, pos.y + height - 1,
-                        focused ? SELECTED_BACKGROUND_COLOR : BACKGROUND_COLOR);
-            }
-            guiGraphics.renderOutline(pos.x, pos.y, width, height,
-                    focused ? SELECTED_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR);
-
-        });
     }
 
     @Override
@@ -209,7 +155,7 @@ public class HUDConfigScreen extends Screen {
         if (super.mouseClicked(mouseX, mouseY, button) || button != GLFW.GLFW_MOUSE_BUTTON_1) {
             return true;
         }
-        Optional<ConfigurableLayer> overLayer = findMouseOver((int) mouseX, (int) mouseY);
+        Optional<ConfigurableLayer> overLayer = findMouseOver((int) mouseX, (int) mouseY, screenWidth, screenHeight);
         if (overLayer.isPresent()) {
             focusedLayer = overLayer.get();
             setDragging(true);
@@ -283,6 +229,37 @@ public class HUDConfigScreen extends Screen {
     }
 
     @Override
+    protected void renderMenuBackground(GuiGraphics partialTick) {
+    }
+
+    @Override
     protected void renderBlurredBackground() {
+    }
+
+    private Optional<ConfigurableLayer> findMouseOver(int mouseX, int mouseY, int screenWidth, int screenHeight) {
+        return ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().filter(layer -> {
+            int width = layer.getConfigWidth();
+            int height = layer.getConfigHeight();
+            Vector2i pos = layer.getConfig().getPosition(width, height, screenWidth, screenHeight);
+            return mouseX >= pos.x && mouseY >= pos.y && mouseX <= pos.x + width && mouseY <= pos.y + height;
+        }).min(Comparator.comparing(x -> x.getConfigHeight() * x.getConfigWidth()));
+    }
+
+    private void renderConfigurableElements(GuiGraphics guiGraphics) {
+        ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream().forEach(layer -> {
+            int width = layer.getConfigWidth();
+            int height = layer.getConfigHeight();
+            Vector2i pos = layer.getConfig()
+                    .getPosition(width, height, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+
+            boolean focused = focusedLayer == layer;
+            if (layer.getConfig().isVisible()) {
+                guiGraphics.fill(RenderType.gui(), pos.x + 1, pos.y + 1, pos.x + width - 1, pos.y + height - 1,
+                        focused ? SELECTED_BACKGROUND_COLOR : BACKGROUND_COLOR);
+            }
+            guiGraphics.renderOutline(pos.x, pos.y, width, height,
+                    focused ? SELECTED_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR);
+
+        });
     }
 }

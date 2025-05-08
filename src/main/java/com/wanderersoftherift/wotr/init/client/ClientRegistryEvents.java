@@ -16,11 +16,14 @@ import com.wanderersoftherift.wotr.client.render.item.properties.select.SelectRu
 import com.wanderersoftherift.wotr.client.tooltip.GearSocketTooltipRenderer;
 import com.wanderersoftherift.wotr.client.tooltip.ImageComponent;
 import com.wanderersoftherift.wotr.client.tooltip.ImageTooltipRenderer;
+import com.wanderersoftherift.wotr.gui.config.preset.HudPreset;
 import com.wanderersoftherift.wotr.init.ModBlockEntities;
 import com.wanderersoftherift.wotr.init.ModEntities;
 import com.wanderersoftherift.wotr.world.level.RiftDimensionSpecialEffects;
 import com.wanderersoftherift.wotr.world.level.RiftDimensionType;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -33,6 +36,7 @@ import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -42,6 +46,9 @@ import java.util.EnumSet;
 
 @EventBusSubscriber(modid = WanderersOfTheRift.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientRegistryEvents {
+
+    public static final ResourceKey<Registry<HudPreset>> HUD_PRESET_REGISTRY_KEY = ResourceKey
+            .createRegistryKey(WanderersOfTheRift.id("hud_preset"));
 
     public static final KeyMapping JIGSAW_NAME_TOGGLE_KEY = new KeyMapping(
             "key." + WanderersOfTheRift.id("jigsaw_name_toggle"), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN,
@@ -118,7 +125,13 @@ public final class ClientRegistryEvents {
     }
 
     @SubscribeEvent
-    static void registerRegistries(NewRegistryEvent event) {
+    public static void registerRegistries(NewRegistryEvent event) {
         event.register(ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY);
+    }
+
+    @SubscribeEvent
+    public static void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event) {
+        event.dataPackRegistry(HUD_PRESET_REGISTRY_KEY, HudPreset.CODEC, HudPreset.CODEC,
+                builder -> builder.defaultKey(WanderersOfTheRift.id("default")));
     }
 }

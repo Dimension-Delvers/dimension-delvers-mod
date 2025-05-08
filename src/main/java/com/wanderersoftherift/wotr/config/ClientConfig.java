@@ -23,6 +23,8 @@ public class ClientConfig {
     public static final ModConfigSpec.BooleanValue MOUSE_MODE;
     public static final ModConfigSpec.DoubleValue LERP_SPEED;
 
+    public static final ModConfigSpec.ConfigValue<String> HUD_PRESET;
+
     // WotR HUD
     public static final HudElementConfig ABILITY_BAR;
     public static final HudElementConfig MANA_BAR;
@@ -66,6 +68,10 @@ public class ClientConfig {
         MOUSE_MODE = builder.comment(" Whether to use the Whale mouse mode").define("mouseMode", false);
         LERP_SPEED = builder.comment(" What speed the map should lerp at. 0 = Off")
                 .defineInRange("lerpSpeed", 1.0, 0.0, 2.0);
+        builder.pop();
+
+        builder.push(" == HUD == ");
+        HUD_PRESET = builder.define("hud_preset", "wotr:default");
         builder.pop();
 
         ABILITY_BAR = new HudElementConfig.Builder("Ability Bar", "abilityBar").anchor(ScreenAnchor.TOP_LEFT)

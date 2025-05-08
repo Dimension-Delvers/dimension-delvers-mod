@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.wanderersoftherift.wotr.commands.AbilityCommands;
 import com.wanderersoftherift.wotr.commands.DebugCommands;
 import com.wanderersoftherift.wotr.commands.EssenceCommands;
+import com.wanderersoftherift.wotr.commands.HudCommands;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.commands.RiftCommands;
 import com.wanderersoftherift.wotr.commands.RiftKeyCommands;
@@ -173,5 +174,6 @@ public class WanderersOfTheRift {
         new RiftKeyCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
         new EssenceCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
         new RiftCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
+        new HudCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
     }
 }

@@ -36,9 +36,7 @@ public final class ConfigurableLayerEvents {
                     Button.builder(Component.translatable(WanderersOfTheRift.translationId("screen", "configure_hud")),
                             button -> {
                                 Minecraft minecraft = Minecraft.getInstance();
-                                minecraft.setScreen(new HUDConfigScreen(
-                                        Component.translatable(
-                                                WanderersOfTheRift.translationId("screen", "configure_hud"))));
+                                minecraft.setScreen(new HudConfigOptionsScreen());
                                 minecraft.mouseHandler.releaseMouse();
                             }).pos(0, 0).size(80, 20).build());
         }

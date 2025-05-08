@@ -267,6 +267,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add(WanderersOfTheRift.translationId("button", "rotate"), "Rotate");
         add(WanderersOfTheRift.translationId("button", "show"), "Show");
         add(WanderersOfTheRift.translationId("button", "hide"), "Hide");
+        add(WanderersOfTheRift.translationId("button", "hud_presets"), "Prefab");
+        add(WanderersOfTheRift.translationId("button", "customize"), "Customize");
         add("hud.minecraft.hotbar", "Hot Bar");
         add("hud.minecraft.experience_bar", "Experience Bar");
         add("hud.minecraft.health_armor", "Health and Armor");
@@ -278,6 +280,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add(WanderersOfTheRift.translationId("hud", "mana_bar"), "Mana Bar");
         add(WanderersOfTheRift.translationId("hud", "effect_bar"), "Ability Effect Bar");
         add(WanderersOfTheRift.translationId("hud", "objective"), "Objective");
+
+        add(WanderersOfTheRift.translationId("hud_preset", "default"), "Default");
+        add(WanderersOfTheRift.translationId("hud_preset", "minimal"), "Minimal");
     }
 
     private void addEssenceType(String id, String value) {
