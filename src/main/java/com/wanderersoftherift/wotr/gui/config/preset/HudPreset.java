@@ -11,21 +11,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public record HudPreset(Map<ResourceLocation, ElementPreset> elementMap) {
-    public static final Codec<HudPreset> CODEC = Codec.unboundedMap(ResourceLocation.CODEC, ElementPreset.CODEC)
-            .xmap(HudPreset::new, HudPreset::elementMap);
+public record HudPreset(ResourceLocation id, Map<ResourceLocation, ElementPreset> elementMap) {
+    public static final Codec<Map<ResourceLocation, ElementPreset>> MAP_CODEC = Codec
+            .unboundedMap(ResourceLocation.CODEC, ElementPreset.CODEC);
 
-    public static HudPreset fromConfig(RegistryAccess registryAccess) {
+    public static Map<ResourceLocation, ElementPreset> fromConfig(RegistryAccess registryAccess) {
         Registry<ConfigurableLayer> registry = registryAccess
                 .lookupOrThrow(ModConfigurableLayers.CONFIGURABLE_LAYER_KEY);
-        return new HudPreset(
-                registry.stream()
-                        .filter(layer -> !layer.getConfig().isDefault())
-                        .collect(Collectors.toMap(registry::getKey,
-                                layer -> new ElementPreset(layer.getConfig().isVisible(), layer.getConfig().getAnchor(),
-                                        layer.getConfig().getX(), layer.getConfig().getY(),
-                                        layer.getConfig().hasOrientation()
-                                                ? Optional.of(layer.getConfig().getOrientation())
-                                                : Optional.empty()))));
+        return registry.stream()
+                .filter(layer -> !layer.getConfig().isDefault())
+                .collect(Collectors.toMap(registry::getKey,
+                        layer -> new ElementPreset(layer.getConfig().isVisible(), layer.getConfig().getAnchor(),
+                                layer.getConfig().getX(), layer.getConfig().getY(),
+                                layer.getConfig().hasOrientation() ? Optional.of(layer.getConfig().getOrientation())
+                                        : Optional.empty())));
     }
 }

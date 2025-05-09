@@ -27,7 +27,7 @@ public class HudCommands extends BaseCommand {
 
     @Override
     protected void buildCommand(LiteralArgumentBuilder<CommandSourceStack> builder, CommandBuildContext context) {
-        builder.then(Commands.literal("export_prefab").executes(this::exportPrefab));
+        builder.then(Commands.literal("export_preset").executes(this::exportPrefab));
     }
 
     protected boolean isClientSideOnly() {
@@ -35,14 +35,14 @@ public class HudCommands extends BaseCommand {
     }
 
     private int exportPrefab(CommandContext<CommandSourceStack> ctx) {
-        HudPreset hudPreset = HudPreset.fromConfig(ctx.getSource().getServer().registryAccess());
+        var hudPreset = HudPreset.fromConfig(ctx.getSource().getServer().registryAccess());
 
-        DataResult<JsonElement> json = HudPreset.CODEC.encodeStart(JsonOps.INSTANCE, hudPreset);
+        DataResult<JsonElement> json = HudPreset.MAP_CODEC.encodeStart(JsonOps.INSTANCE, hudPreset);
         json.ifSuccess(x -> {
-            try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("hud_prefab.json"))) {
+            try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("hud_preset.json"))) {
                 writer.write(x.toString());
             } catch (IOException e) {
-                WanderersOfTheRift.LOGGER.error("Failed to write out hud prefab", e);
+                WanderersOfTheRift.LOGGER.error("Failed to write out hud preset", e);
             }
         });
 
