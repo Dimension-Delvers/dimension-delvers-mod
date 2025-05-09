@@ -1,10 +1,10 @@
-package com.wanderersoftherift.wotr.gui.config;
+package com.wanderersoftherift.wotr.gui.screen.settings;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import com.wanderersoftherift.wotr.gui.config.preset.ElementPreset;
 import com.wanderersoftherift.wotr.gui.config.preset.HudPreset;
-import com.wanderersoftherift.wotr.gui.config.preset.PresetManager;
+import com.wanderersoftherift.wotr.gui.config.preset.HudPresetManager;
 import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -13,8 +13,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 /**
  * A screen to enable configuration of HUD element positioning
@@ -32,17 +30,15 @@ public class HudConfigOptionsScreen extends Screen {
     public HudConfigOptionsScreen() {
         super(Component.translatable(WanderersOfTheRift.translationId("screen", "configure_hud")));
 
-        Map<ResourceLocation, HudPreset> hudPresets = PresetManager.INSTANCE.getPresets();
-
         ResourceLocation presetName = ResourceLocation.tryParse(ClientConfig.HUD_PRESET.get());
-        HudPreset currentPreset = hudPresets.get(presetName);
+        HudPreset currentPreset = HudPresetManager.getInstance().getPreset(presetName);
         if (currentPreset == null) {
-            currentPreset = hudPresets.get(WanderersOfTheRift.id("default"));
+            currentPreset = HudPresetManager.getInstance().getPreset(WanderersOfTheRift.id("default"));
         }
 
         presetButton = CycleButton.<HudPreset>builder(x -> Component.translatable(
                 "hud_preset." + x.id().getNamespace() + "." + x.id().getPath()))
-                .withValues(hudPresets.values())
+                .withValues(HudPresetManager.getInstance().getPresets())
                 .withInitialValue(currentPreset)
                 .create(0, 0, 150, 20,
                         Component.translatable(WanderersOfTheRift.translationId("button", "hud_presets")),

@@ -25,6 +25,12 @@ public enum VerticalAnchor {
 
     public abstract int getPos(int y, int height, int screenHeight);
 
+    /**
+     * @param pos          The top position of this element
+     * @param height       The height of the element
+     * @param screenHeight The height of the screen
+     * @return The closest vertical anchor to the element
+     */
     public static VerticalAnchor getClosest(int pos, int height, int screenHeight) {
         VerticalAnchor result = TOP;
         int dist = pos;

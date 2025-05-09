@@ -16,6 +16,7 @@ import com.wanderersoftherift.wotr.client.render.item.properties.select.SelectRu
 import com.wanderersoftherift.wotr.client.tooltip.GearSocketTooltipRenderer;
 import com.wanderersoftherift.wotr.client.tooltip.ImageComponent;
 import com.wanderersoftherift.wotr.client.tooltip.ImageTooltipRenderer;
+import com.wanderersoftherift.wotr.gui.config.preset.HudPresetManager;
 import com.wanderersoftherift.wotr.init.ModBlockEntities;
 import com.wanderersoftherift.wotr.init.ModEntities;
 import com.wanderersoftherift.wotr.world.level.RiftDimensionSpecialEffects;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -120,6 +122,11 @@ public final class ClientRegistryEvents {
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
         event.register(ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY);
+    }
+
+    @SubscribeEvent
+    public static void resourceReload(AddClientReloadListenersEvent event) {
+        event.addListener(WanderersOfTheRift.id("hud_preset"), HudPresetManager.getInstance());
     }
 
 }

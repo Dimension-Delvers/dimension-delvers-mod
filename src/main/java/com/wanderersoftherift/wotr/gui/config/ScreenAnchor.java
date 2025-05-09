@@ -70,17 +70,17 @@ public enum ScreenAnchor implements StringRepresentable {
      * Given the relative coordinates of the element, its dimensions and the screen dimensions, determines the position
      * of the top-left corner of the element
      * 
-     * @param relativeX
-     * @param relativeY
+     * @param xOffset
+     * @param yOffset
      * @param width
      * @param height
      * @param screenWidth
      * @param screenHeight
      * @return The top-left position of the element
      */
-    public Vector2i getPos(int relativeX, int relativeY, int width, int height, int screenWidth, int screenHeight) {
-        return new Vector2i(horizontalAnchor.getPos(relativeX, width, screenWidth),
-                verticalAnchor.getPos(relativeY, height, screenHeight));
+    public Vector2i getPos(int xOffset, int yOffset, int width, int height, int screenWidth, int screenHeight) {
+        return new Vector2i(horizontalAnchor.getPos(xOffset, width, screenWidth),
+                verticalAnchor.getPos(yOffset, height, screenHeight));
     }
 
     @Override

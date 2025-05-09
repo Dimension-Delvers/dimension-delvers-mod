@@ -11,7 +11,6 @@ import com.wanderersoftherift.wotr.commands.RiftKeyCommands;
 import com.wanderersoftherift.wotr.commands.RiftMapCommands;
 import com.wanderersoftherift.wotr.commands.SpawnPieceCommand;
 import com.wanderersoftherift.wotr.config.ClientConfig;
-import com.wanderersoftherift.wotr.gui.config.preset.PresetManager;
 import com.wanderersoftherift.wotr.init.ModAbilityTypes;
 import com.wanderersoftherift.wotr.init.ModAttachments;
 import com.wanderersoftherift.wotr.init.ModAttributes;
@@ -53,7 +52,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -105,7 +103,6 @@ public class WanderersOfTheRift {
         if (FMLEnvironment.dist.isClient()) {
             ModConfigurableLayers.LAYERS.register(modEventBus);
             ModConfigurableLayers.VANILLA_LAYERS.register(modEventBus);
-            modEventBus.addListener(this::resourceReload);
         }
 
         // Register ourselves for server and other game events we are interested in.
@@ -163,10 +160,6 @@ public class WanderersOfTheRift {
         ModList.get()
                 .getModContainerById("sophisticatedbackpacks")
                 .ifPresent(x -> SophisticatedBackpackInterop.register(event));
-    }
-
-    public void resourceReload(AddClientReloadListenersEvent event) {
-        event.addListener(id("hud_preset"), PresetManager.INSTANCE);
     }
 
     @SubscribeEvent

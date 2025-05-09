@@ -1,6 +1,8 @@
-package com.wanderersoftherift.wotr.gui.config;
+package com.wanderersoftherift.wotr.gui.screen.settings;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
+import com.wanderersoftherift.wotr.gui.config.ConfigurableLayer;
+import com.wanderersoftherift.wotr.gui.config.HudElementConfig;
 import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,7 +19,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 /**
- * A screen to enable configuration of HUD element positioning
+ * A screen to customize of HUD element positioning
  */
 public class HudConfigCustomizeScreen extends Screen {
 
@@ -229,7 +231,7 @@ public class HudConfigCustomizeScreen extends Screen {
     }
 
     @Override
-    protected void renderMenuBackground(GuiGraphics partialTick) {
+    protected void renderMenuBackground(@NotNull GuiGraphics guiGraphics) {
     }
 
     @Override

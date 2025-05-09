@@ -26,9 +26,9 @@ public enum HorizontalAnchor {
     public abstract int getPos(int x, int width, int screenWidth);
 
     /**
-     * @param pos
-     * @param width
-     * @param screenWidth
+     * @param pos         The left position of the element
+     * @param width       The width of the element
+     * @param screenWidth The width of the screen
      * @return The closest anchor to the ui element
      */
     public static HorizontalAnchor getClosest(int pos, int width, int screenWidth) {

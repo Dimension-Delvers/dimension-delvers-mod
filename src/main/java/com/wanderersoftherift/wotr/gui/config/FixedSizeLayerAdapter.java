@@ -2,7 +2,6 @@ package com.wanderersoftherift.wotr.gui.config;
 
 import com.google.common.base.Preconditions;
 import com.mojang.math.Transformation;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,13 +14,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A proxy layer for adding configuration support for existing, non-configurable layers (e.g. vanilla or other mod
- * layers)
- * <p>
- * Modifies the position of the linked layer before it is rendered
- * </p>
+ * An adapter layer for adding configuration support for existing, non-configurable layers (e.g. vanilla or other mod
+ * layers) by treating them as rendering as a fixed-sized box
  */
-public class ConfigurableLayerProxy implements ConfigurableLayer {
+public class FixedSizeLayerAdapter implements ConfigurableLayerAdapter {
     private final List<ResourceLocation> layers;
     private final Component name;
     private final HudElementConfig config;
@@ -36,7 +32,7 @@ public class ConfigurableLayerProxy implements ConfigurableLayer {
      * @param height The height of the layer
      * @param layers The layers
      */
-    public ConfigurableLayerProxy(Component name, HudElementConfig config, int width, int height,
+    public FixedSizeLayerAdapter(Component name, HudElementConfig config, int width, int height,
             Collection<ResourceLocation> layers) {
         Preconditions.checkArgument(!layers.isEmpty(), "At least one layer must be specified");
         this.name = name;
@@ -46,6 +42,7 @@ public class ConfigurableLayerProxy implements ConfigurableLayer {
         this.layers = List.copyOf(layers);
     }
 
+    @Override
     public List<ResourceLocation> targetLayers() {
         return layers;
     }
@@ -76,6 +73,7 @@ public class ConfigurableLayerProxy implements ConfigurableLayer {
         return height;
     }
 
+    @Override
     public void preRender(GuiGraphics guiGraphics) {
         Vector2i defaultPos = config.getDefaultAnchor()
                 .getPos(config.getDefaultX(), config.getDefaultY(), width, height, guiGraphics.guiWidth(),
@@ -99,9 +97,6 @@ public class ConfigurableLayerProxy implements ConfigurableLayer {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-    }
-
     public void postRender(GuiGraphics guiGraphics) {
         guiGraphics.pose().popPose();
     }

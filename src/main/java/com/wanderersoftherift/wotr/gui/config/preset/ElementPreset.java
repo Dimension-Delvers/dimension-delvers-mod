@@ -8,6 +8,15 @@ import com.wanderersoftherift.wotr.gui.config.UIOrientation;
 
 import java.util.Optional;
 
+/**
+ * An ElementPreset provides configuration for a specific HUD Element (or layer)
+ * 
+ * @param visible     Whether the element is visible
+ * @param anchor      The screen position to place the element relative to
+ * @param xOffset     The horizontal offset for placing the element
+ * @param yOffset     The vertical offset for placing the element
+ * @param orientation The orientation of the element, if rotatable
+ */
 public record ElementPreset(boolean visible, ScreenAnchor anchor, int xOffset, int yOffset,
         Optional<UIOrientation> orientation) {
 
@@ -20,6 +29,11 @@ public record ElementPreset(boolean visible, ScreenAnchor anchor, int xOffset, i
     ).apply(instance, ElementPreset::new)
     );
 
+    /**
+     * Applies the preset to the provided element config
+     * 
+     * @param config
+     */
     public void applyTo(HudElementConfig config) {
         config.setVisible(visible());
         config.setX(xOffset());

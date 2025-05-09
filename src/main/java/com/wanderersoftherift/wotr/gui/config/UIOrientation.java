@@ -23,10 +23,16 @@ public enum UIOrientation implements StringRepresentable {
         this.axis = axis;
     }
 
-    public UIOrientation next() {
+    /**
+     * @return The next orientation
+     */
+    public UIOrientation rotate() {
         return UIOrientation.values()[(ordinal() + 1) % UIOrientation.values().length];
     }
 
+    /**
+     * @return The axis vector of this orientation
+     */
     public Vector2ic axis() {
         return axis;
     }

@@ -1,6 +1,7 @@
 package com.wanderersoftherift.wotr.gui.config;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
+import com.wanderersoftherift.wotr.gui.screen.settings.HudConfigOptionsScreen;
 import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -17,18 +18,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Events related to configurable layers
+ * Event handlers related to configurable layers
  */
 @EventBusSubscriber(modid = WanderersOfTheRift.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public final class ConfigurableLayerEvents {
 
-    private static final Map<ResourceLocation, ConfigurableLayerProxy> layerProxies = new HashMap<>();
-    private static boolean proxiesMapped = false;
+    private static final Map<ResourceLocation, ConfigurableLayerAdapter> adapterLookup = new HashMap<>();
+    private static boolean adaptersMapped = false;
 
     private ConfigurableLayerEvents() {
 
     }
 
+    /**
+     * Injects the configure hud button in the pause screen
+     * 
+     * @param event
+     */
     @SubscribeEvent
     public static void postInitPauseScreen(ScreenEvent.Init.Post event) {
         if (event.getScreen() instanceof PauseScreen) {
@@ -42,36 +48,46 @@ public final class ConfigurableLayerEvents {
         }
     }
 
+    /**
+     * Allows adapters to adjust the rendering of their linked layers
+     * 
+     * @param event
+     */
     @SubscribeEvent
     public static void preRenderLayers(RenderGuiLayerEvent.Pre event) {
-        if (!proxiesMapped) {
-            mapProxies();
+        if (!adaptersMapped) {
+            mapAdapters();
         }
-        ConfigurableLayerProxy proxy = layerProxies.get(event.getName());
-        if (proxy != null) {
-            if (proxy.getConfig().isVisible()) {
-                proxy.preRender(event.getGuiGraphics());
+        ConfigurableLayerAdapter adapter = adapterLookup.get(event.getName());
+        if (adapter != null) {
+            if (adapter.getConfig().isVisible()) {
+                adapter.preRender(event.getGuiGraphics());
             } else {
                 event.setCanceled(true);
             }
         }
     }
 
+    /**
+     * Allows adapters to clean up after adjusting rendering for their layers
+     * 
+     * @param event
+     */
     @SubscribeEvent
     public static void postRenderLayers(RenderGuiLayerEvent.Post event) {
-        ConfigurableLayerProxy proxy = layerProxies.get(event.getName());
+        ConfigurableLayerAdapter proxy = adapterLookup.get(event.getName());
         if (proxy != null) {
             proxy.postRender(event.getGuiGraphics());
         }
     }
 
-    private static void mapProxies() {
+    private static void mapAdapters() {
         ModConfigurableLayers.CONFIGURABLE_LAYER_REGISTRY.stream()
-                .filter(x -> x instanceof ConfigurableLayerProxy)
-                .map(ConfigurableLayerProxy.class::cast)
+                .filter(x -> x instanceof FixedSizeLayerAdapter)
+                .map(FixedSizeLayerAdapter.class::cast)
                 .forEach(x -> {
-                    x.targetLayers().forEach(id -> layerProxies.put(id, x));
+                    x.targetLayers().forEach(id -> adapterLookup.put(id, x));
                 });
-        proxiesMapped = true;
+        adaptersMapped = true;
     }
 }

@@ -15,7 +15,7 @@ public class HudElementConfig {
 
     /**
      * Creates a HudElementConfig that doesn't support orientation
-     * 
+     *
      * @param builder
      * @param elementName
      * @param elementPrefix
@@ -31,7 +31,7 @@ public class HudElementConfig {
 
     /**
      * Creates a HudElementConfig that supports orientation
-     * 
+     *
      * @param builder
      * @param elementName
      * @param elementPrefix
@@ -86,24 +86,81 @@ public class HudElementConfig {
         return getAnchor().getPos(getX(), getY(), width, height, screenWidth, screenHeight);
     }
 
+    /**
+     * Shifts anchor to the nearest one to the element, and adjusts the relative positioning such that the element
+     * maintains the same position
+     *
+     * @param width        Width of the element
+     * @param height       Height of the element
+     * @param screenWidth  Width of the screen
+     * @param screenHeight Height of the screen
+     */
+    public void reanchor(int width, int height, int screenWidth, int screenHeight) {
+        Vector2i pos = getPosition(width, height, screenWidth, screenHeight);
+        HorizontalAnchor newHorizontalAnchor = HorizontalAnchor.getClosest(pos.x(), width, screenWidth);
+        VerticalAnchor newVerticalAnchor = VerticalAnchor.getClosest(pos.y(), height, screenHeight);
+        this.anchor.set(ScreenAnchor.get(newHorizontalAnchor, newVerticalAnchor));
+        pos.sub(anchor.get().getPos(0, 0, width, height, screenWidth, screenHeight));
+        setX(pos.x);
+        setY(pos.y);
+    }
+
+    /**
+     * @return Whether this element config is in its default state
+     */
+    public boolean isDefault() {
+        return x.getDefault().equals(x.get()) && y.getDefault().equals(y.get())
+                && anchor.getDefault().equals(anchor.get()) && visible.getDefault().equals(visible.get())
+                && (!hasOrientation() || orientation.getDefault().equals(orientation.get()));
+    }
+
+    /**
+     * @return is the element visible
+     */
     public boolean isVisible() {
         return visible.get();
     }
 
-    public void setVisible(boolean value) {
-        visible.set(value);
-    }
-
+    /**
+     * @return Where the element is anchored
+     */
     public ScreenAnchor getAnchor() {
         return anchor.get();
     }
 
+    /**
+     * @return The x offset of the element from its anchor
+     */
     public int getX() {
         return x.get();
     }
 
+    /**
+     * @return The y offset of the element from its anchor
+     */
     public int getY() {
         return y.get();
+    }
+
+    /**
+     * @return Whether this element allow orientation
+     */
+    public boolean hasOrientation() {
+        return orientation != null;
+    }
+
+    /**
+     * @return The current orientation of the element
+     */
+    public UIOrientation getOrientation() {
+        if (orientation != null) {
+            return orientation.get();
+        }
+        return UIOrientation.HORIZONTAL;
+    }
+
+    public void setVisible(boolean value) {
+        visible.set(value);
     }
 
     public void setAnchor(ScreenAnchor anchor) {
@@ -118,24 +175,6 @@ public class HudElementConfig {
         this.y.set(y);
     }
 
-    public boolean hasOrientation() {
-        return orientation != null;
-    }
-
-    public UIOrientation getOrientation() {
-        if (orientation != null) {
-            return orientation.get();
-        }
-        return UIOrientation.HORIZONTAL;
-    }
-
-    public UIOrientation getDefaultOrientation() {
-        if (orientation != null) {
-            return orientation.getDefault();
-        }
-        return UIOrientation.HORIZONTAL;
-    }
-
     public void setOrientation(UIOrientation newValue) {
         if (orientation != null) {
             orientation.set(newValue);
@@ -143,22 +182,10 @@ public class HudElementConfig {
     }
 
     /**
-     * Shifts anchor to the nearest one to the element, and adjusts the relative positioning such that the element
-     * maintains the same position
-     * 
-     * @param width
-     * @param height
-     * @param screenWidth
-     * @param screenHeight
+     * Toggles the orientation
      */
-    public void reanchor(int width, int height, int screenWidth, int screenHeight) {
-        Vector2i pos = getPosition(width, height, screenWidth, screenHeight);
-        HorizontalAnchor newHorizontalAnchor = HorizontalAnchor.getClosest(pos.x(), width, screenWidth);
-        VerticalAnchor newVerticalAnchor = VerticalAnchor.getClosest(pos.y(), height, screenHeight);
-        this.anchor.set(ScreenAnchor.get(newHorizontalAnchor, newVerticalAnchor));
-        pos.sub(anchor.get().getPos(0, 0, width, height, screenWidth, screenHeight));
-        setX(pos.x);
-        setY(pos.y);
+    public void reorientate() {
+        orientation.set(orientation.get().rotate());
     }
 
     public ScreenAnchor getDefaultAnchor() {
@@ -173,16 +200,16 @@ public class HudElementConfig {
         return y.getDefault();
     }
 
-    public void reorientate() {
-        orientation.set(orientation.get().next());
+    public UIOrientation getDefaultOrientation() {
+        if (orientation != null) {
+            return orientation.getDefault();
+        }
+        return UIOrientation.HORIZONTAL;
     }
 
-    public boolean isDefault() {
-        return x.getDefault().equals(x.get()) && y.getDefault().equals(y.get())
-                && anchor.getDefault().equals(anchor.get()) && visible.getDefault().equals(visible.get())
-                && (!hasOrientation() || orientation.getDefault().equals(orientation.get()));
-    }
-
+    /**
+     * Builder for defining HudElementConfig
+     */
     public static class Builder {
         private final String name;
         private final String prefix;
@@ -193,32 +220,65 @@ public class HudElementConfig {
         private boolean visible = true;
         private UIOrientation orientation = null;
 
+        /**
+         * @param name   The display name of the element being configured to appear in the config comments
+         * @param prefix The prefix of the element being configured to be included in all config field names
+         */
         public Builder(String name, String prefix) {
             this.name = name;
             this.prefix = prefix;
         }
 
+        /**
+         * Sets the default anchor for the element, TOP_LEFT if not specified
+         * 
+         * @param anchor The default anchor for the element
+         * @return The builder for method chaining
+         */
         public Builder anchor(ScreenAnchor anchor) {
             this.anchor = anchor;
             return this;
         }
 
+        /**
+         * Sets the default offsets for the element, 0,0 if not specified
+         * 
+         * @param x
+         * @param y
+         * @return The builder for method chaining
+         */
         public Builder offset(int x, int y) {
             this.x = x;
             this.y = y;
             return this;
         }
 
+        /**
+         * Sets whether the element is visible by default, true if not specified
+         * 
+         * @param value
+         * @return The builder for method chaining
+         */
         public Builder visible(boolean value) {
             this.visible = value;
             return this;
         }
 
+        /**
+         * Sets whether the element can be rotated, and the default orientation if so
+         * 
+         * @param defaultOrientation
+         * @return The builder for method chaining
+         */
         public Builder rotates(UIOrientation defaultOrientation) {
             this.orientation = defaultOrientation;
             return this;
         }
 
+        /**
+         * @param builder The ModConfigSpec builder to add the fields into
+         * @return The built HudElementConfig
+         */
         public HudElementConfig build(ModConfigSpec.Builder builder) {
             return new HudElementConfig(builder, name, prefix, visible, anchor, x, y, orientation);
         }

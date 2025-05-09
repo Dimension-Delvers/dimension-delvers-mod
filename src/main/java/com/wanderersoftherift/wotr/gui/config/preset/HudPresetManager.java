@@ -14,23 +14,35 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class PresetManager implements PreparableReloadListener {
+/**
+ * PresetManager loads and holds the collection of available HUD presets
+ */
+public class HudPresetManager implements PreparableReloadListener {
     private static final String PATH = "hud_preset";
     private static final String EXTENSION = ".json";
-    public static final PresetManager INSTANCE = new PresetManager();
+    private static final HudPresetManager INSTANCE = new HudPresetManager();
 
     private Map<ResourceLocation, HudPreset> presets = ImmutableMap.of();
 
-    private PresetManager() {
+    private HudPresetManager() {
     }
 
-    public Map<ResourceLocation, HudPreset> getPresets() {
-        return presets;
+    public static HudPresetManager getInstance() {
+        return INSTANCE;
+    }
+
+    public HudPreset getPreset(ResourceLocation id) {
+        return presets.get(id);
+    }
+
+    public Collection<HudPreset> getPresets() {
+        return presets.values();
     }
 
     @Override
