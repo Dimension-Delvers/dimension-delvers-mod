@@ -9,6 +9,7 @@ import com.wanderersoftherift.wotr.client.map.MapCell;
 import com.wanderersoftherift.wotr.client.map.MapData;
 import com.wanderersoftherift.wotr.client.map.MapRoom;
 import com.wanderersoftherift.wotr.client.render.blockentity.JigsawBlockEntityRenderer;
+import com.wanderersoftherift.wotr.client.render.blockentity.RiftMobSpawnerBlockEntityRenderer;
 import com.wanderersoftherift.wotr.client.render.entity.AltSpiderRenderer;
 import com.wanderersoftherift.wotr.client.render.entity.RiftPortalRenderer;
 import com.wanderersoftherift.wotr.client.render.entity.SimpleEffectProjectileRenderer;
@@ -88,6 +89,8 @@ public final class ClientRegistryEvents {
         event.registerBlockEntityRenderer(BlockEntityType.JIGSAW, JigsawBlockEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.SIMPLE_EFFECT_PROJECTILE.get(), SimpleEffectProjectileRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.DITTO_BLOCK_ENTITY.get(), DittoBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.RIFT_MOB_SPAWNER.get(),
+                RiftMobSpawnerBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
