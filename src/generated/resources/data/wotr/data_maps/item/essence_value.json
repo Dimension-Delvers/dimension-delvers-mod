@@ -1389,6 +1389,9 @@
       "wotr:light": 1,
       "wotr:plant": 1
     },
+    "minecraft:jigsaw": {
+      "wotr:processor": 1
+    },
     "minecraft:jukebox": {
       "wotr:order": 1,
       "wotr:power": 1
@@ -2333,6 +2336,9 @@
     },
     "minecraft:string": {
       "wotr:fabric": 1
+    },
+    "minecraft:structure_block": {
+      "wotr:processor": 5
     },
     "minecraft:sugar": {
       "wotr:life": 1

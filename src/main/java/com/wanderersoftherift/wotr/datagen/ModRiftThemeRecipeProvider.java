@@ -34,6 +34,12 @@ public class ModRiftThemeRecipeProvider extends KeyForgeRecipeProvider<Holder<Ri
                         WanderersOfTheRift.id("forest")))
                 .withEssenceReq(new EssencePredicate.Builder(WanderersOfTheRift.id("plant")).setMinPercent(50f).build())
                 .build());
+        writer.accept(KeyForgeRecipe
+                .create((Holder<RiftTheme>) DeferredHolder.create(ModRiftThemes.RIFT_THEME_KEY,
+                        WanderersOfTheRift.id("processor")))
+                .withEssenceReq(
+                        new EssencePredicate.Builder(WanderersOfTheRift.id("processor")).setMinPercent(1F).build())
+                .build());
 
     }
 }

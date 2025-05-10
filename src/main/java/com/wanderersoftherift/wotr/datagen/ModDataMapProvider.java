@@ -55,6 +55,8 @@ public class ModDataMapProvider extends DataMapProvider {
         ResourceLocation nether = WanderersOfTheRift.id("nether");
         ResourceLocation end = WanderersOfTheRift.id("end");
 
+        ResourceLocation processor = WanderersOfTheRift.id("processor");
+
         // Bee stuff
         this.builder(ModDataMaps.ESSENCE_VALUE_DATA)
                 .add(Items.BEEHIVE.builtInRegistryHolder(), new EssenceValue(order, 1, animal, 1), false)
@@ -1038,7 +1040,12 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(Items.ARMOR_STAND.builtInRegistryHolder(), new EssenceValue(order, 1), false)
                 .add(Items.TOTEM_OF_UNDYING.builtInRegistryHolder(), new EssenceValue(life, 1, death, 1), false)
                 .add(Items.GOAT_HORN.builtInRegistryHolder(), new EssenceValue(animal, 1, order, 1), false)
-                .add(Items.BELL.builtInRegistryHolder(), new EssenceValue(metal, 1), false)
+                .add(Items.BELL.builtInRegistryHolder(), new EssenceValue(metal, 1), false);
+
+        // Processors
+        this.builder(ModDataMaps.ESSENCE_VALUE_DATA)
+                .add(Items.STRUCTURE_BLOCK.builtInRegistryHolder(), new EssenceValue(processor, 5), false)
+                .add(Items.JIGSAW.builtInRegistryHolder(), new EssenceValue(processor, 1), false)
 
                 .build();
     }
