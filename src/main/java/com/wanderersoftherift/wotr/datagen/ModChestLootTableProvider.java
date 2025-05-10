@@ -341,11 +341,10 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
      * @param consumer
      */
     private void generateSocketedVanillaToolLootTable(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
-        consumer.accept(getResourceKey("rift/socketed_vanilla_tools"),
-                LootTable.lootTable()
-                        .withPool(LootPool.lootPool()
+        consumer.accept(getResourceKey("rift/socketed_vanilla_tools"), LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                // just adding netherite for now as it doesn't matter
                                 .add(LootItem.lootTableItem(Items.NETHERITE_PICKAXE)
                                         .when(riftTier(0, 4))
                                         .setWeight(20)
@@ -370,7 +369,7 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
                                         .when(riftTier(5, 7))
                                         .setWeight(5)
                                         .apply(GearSocketsFunction.setGearSockets(5, 6)))
-                        ));
+                ));
     }
 
     private static @NotNull ResourceKey<LootTable> getResourceKey(String path) {

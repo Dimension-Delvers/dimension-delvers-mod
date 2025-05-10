@@ -3,6 +3,8 @@ package com.wanderersoftherift.wotr.loot.lootmodifiers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.wanderersoftherift.wotr.core.rift.RiftData;
+import com.wanderersoftherift.wotr.init.ModDataComponentType;
+import com.wanderersoftherift.wotr.item.implicit.GearImplicits;
 import com.wanderersoftherift.wotr.item.socket.GearSockets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceKey;
@@ -40,35 +42,38 @@ public class OverrideVanillaLootModifier extends LootModifier {
         }
         ResourceKey<Level> dimension = context.getLevel().dimension();
 
-        // roll socketable gear
+        // roll rift gear
         for (ItemStack itemStack : generatedLoot) {
             if (itemStack.is(SOCKETABLE)) {
                 // Add sockets to the item
                 if (Level.END.equals(dimension)) {
-                    GearSockets.generateForItem(itemStack, context.getLevel(), 1, 3);
-                } else {
                     GearSockets.generateForItem(itemStack, context.getLevel(), 1, 2);
+                } else {
+                    GearSockets.generateForItem(itemStack, context.getLevel(), 1, 1);
 
                 }
             }
-            // todo add implicit rolls
+            GearImplicits implicits = itemStack.get(ModDataComponentType.GEAR_IMPLICITS);
+            if (implicits != null) {
+                implicits.modifierInstances(itemStack, context.getLevel());
+            }
         }
 
-        int chance = Math.abs(context.getRandom().nextInt() % 1000);
+        float chance = context.getRandom().nextFloat();
         // roll runegems per dim
         if (Level.OVERWORLD.equals(dimension)) {
             // ow chest is 2.5% drop rate
-            if (chance < 25) {
+            if (chance < 0.025F) {
                 generatedLoot.add(new ItemStack(RAW_RUNEGEM_GEODE.asItem()));
             }
         } else if (Level.NETHER.equals(dimension)) {
             // nether chest is 7.5% drop rate
-            if (chance < 75) {
+            if (chance < 0.075F) {
                 generatedLoot.add(new ItemStack(RAW_RUNEGEM_GEODE.asItem()));
             }
         } else if (Level.END.equals(dimension)) {
             // end chest is 15% drop rate
-            if (chance < 150) {
+            if (chance < 0.15F) {
                 generatedLoot.add(new ItemStack(RAW_RUNEGEM_GEODE.asItem()));
             }
         }

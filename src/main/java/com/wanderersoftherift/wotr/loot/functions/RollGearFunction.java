@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.wanderersoftherift.wotr.init.ModDataComponentType;
+import com.wanderersoftherift.wotr.item.implicit.GearImplicits;
 import com.wanderersoftherift.wotr.item.socket.GearSockets;
+import com.wanderersoftherift.wotr.loot.LootUtil;
 import com.wanderersoftherift.wotr.util.ItemTagUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +14,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -56,23 +57,23 @@ public class RollGearFunction extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack itemStack, LootContext lootContext) {
-        return generateItemStack(itemStack, lootContext.getRandom());
-    }
-
-    private @NotNull ItemStack generateItemStack(ItemStack itemStack, RandomSource random) {
+        RandomSource random = lootContext.getRandom();
 
         itemStack = ItemTagUtil.getRandomItemStackFromTag(itemStack, tagLocation, random);
-        // todo add rift tier to ModDataComponentType for gear should it have its own place in implicits or does it need
-        // to be its own ModDataComponentType?
-        // todo ask Pat if we want to roll implicit gear here or dot it JIT when you put it in your MH it may be better
-        // UX to do it here
         itemStack.set(ModDataComponentType.GEAR_SOCKETS, GearSockets.randomSockets(minSockets, maxSockets, random));
+        GearImplicits implicits = itemStack.get(ModDataComponentType.GEAR_IMPLICITS);
+        if (implicits != null) {
+            implicits.modifierInstances(itemStack, lootContext.getLevel());
+        }
+        int tier = LootUtil.getRiftTierFromContext(lootContext);
+        if (tier > 0) {
+            itemStack.set(ModDataComponentType.ITEM_RIFT_TIER, tier);
+        }
         return itemStack;
     }
 
     public static Builder<?> rollRiftGear(int minSockets, int maxSockets, String tagLocation) {
-        return simpleBuilder((lootItemConditions) -> {
-            return new RollGearFunction(lootItemConditions, minSockets, maxSockets, tagLocation);
-        });
+        return simpleBuilder(
+                (lootItemConditions) -> new RollGearFunction(lootItemConditions, minSockets, maxSockets, tagLocation));
     }
 }
