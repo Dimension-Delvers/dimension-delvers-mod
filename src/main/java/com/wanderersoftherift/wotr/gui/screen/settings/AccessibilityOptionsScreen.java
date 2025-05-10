@@ -1,4 +1,4 @@
-package com.wanderersoftherift.wotr.gui.screen;
+package com.wanderersoftherift.wotr.gui.screen.settings;
 
 import com.wanderersoftherift.wotr.config.ClientConfig;
 import net.minecraft.client.Minecraft;

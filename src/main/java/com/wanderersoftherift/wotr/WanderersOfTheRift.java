@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.wanderersoftherift.wotr.commands.AbilityCommands;
 import com.wanderersoftherift.wotr.commands.DebugCommands;
 import com.wanderersoftherift.wotr.commands.EssenceCommands;
+import com.wanderersoftherift.wotr.commands.HudCommands;
 import com.wanderersoftherift.wotr.commands.InventorySnapshotCommands;
 import com.wanderersoftherift.wotr.commands.RiftCommands;
 import com.wanderersoftherift.wotr.commands.RiftKeyCommands;
@@ -37,6 +38,7 @@ import com.wanderersoftherift.wotr.init.ModPayloadHandlers;
 import com.wanderersoftherift.wotr.init.ModProcessors;
 import com.wanderersoftherift.wotr.init.ModSoundEvents;
 import com.wanderersoftherift.wotr.init.ModTargetingTypes;
+import com.wanderersoftherift.wotr.init.client.ModConfigurableLayers;
 import com.wanderersoftherift.wotr.interop.sophisticatedbackpacks.SophisticatedBackpackInterop;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -97,6 +99,11 @@ public class WanderersOfTheRift {
         ModObjectiveTypes.OBJECTIVE_TYPES.register(modEventBus);
         ModOngoingObjectiveTypes.ONGOING_OBJECTIVE_TYPES.register(modEventBus);
         ModChunkGenerators.CHUNK_GENERATORS.register(modEventBus);
+
+        if (FMLEnvironment.dist.isClient()) {
+            ModConfigurableLayers.LAYERS.register(modEventBus);
+            ModConfigurableLayers.VANILLA_LAYERS.register(modEventBus);
+        }
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Wotr) to respond directly to events.
@@ -167,5 +174,6 @@ public class WanderersOfTheRift {
         new RiftKeyCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
         new EssenceCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
         new RiftCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
+        new HudCommands().registerCommand(event.getDispatcher(), event.getBuildContext());
     }
 }

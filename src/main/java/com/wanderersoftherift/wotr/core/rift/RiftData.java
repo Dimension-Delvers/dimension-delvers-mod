@@ -141,6 +141,7 @@ public class RiftData extends SavedData { // TODO: split this
 
     public void setConfig(RiftConfig config) {
         this.config = config;
+        this.setDirty();
     }
 
     public int getTier() {

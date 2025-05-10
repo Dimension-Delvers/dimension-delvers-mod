@@ -129,6 +129,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add(WanderersOfTheRift.translationId("stat", "mobs_killed"), "Mobs killed: ");
         add(WanderersOfTheRift.translationId("stat", "chests_opened"), "Chests opened: ");
 
+        add(WanderersOfTheRift.translationId("screen", "configure_hud"), "Configure HUD");
+
         add("command." + WanderersOfTheRift.MODID + ".dev_world_set",
                 "Dev World settings applied:\n - %1$s: Disabled\n - %2$s: Disabled\n - %3$s: Disabled\n - %4$s: Disabled\n - %5$s: Disabled\n - %6$s: Disabled");
         add("command." + WanderersOfTheRift.MODID + ".invalid_item", "Held item is empty!");
@@ -259,6 +261,28 @@ public class ModLanguageProvider extends LanguageProvider {
         add(WanderersOfTheRift.translationId("objective", "kill.description"), "Defeat %s monsters");
         add(WanderersOfTheRift.translationId("objective", "stealth.description"), "Defeat monsters stealthily");
         add(WanderersOfTheRift.translationId("gui", "objective_status.complete"), "Objective Complete");
+
+        add(WanderersOfTheRift.translationId("button", "reset"), "Reset");
+        add(WanderersOfTheRift.translationId("button", "close"), "Close");
+        add(WanderersOfTheRift.translationId("button", "rotate"), "Rotate");
+        add(WanderersOfTheRift.translationId("button", "show"), "Show");
+        add(WanderersOfTheRift.translationId("button", "hide"), "Hide");
+        add(WanderersOfTheRift.translationId("button", "hud_presets"), "Preset");
+        add(WanderersOfTheRift.translationId("button", "customize"), "Customize");
+        add("hud.minecraft.hotbar", "Hot Bar");
+        add("hud.minecraft.experience_bar", "Experience Bar");
+        add("hud.minecraft.health_armor", "Health and Armor");
+        add("hud.minecraft.food_level", "Food Level");
+        add("hud.minecraft.experience_level", "Experience Level");
+        add("hud.minecraft.air_level", "Air Level");
+        add("hud.minecraft.effects", "Effects");
+        add(WanderersOfTheRift.translationId("hud", "ability_bar"), "Ability Bar");
+        add(WanderersOfTheRift.translationId("hud", "mana_bar"), "Mana Bar");
+        add(WanderersOfTheRift.translationId("hud", "effect_bar"), "Ability Effect Bar");
+        add(WanderersOfTheRift.translationId("hud", "objective"), "Objective");
+
+        add(WanderersOfTheRift.translationId("hud_preset", "default"), "Default");
+        add(WanderersOfTheRift.translationId("hud_preset", "minimal"), "Minimal");
     }
 
     private void addEssenceType(String id, String value) {
