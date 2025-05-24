@@ -2,6 +2,7 @@ package com.wanderersoftherift.wotr.client;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.client.render.RenderEvents;
+import com.wanderersoftherift.wotr.util.TextureUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -12,5 +13,6 @@ public class TextureStitchEvent {
     @SubscribeEvent
     public static void onStitch(TextureAtlasStitchedEvent event) {
         RenderEvents.resetCached();
+        TextureUtils.resetCached();
     }
 }
