@@ -5,7 +5,7 @@ import com.wanderersoftherift.wotr.abilities.attachment.AbilitySlots;
 import com.wanderersoftherift.wotr.gui.menu.AbilityBenchMenu;
 import com.wanderersoftherift.wotr.init.WotrAttachments;
 import com.wanderersoftherift.wotr.item.handler.ChangeAwareItemHandler;
-import com.wanderersoftherift.wotr.network.AbilitySlotsUpdatePayload;
+import com.wanderersoftherift.wotr.network.ability.AbilitySlotsUpdatePayload;
 import com.wanderersoftherift.wotr.util.VoxelShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
