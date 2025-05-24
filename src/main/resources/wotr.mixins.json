@@ -19,6 +19,7 @@
     "MixinWorldDimensions"
   ],
   "client": [
+    "MixinAbstractContainerScreen",
     "MixinAccessibilityOptionsScreen",
     "MixinGuiGraphics",
     "MixinMinecraft"

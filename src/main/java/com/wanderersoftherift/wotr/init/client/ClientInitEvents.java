@@ -9,6 +9,7 @@ import com.wanderersoftherift.wotr.client.render.item.properties.select.SelectRu
 import com.wanderersoftherift.wotr.client.tooltip.GearSocketTooltipRenderer;
 import com.wanderersoftherift.wotr.client.tooltip.ImageComponent;
 import com.wanderersoftherift.wotr.client.tooltip.ImageTooltipRenderer;
+import com.wanderersoftherift.wotr.client.tooltip.RunegemTooltipRenderer;
 import com.wanderersoftherift.wotr.gui.config.preset.HudPresetManager;
 import com.wanderersoftherift.wotr.world.level.RiftDimensionSpecialEffects;
 import com.wanderersoftherift.wotr.world.level.RiftDimensionType;
@@ -68,6 +69,7 @@ public final class ClientInitEvents {
     public static void registerClientTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(ImageComponent.class, ImageTooltipRenderer::new);
         event.register(GearSocketTooltipRenderer.GearSocketComponent.class, GearSocketTooltipRenderer::new);
+        event.register(RunegemTooltipRenderer.RunegemComponent.class, RunegemTooltipRenderer::new);
     }
 
     @SubscribeEvent
