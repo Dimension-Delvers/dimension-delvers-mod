@@ -12,4 +12,6 @@ public interface InvokerAbstractContainerMenu {
     static void dropOrPlaceInInventory(Player player, ItemStack stack) {
     }
 
+    @Invoker(value = "moveItemStackTo")
+    boolean wotr_moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection);
 }
