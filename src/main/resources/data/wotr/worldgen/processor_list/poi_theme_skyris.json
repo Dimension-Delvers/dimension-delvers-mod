@@ -7,20 +7,22 @@
           "input_state": "wotr:processor_block_1",
           "output_steps": [
             {
-              "output_state": "minecraft:netherrack",
-              "step_size": 0.4
+              "output_state": "biomeswevegone:skyris_planks",
+              "step_size": 0.6
             },
             {
-              "output_state": "stoneworks:cobbled_netherrack",
+              "output_state": "biomeswevegone:packed_borealis_ice",
               "step_size": 0.1
             },
             {
-              "output_state": "minecraft:nether_wart_block",
+              "output_state": {
+                "type": "wotr:blockstate",
+                "Name": "biomeswevegone:blue_enchanted_leaves",
+                "Properties": {
+                  "persistent": "true"
+                }
+              },
               "step_size": 0.3
-            },
-            {
-              "output_state": "minecraft:magma_block",
-              "step_size": 0.2
             }
           ]
         },
@@ -28,12 +30,8 @@
           "input_state": "wotr:processor_block_1_directional_pillar",
           "output_steps": [
             {
-              "output_state": "stoneworks:netherrack_bricks",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "stoneworks:cracked_netherrack_bricks",
-              "step_size": 0.3
+              "output_state": "biomeswevegone:skyris_wood",
+              "step_size": 1
             }
           ]
         },
@@ -41,12 +39,8 @@
           "input_state": "wotr:processor_block_1_slab",
           "output_steps": [
             {
-              "output_state": "block_variants:netherrack_slab",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "stoneworks:cobbled_netherrack_slab",
-              "step_size": 0.3
+              "output_state": "biomeswevegone:skyris_slab",
+              "step_size": 1
             }
           ]
         },
@@ -54,12 +48,8 @@
           "input_state": "wotr:processor_block_1_stairs",
           "output_steps": [
             {
-              "output_state": "block_variants:netherrack_stairs",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "stoneworks:cobbled_netherrack_stairs",
-              "step_size": 0.3
+              "output_state": "biomeswevegone:skyris_stairs",
+              "step_size": 1
             }
           ]
         },
@@ -67,12 +57,8 @@
           "input_state": "wotr:processor_block_1_wall",
           "output_steps": [
             {
-              "output_state": "block_variants:netherrack_wall",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "stoneworks:cobbled_netherrack_wall",
-              "step_size": 0.3
+              "output_state": "biomeswevegone:blue_sandstone_wall",
+              "step_size": 1
             }
           ]
         },
@@ -80,7 +66,7 @@
           "input_state": "wotr:processor_block_1_button",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_button",
+              "output_state": "biomeswevegone:skyris_button",
               "step_size": 1
             }
           ]
@@ -89,7 +75,7 @@
           "input_state": "wotr:processor_block_1_pressure_plate",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_pressure_plate",
+              "output_state": "biomeswevegone:skyris_pressure_plate",
               "step_size": 1
             }
           ]
@@ -98,7 +84,7 @@
           "input_state": "wotr:processor_block_1_fence",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_fence",
+              "output_state": "biomeswevegone:skyris_fence",
               "step_size": 1
             }
           ]
@@ -107,7 +93,7 @@
           "input_state": "wotr:processor_block_1_fence_gate",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_fence_gate",
+              "output_state": "biomeswevegone:skyris_fence_gate",
               "step_size": 1
             }
           ]
@@ -116,12 +102,8 @@
           "input_state": "wotr:processor_block_1_glass",
           "output_steps": [
             {
-              "output_state": "minecraft:red_stained_glass",
-              "step_size": 0.6
-            },
-            {
-              "output_state": "minecraft:black_stained_glass",
-              "step_size": 0.4
+              "output_state": "minecraft:white_stained_glass",
+              "step_size": 1
             }
           ]
         },
@@ -129,12 +111,8 @@
           "input_state": "wotr:processor_block_1_glass_pane",
           "output_steps": [
             {
-              "output_state": "minecraft:red_stained_glass_pane",
+              "output_state": "minecraft:white_stained_glass_pane",
               "step_size": 0.6
-            },
-            {
-              "output_state": "minecraft:black_stained_glass_pane",
-              "step_size": 0.4
             }
           ]
         },
@@ -142,7 +120,7 @@
           "input_state": "wotr:processor_block_1_trapdoor",
           "output_steps": [
             {
-              "output_state": "glassential:black_glass_trapdoor",
+              "output_state": "biomeswevegone:skyris_trapdoor",
               "step_size": 1
             }
           ]
@@ -152,12 +130,12 @@
           "input_state": "wotr:processor_block_2",
           "output_steps": [
             {
-              "output_state": "minecraft:red_nether_bricks",
-              "step_size": 0.9
+              "output_state": "minecraft:black_terracotta",
+              "step_size": 0.8
             },
             {
-              "output_state": "stoneworks:polished_netherrack",
-              "step_size": 0.1
+              "output_state": "minecraft:brown_terracotta",
+              "step_size": 0.2
             }
           ]
         },
@@ -165,12 +143,12 @@
           "input_state": "wotr:processor_block_2_directional_pillar",
           "output_steps": [
             {
-              "output_state": "minecraft:red_nether_bricks",
-              "step_size": 0.9
+              "output_state": "biomeswevegone:holly_wood",
+              "step_size": 0.8
             },
             {
-              "output_state": "stoneworks:polished_netherrack",
-              "step_size": 0.1
+              "output_state": "biomeswevegone:brown_mushroom_stem",
+              "step_size": 0.2
             }
           ]
         },
@@ -178,12 +156,12 @@
           "input_state": "wotr:processor_block_2_slab",
           "output_steps": [
             {
-              "output_state": "minecraft:red_nether_brick_slab",
-              "step_size": 0.9
+              "output_state": "block_variants:black_terracotta_slab",
+              "step_size": 0.8
             },
             {
-              "output_state": "stoneworks:polished_netherrack_slab",
-              "step_size": 0.1
+              "output_state": "block_variants:brown_terracotta_slab",
+              "step_size": 0.2
             }
           ]
         },
@@ -191,12 +169,12 @@
           "input_state": "wotr:processor_block_2_stairs",
           "output_steps": [
             {
-              "output_state": "minecraft:red_nether_brick_stairs",
-              "step_size": 0.9
+              "output_state": "block_variants:black_terracotta_stairs",
+              "step_size": 0.8
             },
             {
-              "output_state": "stoneworks:polished_netherrack_stairs",
-              "step_size": 0.1
+              "output_state": "block_variants:brown_terracotta_slab",
+              "step_size": 0.2
             }
           ]
         },
@@ -204,12 +182,12 @@
           "input_state": "wotr:processor_block_2_wall",
           "output_steps": [
             {
-              "output_state": "minecraft:red_nether_brick_wall",
-              "step_size": 0.7
+              "output_state": "block_variants:black_terracotta_wall",
+              "step_size": 0.8
             },
             {
-              "output_state": "stoneworks:polished_netherrack_wall",
-              "step_size": 0.3
+              "output_state": "block_variants:brown_terracotta_wall",
+              "step_size": 0.2
             }
           ]
         },
@@ -217,7 +195,7 @@
           "input_state": "wotr:processor_block_2_button",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_button",
+              "output_state": "minecraft:dark_oak_button",
               "step_size": 1
             }
           ]
@@ -226,7 +204,7 @@
           "input_state": "wotr:processor_block_2_pressure_plate",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:redwood_pressure_plate",
+              "output_state": "minecraft:dark_oak_pressure_plate",
               "step_size": 1
             }
           ]
@@ -235,7 +213,7 @@
           "input_state": "wotr:processor_block_2_fence",
           "output_steps": [
             {
-              "output_state": "block_variants:red_nether_brick_fence",
+              "output_state": "block_variants:dark_oak_wood_fence",
               "step_size": 1
             }
           ]
@@ -244,7 +222,7 @@
           "input_state": "wotr:processor_block_2_fence_gate",
           "output_steps": [
             {
-              "output_state": "block_variants:red_nether_brick_fence_gate",
+              "output_state": "block_variants:dark_oak_wood_fence_gate",
               "step_size": 1
             }
           ]
@@ -253,7 +231,7 @@
           "input_state": "wotr:processor_block_2_glass",
           "output_steps": [
             {
-              "output_state": "minecraft:red_stained_glass",
+              "output_state": "minecraft:brown_stained_glass",
               "step_size": 1
             }
           ]
@@ -262,7 +240,7 @@
           "input_state": "wotr:processor_block_2_glass_pane",
           "output_steps": [
             {
-              "output_state": "minecraft:red_stained_glass_pane",
+              "output_state": "minecraft:brown_stained_glass_pane",
               "step_size": 1
             }
           ]
@@ -271,7 +249,7 @@
           "input_state": "wotr:processor_block_2_trapdoor",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:redwood_trapdoor",
+              "output_state": "glassential:brown_glass_trapdoor",
               "step_size": 1
             }
           ]
@@ -281,20 +259,12 @@
           "input_state": "wotr:processor_block_3",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_deepslate",
-              "step_size": 0.2
+              "output_state": "biomeswevegone:white_mangrove_planks",
+              "step_size": 0.7
             },
             {
-              "output_state": "minecraft:deepslate",
-              "step_size": 0.35
-            },
-            {
-              "output_state": "minecraft:cobbled_deepslate",
-              "step_size": 0.35
-            },
-            {
-              "output_state": "minecraft:basalt",
-              "step_size": 0.2
+              "output_state": "biomeswevegone:stripped_white_mangrove_wood",
+              "step_size": 0.3
             }
           ]
         },
@@ -302,7 +272,7 @@
           "input_state": "wotr:processor_block_3_directional_pillar",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:zelkova_wood",
+              "output_state": "biomeswevegone:white_mangrove_wood",
               "step_size": 1
             }
           ]
@@ -311,16 +281,8 @@
           "input_state": "wotr:processor_block_3_slab",
           "output_steps": [
             {
-              "output_state": "minecraft:cobbled_deepslate_slab",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "minecraft:polished_deepslate_slab",
-              "step_size": 0.2
-            },
-            {
-              "output_state": "block_variants:deepslate_slab",
-              "step_size": 0.1
+              "output_state": "biomeswevegone:white_mangrove_slab",
+              "step_size": 1
             }
           ]
         },
@@ -328,16 +290,8 @@
           "input_state": "wotr:processor_block_3_stairs",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_deepslate_stairs",
-              "step_size": 0.4
-            },
-            {
-              "output_state": "minecraft:cobbled_deepslate_stairs",
-              "step_size": 0.4
-            },
-            {
-              "output_state": "block_variants:deepslate_stairs",
-              "step_size": 0.2
+              "output_state": "biomeswevegone:white_mangrove_stairs",
+              "step_size": 1
             }
           ]
         },
@@ -345,16 +299,8 @@
           "input_state": "wotr:processor_block_3_wall",
           "output_steps": [
             {
-              "output_state": "minecraft:cobbled_deepslate_wall",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "minecraft:polished_deepslate_wall",
-              "step_size": 0.3
-            },
-            {
-              "output_state": "block_variants:deepslate_wall",
-              "step_size": 0.2
+              "output_state": "block_variants:polished_diorite_wall",
+              "step_size": 1
             }
           ]
         },
@@ -362,7 +308,7 @@
           "input_state": "wotr:processor_block_3_button",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:maple_button",
+              "output_state": "biomeswevegone:white_mangrove_button",
               "step_size": 1
             }
           ]
@@ -371,7 +317,7 @@
           "input_state": "wotr:processor_block_3_pressure_plate",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:maple_pressure_plate",
+              "output_state": "biomeswevegone:white_mangrove_pressure_plate",
               "step_size": 1
             }
           ]
@@ -380,7 +326,7 @@
           "input_state": "wotr:processor_block_3_fence",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:maple_fence",
+              "output_state": "biomeswevegone:white_mangrove_fence",
               "step_size": 1
             }
           ]
@@ -389,7 +335,7 @@
           "input_state": "wotr:processor_block_3_fence_gate",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:maple_fence_gate",
+              "output_state": "biomeswevegone:white_mangrove_fence_gate",
               "step_size": 1
             }
           ]
@@ -398,7 +344,7 @@
           "input_state": "wotr:processor_block_3_glass",
           "output_steps": [
             {
-              "output_state": "minecraft:black_stained_glass",
+              "output_state": "minecraft:light_gray_stained_glass",
               "step_size": 1
             }
           ]
@@ -408,11 +354,7 @@
           "output_steps": [
             {
               "output_state": "minecraft:light_gray_stained_glass_pane",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "minecraft:gray_stained_glass_pane",
-              "step_size": 0.5
+              "step_size": 1
             }
           ]
         },
@@ -420,7 +362,7 @@
           "input_state": "wotr:processor_block_3_trapdoor",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:maple_trapdoor",
+              "output_state": "biomeswevegone:white_mangrove_trapdoor",
               "step_size": 1
             }
           ]
@@ -430,8 +372,12 @@
           "input_state": "wotr:processor_block_4",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_hyphae",
-              "step_size": 1
+              "output_state": "biomeswevegone:smooth_blue_sandstone",
+              "step_size": 0.7
+            },
+            {
+              "output_state": "biomeswevegone:blue_sandstone",
+              "step_size": 0.3
             }
           ]
         },
@@ -439,7 +385,7 @@
           "input_state": "wotr:processor_block_4_directional_pillar",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_hyphae",
+              "output_state": "biomeswevegone:chiseled_blue_sandstone",
               "step_size": 1
             }
           ]
@@ -448,8 +394,12 @@
           "input_state": "wotr:processor_block_4_slab",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_slab",
-              "step_size": 1
+              "output_state": "biomeswevegone:blue_sandstone_slab",
+              "step_size": 0.5
+            },
+            {
+              "output_state": "biomeswevegone:smooth_blue_sandstone_slab",
+              "step_size": 0.5
             }
           ]
         },
@@ -457,8 +407,12 @@
           "input_state": "wotr:processor_block_4_stairs",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_stairs",
-              "step_size": 1
+              "output_state": "biomeswevegone:blue_sandstone_stairs",
+              "step_size": 0.5
+            },
+            {
+              "output_state": "biomeswevegone:smooth_blue_sandstone_stairs",
+              "step_size": 0.5
             }
           ]
         },
@@ -466,7 +420,7 @@
           "input_state": "wotr:processor_block_4_wall",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_wall",
+              "output_state": "biomeswevegone:blue_sandstone_wall",
               "step_size": 1
             }
           ]
@@ -475,7 +429,7 @@
           "input_state": "wotr:processor_block_4_button",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_button",
+              "output_state": "minecraft:pale_oak_button",
               "step_size": 1
             }
           ]
@@ -484,7 +438,7 @@
           "input_state": "wotr:processor_block_4_pressure_plate",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_pressure_plate",
+              "output_state": "minecraft:pale_oak_pressure_plate",
               "step_size": 1
             }
           ]
@@ -493,7 +447,7 @@
           "input_state": "wotr:processor_block_4_fence",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_fence",
+              "output_state": "minecraft:pale_oak_fence",
               "step_size": 1
             }
           ]
@@ -502,7 +456,7 @@
           "input_state": "wotr:processor_block_4_fence_gate",
           "output_steps": [
             {
-              "output_state": "block_variants:crimson_hyphae_fence_gate",
+              "output_state": "minecraft:pale_oak_fence_gate",
               "step_size": 1
             }
           ]
@@ -511,7 +465,7 @@
           "input_state": "wotr:processor_block_4_glass",
           "output_steps": [
             {
-              "output_state": "minecraft:red_stained_glass",
+              "output_state": "minecraft:light_blue_stained_glass",
               "step_size": 1
             }
           ]
@@ -520,7 +474,7 @@
           "input_state": "wotr:processor_block_4_glass_pane",
           "output_steps": [
             {
-              "output_state": "minecraft:red_stained_glass_pane",
+              "output_state": "minecraft:light_blue_stained_glass_pane",
               "step_size": 1
             }
           ]
@@ -529,7 +483,7 @@
           "input_state": "wotr:processor_block_4_trapdoor",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_trapdoor",
+              "output_state": "minecraft:pale_oak_trapdoor",
               "step_size": 1
             }
           ]
@@ -539,16 +493,8 @@
           "input_state": "wotr:processor_block_5",
           "output_steps": [
             {
-              "output_state": "minecraft:deepslate_bricks",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "minecraft:cracked_deepslate_bricks",
-              "step_size": 0.2
-            },
-            {
-              "output_state": "minecraft:cracked_deepslate_tiles",
-              "step_size": 0.3
+              "output_state": "biomeswevegone:pine_planks",
+              "step_size": 1
             }
           ]
         },
@@ -556,7 +502,7 @@
           "input_state": "wotr:processor_block_5_directional_pillar",
           "output_steps": [
             {
-              "output_state": "stoneworks:deepslate_pillar",
+              "output_state": "biomeswevegone:stripped_pine_log",
               "step_size": 1
             }
           ]
@@ -565,20 +511,8 @@
           "input_state": "wotr:processor_block_5_slab",
           "output_steps": [
             {
-              "output_state": "minecraft:deepslate_brick_slab",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "minecraft:deepslate_tile_slab",
-              "step_size": 0.3
-            },
-            {
-              "output_state": "block_variants:cracked_deepslate_brick_slab",
-              "step_size": 0.1
-            },
-            {
-              "output_state": "block_variants:cracked_deepslate_tile_slab",
-              "step_size": 0.1
+              "output_state": "biomeswevegone:pine_slab",
+              "step_size": 1
             }
           ]
         },
@@ -586,20 +520,8 @@
           "input_state": "wotr:processor_block_5_stairs",
           "output_steps": [
             {
-              "output_state": "minecraft:deepslate_brick_stairs",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "minecraft:deepslate_tile_stairs",
-              "step_size": 0.3
-            },
-            {
-              "output_state": "block_variants:cracked_deepslate_brick_stairs",
-              "step_size": 0.1
-            },
-            {
-              "output_state": "block_variants:cracked_deepslate_tile_stairs",
-              "step_size": 0.1
+              "output_state": "biomeswevegone:pine_stairs",
+              "step_size": 1
             }
           ]
         },
@@ -607,20 +529,8 @@
           "input_state": "wotr:processor_block_5_wall",
           "output_steps": [
             {
-              "output_state": "minecraft:deepslate_brick_wall",
+              "output_state": "block_variants:acacia_wood_wall",
               "step_size": 0.5
-            },
-            {
-              "output_state": "minecraft:deepslate_tile_wall",
-              "step_size": 0.3
-            },
-            {
-              "output_state": "block_variants:cracked_deepslate_brick_wall",
-              "step_size": 0.1
-            },
-            {
-              "output_state": "block_variants:cracked_deepslate_tile_wall",
-              "step_size": 0.1
             }
           ]
         },
@@ -628,12 +538,8 @@
           "input_state": "wotr:processor_block_5_button",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_button",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "biomeswevegone:ironwood_button",
-              "step_size": 0.5
+              "output_state": "biomeswevegone:pine_button",
+              "step_size": 1
             }
           ]
         },
@@ -641,12 +547,8 @@
           "input_state": "wotr:processor_block_5_pressure_plate",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_pressure_plate",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "biomeswevegone:ironwood_pressure_plate",
-              "step_size": 0.5
+              "output_state": "biomeswevegone:pine_pressure_plate",
+              "step_size": 1
             }
           ]
         },
@@ -654,7 +556,7 @@
           "input_state": "wotr:processor_block_5_fence",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:ironwood_fence",
+              "output_state": "biomeswevegone:pine_fence",
               "step_size": 1
             }
           ]
@@ -663,7 +565,7 @@
           "input_state": "wotr:processor_block_5_fence_gate",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:ironwood_fence_gate",
+              "output_state": "biomeswevegone:pine_fence_gate",
               "step_size": 1
             }
           ]
@@ -672,7 +574,7 @@
           "input_state": "wotr:processor_block_5_glass",
           "output_steps": [
             {
-              "output_state": "minecraft:light_gray_stained_glass",
+              "output_state": "minecraft:light_blue_stained_glass",
               "step_size": 1
             }
           ]
@@ -681,7 +583,7 @@
           "input_state": "wotr:processor_block_5_glass_pane",
           "output_steps": [
             {
-              "output_state": "minecraft:iron_bars",
+              "output_state": "minecraft:light_blue_stained_glass",
               "step_size": 1
             }
           ]
@@ -690,7 +592,7 @@
           "input_state": "wotr:processor_block_5_trapdoor",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:ironwood_trapdoor",
+              "output_state": "biomeswevegone:pine_trapdoor",
               "step_size": 1
             }
           ]
@@ -700,7 +602,7 @@
           "input_state": "wotr:processor_block_6",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_planks",
+              "output_state": "biomeswevegone:spirit_planks",
               "step_size": 1
             }
           ]
@@ -709,7 +611,7 @@
           "input_state": "wotr:processor_block_6_directional_pillar",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_stem",
+              "output_state": "biomeswevegone:spirit_log",
               "step_size": 1
             }
           ]
@@ -718,12 +620,8 @@
           "input_state": "wotr:processor_block_6_slab",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_slab",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "block_variants:stripped_warped_hyphae_slab",
-              "step_size": 0.5
+              "output_state": "biomeswevegone:spirit_slab",
+              "step_size": 1
             }
           ]
         },
@@ -731,11 +629,7 @@
           "input_state": "wotr:processor_block_6_stairs",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_stairs",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "block_variants:stripped_warped_hyphae_stairs",
+              "output_state": "biomeswevegone:spirit_planks",
               "step_size": 0.5
             }
           ]
@@ -744,7 +638,7 @@
           "input_state": "wotr:processor_block_6_wall",
           "output_steps": [
             {
-              "output_state": "block_variants:warped_hyphae_wall",
+              "output_state": "biomeswevegone:black_sandstone_wall",
               "step_size": 1
             }
           ]
@@ -753,7 +647,7 @@
           "input_state": "wotr:processor_block_6_button",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_button",
+              "output_state": "biomeswevegone:spirit_button",
               "step_size": 1
             }
           ]
@@ -762,7 +656,7 @@
           "input_state": "wotr:processor_block_6_pressure_plate",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_pressure_plate",
+              "output_state": "biomeswevegone:spirit_pressure_plate",
               "step_size": 1
             }
           ]
@@ -771,12 +665,8 @@
           "input_state": "wotr:processor_block_6_fence",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_fence",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "block_variants:stripped_warped_hyphae_fence",
-              "step_size": 0.5
+              "output_state": "biomeswevegone:spirit_fence",
+              "step_size": 1
             }
           ]
         },
@@ -784,12 +674,8 @@
           "input_state": "wotr:processor_block_6_fence_gate",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_fence_gate",
-              "step_size": 0.5
-            },
-            {
-              "output_state": "block_variants:stripped_warped_hyphae_fence_gate",
-              "step_size": 0.5
+              "output_state": "biomeswevegone:spirit_fence_gate",
+              "step_size": 1
             }
           ]
         },
@@ -798,11 +684,7 @@
           "output_steps": [
             {
               "output_state": "minecraft:gray_stained_glass",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "minecraft:black_stained_glass",
-              "step_size": 0.3
+              "step_size": 1
             }
           ]
         },
@@ -811,11 +693,7 @@
           "output_steps": [
             {
               "output_state": "minecraft:gray_stained_glass_pane",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "minecraft:black_stained_glass_pane",
-              "step_size": 0.3
+              "step_size": 1
             }
           ]
         },
@@ -823,7 +701,7 @@
           "input_state": "wotr:processor_block_6_trapdoor",
           "output_steps": [
             {
-              "output_state": "minecraft:warped_trapdoor",
+              "output_state": "biomeswevegone:spirit_trapdoor",
               "step_size": 1
             }
           ]
@@ -833,12 +711,8 @@
           "input_state": "wotr:processor_block_7",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_bricks",
-              "step_size": 0.6
-            },
-            {
-              "output_state": "minecraft:cracked_polished_blackstone_bricks",
-              "step_size": 0.4
+              "output_state": "stoneworks:granite_bricks",
+              "step_size": 1
             }
           ]
         },
@@ -846,12 +720,8 @@
           "input_state": "wotr:processor_block_7_directional_pillar",
           "output_steps": [
             {
-              "output_state": "stoneworks:blackstone_pillar",
-              "step_size": 0.6
-            },
-            {
-              "output_state": "minecraft:chiseled_polished_blackstone",
-              "step_size": 0.4
+              "output_state": "stoneworks:granite_pillar",
+              "step_size": 1
             }
           ]
         },
@@ -859,12 +729,8 @@
           "input_state": "wotr:processor_block_7_slab",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_brick_slab",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_polished_blackstone_brick_slab",
-              "step_size": 0.3
+              "output_state": "stoneworks:granite_brick_slab",
+              "step_size": 1
             }
           ]
         },
@@ -872,12 +738,8 @@
           "input_state": "wotr:processor_block_7_stairs",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_brick_stairs",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_polished_blackstone_brick_stairs",
-              "step_size": 0.3
+              "output_state": "stoneworks:granite_brick_stairs",
+              "step_size": 1
             }
           ]
         },
@@ -885,12 +747,8 @@
           "input_state": "wotr:processor_block_7_wall",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_brick_wall",
-              "step_size": 0.6
-            },
-            {
-              "output_state": "minecraft:blackstone_wall",
-              "step_size": 0.4
+              "output_state": "stoneworks:granite_brick_stairs",
+              "step_size": 1
             }
           ]
         },
@@ -898,7 +756,7 @@
           "input_state": "wotr:processor_block_7_button",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_button",
+              "output_state": "biomeswevegone:holly_button",
               "step_size": 1
             }
           ]
@@ -907,12 +765,8 @@
           "input_state": "wotr:processor_block_7_pressure_plate",
           "output_steps": [
             {
-              "output_state": "minecraft:polished_blackstone_pressure_plate",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "biomeswevegone:ebony_pressure_plate",
-              "step_size": 0.3
+              "output_state": "biomeswevegone:holly_pressure_plate",
+              "step_size": 1
             }
           ]
         },
@@ -920,7 +774,7 @@
           "input_state": "wotr:processor_block_7_fence",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:ebony_fence",
+              "output_state": "biomeswevegone:holly_fence",
               "step_size": 1
             }
           ]
@@ -929,7 +783,7 @@
           "input_state": "wotr:processor_block_7_fence_gate",
           "output_steps": [
             {
-              "output_state": "biomeswevegone:ebony_fence_gate",
+              "output_state": "biomeswevegone:holly_fence_gate",
               "step_size": 1
             }
           ]
@@ -938,7 +792,7 @@
           "input_state": "wotr:processor_block_7_glass",
           "output_steps": [
             {
-              "output_state": "minecraft:black_stained_glass",
+              "output_state": "chisel:japanese2/glass",
               "step_size": 1
             }
           ]
@@ -947,7 +801,7 @@
           "input_state": "wotr:processor_block_7_glass_pane",
           "output_steps": [
             {
-              "output_state": "minecraft:black_stained_glass_pane",
+              "output_state": "minecraft:brown_stained_glass_pane",
               "step_size": 1
             }
           ]
@@ -956,7 +810,7 @@
           "input_state": "wotr:processor_block_7_trapdoor",
           "output_steps": [
             {
-              "output_state": "glassential:black_glass_trapdoor",
+              "output_state": "biomeswevegone:holly_trapdoor",
               "step_size": 1
             }
           ]
@@ -966,12 +820,8 @@
           "input_state": "wotr:processor_block_8",
           "output_steps": [
             {
-              "output_state": "minecraft:nether_bricks",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "minecraft:cracked_nether_bricks",
-              "step_size": 0.3
+              "output_state": "chisel:soft_bricks/brown_concrete",
+              "step_size": 1
             }
           ]
         },
@@ -979,12 +829,8 @@
           "input_state": "wotr:processor_block_8_directional_pillar",
           "output_steps": [
             {
-              "output_state": "stoneworks:nether_brick_pillar",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "minecraft:chiseled_nether_bricks",
-              "step_size": 0.3
+              "output_state": "chisel:encased_smooth/dark_oak_planks",
+              "step_size": 1
             }
           ]
         },
@@ -992,12 +838,8 @@
           "input_state": "wotr:processor_block_8_slab",
           "output_steps": [
             {
-              "output_state": "minecraft:nether_brick_slab",
+              "output_state": "minecraft:dark_oak_slab",
               "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_nether_brick_slab",
-              "step_size": 0.3
             }
           ]
         },
@@ -1005,12 +847,8 @@
           "input_state": "wotr:processor_block_8_stairs",
           "output_steps": [
             {
-              "output_state": "minecraft:nether_brick_stairs",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_nether_brick_stairs",
-              "step_size": 0.3
+              "output_state": "minecraft:dark_oak_stairs",
+              "step_size": 1
             }
           ]
         },
@@ -1018,12 +856,8 @@
           "input_state": "wotr:processor_block_8_wall",
           "output_steps": [
             {
-              "output_state": "minecraft:nether_brick_wall",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_nether_brick_wall",
-              "step_size": 0.3
+              "output_state": "block_variants:black_terracotta_wall",
+              "step_size": 1
             }
           ]
         },
@@ -1031,7 +865,7 @@
           "input_state": "wotr:processor_block_8_button",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_button",
+              "output_state": "minecraft:dark_oak_button",
               "step_size": 1
             }
           ]
@@ -1040,7 +874,7 @@
           "input_state": "wotr:processor_block_8_pressure_plate",
           "output_steps": [
             {
-              "output_state": "minecraft:crimson_pressure_plate",
+              "output_state": "minecraft:dark_oak_pressure_plate",
               "step_size": 1
             }
           ]
@@ -1049,12 +883,8 @@
           "input_state": "wotr:processor_block_8_fence",
           "output_steps": [
             {
-              "output_state": "minecraft:nether_brick_fence",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_nether_brick_fence",
-              "step_size": 0.3
+              "output_state": "minecraft:dark_oak_fence",
+              "step_size": 1
             }
           ]
         },
@@ -1062,12 +892,8 @@
           "input_state": "wotr:processor_block_8_fence_gate",
           "output_steps": [
             {
-              "output_state": "block_variants:nether_brick_fence_gate",
-              "step_size": 0.7
-            },
-            {
-              "output_state": "block_variants:cracked_nether_brick_fence_gate",
-              "step_size": 0.3
+              "output_state": "minecraft:dark_oak_fence_gate",
+              "step_size": 1
             }
           ]
         },
@@ -1075,7 +901,7 @@
           "input_state": "wotr:processor_block_8_glass",
           "output_steps": [
             {
-              "output_state": "glassential:glass_dark_ethereal_reverse",
+              "output_state": "minecraft:brown_stained_glass",
               "step_size": 1
             }
           ]
@@ -1084,7 +910,7 @@
           "input_state": "wotr:processor_block_8_glass_pane",
           "output_steps": [
             {
-              "output_state": "glassential:glass_dark_ethereal_reverse_pane",
+              "output_state": "minecraft:brown_stained_glass_pane",
               "step_size": 1
             }
           ]
@@ -1093,7 +919,7 @@
           "input_state": "wotr:processor_block_8_trapdoor",
           "output_steps": [
             {
-              "output_state": "glassential:black_glass_trapdoor",
+              "output_state": "minecraft:dark_oak_trapdoor",
               "step_size": 1
             }
           ]
@@ -1102,50 +928,15 @@
     },
 
     {
-      "processor_type": "wotr:attachment",
-      "requires_sides": 1,
-      "requires_up": true,
-      "rarity": 0.002,
-      "blockstate": {
-        "Name": "minecraft:cobweb"
-      }
-    },
-    {
-      "processor_type": "wotr:attachment",
-      "requires_sides": 0,
-      "requires_up": true,
-      "rarity": 0.04,
-      "blockstate": {
-        "Name": "minecraft:weeping_vines",
-        "Properties": {
-          "age": "3"
+      "processor_type": "wotr:rift_chests",
+      "base_loot_table": "wotr:chests/",
+      "rarity": 0.6,
+      "chest_types": [
+        {
+          "chest_type": "wooden",
+          "weight": 1
         }
-      }
-    },
-    {
-      "processor_type": "wotr:attachment",
-      "requires_sides": 0,
-      "requires_down": true,
-      "rarity": 0.03,
-      "blockstate": {
-        "Name": "minecraft:twisting_vines",
-        "Properties": {
-
-        }
-      }
-    },
-    {
-      "processor_type": "wotr:attachment",
-      "requires_sides": 0,
-      "requires_down": true,
-      "rarity": 0.003,
-      "blockstate": {
-        "Name": "minecraft:bone_block",
-        "Properties": {
-
-        }
-      }
+      ]
     }
-
   ]
 }
