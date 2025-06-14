@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -39,6 +38,7 @@ public class AbilityBenchMenu extends AbstractContainerMenu {
 
     private final ContainerLevelAccess access;
     private final SimpleContainer inputContainer;
+    private final QuickMover mover;
 
     public AbilityBenchMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, ContainerLevelAccess.NULL,
@@ -56,6 +56,20 @@ public class AbilityBenchMenu extends AbstractContainerMenu {
 
         addStandardInventorySlots(playerInventory, 32, 154);
         addPlayerAbilitySlots(abilities, 4, 46);
+
+        mover = QuickMover.create(this)
+                .forPlayerSlots(INPUT_SLOTS)
+                .tryMoveTo(0, INPUT_SLOTS)
+                .tryMoveTo(INPUT_SLOTS + QuickMover.PLAYER_SLOTS, AbilitySlots.ABILITY_BAR_SIZE)
+                .forSlot(0)
+                .tryMoveTo(INPUT_SLOTS + QuickMover.PLAYER_SLOTS, AbilitySlots.ABILITY_BAR_SIZE)
+                .tryMoveToPlayer()
+                .forSlot(1)
+                .tryMoveToPlayer()
+                .forSlots(INPUT_SLOTS + QuickMover.PLAYER_SLOTS, AbilitySlots.ABILITY_BAR_SIZE)
+                .tryMoveTo(0)
+                .tryMoveToPlayer()
+                .build();
     }
 
     protected void addPlayerAbilitySlots(IItemHandler abilitySlots, int x, int y) {
@@ -229,54 +243,7 @@ public class AbilityBenchMenu extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        Slot slot = slots.get(index);
-        if (!slot.hasItem()) {
-            return ItemStack.EMPTY;
-        }
-        ItemStack slotStack = slot.getItem();
-        ItemStack resultStack = slotStack.copy();
-        if (slot instanceof AbilitySlot) {
-            if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + PLAYER_SLOTS,
-                    INPUT_SLOTS + PLAYER_SLOTS + AbilitySlots.ABILITY_BAR_SIZE, false)) {
-                if (!this.moveItemStackTo(slotStack, INPUT_SLOTS, INPUT_SLOTS + PLAYER_SLOTS, true)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-            slot.onQuickCraft(slotStack, resultStack);
-        } else if (slot instanceof SkillThreadSlot) {
-            if (!this.moveItemStackTo(slotStack, INPUT_SLOTS, INPUT_SLOTS + PLAYER_SLOTS, true)) {
-                return ItemStack.EMPTY;
-            }
-            slot.onQuickCraft(slotStack, resultStack);
-        } else if (index < INPUT_SLOTS + PLAYER_SLOTS) {
-            if (!this.moveItemStackTo(slotStack, 0, INPUT_SLOTS, false) && !this.moveItemStackTo(slotStack,
-                    INPUT_SLOTS + PLAYER_SLOTS, PLAYER_SLOTS + AbilitySlots.ABILITY_BAR_SIZE, true)) {
-                // Move from player inventory to hotbar
-                if (index < INPUT_SLOTS + PLAYER_INVENTORY_SLOTS) {
-                    if (!this.moveItemStackTo(slotStack, INPUT_SLOTS + PLAYER_INVENTORY_SLOTS,
-                            INPUT_SLOTS + PLAYER_SLOTS, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                // Move from hotbar to player inventory
-                else if (!this.moveItemStackTo(slotStack, INPUT_SLOTS, INPUT_SLOTS + PLAYER_INVENTORY_SLOTS, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-        } else {
-            if (!this.moveItemStackTo(slotStack, 0, INPUT_SLOTS, false)) {
-                if (!this.moveItemStackTo(slotStack, INPUT_SLOTS, PLAYER_SLOTS, true)) {
-                    return ItemStack.EMPTY;
-                }
-            }
-        }
-        if (slotStack.isEmpty()) {
-            slot.set(ItemStack.EMPTY);
-        } else {
-            slot.setChanged();
-        }
-
-        return resultStack;
+        return mover.quickMove(player, index);
     }
 
     @Override
