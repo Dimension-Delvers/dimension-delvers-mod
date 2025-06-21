@@ -40,6 +40,26 @@ public class WotrLanguageProvider extends LanguageProvider {
         addBlock(WotrBlocks.PLAYER_TRAP_BLOCK, "Player Trap Block");
         addBlock(WotrBlocks.MOB_TRAP_BLOCK, "Mob Trap Block");
         addBlock(WotrBlocks.ABILITY_BENCH, "Ability Bench");
+        addBlock(WotrBlocks.RIFT_MOB_SPAWNER, "Rift Mob Spawner");
+        addBlock(WotrBlocks.NOGRAVGRAVEL, "No Gravity Gravel");
+        addBlock(WotrBlocks.NOGRAVSAND, "No Gravity Sand");
+        addBlock(WotrBlocks.NOGRAVREDSAND, "No Gravity Red Sand");
+        addBlock(WotrBlocks.NOGRAVWHITECONCRETEPOWDER, "No Gravity White Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVORANGECONCRETEPOWDER, "No Gravity Orange Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVMAGENTACONCRETEPOWDER, "No Gravity Magenta Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVLIGHTBLUECONCRETEPOWDER, "No Gravity Light Blue Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVYELLOWCONCRETEPOWDER, "No Gravity Yellow Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVLIMECONCRETEPOWDER, "No Gravity Lime Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVPINKCONCRETEPOWDER, "No Gravity Pink Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVGRAYCONCRETEPOWDER, "No Gravity Gray Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVLIGHTGRAYCONCRETEPOWDER, "No Gravity Light Gray Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVCYANCONCRETEPOWDER, "No Gravity Cyan Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVPURPLECONCRETEPOWDER, "No Gravity Purple Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVBLUECONCRETEPOWDER, "No Gravity Blue Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVBROWNCONCRETEPOWDER, "No Gravity Brown Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVGREENCONCRETEPOWDER, "No Gravity Green Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVREDCONCRETEPOWDER, "No Gravity Red Concrete Powder");
+        addBlock(WotrBlocks.NOGRAVBLACKCONCRETEPOWDER, "No Gravity Black Concrete Powder");
 
         // Adds an item translation.
         addItem(WotrItems.BUILDER_GLASSES, "Builder Glasses");
@@ -62,28 +82,33 @@ public class WotrLanguageProvider extends LanguageProvider {
         addEntityType(WotrEntities.RIFT_EXIT, "Rift Egress");
         addEntityType(WotrEntities.SIMPLE_EFFECT_PROJECTILE, "Projectile");
 
-        addEssenceType("animal", "Animal");
-        addEssenceType("plant", "Plant");
-        addEssenceType("mushroom", "Mushroom");
-        addEssenceType("life", "Life");
-        addEssenceType("death", "Death");
-        addEssenceType("light", "Light");
-        addEssenceType("dark", "Dark");
+        addEssenceType("void", "Void");
+        addEssenceType("flow", "Flow");
+        addEssenceType("form", "Form");
         addEssenceType("order", "Order");
         addEssenceType("chaos", "Chaos");
+
         addEssenceType("earth", "Earth");
         addEssenceType("fire", "Fire");
         addEssenceType("water", "Water");
         addEssenceType("air", "Air");
-        addEssenceType("time", "Time");
-        addEssenceType("space", "Space");
+        addEssenceType("life", "Life");
+        addEssenceType("death", "Death");
+        addEssenceType("light", "Light");
+        addEssenceType("dark", "Dark");
 
+        addEssenceType("animal", "Animal");
+        addEssenceType("plant", "Plant");
+        addEssenceType("mushroom", "Mushroom");
+        addEssenceType("honey", "Honey");
+        addEssenceType("food", "Food");
+        addEssenceType("slime", "Slime");
+        addEssenceType("mechanical", "Mechanical");
         addEssenceType("metal", "Metal");
         addEssenceType("fabric", "Fabric");
         addEssenceType("crystal", "Crystal");
-        addEssenceType("power", "Power");
-        addEssenceType("knowledge", "Knowledge");
-
+        addEssenceType("energy", "Energy");
+        addEssenceType("mind", "Mind");
         addEssenceType("nether", "Nether");
         addEssenceType("end", "End");
         addEssenceType("processor", "Processor");
@@ -95,6 +120,9 @@ public class WotrLanguageProvider extends LanguageProvider {
         addTheme("mushroom", "Mushroom");
         addTheme("nether", "Nether");
         addTheme("noir", "Noir");
+        addTheme("mesa", "Mesa");
+        addTheme("desert", "Desert");
+        addTheme("swamp", "Swamp");
 
         WotrBlocks.BLOCK_FAMILY_HELPERS.forEach(helper -> {
             // addBlock(helper.getBlock(), getTranslationString(helper.getBlock().get()));
@@ -270,6 +298,7 @@ public class WotrLanguageProvider extends LanguageProvider {
         add(WotrKeyMappings.NEXT_ABILITY_KEY.getName(), "Select Next Ability");
         add(WotrKeyMappings.USE_ABILITY_KEY.getName(), "Use Selected Ability");
         add(WotrKeyMappings.SHOW_TOOLTIP_INFO.getName(), "Show Additional Tooltip Info");
+        add(WotrKeyMappings.JIGSAW_NAME_TOGGLE_KEY.getName(), "Show Jigsaw Block Info");
 
         add(WanderersOfTheRift.translationId("keybinds", "l_alt"), "LAlt");
         add(WanderersOfTheRift.translationId("keybinds", "r_alt"), "RAlt");
