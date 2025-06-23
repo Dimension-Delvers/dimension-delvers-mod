@@ -90,7 +90,7 @@ public class GearSocketTooltipRenderer implements ClientTooltipComponent {
                 int tier = socket.modifier().get().tier();
                 ModifierTier modifier = tiers.get(tier - 1);
                 for (AbstractModifierEffect effect : getModifierEffects(modifier)) {
-                    String text = getEffectText(effect, tier, isShiftDown);
+                    String text = getEffectText(effect, tier, isShiftDown, socket.modifier().get().modifier().value().getColor());
                     maxWidth = Math.max(maxWidth, font.width("> " + text) + 30);
                 }
             } else {
@@ -148,8 +148,7 @@ public class GearSocketTooltipRenderer implements ClientTooltipComponent {
                         pMatrix4f, pBufferSource, Font.DisplayMode.NORMAL, 0, 15_728_880);
 
                 MutableComponent component = Component.literal("");
-                var tooltip = effect.getTooltipComponent(ItemStack.EMPTY, socket.modifier().get().roll(),
-                        ChatFormatting.AQUA);
+                var tooltip = effect.getTooltipComponent(ItemStack.EMPTY, socket.modifier().get().roll(), socket.modifier().get().modifier().value().getColor());
                 if (tooltip instanceof ImageComponent img) {
                     if (tier == getModifierTiers(socket).size()) {
                         component.append(ComponentUtil.wavingComponent(img.base(),
@@ -283,9 +282,9 @@ public class GearSocketTooltipRenderer implements ClientTooltipComponent {
         return String.format(Locale.ROOT, "%.2f", value);
     }
 
-    private static String getEffectText(AbstractModifierEffect effect, int tier, boolean isShiftDown) {
+    private static String getEffectText(AbstractModifierEffect effect, int tier, boolean isShiftDown, int color) {
         String base;
-        if (effect.getTooltipComponent(ItemStack.EMPTY, 0.0F, ChatFormatting.AQUA) instanceof ImageComponent img) {
+        if (effect.getTooltipComponent(ItemStack.EMPTY, 0.0F, color) instanceof ImageComponent img) {
             base = img.base().getString();
         } else {
             base = "";
