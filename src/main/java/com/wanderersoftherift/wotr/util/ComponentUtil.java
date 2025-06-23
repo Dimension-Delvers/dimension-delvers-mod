@@ -24,10 +24,10 @@ public class ComponentUtil {
     /**
      *
      * @param base      base Component
-     * @param baseColor base color to be used
+     * @param baseColor base color to be used as a TextColor
      * @param frequency how fast the wave moves across the text
      * @param amplitude how much brighter it gets at peak
-     * @return
+     * @return a MutableComponent that has a waving color effect
      */
     public static MutableComponent wavingComponent(
             Component base,
@@ -48,6 +48,37 @@ public class ComponentUtil {
 
             result.append(Component.literal(String.valueOf(c))
                     .withStyle(base.getStyle().withColor(ColorUtil.brightenColor(baseRGB, wave))));
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param base      base Component
+     * @param baseColor base color to be used as an integer
+     * @param frequency how fast the wave moves across the text
+     * @param amplitude how much brighter it gets at peak
+     * @return a MutableComponent that has a waving color effect
+     */
+    public static MutableComponent wavingComponent(
+            Component base,
+            int baseColor,
+            float frequency,
+            float amplitude) {
+        String text = base.getString();
+        MutableComponent result = Component.empty();
+
+        float time = (float) Minecraft.getInstance().level.getGameTime();
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            // Compute brightness factor in a wave pattern
+            float wave = (float) Math.sin((time - i) * frequency) * amplitude + 1f;
+
+            result.append(Component.literal(String.valueOf(c))
+                    .withStyle(base.getStyle().withColor(ColorUtil.brightenColor(baseColor, wave))));
         }
 
         return result;
