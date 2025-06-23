@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
@@ -36,8 +37,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector2i;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Paginated Runegem tooltip rendering
@@ -77,7 +78,7 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
         }
 
         if (this.cmp.data.modifierLists().size() > 1) {
-            height += 20;
+            height += 10;
         }
 
         if (!isKeyDown()) {
@@ -94,13 +95,15 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
         width = Math.max(width, font.width(Component.translatable(WanderersOfTheRift.translationId("tooltip", "runegem.modifiers"))));
         width = Math.max(width, font.width(Component.translatable("tooltip." + WanderersOfTheRift.MODID + ".show_extra_info", WotrKeyMappings.SHOW_TOOLTIP_INFO.getKey().getDisplayName().getString())));
         RunegemData.ModifierGroup group = this.cmp.data.modifierLists().get(currentIndex);
+        List<TieredModifier> mods = new ArrayList<>(group.modifiers());
+        mods.sort(Comparator.comparing(mod -> mod.getName().getString())); // Sort alphabetically
 
         ResourceLocation socketable = getSocketable(getCurrentModifierGroup(this.cmp.runegem));
         int socketableWidth = TextureUtils.getTextureWidth(socketable);
 
         width = Math.max(width, 10 + tierDimensions.width + shapeDimensions.width + socketableWidth);
 
-        for (TieredModifier tieredModifier : group.modifiers()) {
+        for (TieredModifier tieredModifier : mods) {
 
             Holder<Modifier> mod = tieredModifier.modifier();
             int tier = tieredModifier.tier();
@@ -109,8 +112,11 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
                 continue;
             }
 
-            MutableComponent cmp = Component
-                    .translatable(WanderersOfTheRift.translationId("modifier", mod.getKey().location()));
+            MutableComponent cmp = Component.literal("> ").withStyle(ChatFormatting.DARK_GRAY);
+            cmp.append(Component.literal("[T" + tier + "] ").withColor((mod.value().getColor())));
+            cmp.append(Component
+                    .translatable(WanderersOfTheRift.translationId("modifier", mod.getKey().location())).withStyle(Style.EMPTY.withColor(mod.value().getColor())));
+
 
             if (isKeyDown()) {
                 String tierInfo = "";
@@ -123,7 +129,7 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
             }
 
 
-            width = Math.max(width, font.width(cmp) + 8);
+            width = Math.max(width, font.width(cmp));
         }
 
         return width;
@@ -147,9 +153,11 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
         y += 10;
 
         RunegemData.ModifierGroup group = this.cmp.data.modifierLists().get(currentIndex);
+        List<TieredModifier> mods = new ArrayList<>(group.modifiers());
+        mods.sort(Comparator.comparing(mod -> mod.getName().getString())); // Sort alphabetically
 
 
-        for (TieredModifier tieredModifier : group.modifiers()) {
+        for (TieredModifier tieredModifier : mods) {
             Holder<Modifier> mod = tieredModifier.modifier();
             int tier = tieredModifier.tier();
 
@@ -157,8 +165,11 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
                 continue;
             }
 
-            MutableComponent cmp = Component
-                    .translatable(WanderersOfTheRift.translationId("modifier", mod.getKey().location()));
+
+            MutableComponent cmp = Component.literal("> ").withStyle(ChatFormatting.DARK_GRAY);
+            cmp.append(Component.literal("[T" + tier + "] ").withColor((mod.value().getColor())));
+            cmp.append(Component
+                    .translatable(WanderersOfTheRift.translationId("modifier", mod.getKey().location())).withStyle(Style.EMPTY.withColor(mod.value().getColor())));
 
             if (isKeyDown()) {
                 String tierInfo = "";
@@ -172,7 +183,7 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
 
             font.drawInBatch(
                     cmp,
-                    x + 8, y, 0xFFFFFF, true, matrix, bufferSource, Font.DisplayMode.NORMAL, 0, 15_728_880
+                    x, y, 0xFFFFFF, true, matrix, bufferSource, Font.DisplayMode.NORMAL, 0, 15_728_880
             );
             y += 10;
         }
@@ -201,7 +212,7 @@ public class RunegemTooltipRenderer implements ClientTooltipComponent {
 
 
 
-        y += (10 * group.modifiers().size()) + 40;
+        y += (10 * group.modifiers().size()) + 30;
 
         if (!isKeyDown()) y+= 10;
 
