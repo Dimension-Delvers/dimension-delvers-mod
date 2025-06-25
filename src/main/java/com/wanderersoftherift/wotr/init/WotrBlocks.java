@@ -21,6 +21,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static com.wanderersoftherift.wotr.block.BlockFamilyHelper.BUTTON_SUFFIX;
@@ -62,6 +64,122 @@ public class WotrBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(WanderersOfTheRift.MODID);
     public static final Map<RiftChestType, DeferredBlock<Block>> CHEST_TYPES = new HashMap<>();
     public static final List<BlockFamilyHelper> BLOCK_FAMILY_HELPERS = new ArrayList<>();
+    public static final Map<String, DeferredBlock<? extends Block>> REGISTERED_SLABS = new HashMap<>();
+    public static final Map<String, DeferredBlock<? extends Block>> REGISTERED_DIRECTTONAL_SLABS = new HashMap<>();
+    public static final Map<String, DeferredBlock<? extends Block>> REGISTERED_GLASS_SLABS = new HashMap<>();
+
+
+    public static final Map<String, Block> SLAB_BASE_BLOCKS_STANDARD = Map.ofEntries(
+            // Concrete
+            Map.entry("white_concrete", Blocks.WHITE_CONCRETE),
+            Map.entry("orange_concrete", Blocks.ORANGE_CONCRETE),
+            Map.entry("magenta_concrete", Blocks.MAGENTA_CONCRETE),
+            Map.entry("light_blue_concrete", Blocks.LIGHT_BLUE_CONCRETE),
+            Map.entry("yellow_concrete", Blocks.YELLOW_CONCRETE),
+            Map.entry("lime_concrete", Blocks.LIME_CONCRETE),
+            Map.entry("pink_concrete", Blocks.PINK_CONCRETE),
+            Map.entry("gray_concrete", Blocks.GRAY_CONCRETE),
+            Map.entry("light_gray_concrete", Blocks.LIGHT_GRAY_CONCRETE),
+            Map.entry("cyan_concrete", Blocks.CYAN_CONCRETE),
+            Map.entry("purple_concrete", Blocks.PURPLE_CONCRETE),
+            Map.entry("blue_concrete", Blocks.BLUE_CONCRETE),
+            Map.entry("brown_concrete", Blocks.BROWN_CONCRETE),
+            Map.entry("green_concrete", Blocks.GREEN_CONCRETE),
+            Map.entry("red_concrete", Blocks.RED_CONCRETE),
+            Map.entry("black_concrete", Blocks.BLACK_CONCRETE),
+
+            // Concrete powder
+            Map.entry("white_concrete_powder", Blocks.WHITE_CONCRETE_POWDER),
+            Map.entry("orange_concrete_powder", Blocks.ORANGE_CONCRETE_POWDER),
+            Map.entry("magenta_concrete_powder", Blocks.MAGENTA_CONCRETE_POWDER),
+            Map.entry("light_blue_concrete_powder", Blocks.LIGHT_BLUE_CONCRETE_POWDER),
+            Map.entry("yellow_concrete_powder", Blocks.YELLOW_CONCRETE_POWDER),
+            Map.entry("lime_concrete_powder", Blocks.LIME_CONCRETE_POWDER),
+            Map.entry("pink_concrete_powder", Blocks.PINK_CONCRETE_POWDER),
+            Map.entry("gray_concrete_powder", Blocks.GRAY_CONCRETE_POWDER),
+            Map.entry("light_gray_concrete_powder", Blocks.LIGHT_GRAY_CONCRETE_POWDER),
+            Map.entry("cyan_concrete_powder", Blocks.CYAN_CONCRETE_POWDER),
+            Map.entry("purple_concrete_powder", Blocks.PURPLE_CONCRETE_POWDER),
+            Map.entry("blue_concrete_powder", Blocks.BLUE_CONCRETE_POWDER),
+            Map.entry("brown_concrete_powder", Blocks.BROWN_CONCRETE_POWDER),
+            Map.entry("green_concrete_powder", Blocks.GREEN_CONCRETE_POWDER),
+            Map.entry("red_concrete_powder", Blocks.RED_CONCRETE_POWDER),
+            Map.entry("black_concrete_powder", Blocks.BLACK_CONCRETE_POWDER),
+
+            // Coral
+            Map.entry("tube_coral_block", Blocks.TUBE_CORAL_BLOCK),
+            Map.entry("brain_coral_block", Blocks.BRAIN_CORAL_BLOCK),
+            Map.entry("bubble_coral_block", Blocks.BUBBLE_CORAL_BLOCK),
+            Map.entry("fire_coral_block", Blocks.FIRE_CORAL_BLOCK),
+            Map.entry("horn_coral_block", Blocks.HORN_CORAL_BLOCK),
+
+            // Misc
+            Map.entry("warped_wart_block", Blocks.WARPED_WART_BLOCK),
+            Map.entry("snow", Blocks.SNOW),
+            Map.entry("soul_sand", Blocks.SOUL_SAND),
+            Map.entry("soul_soil", Blocks.SOUL_SOIL),
+            Map.entry("rooted_dirt", Blocks.ROOTED_DIRT),
+            Map.entry("raw_iron_block", Blocks.RAW_IRON_BLOCK),
+            Map.entry("raw_gold_block", Blocks.RAW_GOLD_BLOCK),
+            Map.entry("pale_moss_block", Blocks.PALE_MOSS_BLOCK),
+            Map.entry("packed_ice", Blocks.PACKED_ICE),
+            Map.entry("nether_wart_block", Blocks.NETHER_WART_BLOCK),
+            Map.entry("mud", Blocks.MUD),
+            Map.entry("moss_block", Blocks.MOSS_BLOCK),
+            Map.entry("ice", Blocks.ICE),
+            Map.entry("gold_block", Blocks.GOLD_BLOCK),
+            Map.entry("iron_block", Blocks.IRON_BLOCK),
+            Map.entry("gilded_blackstone", Blocks.GILDED_BLACKSTONE),
+            Map.entry("dirt", Blocks.DIRT),
+            Map.entry("clay", Blocks.CLAY),
+            Map.entry("coarse_dirt", Blocks.COARSE_DIRT),
+            Map.entry("blue_ice", Blocks.BLUE_ICE),
+            Map.entry("resin_block", Blocks.RESIN_BLOCK)
+    );
+
+    public static final Map<String, Block> SLAB_BASE_BLOCKS_DIRECTIONAL = Map.ofEntries(
+            Map.entry("podzol", Blocks.PODZOL),
+            Map.entry("muddy_mangrove_roots", Blocks.MUDDY_MANGROVE_ROOTS),
+            Map.entry("mycelium", Blocks.MYCELIUM),
+            Map.entry("dirt_path", Blocks.DIRT_PATH),
+            Map.entry("dried_kelp_block", Blocks.DRIED_KELP_BLOCK),
+            Map.entry("bone_block", Blocks.BONE_BLOCK)
+    );
+
+    public static final Map<String, Block> SLAB_BASE_BLOCKS_GLASS = Map.ofEntries(
+            Map.entry("glass", Blocks.GLASS),
+            Map.entry("white_stained_glass", Blocks.WHITE_STAINED_GLASS),
+            Map.entry("orange_stained_glass", Blocks.ORANGE_STAINED_GLASS),
+            Map.entry("magenta_stained_glass", Blocks.MAGENTA_STAINED_GLASS),
+            Map.entry("light_blue_stained_glass", Blocks.LIGHT_BLUE_STAINED_GLASS),
+            Map.entry("yellow_stained_glass", Blocks.YELLOW_STAINED_GLASS),
+            Map.entry("lime_stained_glass", Blocks.LIME_STAINED_GLASS),
+            Map.entry("pink_stained_glass", Blocks.PINK_STAINED_GLASS),
+            Map.entry("gray_stained_glass", Blocks.GRAY_STAINED_GLASS),
+            Map.entry("light_gray_stained_glass", Blocks.LIGHT_GRAY_STAINED_GLASS),
+            Map.entry("cyan_stained_glass", Blocks.CYAN_STAINED_GLASS),
+            Map.entry("purple_stained_glass", Blocks.PURPLE_STAINED_GLASS),
+            Map.entry("blue_stained_glass", Blocks.BLUE_STAINED_GLASS),
+            Map.entry("brown_stained_glass", Blocks.BROWN_STAINED_GLASS),
+            Map.entry("green_stained_glass", Blocks.GREEN_STAINED_GLASS),
+            Map.entry("red_stained_glass", Blocks.RED_STAINED_GLASS),
+            Map.entry("black_stained_glass", Blocks.BLACK_STAINED_GLASS),
+            Map.entry("tinted_glass", Blocks.TINTED_GLASS)
+    );
+
+    static {
+        SLAB_BASE_BLOCKS_STANDARD.forEach((id, base) -> {
+            registerSlab(id + "_slab", base);
+        });
+
+        SLAB_BASE_BLOCKS_DIRECTIONAL.forEach((id, base) -> {
+            registerDirectionalSlab(id + "_slab", base);
+        });
+
+        SLAB_BASE_BLOCKS_GLASS.forEach((id, base) -> {
+            registerGlassSlab(id + "_slab", base);
+        });
+    }
 
     public static final DeferredBlock<RuneAnvilEntityBlock> RUNE_ANVIL_ENTITY_BLOCK = registerBlock("rune_anvil",
             () -> new RuneAnvilEntityBlock(
@@ -168,6 +286,9 @@ public class WotrBlocks {
             Blocks.RED_CONCRETE_POWDER);
     public static final DeferredBlock<Block> NOGRAVBLACKCONCRETEPOWDER = registerNoGrav("nograv_black_concrete_powder",
             Blocks.BLACK_CONCRETE_POWDER);
+
+    public static final DeferredBlock<CarpetBlock> HAY_CARPET =
+            registerCarpet("hay_carpet", Blocks.HAY_BLOCK);
 
     public static final BlockFamilyHelper PROCESSOR_BLOCK_1 = registerBuildingBlock("processor_block_1",
             () -> new Block(BlockBehaviour.Properties.of().setId(blockId("processor_block_1"))));
@@ -281,6 +402,49 @@ public class WotrBlocks {
     private static DeferredBlock<Block> registerNoGrav(String idString, Block original) {
         return registerBlock(idString, () -> new Block(
                 BlockBehaviour.Properties.ofFullCopy(original).setId(blockId(idString))
+        ));
+    }
+
+    //same texture on all sides
+    private static DeferredBlock<SlabBlock> registerSlab(String id, Block baseBlock) {
+        DeferredBlock<SlabBlock> slab = registerDevBlock(id, () -> new SlabBlock(
+                BlockBehaviour.Properties.ofFullCopy(baseBlock).setId(blockId(id))
+        ));
+        String key = id.replace("_slab", "");
+        REGISTERED_SLABS.put(key, slab);
+        return slab;
+    }
+
+    //different textures on side top and bot
+    private static DeferredBlock<SlabBlock> registerDirectionalSlab(String id, Block baseBlock) {
+        DeferredBlock<SlabBlock> slab = registerDevBlock(id, () -> new SlabBlock(
+                BlockBehaviour.Properties.ofFullCopy(baseBlock).setId(blockId(id))
+        ));
+        String key = id.replace("_slab", "");
+        REGISTERED_DIRECTTONAL_SLABS.put(key, slab);
+        return slab;
+    }
+
+    //different textures on side top and bot
+    private static DeferredBlock<SlabBlock> registerGlassSlab(String id, Block baseBlock) {
+        DeferredBlock<SlabBlock> slab = registerDevBlock(id, () -> new SlabBlock(
+                BlockBehaviour.Properties.ofFullCopy(baseBlock).setId(blockId(id))
+        ));
+        String key = id.replace("_slab", "");
+        REGISTERED_GLASS_SLABS.put(key, slab);
+        return slab;
+    }
+
+    private static DeferredBlock<StairBlock> registerStairs(String id, Block baseBlock) {
+        return registerDevBlock(id, () -> new StairBlock(
+                baseBlock.defaultBlockState(),
+                BlockBehaviour.Properties.ofFullCopy(baseBlock).setId(blockId(id))
+        ));
+    }
+
+    private static DeferredBlock<CarpetBlock> registerCarpet(String id, Block baseBlock) {
+        return registerDevBlock(id, () -> new CarpetBlock(
+                BlockBehaviour.Properties.ofFullCopy(baseBlock).setId(blockId(id))
         ));
     }
 

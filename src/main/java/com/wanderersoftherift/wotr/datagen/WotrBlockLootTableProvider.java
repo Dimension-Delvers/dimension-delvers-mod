@@ -13,6 +13,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -62,6 +63,12 @@ public class WotrBlockLootTableProvider extends BlockLootSubProvider {
         addRiftConditionalDrop(WotrBlocks.NOGRAVGREENCONCRETEPOWDER.get(), Blocks.GREEN_CONCRETE_POWDER.asItem());
         addRiftConditionalDrop(WotrBlocks.NOGRAVREDCONCRETEPOWDER.get(), Blocks.RED_CONCRETE_POWDER.asItem());
         addRiftConditionalDrop(WotrBlocks.NOGRAVBLACKCONCRETEPOWDER.get(), Blocks.BLACK_CONCRETE_POWDER.asItem());
+
+        dropSelf(WotrBlocks.HAY_CARPET.get());
+
+        WotrBlocks.REGISTERED_SLABS.values().forEach(slab -> dropSelf(slab.get()));
+        WotrBlocks.REGISTERED_DIRECTTONAL_SLABS.values().forEach(slab -> dropSelf(slab.get()));
+        WotrBlocks.REGISTERED_GLASS_SLABS.values().forEach(slab -> dropSelf(slab.get()));
 
     }
 

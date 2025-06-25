@@ -33,14 +33,21 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class WotrModelProvider extends ModelProvider {
     public WotrModelProvider(PackOutput output) {
@@ -168,6 +175,61 @@ public class WotrModelProvider extends ModelProvider {
         blockModels.createTrivialBlock(WotrBlocks.NOGRAVBLACKCONCRETEPOWDER.get(),
                 TexturedModel.CUBE.updateTexture(mapping -> mapping.put(TextureSlot.ALL,
                         ResourceLocation.withDefaultNamespace("block/black_concrete_powder"))));
+
+        blockModels.createTrivialBlock(WotrBlocks.HAY_CARPET.get(), TexturedModel.CARPET.updateTexture(
+                mapping -> mapping.put(TextureSlot.WOOL, ResourceLocation.withDefaultNamespace("block/hay_block_top"))
+        ));
+
+        WotrBlocks.SLAB_BASE_BLOCKS_STANDARD.forEach((id, baseBlock) -> {
+            DeferredBlock<?> deferredSlab = WotrBlocks.REGISTERED_SLABS.get(id);
+            if (deferredSlab != null && deferredSlab.get() instanceof SlabBlock slabBlock) {
+                registerSlabModel(blockModels, slabBlock, baseBlock);
+            }
+        });
+
+        WotrBlocks.SLAB_BASE_BLOCKS_GLASS.forEach((id, baseBlock) -> {
+            DeferredBlock<?> deferredSlab = WotrBlocks.REGISTERED_GLASS_SLABS.get(id);
+            if (deferredSlab != null && deferredSlab.get() instanceof SlabBlock slabBlock) {
+                registerGlassSlabModel(blockModels, slabBlock, baseBlock);
+            }
+        });
+
+
+        WotrBlocks.SLAB_BASE_BLOCKS_DIRECTIONAL.forEach((id, baseBlock) -> {
+            DeferredBlock<? extends Block> deferredSlab = WotrBlocks.REGISTERED_DIRECTTONAL_SLABS.get(id);
+            if (deferredSlab != null && deferredSlab.get() instanceof SlabBlock slabBlock) {
+                String side = id;
+                String top = id;
+                String bottom = id;
+
+                switch (id) {
+                    case "bone_block" -> {
+                        side = "bone_block_side";
+                        top = "bone_block_top";
+                        bottom = "bone_block_top";
+                    }
+                    case "muddy_mangrove_roots" -> {
+                        side = "muddy_mangrove_roots_side";
+                        top = "muddy_mangrove_roots_top";
+                        bottom = "muddy_mangrove_roots_top";
+                    }
+                    case "podzol", "mycelium", "dirt_path" -> {
+                        side = id + "_side";
+                        top = id + "_top";
+                        bottom = "dirt";
+                    }
+                    case "dried_kelp_block" -> {
+                        side = "dried_kelp_side";
+                        top = "dried_kelp_top";
+                        bottom = "dried_kelp_bottom";
+                    }
+                }
+
+                registerDirectionalSlabModel(blockModels, slabBlock, side, top, bottom);
+            }
+        });
+
+
 
         itemModels.itemModelOutput.accept(WotrItems.BUILDER_GLASSES.get(),
                 ItemModelUtils.plainModel(WanderersOfTheRift.id("item/builder_glasses")));
@@ -435,5 +497,79 @@ public class WotrModelProvider extends ModelProvider {
                                         )
                         )
         );
+    }
+
+    private void registerSlabModel(BlockModelGenerators blockModels, Block slab, Block base) {
+        TextureMapping mapping = TextureMapping.cube(TextureMapping.getBlockTexture(base));
+        ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(slab, mapping, blockModels.modelOutput);
+        ResourceLocation top = ModelTemplates.SLAB_TOP.createWithSuffix(slab, "_top", mapping, blockModels.modelOutput);
+        ResourceLocation cube = ModelTemplates.CUBE_ALL.createWithSuffix(slab, "_double", mapping, blockModels.modelOutput);
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(slab)
+                .with(PropertyDispatch.property(BlockStateProperties.SLAB_TYPE)
+                        .select(SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottom))
+                        .select(SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, top))
+                        .select(SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, cube))));
+    }
+
+    private void registerDirectionalSlabModel(BlockModelGenerators blockModels, Block slab,
+                                              String sideTex, String topTex, String bottomTex) {
+        TextureMapping mapping = new TextureMapping()
+                .put(TextureSlot.SIDE, ResourceLocation.withDefaultNamespace("block/" + sideTex))
+                .put(TextureSlot.TOP, ResourceLocation.withDefaultNamespace("block/" + topTex))
+                .put(TextureSlot.BOTTOM, ResourceLocation.withDefaultNamespace("block/" + bottomTex));
+
+        ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(slab, mapping, blockModels.modelOutput);
+        ResourceLocation top = ModelTemplates.SLAB_TOP.createWithSuffix(slab, "_top", mapping, blockModels.modelOutput);
+        ResourceLocation cube = ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(slab, "_double", mapping, blockModels.modelOutput);
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(slab)
+                .with(PropertyDispatch.property(BlockStateProperties.SLAB_TYPE)
+                        .select(SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottom))
+                        .select(SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, top))
+                        .select(SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, cube))));
+    }
+
+    private void registerGlassSlabModel(BlockModelGenerators blockModels, Block slab, Block base) {
+        TextureMapping slabMapping = new TextureMapping()
+                .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(base))
+                .put(TextureSlot.TOP, TextureMapping.getBlockTexture(base))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(base));
+
+        TextureMapping cubeMapping = new TextureMapping()
+                .put(TextureSlot.ALL, TextureMapping.getBlockTexture(base));
+
+        ResourceLocation bottom = ExtendedModelTemplateBuilder.builder()
+                .parent(ResourceLocation.fromNamespaceAndPath("minecraft", "block/slab"))
+                .requiredTextureSlot(TextureSlot.BOTTOM)
+                .requiredTextureSlot(TextureSlot.TOP)
+                .requiredTextureSlot(TextureSlot.SIDE)
+                .renderType("translucent")
+                .build()
+                .create(slab, slabMapping, blockModels.modelOutput);
+
+        ResourceLocation top = ExtendedModelTemplateBuilder.builder()
+                .parent(ResourceLocation.fromNamespaceAndPath("minecraft", "block/slab_top"))
+                .suffix("_top")
+                .requiredTextureSlot(TextureSlot.BOTTOM)
+                .requiredTextureSlot(TextureSlot.TOP)
+                .requiredTextureSlot(TextureSlot.SIDE)
+                .renderType("translucent")
+                .build()
+                .create(slab, slabMapping, blockModels.modelOutput);
+
+        ResourceLocation cube = ExtendedModelTemplateBuilder.builder()
+                .parent(ResourceLocation.fromNamespaceAndPath("minecraft", "block/cube_all"))
+                .suffix("_double")
+                .requiredTextureSlot(TextureSlot.ALL)
+                .renderType("translucent")
+                .build()
+                .create(slab, cubeMapping, blockModels.modelOutput);
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(slab)
+                .with(PropertyDispatch.property(BlockStateProperties.SLAB_TYPE)
+                        .select(SlabType.BOTTOM, Variant.variant().with(VariantProperties.MODEL, bottom))
+                        .select(SlabType.TOP, Variant.variant().with(VariantProperties.MODEL, top))
+                        .select(SlabType.DOUBLE, Variant.variant().with(VariantProperties.MODEL, cube))));
     }
 }
