@@ -1,0 +1,33 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "side": "#side",
+    "top": "#top",
+    "bottom": "#bottom",
+    "particle": "#bottom"
+  },
+  "elements": [
+    { "from": [0, 8, 0.01], "to": [8, 12, 0.01], "faces": { "north": { "uv": [8, 12, 0, 16], "texture": "#side" } } },
+    { "from": [8, 8, 0.01], "to": [16, 12, 0.01], "faces": { "north": { "uv": [16, 12, 8, 16], "texture": "#side" } } },
+    { "from": [0, 12, 0.01], "to": [8, 16, 0.01], "faces": { "north": { "uv": [8, 0, 0, 4], "texture": "#side" } } },
+    { "from": [8, 12, 0.01], "to": [16, 16, 0.01], "faces": { "north": { "uv": [16, 0, 8, 4], "texture": "#side" } } },
+
+    { "from": [0, 8, 15.99], "to": [8, 12, 15.99], "faces": { "south": { "uv": [0, 12, 8, 16], "texture": "#side" } } },
+    { "from": [8, 8, 15.99], "to": [16, 12, 15.99], "faces": { "south": { "uv": [8, 12, 16, 16], "texture": "#side" } } },
+    { "from": [0, 12, 15.99], "to": [8, 16, 15.99], "faces": { "south": { "uv": [0, 0, 8, 4], "texture": "#side" } } },
+    { "from": [8, 12, 15.99], "to": [16, 16, 15.99], "faces": { "south": { "uv": [8, 0, 16, 4], "texture": "#side" } } },
+
+    { "from": [0.01, 8, 0], "to": [0.01, 12, 8], "faces": { "west": { "uv": [0, 12, 8, 16], "texture": "#side" } } },
+    { "from": [0.01, 8, 8], "to": [0.01, 12, 16], "faces": { "west": { "uv": [8, 12, 16, 16], "texture": "#side" } } },
+    { "from": [0.01, 12, 0], "to": [0.01, 16, 8], "faces": { "west": { "uv": [0, 0, 8, 4], "texture": "#side" } } },
+    { "from": [0.01, 12, 8], "to": [0.01, 16, 16], "faces": { "west": { "uv": [8, 0, 16, 4], "texture": "#side" } } },
+
+    { "from": [15.99, 8, 0], "to": [15.99, 12, 8], "faces": { "east": { "uv": [8, 12, 0, 16], "texture": "#side" } } },
+    { "from": [15.99, 8, 8], "to": [15.99, 12, 16], "faces": { "east": { "uv": [16, 12, 8, 16], "texture": "#side" } } },
+    { "from": [15.99, 12, 0], "to": [15.99, 16, 8], "faces": { "east": { "uv": [8, 0, 0, 4], "texture": "#side" } } },
+    { "from": [15.99, 12, 8], "to": [15.99, 16, 16], "faces": { "east": { "uv": [16, 0, 8, 4], "texture": "#side" } } },
+
+    { "from": [0, 16, 0], "to": [16, 16, 16], "faces": { "up": { "texture": "#top" } } },
+    { "from": [0, 8, 0], "to": [16, 8, 16], "faces": { "down": { "texture": "#bottom" } } }
+  ]
+}
