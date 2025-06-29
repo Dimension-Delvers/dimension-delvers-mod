@@ -20,9 +20,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,39 +38,37 @@ public class WotrRecipeProvider extends RecipeProvider {
     protected void buildRecipes() {
         HolderGetter<Item> getter = this.registries.lookupOrThrow(Registries.ITEM);
 
-        WotrBlocks.SLAB_BASE_BLOCKS_STANDARD.forEach((id, baseBlock) -> {
-            var slab = WotrBlocks.REGISTERED_SLABS.get(id);
-            if (slab != null) {
-                ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slab.get(), 6)
-                        .pattern("###")
-                        .define('#', baseBlock.asItem())
-                        .unlockedBy("has_" + id, has(baseBlock.asItem()))
-                        .save(this.output);
-            }
+        WotrBlocks.REGISTERED_STANDARD_SLABS.forEach((id, slabInfo) -> {
+            ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slabInfo.slab().get(), 6)
+                    .pattern("###")
+                    .define('#', slabInfo.getBaseItem())
+                    .unlockedBy("has_" + id, has(slabInfo.getBaseItem()))
+                    .save(this.output);
         });
 
-        WotrBlocks.SLAB_BASE_BLOCKS_GLASS.forEach((id, baseBlock) -> {
-            var slab = WotrBlocks.REGISTERED_SLABS.get(id);
-            if (slab != null) {
-                ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slab.get(), 6)
-                        .pattern("###")
-                        .define('#', baseBlock.asItem())
-                        .unlockedBy("has_" + id, has(baseBlock.asItem()))
-                        .save(this.output);
-            }
+        WotrBlocks.REGISTERED_GLASS_SLABS.forEach((id, slabInfo) -> {
+            ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slabInfo.slab().get(), 6)
+                    .pattern("###")
+                    .define('#', slabInfo.getBaseItem())
+                    .unlockedBy("has_" + id, has(slabInfo.getBaseItem()))
+                    .save(this.output);
         });
 
-        WotrBlocks.SLAB_BASE_BLOCKS_DIRECTIONAL.forEach((id, baseBlock) -> {
-            var slab = WotrBlocks.REGISTERED_DIRECTTONAL_SLABS.get(id);
-            if (slab != null) {
-                ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slab.get(), 6)
-                        .pattern("###")
-                        .define('#', baseBlock.asItem())
-                        .unlockedBy("has_" + id, has(baseBlock.asItem()))
-                        .save(this.output);
-            }
+        WotrBlocks.REGISTERED_DIRECTIONAL_SLABS.forEach((id, slabInfo) -> {
+            ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slabInfo.slab().get(), 6)
+                    .pattern("###")
+                    .define('#', slabInfo.getBaseItem())
+                    .unlockedBy("has_" + id, has(slabInfo.getBaseItem()))
+                    .save(this.output);
         });
 
+        WotrBlocks.REGISTERED_TRIMM_SLABS.forEach((id, slabInfo) -> {
+            ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, slabInfo.slab().get(), 6)
+                    .pattern("###")
+                    .define('#', slabInfo.getBaseItem())
+                    .unlockedBy("has_" + id, has(slabInfo.getBaseItem()))
+                    .save(this.output);
+        });
 
         ShapedRecipeBuilder.shaped(getter, RecipeCategory.MISC, WotrBlocks.RIFT_SPAWNER.asItem())
                 .pattern("sss")
@@ -355,8 +351,7 @@ public class WotrRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_chorus_fruit", this.has(Items.CHORUS_FRUIT))
                 .save(this.output);
 
-        ShapedRecipeBuilder
-                .shaped(getter, RecipeCategory.BUILDING_BLOCKS, WotrBlocks.HAY_CARPET.get(), 4)
+        ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, WotrBlocks.HAY_CARPET.get(), 4)
                 .pattern("GG")
                 .define('G', Items.HAY_BLOCK)
                 .unlockedBy("has_hay_block", this.has(Items.HAY_BLOCK))

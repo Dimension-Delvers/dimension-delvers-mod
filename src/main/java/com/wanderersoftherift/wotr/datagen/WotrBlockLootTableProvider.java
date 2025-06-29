@@ -13,7 +13,6 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -66,10 +65,10 @@ public class WotrBlockLootTableProvider extends BlockLootSubProvider {
 
         dropSelf(WotrBlocks.HAY_CARPET.get());
 
-        WotrBlocks.REGISTERED_SLABS.values().forEach(slab -> dropSelf(slab.get()));
-        WotrBlocks.REGISTERED_DIRECTTONAL_SLABS.values().forEach(slab -> dropSelf(slab.get()));
-        WotrBlocks.REGISTERED_GLASS_SLABS.values().forEach(slab -> dropSelf(slab.get()));
-
+        WotrBlocks.REGISTERED_STANDARD_SLABS.values().forEach(slabInfo -> dropSelf(slabInfo.slab().get()));
+        WotrBlocks.REGISTERED_DIRECTIONAL_SLABS.values().forEach(slabInfo -> dropSelf(slabInfo.slab().get()));
+        WotrBlocks.REGISTERED_GLASS_SLABS.values().forEach(slabInfo -> dropSelf(slabInfo.slab().get()));
+        WotrBlocks.REGISTERED_TRIMM_SLABS.values().forEach(slabInfo -> dropSelf(slabInfo.slab().get()));
     }
 
     private void addRiftConditionalDrop(Block block, Item riftDrop) {
