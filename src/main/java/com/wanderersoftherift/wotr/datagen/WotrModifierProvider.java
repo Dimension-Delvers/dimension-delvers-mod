@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -75,103 +74,155 @@ public class WotrModifierProvider {
                 new Modifier(generateEqualRollSpread(4,
                         List.of(new ToBeTieredModifierEffect(0.01F, 6,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("absorption"),
-                                        Attributes.MAX_ABSORPTION, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.MAX_ABSORPTION,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("armor"),
                 new Modifier(generateEqualRollSpread(4,
                         List.of(new ToBeTieredModifierEffect(2, 20,
-                                attributeModifierEffectGetter(WanderersOfTheRift.id("armor"), Attributes.ARMOR,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("armor"),
+                                        net.minecraft.world.entity.ai.attributes.Attributes.ARMOR,
                                         AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("armor_heavy"), new Modifier(generateEqualRollSpread(
                 4,
                 List.of(new ToBeTieredModifierEffect(8, 30,
-                        attributeModifierEffectGetter(WanderersOfTheRift.id("armor_heavy"), Attributes.ARMOR,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("armor_heavy"),
+                                net.minecraft.world.entity.ai.attributes.Attributes.ARMOR,
                                 AttributeModifier.Operation.ADD_VALUE))),
                 List.of(new AttributeModifierEffect(
-                        WanderersOfTheRift.id("armor_heavy"), Attributes.MOVEMENT_SPEED, -0.03F, -0.001F,
+                        WanderersOfTheRift.id("armor_heavy"),
+                        net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED, -0.03F, -0.001F,
                         AttributeModifier.Operation.ADD_VALUE))))
         );
         registerModifier(context, getResourceKey("armor_toughness"),
                 new Modifier(generateEqualRollSpread(2,
                         List.of(new ToBeTieredModifierEffect(0.01F, 4,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("armor_toughness"),
-                                        Attributes.ARMOR_TOUGHNESS, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("attack_flat"),
                 new Modifier(generateEqualRollSpread(7,
                         List.of(new ToBeTieredModifierEffect(0.01F, 11,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("attack_flat"),
-                                        Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("attack_heavy"), new Modifier(generateEqualRollSpread(5, List.of(
                 new ToBeTieredModifierEffect(0.01F, 2F,
-                        attributeModifierEffectGetter(WanderersOfTheRift.id("attack_heavy"), Attributes.ATTACK_DAMAGE,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("attack_heavy"),
+                                net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE))),
                 List.of(new AttributeModifierEffect(
-                        WanderersOfTheRift.id("attack_heavy"), Attributes.ATTACK_SPEED, -0.25F, -0.05F,
+                        WanderersOfTheRift.id("attack_heavy"),
+                        net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED, -0.25F, -0.05F,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE))))
         );
         registerModifier(context, getResourceKey("attack_percent"),
                 new Modifier(generateEqualRollSpread(7,
                         List.of(new ToBeTieredModifierEffect(0.01F, 1F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("attack_percent"),
-                                        Attributes.ATTACK_DAMAGE, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,
+                                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
         );
         registerModifier(context, getResourceKey("attack_speed"),
                 new Modifier(generateEqualRollSpread(5,
                         List.of(new ToBeTieredModifierEffect(0.01F, 1,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("attack_speed"),
-                                        Attributes.ATTACK_SPEED, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED,
+                                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
+        );
+        registerModifier(context, getResourceKey("critical_chance"),
+                new Modifier(generateEqualRollSpread(5,
+                        List.of(new ToBeTieredModifierEffect(1, 50,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("critical_chance"),
+                                        WotrAttributes.CRITICAL_CHANCE, AttributeModifier.Operation.ADD_VALUE)))))
+        );
+        registerModifier(context, getResourceKey("critical_bonus"),
+                new Modifier(generateEqualRollSpread(5,
+                        List.of(new ToBeTieredModifierEffect(0.5F, 3F,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("critical_bonus"),
+                                        WotrAttributes.CRITICAL_BONUS, AttributeModifier.Operation.ADD_VALUE)))))
+        );
+        registerModifier(context, getResourceKey("critical_avoidance"),
+                new Modifier(generateEqualRollSpread(5,
+                        List.of(new ToBeTieredModifierEffect(1, 50,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("critical_avoidance"),
+                                        WotrAttributes.CRITICAL_AVOIDANCE, AttributeModifier.Operation.ADD_VALUE)))))
+        );
+        registerModifier(context, getResourceKey("critical_dual"), new Modifier(generateEqualRollSpread(5, List.of(
+                new ToBeTieredModifierEffect(1, 25,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("critical_chance"),
+                                WotrAttributes.CRITICAL_CHANCE, AttributeModifier.Operation.ADD_VALUE)),
+                new ToBeTieredModifierEffect(1, 25,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("critical_avoidance"),
+                                WotrAttributes.CRITICAL_AVOIDANCE, AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("health_flat"),
                 new Modifier(generateEqualRollSpread(6,
                         List.of(new ToBeTieredModifierEffect(0.01F, 12,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("health_flat"),
-                                        Attributes.MAX_HEALTH, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("health_hybrid"), new Modifier(generateEqualRollSpread(5, List.of(
                 new ToBeTieredModifierEffect(0.01F, 5,
-                        attributeModifierEffectGetter(WanderersOfTheRift.id("health_flat"), Attributes.MAX_HEALTH,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("health_flat"),
+                                net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH,
                                 AttributeModifier.Operation.ADD_VALUE)),
                 new ToBeTieredModifierEffect(0.01F, 0.1F,
-                        attributeModifierEffectGetter(WanderersOfTheRift.id("health_hybrid"), Attributes.MAX_HEALTH,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("health_hybrid"),
+                                net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH,
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
         );
         registerModifier(context, getResourceKey("health_percent"),
                 new Modifier(generateEqualRollSpread(6,
                         List.of(new ToBeTieredModifierEffect(0.01F, 0.2F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("health_percent"),
-                                        Attributes.MAX_HEALTH, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH,
+                                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE)))))
+        );
+        registerModifier(context, getResourceKey("life_leech"),
+                new Modifier(generateEqualRollSpread(6,
+                        List.of(new ToBeTieredModifierEffect(0.01F, 1F,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("life_leech"),
+                                        WotrAttributes.LIFE_LEECH, AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("jump_height"), new Modifier(generateEqualRollSpread(3, List.of(
                 new ToBeTieredModifierEffect(0.01F, 0.5F,
-                        attributeModifierEffectGetter(WanderersOfTheRift.id("jump_height"), Attributes.JUMP_STRENGTH,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("jump_height"),
+                                net.minecraft.world.entity.ai.attributes.Attributes.JUMP_STRENGTH,
                                 AttributeModifier.Operation.ADD_VALUE)),
                 new ToBeTieredModifierEffect(0.01F, 4,
                         attributeModifierEffectGetter(WanderersOfTheRift.id("fall_reduction"),
-                                Attributes.SAFE_FALL_DISTANCE, AttributeModifier.Operation.ADD_VALUE)))))
+                                net.minecraft.world.entity.ai.attributes.Attributes.SAFE_FALL_DISTANCE,
+                                AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("knockback"),
                 new Modifier(generateEqualRollSpread(3,
                         List.of(new ToBeTieredModifierEffect(0.01F, 7.5F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("knockback"),
-                                        Attributes.ATTACK_KNOCKBACK, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_KNOCKBACK,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
-        registerModifier(context, getResourceKey("knockback_heavy"),
-                new Modifier(generateEqualRollSpread(3,
-                        List.of(new ToBeTieredModifierEffect(0.01F, 15F,
-                                attributeModifierEffectGetter(WanderersOfTheRift.id("knockback_heavy"),
-                                        Attributes.ATTACK_KNOCKBACK, AttributeModifier.Operation.ADD_VALUE))),
-                        List.of(new AttributeModifierEffect(
-                                WanderersOfTheRift.id("knockback_heavy"), Attributes.ATTACK_SPEED, -1, -0.5F,
-                                AttributeModifier.Operation.ADD_MULTIPLIED_BASE))))
+        registerModifier(context, getResourceKey("knockback_heavy"), new Modifier(generateEqualRollSpread(
+                3,
+                List.of(new ToBeTieredModifierEffect(0.01F, 15F,
+                        attributeModifierEffectGetter(WanderersOfTheRift.id("knockback_heavy"),
+                                net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_KNOCKBACK,
+                                AttributeModifier.Operation.ADD_VALUE))),
+                List.of(new AttributeModifierEffect(
+                        WanderersOfTheRift.id("knockback_heavy"),
+                        net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED, -0.25, -0.05F,
+                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE))))
         );
         registerModifier(context, getResourceKey("knockback_resistance"),
                 new Modifier(generateEqualRollSpread(3,
                         List.of(new ToBeTieredModifierEffect(0.01F, 1.5F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("knockback_resistance"),
-                                        Attributes.KNOCKBACK_RESISTANCE, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("mana_cost"),
                 new Modifier(generateEqualRollSpread(5,
@@ -205,7 +256,8 @@ public class WotrModifierProvider {
                 new Modifier(generateEqualRollSpread(3,
                         List.of(new ToBeTieredModifierEffect(0.01F, 0.1F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("movement_speed"),
-                                        Attributes.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("projectile_count"),
                 new Modifier(generateEqualRollSpread(2, List.of(new ToBeTieredModifierEffect(0.01F, 0.1F,
@@ -231,13 +283,27 @@ public class WotrModifierProvider {
                 new Modifier(generateEqualRollSpread(1,
                         List.of(new ToBeTieredModifierEffect(0.5F, 0.5F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("step_height"),
-                                        Attributes.STEP_HEIGHT, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.STEP_HEIGHT,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
         );
         registerModifier(context, getResourceKey("sweeping_attack_damage"),
                 new Modifier(generateEqualRollSpread(4,
                         List.of(new ToBeTieredModifierEffect(0.01F, 1F,
                                 attributeModifierEffectGetter(WanderersOfTheRift.id("sweeping_attack_damage"),
-                                        Attributes.SWEEPING_DAMAGE_RATIO, AttributeModifier.Operation.ADD_VALUE)))))
+                                        net.minecraft.world.entity.ai.attributes.Attributes.SWEEPING_DAMAGE_RATIO,
+                                        AttributeModifier.Operation.ADD_VALUE)))))
+        );
+        registerModifier(context, getResourceKey("thorns_chance"),
+                new Modifier(generateEqualRollSpread(5,
+                        List.of(new ToBeTieredModifierEffect(0.01F, 50,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("thorns_chance"),
+                                        WotrAttributes.THORNS_CHANCE, AttributeModifier.Operation.ADD_VALUE)))))
+        );
+        registerModifier(context, getResourceKey("thorns_damage"),
+                new Modifier(generateEqualRollSpread(5,
+                        List.of(new ToBeTieredModifierEffect(1, 30,
+                                attributeModifierEffectGetter(WanderersOfTheRift.id("thorns_damage"),
+                                        WotrAttributes.THORNS_DAMAGE, AttributeModifier.Operation.ADD_VALUE)))))
         );
     }
 
