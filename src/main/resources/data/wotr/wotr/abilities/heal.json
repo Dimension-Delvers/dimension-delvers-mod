@@ -24,6 +24,6 @@
       }
     }
   ],
-  "icon": "minecraft:textures/mob_effect/regeneration.png",
+  "icon": "wotr:textures/ability/icon/heal.png",
   "mana_cost": 10
 }

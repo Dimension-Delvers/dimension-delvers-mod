@@ -38,6 +38,6 @@
       }
     }
   ],
-  "icon": "minecraft:textures/item/fire_charge.png",
+  "icon": "wotr:textures/ability/icon/fireball.png",
   "mana_cost": 10
 }
