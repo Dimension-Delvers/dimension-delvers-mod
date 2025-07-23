@@ -9,8 +9,8 @@
         "type": "wotr:ability",
         "ability": {}
       },
-      "scale": 0.625,
-      "z_offset": -0.045
+      "scale": 1.0,
+      "z_offset": -0.033
     }
   }
 }
