@@ -3,6 +3,7 @@ package com.wanderersoftherift.wotr.world.level.levelgen.layout;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.wanderersoftherift.wotr.item.riftkey.RiftConfig;
 import com.wanderersoftherift.wotr.world.level.levelgen.layout.shape.BoxedRiftShape;
 import com.wanderersoftherift.wotr.world.level.levelgen.layout.shape.FiniteRiftShape;
 import com.wanderersoftherift.wotr.world.level.levelgen.layout.shape.RiftShape;
@@ -87,7 +88,7 @@ public class LayeredInfiniteRiftLayout implements LayeredRiftLayout {
     }
 
     public record Factory(RiftShape riftShape, Optional<Integer> seed, List<LayoutLayer.Factory> layers)
-            implements RiftLayout.Factory {
+            implements LayeredRiftLayout.Factory {
 
         public static final MapCodec<LayeredInfiniteRiftLayout.Factory> CODEC = RecordCodecBuilder
                 .mapCodec(it -> it.group(
@@ -104,9 +105,14 @@ public class LayeredInfiniteRiftLayout implements LayeredRiftLayout {
         }
 
         @Override
-        public RiftLayout createLayout(MinecraftServer server, int seed) {
+        public RiftLayout createLayout(MinecraftServer server, int seed, RiftConfig riftConfig) {
             return new LayeredInfiniteRiftLayout(riftShape, this.seed.orElse(seed),
-                    layers.stream().map(it -> it.createLayer(server)).toList());
+                    layers.stream().map(it -> it.createLayer(server, riftConfig)).toList());
+        }
+
+        @Override
+        public LayeredRiftLayout.Factory withLayers(List<LayoutLayer.Factory> layers) {
+            return new Factory(riftShape, seed, layers);
         }
     }
 
