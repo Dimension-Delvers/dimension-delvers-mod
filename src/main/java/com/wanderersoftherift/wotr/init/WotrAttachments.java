@@ -5,15 +5,12 @@ import com.wanderersoftherift.wotr.WanderersOfTheRift;
 import com.wanderersoftherift.wotr.abilities.attachment.AbilitySlots;
 import com.wanderersoftherift.wotr.abilities.attachment.AttachedEffectData;
 import com.wanderersoftherift.wotr.abilities.attachment.ManaData;
-import com.wanderersoftherift.wotr.abilities.attachment.PlayerCooldownData;
-import com.wanderersoftherift.wotr.abilities.attachment.PlayerDurationData;
 import com.wanderersoftherift.wotr.abilities.effects.marker.EffectDisplayData;
 import com.wanderersoftherift.wotr.client.rift.BannedRiftList;
 import com.wanderersoftherift.wotr.core.inventory.snapshot.InventorySnapshot;
 import com.wanderersoftherift.wotr.core.rift.stats.StatSnapshot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
@@ -46,14 +43,6 @@ public class WotrAttachments {
             .register("banned_rifts", () -> AttachmentType.builder(() -> new BannedRiftList()).build());
 
     /// Abilities
-    public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerCooldownData>> ABILITY_COOLDOWNS = ATTACHMENT_TYPES
-            .register("cooldowns",
-                    () -> AttachmentType.builder(PlayerCooldownData::new).serialize(PlayerCooldownData.CODEC).build());
-    public static final DeferredHolder<AttachmentType<?>, AttachmentType<PlayerDurationData>> DURATIONS = ATTACHMENT_TYPES
-            .register("durations",
-                    () -> AttachmentType.builder(() -> new PlayerDurationData())
-                            .serialize(PlayerDurationData.CODEC)
-                            .build());
     public static final Supplier<AttachmentType<AbilitySlots>> ABILITY_SLOTS = ATTACHMENT_TYPES.register(
             "ability_slots",
             () -> AttachmentType.builder(AbilitySlots::new)
