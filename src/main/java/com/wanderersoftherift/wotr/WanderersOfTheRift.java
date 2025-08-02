@@ -11,6 +11,7 @@ import com.wanderersoftherift.wotr.init.WotrCreativeTabs;
 import com.wanderersoftherift.wotr.init.WotrDataComponentType;
 import com.wanderersoftherift.wotr.init.WotrEntities;
 import com.wanderersoftherift.wotr.init.WotrEntityDataSerializers;
+import com.wanderersoftherift.wotr.init.WotrEquipmentSlotTypes;
 import com.wanderersoftherift.wotr.init.WotrItems;
 import com.wanderersoftherift.wotr.init.WotrMenuTypes;
 import com.wanderersoftherift.wotr.init.WotrMobEffects;
@@ -100,6 +101,8 @@ public class WanderersOfTheRift {
         WotrEffects.EFFECTS.register(modEventBus);
         WotrTargetingTypes.TARGETING_TYPES.register(modEventBus);
 
+        // Gear
+        WotrEquipmentSlotTypes.EQUIPMENT_SLOTS.register(modEventBus);
         WotrModifierEffectTypes.MODIFIER_EFFECT_TYPES.register(modEventBus);
         WotrObjectiveTypes.OBJECTIVE_TYPES.register(modEventBus);
         WotrOngoingObjectiveTypes.ONGOING_OBJECTIVE_TYPES.register(modEventBus);
