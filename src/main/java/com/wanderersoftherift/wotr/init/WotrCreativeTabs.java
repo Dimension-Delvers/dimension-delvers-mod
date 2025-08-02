@@ -1,7 +1,7 @@
 package com.wanderersoftherift.wotr.init;
 
 import com.wanderersoftherift.wotr.WanderersOfTheRift;
-import com.wanderersoftherift.wotr.abilities.AbstractAbility;
+import com.wanderersoftherift.wotr.abilities.Ability;
 import com.wanderersoftherift.wotr.item.runegem.RunegemData;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -80,7 +80,7 @@ public class WotrCreativeTabs {
 
     private static void generateAbilityItems(
             CreativeModeTab.Output output,
-            HolderLookup.RegistryLookup<AbstractAbility> registry) {
+            HolderLookup.RegistryLookup<Ability> registry) {
         registry.listElements().forEach(abilityHolder -> {
             ItemStack item = WotrItems.ABILITY_HOLDER.toStack();
             item.set(WotrDataComponentType.ABILITY, abilityHolder);
