@@ -57,6 +57,6 @@ public class WotrAttachments {
     public static final Supplier<AttachmentType<EffectDisplayData>> EFFECT_DISPLAY = ATTACHMENT_TYPES
             .register("effect_display", () -> AttachmentType.builder(() -> new EffectDisplayData()).build());
     public static final Supplier<AttachmentType<ManaData>> MANA = ATTACHMENT_TYPES.register("mana",
-            () -> AttachmentType.builder(ManaData::new).serialize(ManaData.CODEC).build());
+            () -> AttachmentType.builder(ManaData::new).serialize(ManaData.getSerializer()).build());
 
 }
